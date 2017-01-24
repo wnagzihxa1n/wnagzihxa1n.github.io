@@ -1,0 +1,2 @@
+APP1：C版本的Hello JNI，包含静态与实例方法
+APP2：C++版本的Hello JNI，包含静态与实例方法

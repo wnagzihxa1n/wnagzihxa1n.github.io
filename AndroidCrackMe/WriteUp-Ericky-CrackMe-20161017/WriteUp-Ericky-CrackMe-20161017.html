@@ -539,27 +539,27 @@ vertical-align:1px;
 <p>IDA载入libxy.so</p>
 <p>等待分析完成，找到Java_by_Ericky_crackme01_JNI_EatRice()方法，双击进入，那么反编译出来的汇编代码就是下面这个样子</p>
 <p>上下翻一翻看看，可以看到这段代码还是比较有点长的</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/1.png" alt=""></p>
+<p><img src="Image/1.png" alt=""></p>
 <p>一般来说，先F5看看大概是什么样子，很明显的可以发现汇编窗口代码明显是多于F5之后的代码，这是怎么一回事呢？</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/2.png" alt=""></p>
+<p><img src="Image/2.png" alt=""></p>
 <p>这个其实是因为IDA在反编译so的时候，会出现一些识别的错误，这个很正常的，我们只需要人为的修正一下就好</p>
 <p>回到反编译窗口，按一下空格来查看Graph View</p>
 <p>可以看到IDA识别出了两个入口，那么很明显的，左边才是入口，右边那个应该是中间一个地方识别出错导致调用图断开</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/3.png" alt=""></p>
+<p><img src="Image/3.png" alt=""></p>
 <p>那么就是红框选中的地方，这里识别有点问题</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/4.png" alt=""></p>
+<p><img src="Image/4.png" alt=""></p>
 <p>单击红框中任意指令，然后如图点击</p>
 <pre><code>Edit-&gt;Functions-&gt;Remove function tail
-</code></pre><p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/5.png" alt=""></p>
+</code></pre><p><img src="Image/5.png" alt=""></p>
 <p>点击完后会发现Graph View发生了变化</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/6.png" alt=""></p>
+<p><img src="Image/6.png" alt=""></p>
 <p>这次单击里面的BL指令，然后如图点击</p>
 <pre><code>Edit-&gt;others-&gt;Force BL call
-</code></pre><p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/7.png" alt=""></p>
+</code></pre><p><img src="Image/7.png" alt=""></p>
 <p>那么现在就可以看到整个函数的逻辑就恢复了，大概一看还是比较好理解的</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/8.png" alt=""></p>
+<p><img src="Image/8.png" alt=""></p>
 <p>F5反编译出来的代码也已经比较合理</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/9.png" alt=""></p>
+<p><img src="Image/9.png" alt=""></p>
 <p>接下来的分析其实看雪上面已经有大牛贴出来了</p>
 <p><a href="http://bbs.pediy.com/showthread.php?t=207025" title="sherrydl---大神cm逆向题-解题步骤">http://bbs.pediy.com/showthread.php?t=207025</a></p>
 <p>这里我也完整的写一下吧</p>
@@ -788,7 +788,7 @@ v6 = sub_10C4(env, regCode);
 }
 </code></pre><p>但是这时候看着还不是很爽</p>
 <p>如下点击，每一个env函数都点击一遍</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/10.png" alt=""></p>
+<p><img src="Image/10.png" alt=""></p>
 <p>结果如下，这下子看着爽多了</p>
 <pre><code>_BYTE *__fastcall sub_10C4(JNIEnv *env, jstring regCode)
 {

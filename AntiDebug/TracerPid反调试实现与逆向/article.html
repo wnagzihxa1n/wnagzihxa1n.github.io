@@ -918,7 +918,7 @@ TracerPid:      22633
 <pre><code>.text:0000126C MOVS    R1, #0          ; attr
 </code></pre><p>将R4和LR寄存器的值压栈</p>
 <pre><code>.text:0000126E PUSH    {R4,LR}
-</code></pre><p>重定位操作：<code>R4 = id_anti_debug_ptr - 0x127A</code>，这个地方有个小技巧，IDA识别出来的字符串有时候是用指针来表示的，如果表示指针的变量后面还有一个<code>_ptr</code>，表示的是这是指针的指针，或者说指针的地址，比如<code>*string = &quot;Goodmorning&quot;</code>，<code>string</code>就表示它的指针或者首地址，那么<code>string_str</code>表示的就是指针的地址，也就是<code>string = *string_str</code></p>
+</code></pre><p>重定位操作：<code>R4 = id_anti_debug_ptr - 0x127A</code>，这个地方有个小技巧，IDA识别出来的字符串有时候是用指针来表示的，如果表示指针的变量后面还有一个<code>_ptr</code>，表示的是这是指针的指针，或者说指针的地址，比如<code>*string = &quot;Goodmorning&quot;</code>，<code>string</code>就表示它的指针或者首地址，那么<code>string_ptr</code>表示的就是指针的地址，也就是<code>string = *string_ptr</code></p>
 <pre><code>.text:00001270 LDR     R4, =(id_anti_debug_ptr - 0x127A)
 </code></pre><p>重定位操作：<code>R2 = _Z9checkAntiv_ptr - 0x127A</code>，这个也是表示指针的指针</p>
 <pre><code>.text:00001272 LDR     R2, =(_Z9checkAntiv_ptr - 0x127E)

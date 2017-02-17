@@ -485,7 +485,7 @@ Subscription expires on 2017-03-01
 <p>首先我是不知道这个校验在哪个位置的，因为2.x和1.x的文件目录不一样，1.x的jeb.jar直接在bin文件夹下面，而2.x的jeb.jar在bin/plugins下面的com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar文件里面，使用jdgui打开的话可以很明显的看到，至于如何知道校验在这个文件里？首先是这个文件比较大，代码肯定比较多，然后名字里面有jeb，所以猜了一波，运气也是比较好，一下就猜中了，猜不中就慢慢找吧</p>
 <p>jdgui打开com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar文件后，使用搜索功能，搜索上面那个“Support expires on”字符串，可以看到有一处，那么肯定就是校验的地方了，或者说是调用校验的地方了</p>
 <p>双击跟过去</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/1-1.png" alt=""></p>
+<p><img src="Image/1.png" alt=""></p>
 <p>可以看到先是获取一个数值赋值给i，这个i在后面还会用于显示日期，那么下面这个方法至关重要</p>
 <pre><code>Licensing.getExpirationTimestamp()
 </code></pre><p>跟过去，实现的代码比较简单</p>
@@ -544,10 +544,10 @@ public class Main {
 }
 </code></pre><p>讲一下代码的意思：首先获取ClassPool，这个是池的意思，如果路径没有这个jeb.jar的话就需要下面进行插入，也就是insertClassPath()方法，把你的jeb.jar完整路径修改一下，接着获取class，这里就是Licensing.class，路径要完整，接着就是获取方法，我们直接将方法的Body设置为返回2000000000，这个数值足够大而不会导致int溢出，最下面一句是修改后的文件保存的路径，所以运行起来后会在E盘下面有一个com文件夹，将里面的Licensing.class文件替换掉最开始那个com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar文件里的Licensing.class文件即可</p>
 <p>这里我们可以来看看修改后的结果</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/2-1.png" alt=""></p>
+<p><img src="Image/2.png" alt=""></p>
 <p>还是比较理想的</p>
 <p>来看JEB里的信息</p>
-<p><img src="http://www.wangzhixian.org/wp-content/uploads/2016/10/3-1.png" alt=""></p>
+<p><img src="Image/3.png" alt=""></p>
 <p>妥妥的，我修改了一下笔记本的时间到17年的4月，并没有发现有许可证到期的提示，而一开始我修改的时候是有提示到期然后退出的，说明这个修改还是可行的</p>
 <p>那么还有一种去掉检测的方法，想了想太麻烦，各位同学有兴趣的话可以自行玩一玩</p>
 <p>至于四哥说的暴力美学，我觉得我想的这两个方法并不符合，有待以后有新的想法再折腾了</p>

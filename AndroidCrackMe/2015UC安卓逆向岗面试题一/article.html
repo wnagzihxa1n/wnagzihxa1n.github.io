@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2015阿里&看雪移动安全挑战赛第一题</title>
+<title>2014UC安卓逆向笔试题一</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,230 +468,293 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="2015-">2015阿里&amp;看雪移动安全挑战赛第一题</h1>
+<h1 id="2014uc-">2014UC安卓逆向面试题一</h1>
 <p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<p>没有壳，直接JEB反编译</p>
-<p>很简单的一个工程，直接找MAinActivity里的<code>onCreate()</code>方法</p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>2014UC安卓逆向岗的面试题，发现是阿里移动挑战赛的题目改过来的</p>
+<h2 id="0x01-">0x01 分析</h2>
+<p>用JEB反编译，找到<strong>onCreate()</strong></p>
 <pre><code>protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(1);
         this.setContentView(2130903064);
-        this.findViewById(2131034174).setOnClickListener(new View$OnClickListener() {
+        this.meditText = this.findViewById(2131034173);
+        this.mButton = this.findViewById(2131034174);
+        this.mButton.setOnClickListener(new View$OnClickListener() {
             public void onClick(View v) {
-                String EditText_text = this.val$edit.getText().toString();
-                String Table_Picture = MainActivity.this.getTableFromPic();
-                String Pwd_Picture = MainActivity.this.getPwdFromPic();
-                Log.i(&quot;lil&quot;, &quot;table:&quot; + Table_Picture);
-                Log.i(&quot;lil&quot;, &quot;pw:&quot; + Pwd_Picture);
+                String v2 = MainActivity.this.meditText.getText().toString();
+                String v4 = MainActivity.this.cccccc();
+                String v3 = MainActivity.this.gagagfffafa();
                 try {
-                    String enPassword = MainActivity.bytesToAliSmsCode(Table_Picture, EditText_text.getBytes(&quot;utf-8&quot;));
-                    Log.i(&quot;lil&quot;, &quot;enPassword:&quot; + enPassword);
+                    String v1 = MainActivity.bytesToAliSmsCode(v4, v2.getBytes(&quot;utf-8&quot;));
                 }
-                catch(UnsupportedEncodingException v1) {
-                    v1.printStackTrace();
+                catch(UnsupportedEncodingException v0) {
+                    v0.printStackTrace();
                 }
 
-                if(Pwd_Picture == null || (Pwd_Picture.equals(&quot;&quot;)) || !Pwd_Picture.equals(enPassword)) {
-                    AlertDialog$Builder alertdialog_builder = new AlertDialog$Builder(MainActivity.this);
-                    alertdialog_builder.setMessage(2131361809);
-                    alertdialog_builder.setTitle(2131361808);
-                    alertdialog_builder.setPositiveButton(2131361811, new DialogInterface$OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alertdialog_builder.show();
+                if(v3 == null || (v3.equals(&quot;&quot;)) || !v3.equals(v1)) {
+                    Toast.makeText(MainActivity.this, &quot;密码错误！登录失败&quot;, 0).show();
                 }
                 else {
-                    MainActivity.this.showDialog();
+                    Toast.makeText(MainActivity.this, &quot;恭喜你！登录成功&quot;, 0).show();
                 }
             }
         });
 }
-</code></pre><p>读一读代码</p>
-<p>这是一个button的点击事件</p>
-<pre><code>this.findViewById(2131034174).setOnClickListener(new View$OnClickListener() {
-            public void onClick(View v) {
-</code></pre><p>获取输入框的字符串</p>
-<pre><code>String EditText_text = this.val$edit.getText().toString();
-</code></pre><p>碰到一个方法，跟过去</p>
-<pre><code>String Table_Picture = MainActivity.this.getTableFromPic();
-</code></pre><p>从logo.png获取一些数据，具体看代码</p>
-<pre><code>protected String getTableFromPic() {
-        String bytearray_temp_encode_tostring;
-        InputStream inputstream;
-        String Result = &quot;&quot;;
+</code></pre><p>先调用<strong>MainActivity.this.cccccc()</strong>，将结果赋值给<strong>v4</strong></p>
+<pre><code>protected String cccccc() {
+        String v5;
+        String v6;
+        InputStream v3;
         try {
-            inputstream = this.getResources().getAssets().open(&quot;logo.png&quot;);  // 从Assets读取logo.png
-            int length = inputstream.available();  // 取读出的数据长度
-            byte[] bytearray_buffer = new byte[length];
-            inputstream.read(bytearray_buffer, 0, length);  // 将inputstream对象里的logo.png数据赋值给buffer数组
-            byte[] bytearray_temp = new byte[768];
-            System.arraycopy(bytearray_buffer, 89473, bytearray_temp, 0, 768);  // 将bytearray_buffer[89473]开始的768个字节的数据赋值给bytearray_temp
-            bytearray_temp_encode_tostring = new String(bytearray_temp, &quot;utf-8&quot;);  // 编码
-            if(inputstream == null) {
-                return bytearray_temp_encode_tostring;
-            }
+            v3 = this.getResources().getAssets().open(&quot;abcdefghddddd&quot;);//获取文件
+            int v4 = v3.available();//v3数据流的长度
+            byte[] v1 = new byte[v4];//定义byte数组
+            v3.read(v1, 0, v4);//将v3数据流存储到v1
+            byte[] v2 = new byte[768];//定义byte数组
+            System.arraycopy(v1, 89473, v2, 0, 768);//从偏移89473的位置取长度为768字节的数据存到v2里
+            v6 = new String(v2, &quot;utf-8&quot;);//将获取的byte数组转为string
         }
-        catch(Throwable error) {
-        label_31:
-            if(inputstream != null) {
-                try {
-                    inputstream.close();  // 关闭inputstream
-                }
-                catch(IOException v8) {
-                }
-            }
-
-            throw error;
-        }
-        catch(Exception error) {
-            try {
-                error.printStackTrace();
-                if(inputstream == null) {
-                    return Result;
-                }
-            }
-            catch(Throwable error) {
-                goto label_31;
+        catch(Throwable v8) {
+            if(v3 == null) {
+                goto label_27;
             }
 
             try {
-                inputstream.close();  // 关闭inputstream
+                v3.close();
             }
-            catch(IOException error) {
+            catch(IOException v10) {
             }
 
-            return Result;
+            try {
+            label_27:
+                throw v8;
+            }
+            catch(Throwable v0) {
+                v0.printStackTrace();
+            }
         }
 
         try {
-            inputstream.close();  // 关闭inputstream
-            Result = bytearray_temp_encode_tostring;
+            v3.close();
+            v5 = v6;
         }
-        catch(IOException error) {
-            Result = bytearray_temp_encode_tostring;
+        catch(IOException v9) {
+            v5 = v6;
         }
 
-        return Result;
+        return v5;
 }
-</code></pre><p>和上面一样的方法</p>
-<pre><code>String Pwd_Picture = MainActivity.this.getPwdFromPic();
-</code></pre><p>跟过来会发现还是从logo.png获取数据，但是获取的长度位置不一样</p>
-<pre><code>protected String getPwdFromPic() {
-        String bytearray_temp_encode_tostring;
-        InputStream inputstream;
-        String Result = &quot;&quot;;
+</code></pre><p>给整理一下，新建个Java工程来跑代码</p>
+<pre><code>@SuppressWarnings(&quot;unused&quot;)
+public static String CalcTable() {
+        String Table_string = null;
+        InputStream inputStream = null;
         try {
-            inputstream = this.getResources().getAssets().open(&quot;logo.png&quot;);  // 从Assets读取logo.png
-            int length = inputstream.available();  // 取读出的数据长度
-            byte[] bytearray_buffer = new byte[length];
-            inputstream.read(bytearray_buffer, 0, length);  // 将inputstream对象里的logo.png数据赋值给buffer数组
-            byte[] bytearray_temp = new byte[18];
-            System.arraycopy(bytearray_buffer, 91265, bytearray_temp, 0, 18);  // 将bytearray_buffer[91265]开始的18个字节的数据赋值给bytearray_temp
-            bytearray_temp_encode_tostring = new String(bytearray_temp, &quot;utf-8&quot;);  // 编码
-            if(inputstream == null) {
-                return bytearray_temp_encode_tostring;
+            inputStream = new FileInputStream(&quot;abcdefghddddd&quot;);
+            int data_length = inputStream.available();
+            byte[] data_byte = new byte[data_length];
+            inputStream.read(data_byte, 0, data_length);
+            byte[] Table_byte = new byte[768];
+            System.arraycopy(data_byte, 89473, Table_byte, 0, 768);
+            Table_string = new String(Table_byte, &quot;utf-8&quot;);
+            if(inputStream == null) {
+                return &quot;&quot;;
             }
-        }
-        catch(Throwable error) {
-        label_31:
-            if(inputstream != null) {
-                try {
-                    inputstream.close();  // 关闭inputstream
-                }
-                catch(IOException error) {
-                }
-            }
-
-            throw error;
-        }
-        catch(Exception error) {
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
             try {
-                error.printStackTrace();
-                if(inputstream == null) {
-                    return Result;
-                }
+                inputStream.close();
             }
-            catch(Throwable error) {
-                goto label_31;
+            catch(Exception e) {
+                e.printStackTrace();
             }
-
-            try {
-                inputstream.close();  // 关闭inputstream
-            }
-            catch(IOException error) {
-            }
-
-            return Result;
         }
-
+        return Table_string;
+}
+</code></pre><p>输出</p>
+<pre><code>一乙二十丁厂七卜人入八九几儿了力乃刀又三于干亏士工土才寸下大丈与万上小口巾山千乞川亿个勺久凡及夕丸么广亡门义之尸弓己已子卫也女飞刃习叉马乡丰王井开夫天无元专云扎艺木五支厅不太犬区历尤友匹车巨牙屯比互切瓦止少日中冈贝内水见午牛手毛气升长仁什片仆化仇币仍仅斤爪反介父从今凶分乏公仓月氏勿欠风丹匀乌凤勾文六方火为斗忆订计户认心尺引丑巴孔队办以允予劝双书幻玉刊示末未击打巧正扑扒功扔去甘世古节本术可丙左厉右石布龙平灭轧东卡北占业旧帅归且旦目叶甲申叮电号田由史只央兄叼叫另叨叹四生失禾丘付仗代仙们仪白仔他斥瓜乎丛令用甩印乐
+</code></pre><p>然后调用<strong>MainActivity.this.gagagfffafa()</strong>，将结果赋值给<strong>v3</strong></p>
+<pre><code>protected String gagagfffafa() {
+        String v5;
+        String v7;
+        InputStream v3;
+        String v6 = null;
         try {
-            inputstream.close();  // 关闭inputstream
-            Result = bytearray_temp_encode_tostring;
+            v3 = this.getResources().getAssets().open(&quot;abcdefghddddd&quot;);
+            int v4 = v3.available();
+            byte[] v1 = new byte[v4];
+            v3.read(v1, 0, v4);
+            byte[] v2 = new byte[18];
+            System.arraycopy(v1, 91265, v2, 0, 18);//取18个字节
+            v7 = new String(v2, &quot;utf-8&quot;);
+            if(v3 != null) {
+                goto label_38;
+            }
         }
-        catch(IOException error) {
-            Result = bytearray_temp_encode_tostring;
+        catch(Throwable v8) {
+            if(v3 == null) {
+                goto label_26;
+            }
+
+            try {
+                v3.close();
+            }
+            catch(IOException v10) {
+            }
+
+            try {
+            label_26:
+                throw v8;
+            }
+            catch(Throwable v0) {
+                v0.printStackTrace();
+                goto label_29;
+            }
         }
 
-        return Result;
+        return v7;
+    label_38:
+        v6 = v7;
+        try {
+        label_29:
+            v3.close();
+            v5 = v6;
+        }
+        catch(IOException v9) {
+            v5 = v6;
+        }
+
+        return v5;
 }
-</code></pre><p>两个log，省的手动插桩了</p>
-<pre><code>Log.i(&quot;lil&quot;, &quot;table:&quot; + Table_Picture);
-Log.i(&quot;lil&quot;, &quot;pw:&quot; + Pwd_Picture);
-</code></pre><p>然后调用<code>bytesToAliSmsCode()</code>方法</p>
-<pre><code>try {
-    String enPassword = MainActivity.bytesToAliSmsCode(Table_Picture, EditText_text.getBytes(&quot;utf-8&quot;));
-    Log.i(&quot;lil&quot;, &quot;enPassword:&quot; + enPassword);
-}catch(UnsupportedEncodingException v1) {
-    v1.printStackTrace();
+</code></pre><p>整理一下</p>
+<pre><code>@SuppressWarnings(&quot;unused&quot;)
+public static String RegCode() {
+        InputStream inputStream = null;
+        String RegCode_string = null;
+        try {
+            inputStream = new FileInputStream(&quot;abcdefghddddd&quot;);
+            int data_length = inputStream.available();
+            byte[] data_byte = new byte[data_length];
+            inputStream.read(data_byte, 0, data_length);
+            byte[] RegCode_byte = new byte[18];
+            System.arraycopy(data_byte, 91265, RegCode_byte, 0, 18);
+            RegCode_string = new String(RegCode_byte, &quot;utf-8&quot;);
+            if(inputStream == null) {
+                return &quot;&quot;;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        //System.out.println(RegCode_string);
+        return RegCode_string;
 }
-</code></pre><p>虽然还不是很清楚<code>bytesToAliSmsCode()</code>方法的作用，不过返回的值已经log打印出来了，加上前面两个，一起来运行看看，因为触发点击事件才会生成三个log，所以运行起来直接点击button</p>
-<p><img src="Image/1.png" alt=""></p>
-<p>我们跟到<code>bytesToAliSmsCode()</code>方法看一下</p>
-<p>很普通的运算</p>
+</code></pre><p>输出</p>
+<pre><code>义弓么丸广之
+</code></pre><p>调用<strong>MainActivity.bytesToAliSmsCode(v4, v2.getBytes(&quot;utf-8&quot;))</strong>，<strong>v2</strong>是用户输入的数据</p>
 <pre><code>private static String bytesToAliSmsCode(String table, byte[] data) {
-        StringBuilder Result = new StringBuilder();
-        int i;
-        for(i = 0; i &lt; data.length; ++i) {
-            Result.append(table.charAt(data[i] &amp; 255));
+        StringBuilder v1 = new StringBuilder();
+        int v0;
+        for(v0 = 0; v0 &lt; data.length; ++v0) {
+            v1.append(table.charAt(data[v0] &amp; 255));
         }
-        return Result.toString();
-}
-</code></pre><p>那接下来就是解密了，惊喜的发现在加密函数边上有解密函数，那就拿来用用吧</p>
-<pre><code>private static byte[] aliCodeToBytes(String codeTable, String strCmd) {
-        byte[] v1 = new byte[strCmd.length()];
-        int i;
-        for(i = 0; i &lt; strCmd.length(); ++i) {
-            v1[i] = ((byte)codeTable.indexOf(strCmd.charAt(i)));
-        }
-        return v1;
-}
-</code></pre><p>Eclipse写一下就是这样</p>
-<pre><code>import java.lang.*;
 
-public class Ali {
+        return v1.toString();
+}
+</code></pre><p>判断逻辑</p>
+<pre><code>if(v3 == null || (v3.equals(&quot;&quot;)) || !v3.equals(v1)) {
+    Toast.makeText(MainActivity.this, &quot;密码错误！登录失败&quot;, 0).show();
+}
+else {
+    Toast.makeText(MainActivity.this, &quot;恭喜你！登录成功&quot;, 0).show();
+}
+</code></pre><p>最后整理一下</p>
+<pre><code>import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-    static String table;
-    static String pw;
+public class Demo {
+
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        table = new String(&quot;一乙二十丁厂七卜人入八九几儿了力乃刀又三于干亏士工土才寸下大丈与万上小口巾山千乞川亿个勺久凡及夕丸么广亡门义之尸弓己已子卫也女飞刃习叉马乡丰王井开夫天无元专云扎艺木五支厅不太犬区历尤友匹车巨牙屯比互切瓦止少日中冈贝内水见午牛手毛气升长仁什片仆化仇币仍仅斤爪反介父从今凶分乏公仓月氏勿欠风丹匀乌凤勾文六方火为斗忆订计户认心尺引丑巴孔队办以允予劝双书幻玉刊示末未击打巧正扑扒功扔去甘世古节本术可丙左厉右石布龙平灭轧东卡北占业旧帅归且旦目叶甲申叮电号田由史只央兄叼叫另叨叹四生失禾丘付仗代仙们仪白仔他斥瓜乎丛令用甩印乐&quot;);
-        pw = new String(&quot;义弓么丸广之&quot;);
-        System.out.println(new String(aliCodeToBytes(table,pw)));
+        byte[] answer_byte = new byte[6];
+        String RegCode = RegCode();
+        String Table = CalcTable();
+        System.out.println(RegCode + &quot;\n&quot; + Table);
+        for(int i = 0; i &lt; RegCode.length(); i++) {
+            answer_byte[i] = (byte)Table.indexOf(RegCode.charAt(i));
+        }
+        System.out.print(new String(answer_byte));
     }
 
-    private static byte[] aliCodeToBytes(String codeTable, String strCmd) {
-        byte[] v1 = new byte[strCmd.length()];
-        int i;
-        for(i = 0; i &lt; strCmd.length(); ++i) {
-            v1[i] = ((byte)codeTable.indexOf(strCmd.charAt(i)));
+    @SuppressWarnings(&quot;unused&quot;)
+    public static String RegCode() {
+        InputStream inputStream = null;
+        String RegCode_string = null;
+        try {
+            inputStream = new FileInputStream(&quot;abcdefghddddd&quot;);
+            int data_length = inputStream.available();
+            byte[] data_byte = new byte[data_length];
+            inputStream.read(data_byte, 0, data_length);
+            byte[] RegCode_byte = new byte[18];
+            System.arraycopy(data_byte, 91265, RegCode_byte, 0, 18);
+            RegCode_string = new String(RegCode_byte, &quot;utf-8&quot;);
+            if(inputStream == null) {
+                return &quot;&quot;;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-        return v1;
+        //System.out.println(RegCode_string);
+        return RegCode_string;
+    }
+
+    @SuppressWarnings(&quot;unused&quot;)
+    public static String CalcTable() {
+        String Table_string = null;
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(&quot;abcdefghddddd&quot;);
+            int data_length = inputStream.available();
+            byte[] data_byte = new byte[data_length];
+            inputStream.read(data_byte, 0, data_length);
+            byte[] Table_byte = new byte[768];
+            System.arraycopy(data_byte, 89473, Table_byte, 0, 768);
+            Table_string = new String(Table_byte, &quot;utf-8&quot;);
+            if(inputStream == null) {
+                return &quot;&quot;;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Table_string;
     }
 }
-</code></pre><p>结果是：581026</p>
-<p>在应用的框框输入581026就会看到成功了</p>
+</code></pre><p>输出</p>
+<pre><code>581026
+</code></pre><h2 id="0x02-">0x02 小结</h2>
+<p>有点意思，跟阿里那题类似，但是阿里自带转换代码，这个把转换代码去掉了，又改了命名</p>
 
 </body>
 </html>

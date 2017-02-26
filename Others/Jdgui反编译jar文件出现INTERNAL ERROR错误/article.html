@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Jdgui反编译jar文件出现INTERNAL ERROR错误</title>
+<title>Jdgui反编译jar文件出现INTERNAL ERROR错误以及推荐新工具</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,11 +468,11 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="jdgui-jar-internal-error-">Jdgui反编译jar文件出现INTERNAL ERROR错误</h1>
+<h1 id="jdgui-jar-internal-error-">Jdgui反编译jar文件出现INTERNAL ERROR错误以及推荐新工具</h1>
 <p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
 <p>Jdgui反编译jar文件出错很正常，以前遇到的通常都是一大堆字节码，但今天却什么都没有，只有<code>INTERNAL ERROR</code></p>
 <p><img src="Image/1.png" alt=""></p>
-<p>尝试使用逆向组手转成dex文件再用JEB来查看，然而一个小时还是这样</p>
+<p>尝试使用逆向助手转成dex文件再用JEB来查看，然而一个小时还是这样</p>
 <p><img src="Image/2.png" alt=""></p>
 <p>搜到一篇文章</p>
 <p><a href="http://stackoverflow.com/questions/17643825/using-java-decompiler-jd-gui-and-getting-internal-error">using java decompiler jd-gui and getting // INTERNAL ERROR //</a></p>
@@ -485,8 +485,10 @@ vertical-align:1px;
 <li><a href="https://github.com/deathmarine/Luyten/releases/tag/v0.5.0">https://github.com/deathmarine/Luyten/releases/tag/v0.5.0</a></li></ul>
 <p>看一下效果</p>
 <p><img src="Image/3.png" alt=""></p>
-<p>有一个使用上的问题，不能通过双击函数名跳转，这种就很蛋疼了，有时间可以参考jdgui的代码实现一下，反正作者都开源了</p>
-<p>还不错，如果有同学遇到这个问题，可以尝试一下</p>
+<p>在使用了一段时间后，发现这玩意好用啊</p>
+<ul>
+<li>如果要跳转函数的话，使用<code>Ctrl</code>加鼠标点击函数名，有一个缺点就是，没有区分依赖包里的函数</li><li>可以修改主题，在左上角，改成<code>Dark</code>，字体看起来很爽</li><li>最重要的一点，缩进是四个空格，作者三观正啊！！！！！！</li><li>还有一个小缺点就是，左边的包是直接列出来，而不是按照原始结构排列，所以如果包比较多的话会不好找</li><li>如果要搜索的话，左上角有一个<code>Find All</code></li></ul>
+<p>总体还不错，如果有同学遇到这个问题，可以尝试一下</p>
 
 </body>
 </html>

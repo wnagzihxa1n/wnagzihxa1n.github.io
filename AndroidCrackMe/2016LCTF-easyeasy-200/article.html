@@ -555,7 +555,7 @@ v15 = sub_7B10(&amp;secret, v14);
 <p>网上流传的Flag：iwantashellbecauseidonthaveitttt</p>
 <p>可是我记得前面是有调用一个<code>Format</code>类的一个函数做<code>substring()</code>操作    ，应该是补上固定长度的任意字符串</p>
 <p>不过还有一点点其它的东西可以跟大家聊一聊</p>
-<p>我们在注意到</p>
+<p>我们注意到</p>
 <pre><code>&gt;&gt;&gt; temp = &quot;iwantashellbecauseidonthaveitttt&quot;
 &gt;&gt;&gt; print len(temp)
 32
@@ -612,7 +612,7 @@ v15 = sub_7B10(&amp;secret, v14);
 <p>那么现在Flag是<code>iwantashellbecauseidonthaveitttt</code>就没什么问题了</p>
 <p>至于反调试，可以直接patch so的调用反调试函数指令，也可以动态调试的时候下断点，patch一下内存</p>
 <h2 id="0x02-">0x02 小结</h2>
-<p>如果有同学感觉好的，在看奥<code>secret</code>赋值那里，就应该猜到这是Base64算法，感觉再好一点的，直接就解出了Flag</p>
+<p>如果有同学感觉好的，在看<code>secret</code>赋值那里，就应该猜到这是Base64算法，感觉再好一点的，直接就解出了Flag</p>
 <p>今天2017 Pwn2Own结束，数字获得了2017 Master of Pwn，膜拜各位大佬！！！！！！</p>
 
 </body>

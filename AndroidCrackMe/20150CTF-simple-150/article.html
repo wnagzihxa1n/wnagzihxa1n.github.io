@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CTF-Mobile</title>
+<title>WriteUp</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,34 +468,69 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="ctf-mobile-android-crackme-">CTF Mobile题以及Android CrackMe合集(持续整理中)</h1>
+<h1 id="20150ctf-simple">20150CTF-simple</h1>
 <p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<h2 id="ctf-mobile">CTF Mobile</h2>
-<h3 id="2015-ctf-">2015海峡两岸CTF：</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/2015%E6%B5%B7%E5%B3%A1%E4%B8%A4%E5%B2%B8CTF-%E4%B8%80%E4%B8%AAAPK%EF%BC%8C%E9%80%86%E5%90%91%E8%AF%95%E8%AF%95%E5%90%A7/article.html">一个APK，逆向试试吧ndk</a></li></ul>
-<h3 id="2015-">2015阿里&amp;看雪移动安全挑战赛</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/WriteUp-AliChallenge2015-1/article.html">2015阿里&amp;看雪移动安全挑战赛第一题</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/WriteUp-AliChallenge2015-2/article.html">2015阿里&amp;看雪移动安全挑战赛第二题</a></li></ul>
-<h3 id="20150ctf-">20150CTF：</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/20150CTF-vezel-100/article.html">vezel-100</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/20150CTF-simple-100/article.html">simple-150</a></li></ul>
-<h3 id="2016alictf-">2016AliCTF：</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/2016AliCTF-Timer-android-50/article.html">Timer-50</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/2016AliCTF-LoopAndLoop-android-100/article.html">LoopAndLoop-100</a></li></ul>
-<h3 id="2016lctf-">2016LCTF：</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/2016LCTF-easy-100/article.html">easy-100</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/2016LCTF-easyeasy-200/article.html">easyeasy-200</a></li></ul>
-<h3 id="2017xctf-njctf-">2017XCTF&amp;NJCTF：</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/2017XCTF&amp;NJCTF-SafeBox-100/article.html">SafeBox-100</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/2017XCTF&amp;NJCTF-easycrack-100/article.html">easycrack-100</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/2017XCTF&amp;NJCTF-LittleRotatorGame-200/article.html">LittleRotatorGame-200</a></li></ul>
-<h2 id="android-crackme">Android CrackMe</h2>
-<h3 id="2014uc-">2014UC安卓逆向岗面试题</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/2014UC%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%B2%97%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80/article.html">2014UC安卓逆向岗面试题一</a></li></ul>
-<h3 id="-">第三方开发者</h3>
-<ul>
-<li><a href="http://www.wangzhixian.org/AndroidCrackMe/WriteUp-Unknown-CrackMe-20160819/article.html">WriteUp-Unknown-CrackMe-20161213</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/WriteUp-Ericky-CrackMe-20161017/article.html">WriteUp-Ericky-CrackMe-20161017</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/WriteUp-qtfreet-CrackMe-20161219/article.html">WriteUp-qtfreet-CrackMe-20161219</a></li><li><a href="http://www.wangzhixian.org/AndroidCrackMe/WriteUp-qtfreet-CrackMe-20161220/article.html">WriteUp-qtfreet-CrackMe-20161220</a></li></ul>
+<h2 id="0x00-">0x00 前言</h2>
+<p>20150CTF的Mobile第二题，分值150</p>
+<h2 id="0x01-">0x01 分析</h2>
+<p>Java层简单明了的写了从<code>res/raw</code>文件夹读取<code>flag.txt</code>，然后输入数据进行对比</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>对着目录找到<code>flag.txt</code></p>
+<p><img src="Image/2.png" alt=""></p>
+<p>Flag：0ctf{Too_Simple_Sometimes_Naive!!!}</p>
+<p>仿佛是在嘲笑我</p>
+<p>抱着<strong>打死不信出题人半个字</strong>的原则，输入APP验证，然而<code>Wrong</code></p>
+<p>发现有一个so文件</p>
+<p>IDA打开，发现有<code>.init_array</code>段，调用了<code>my_init()</code></p>
+<pre><code>__int64 my_init()
+{
+    int PID; // r0@3
+    __int64 v1; // ST00_8@3
+
+    j_j_set_logfunction(nullsub_2);
+    if ( CheckSig() )
+        j_j_exit(0);
+    PID = j_j_getpid();
+    j_j_hook(&amp;unk_6004, PID, &quot;libc.&quot;, &quot;read&quot;, CheckStrace, CheckPtrace, 0);
+    return v1;
+}
+</code></pre><p>看着这命名，目测是签名验证反调试，然后有一个hook操作</p>
+<p>回想在Java层输入的Flag不正确，再结合这里，应该就是有坑，这个坑目测就是hook了某个函数</p>
+<p>再从传入的参数来看，应该是<code>read()</code></p>
+<p>于是就翻啊翻，找啊找，找到一个小朋友......</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>通常在自定义的函数里有异或操作往往说明这里是一个关键</p>
+<p>注意前面有一个<code>v5</code>，其中的两个参数用在了后面的异或操作中，<code>v3</code>可能是某数组的起始地址，<code>v10</code>可能是长度</p>
+<p>再进一步猜测，它是<code>read()</code>想到这里，我们把<code>dest[]</code>数组从so里拷贝出来</p>
+<p>这里有个小技巧，可以使用Winhex的拷贝功能，找到偏移后，右键用<code>C Source</code></p>
+<pre><code>unsigned AnsiChar data[35] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x1D, 0x1B, 0x48, 0x2C, 0x0C, 0x24, 0x02, 0x02, 0x09, 0x3A, 0x0B, 
+    0x3B, 0x0E, 0x03, 0x3A, 0x39, 0x0C, 0x08, 0x11, 0x00, 0x00, 0x1A, 0x09, 0x0C, 0x29, 0x20, 0x58, 
+    0x44, 0x00, 0x00
+};
+</code></pre><p>写个简单的脚本异或一下</p>
+<pre><code># coding = utf-8
+
+data = [
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x1D, 0x1B, 0x48, 0x2C, 0x0C, 0x24, 0x02, 0x02, 0x09, 0x3A, 0x0B, 
+    0x3B, 0x0E, 0x03, 0x3A, 0x39, 0x0C, 0x08, 0x11, 0x00, 0x00, 0x1A, 0x09, 0x0C, 0x29, 0x20, 0x58, 
+    0x44, 0x00, 0x00]
+
+old_flag = &quot;0ctf{Too_Simple_Sometimes_Naive!!!}&quot;
+
+def main():
+    flag = []
+    for i in range(len(old_flag)):
+        flag.append(chr(ord(old_flag[i]) ^ data[i]))
+    print &quot;&quot;.join(flag)
+
+if __name__ == &#39;__main__&#39;:
+    main()
+</code></pre><p>输出</p>
+<pre><code>0ctf{It&#39;s_More_Than_Meets_The_Eye!}
+</code></pre><p>到这里可以确定我们的猜测，so里hook了<code>read()</code>函数，我们输入的字符串被异或后再和<code>flag.txt</code>里的数据对比</p>
+<h2 id="0x02-">0x02 小结</h2>
+<p>相比另一道150的Mobile，我觉得这题很值</p>
 
 </body>
 </html>

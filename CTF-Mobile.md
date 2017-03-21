@@ -3,6 +3,9 @@
 **Author：wnagzihxain
 Mail：tudouboom@163.com**
 
+### 这里所有整理的CTF Mobile题目样本，IDA分析的idb文件，JEB分析的jdb文件，分析过程中写的脚本文件，用到的工具等都打包到了下面这个项目里，有兴趣玩的同学可以关注一下
+- https://github.com/toToCW/CTF-Mobile
+
 ## CTF Mobile
 ### 2015海峡两岸CTF：
 - [一个APK，逆向试试吧ndk](http://www.wangzhixian.org/AndroidCrackMe/2015%E6%B5%B7%E5%B3%A1%E4%B8%A4%E5%B2%B8CTF-%E4%B8%80%E4%B8%AAAPK%EF%BC%8C%E9%80%86%E5%90%91%E8%AF%95%E8%AF%95%E5%90%A7/article.html)

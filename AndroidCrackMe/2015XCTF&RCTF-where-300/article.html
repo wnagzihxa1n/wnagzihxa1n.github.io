@@ -569,7 +569,7 @@ seed              seed-cbc          seed-cfb          seed-ecb
 seed-ofb
 </code></pre><p>所以看到<code>aes-128-cbc</code>我的第一想法就是openssl</p>
 <p>我们把最后面的<code>aes-128-cbc</code>删掉，使用openssl解密</p>
-<pre><code>[root@tot0c /home/wnagzihxain]# openssl enc -aes-128-cbc -d -k &quot;Misc@inf0#fjhx11&quot; -nosalt -in encDexBody -out decDexBody
+<pre><code>[root@tot0c /home/wnagzihxain]# openssl aes-128-cbc -d -k &quot;Misc@inf0#fjhx11&quot; -nosalt -in encDexBody -out decDexBody
 </code></pre><p>解密后的数据就很漂亮了</p>
 <p><img src="Image/9.png" alt=""></p>
 <p>将解密后的的数据拼接到abc文件后面，使用JEB打开，提示不是有效Dex文件</p>

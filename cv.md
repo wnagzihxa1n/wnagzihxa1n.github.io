@@ -1,14 +1,11 @@
-# wnagzihxain-本CV待补充-求一份保洁工作
+Hello , welcome to my personal site , I would like to introduce myself , I am really interested in Android Security and Android Reverse Engineering .
+- Name : wnagzihxain
+- E-Mail : tudouboom@163.com
+- WeChat/QQ : 1040500943
+- Skills : Android application Reverse | Protect | Unpack | Crack | Pwn
+- Programming Languages : C | Python | Java
 
-- 姓名：wnagzihxain
-- 性别：男
-- 学历：本科/2017届
-- 邮箱：tudouboom@163.com
-- 安卓逆向爱好者
-- 在研究安卓应用脱壳
-
-
-
+Thank you for reading , best wishes foy you .
 
 
 

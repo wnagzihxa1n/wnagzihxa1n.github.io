@@ -5,7 +5,7 @@ Hello , welcome to my personal site , I would like to introduce myself , I am re
 - Skills : Android application Reverse | Protect | Unpack | Crack | Pwn
 - Programming Languages : C | Python | Java
 
-Thank you for reading , best wishes foy you .
+Thank you for reading , best wishes for you .
 
 
 

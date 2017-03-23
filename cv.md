@@ -11,7 +11,7 @@ if you are also interested in reverse engineering, you could add me .
 
 Thank you for reading , best wishes for you .
 
-Gou li guo jia sheng si yi , qi yin huo fu bi qu zhi .
+
 
 
 

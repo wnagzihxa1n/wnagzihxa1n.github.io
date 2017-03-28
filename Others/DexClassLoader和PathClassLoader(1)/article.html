@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DexClassLoader和PathClassLoader</title>
+<title>DexClassLoader和PathClassLoader(1)</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="dexclassloader-pathclassloader">DexClassLoader和PathClassLoader</h1>
+<h1 id="dexclassloader-pathclassloader-1-">DexClassLoader和PathClassLoader(1)</h1>
 <p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
 <h2 id="0x00-">0x00 前言</h2>
 <p>动态加载的一点点小总结，正常情况下度娘上搜到的都是一个套路</p>
@@ -1799,7 +1799,7 @@ bool locked = false;
 </code></pre><p>只读模式打开Dex文件，返回一个句柄或者说文件描述符，并且进行判断，<code>bail</code>表示失败</p>
 <pre><code>dexFd = open(fileName, O_RDONLY);
 if (dexFd &lt; 0) goto bail;
-</code></pre><p>这里设置<code>dexFd</code>不能被继承</p>
+</code></pre><p>很神奇的一个设置</p>
 <pre><code>/* If we fork/exec into dexopt, don&#39;t let it inherit the open fd. */
 dvmSetCloseOnExec(dexFd);
 </code></pre><p>具体实现，注释也是挺逗的</p>

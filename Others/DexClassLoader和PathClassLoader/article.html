@@ -2810,6 +2810,44 @@ pDexOrJar-&gt;pDexMemory = NULL;
     ALOGV(&quot;Unable to open DEX file &#39;%s&#39;&quot;, sourceName);
     dvmThrowIOException(&quot;unable to open DEX file&quot;);
 }
+</code></pre><p>最后，将加载的Dex文件存到一个Table中</p>
+<pre><code>if (pDexOrJar != NULL) {
+    pDexOrJar-&gt;fileName = sourceName;
+    addToDexFileTable(pDexOrJar);
+} else {
+    free(sourceName);
+}
+</code></pre><p>注释说明这是一个哈希表，用于存储用户加载的Dex文件</p>
+<pre><code>/*
+ * Add given DexOrJar to the hash table of user-loaded dex files.
+ */
+static void addToDexFileTable(DexOrJar* pDexOrJar) {
+    /*
+     * Later on, we will receive this pointer as an argument and need
+     * to find it in the hash table without knowing if it&#39;s valid or
+     * not, which means we can&#39;t compute a hash value from anything
+     * inside DexOrJar. We don&#39;t share DexOrJar structs when the same
+     * file is opened multiple times, so we can just use the low 32
+     * bits of the pointer as the hash.
+     */
+    u4 hash = (u4) pDexOrJar;
+    void* result;
+
+    dvmHashTableLock(gDvm.userDexFiles);
+    result = dvmHashTableLookup(gDvm.userDexFiles, hash, pDexOrJar,
+            hashcmpDexOrJar, true);
+    dvmHashTableUnlock(gDvm.userDexFiles);
+
+    if (result != pDexOrJar) {
+        ALOGE(&quot;Pointer has already been added?&quot;);
+        dvmAbort();
+    }
+
+    pDexOrJar-&gt;okayToFree = true;
+}
+</code></pre><p>释放字符串指针，返回<code>pDexOrJar</code>文件指针</p>
+<pre><code>free(outputName);
+RETURN_PTR(pDexOrJar);
 </code></pre><h2 id="0x02-pathclassloader">0x02 PathClassLoader</h2>
 <p>代码如下</p>
 <pre><code>/*

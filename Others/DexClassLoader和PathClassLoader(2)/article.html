@@ -1071,7 +1071,7 @@ bail:
 - copyFileToFile(optFd, dexFd, fileSize)
 - dvmOptimizeDexFile(optFd, dexOffset, fileSize, fileName, modTime, adler32, isBootstrap)
 - dvmDexFileOpenFromFd(optFd, &amp;pDvmDex)
-</code></pre><p><code>verifyMagicAndGetAdler32()</code>方法会校验前12个字节的数据，Magic Number和checksum</p>
+</code></pre><p><code>verifyMagicAndGetAdler32()</code>方法会校验前12个字节的数据，<code>Magic Number</code>和<code>checksum</code></p>
 <pre><code>static int verifyMagicAndGetAdler32(int fd, u4 *adler32)
 {
     //读取前12个字节，前八字节时Magic Number，后四个是checksum
@@ -1093,7 +1093,7 @@ bail:
         return -1;
     }
 
-    //获取后四个字节的数据，存储在asler32中
+    //获取后四个字节的数据，存储在adler32中
     *adler32 = (u4) headerStart[8]
         | (((u4) headerStart[9]) &lt;&lt; 8)
         | (((u4) headerStart[10]) &lt;&lt; 16)

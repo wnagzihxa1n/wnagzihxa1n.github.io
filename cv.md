@@ -11,9 +11,5 @@ if you are also interested in reverse engineering, you could add me .
 
 Thank you for reading , best wishes for you .
 
-
-
-
-
-
+**只是喜欢计算机技术，非外界所说的专注于xxx**
 

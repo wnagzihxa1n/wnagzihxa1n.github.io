@@ -8,6 +8,7 @@ if you are also interested in reverse engineering, you could add me .
 - WeChat/QQ : 1040500943
 - Skills : Android application Reverse | Protect | Unpack | Crack | Pwn
 - Programming Languages : C | Python | Java
+- Others : ACM/ICPC
 
 Thank you for reading , best wishes for you .
 

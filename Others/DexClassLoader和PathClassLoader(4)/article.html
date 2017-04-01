@@ -1108,6 +1108,54 @@ bail:
     return sysFakeMapFile(fd, pMap);
 #endif
 }
+</code></pre><p>这一路到底终于扯完，该回到最开始那个加载Dex的地方了，这里把返回值拿来填充<code>*pDexOrJar</code>，第二个分支用于加载Jar文件，多了个解压的流程而已</p>
+<pre><code>if (hasDexExtension(sourceName)
+        &amp;&amp; dvmRawDexFileOpen(sourceName, outputName, &amp;pRawDexFile, false) == 0) {
+    ALOGV(&quot;Opening DEX file &#39;%s&#39; (DEX)&quot;, sourceName);
+
+    pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+    pDexOrJar-&gt;isDex = true;
+    pDexOrJar-&gt;pRawDexFile = pRawDexFile;
+    pDexOrJar-&gt;pDexMemory = NULL;
+} else if (dvmJarFileOpen(sourceName, outputName, &amp;pJarFile, false) == 0) {
+    ALOGV(&quot;Opening DEX file &#39;%s&#39; (Jar)&quot;, sourceName);
+
+    pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+    pDexOrJar-&gt;isDex = false;
+    pDexOrJar-&gt;pJarFile = pJarFile;
+    pDexOrJar-&gt;pDexMemory = NULL;
+} else {
+    ALOGV(&quot;Unable to open DEX file &#39;%s&#39;&quot;, sourceName);
+    dvmThrowIOException(&quot;unable to open DEX file&quot;);
+}
+
+if (pDexOrJar != NULL) {
+    pDexOrJar-&gt;fileName = sourceName;
+    addToDexFileTable(pDexOrJar);
+} else {
+    free(sourceName);
+}
+
+free(outputName);
+RETURN_PTR(pDexOrJar);
+</code></pre><p>倒是最后的<code>addToDexFileTable()</code>可以顺便分析一下，发现这是一个关于Dex文件的哈希表，而哈希值就是<code>pDexOrJar</code>指针低32位比特的值</p>
+<p>中间有个对比，应该由两个作用，第一是判断是否出错，第二是判断是否已经添加过</p>
+<pre><code>static void addToDexFileTable(DexOrJar* pDexOrJar) {
+    u4 hash = (u4) pDexOrJar;
+    void* result;
+
+    dvmHashTableLock(gDvm.userDexFiles);
+    result = dvmHashTableLookup(gDvm.userDexFiles, hash, pDexOrJar,
+            hashcmpDexOrJar, true);
+    dvmHashTableUnlock(gDvm.userDexFiles);
+
+    if (result != pDexOrJar) {
+        ALOGE(&quot;Pointer has already been added?&quot;);
+        dvmAbort();
+    }
+
+    pDexOrJar-&gt;okayToFree = true;
+}
 </code></pre><h2 id="0x03-">0x03 小结</h2>
 <p>终于瞎扯完了，给我累的，大汗淋漓<del>~</del>~</p>
 

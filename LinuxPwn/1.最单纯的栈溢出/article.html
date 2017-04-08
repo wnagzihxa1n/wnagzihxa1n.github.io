@@ -554,7 +554,7 @@ AAAAAAAAAA
 .text:0804843B                 push    ebp
 .text:0804843C                 mov     ebp, esp
 .text:0804843E                 sub     esp, 18h
-.text:08048441                 sub     esp, 8          ; 抬高栈顶用于压参数
+.text:08048441                 sub     esp, 8          ; 抬高栈顶
 .text:08048444                 push    [ebp+src]       ; src是第二个参数
 .text:08048447                 lea     eax, [ebp+dest] ; 获取dest字符串的首地址
 .text:0804844A                 push    eax             ; 将dest作为第一个参数压栈
@@ -609,7 +609,7 @@ Starting program: /home/wnagzihxain/Demo
 0xbfffef74:    0xbffff004    0xbffff00c    0x00000000    0x00000000
 </code></pre><p>使用<code>next</code>命令单步执行</p>
 <p><img src="Image/4.png" alt=""></p>
-<p>栈顶抬高后，栈的数据，新开辟出来的栈空间已有的数据不用太在意，并没有什么用</p>
+<p>栈顶抬高后栈的数据，新开辟出来的栈空间已有的数据不用太在意，并没有什么用</p>
 <pre><code>[------------------------------------stack-------------------------------------]
 0000| 0xbfffef40 --&gt; 0x1 
 0004| 0xbfffef44 --&gt; 0xbffff004 --&gt; 0xbffff1f5 (&quot;/home/wnagzihxain/Demo&quot;)
@@ -727,7 +727,7 @@ Breakpoint 2 at 0x804844b
 <pre><code>.text:0804843B                 push    ebp
 .text:0804843C                 mov     ebp, esp
 .text:0804843E                 sub     esp, 18h
-.text:08048441                 sub     esp, 8          ; 抬高栈顶用于压参数
+.text:08048441                 sub     esp, 8          ; 抬高栈顶
 .text:08048444                 push    [ebp+src]       ; src是第二个参数
 .text:08048447                 lea     eax, [ebp+dest] ; 获取dest字符串的首地址
 .text:0804844A                 push    eax             ; 将dest作为第一个参数压栈

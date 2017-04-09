@@ -887,7 +887,7 @@ EBP: 0xbfffef18 --&gt; 0xbfffef00 --&gt; 0x0
 </code></pre><p>至于那种<code>41414141</code>，因为<code>RETN</code>在EBP的后面，我们只需要多填充一些数据，覆盖了<code>RETN</code>，就可以控制EIP，我们这里使用的是<code>AAAA</code>，所以此时的EIP被我们劫持到了<code>0x41414141</code>，这个地址上肯定是没有指令的，gdb+peda帮我们捕获到了这个异常并且输出了一些比较关键的崩溃现场的数据，同时我们也可以手动进行一些崩溃现场数据的提取，比如<code>bt</code>，用于堆栈回溯，查看调用栈，还有堆栈的数据等</p>
 <p><img src="Image/13.png" alt=""></p>
 <h2 id="0x03-shellcode-">0x03 Shellcode编写</h2>
-<p>二进制攻防发展到现在这个阶段，已经有各种针对漏洞的缓解机制，所以在找到了漏洞后，绕过这些缓解机制也是一个关键的环节，比如Linux的CANARY和Windows的GS，Linux和Windows都有的ASLR，Linux的NX和Windows的DEP，有一点需要着重讲一下，32位的漏洞利用难度和64位不在一个难度等级上</p>
+<p>二进制攻防发展到现在这个阶段，已经有各种针对漏洞的缓解机制，所以在找到了漏洞后，绕过这些缓解机制也是一个关键的环节，比如Linux的CANARY和Windows的GS，Linux和Windows都有的ASLR，Linux的NX和Windows的DEP</p>
 <p>首先使用<code>checksec</code>查看程序开的保护机制</p>
 <pre><code>gdb-peda$ checksec
 CANARY    : disabled

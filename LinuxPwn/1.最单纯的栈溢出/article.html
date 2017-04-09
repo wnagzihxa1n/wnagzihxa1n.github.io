@@ -897,7 +897,7 @@ PIE       : disabled
 RELRO     : Partial
 </code></pre><p>一个个来讲讲，接下来都是理论，虽然我也不是很喜欢理论的东西</p>
 <p>这部分详细的描述可以在《Android安全攻防权威指南》找到，大家喜欢的话可以去找找，那本书也不错，推荐阅读</p>
-<p><strong>ASLR</strong>：全程Address Space Layout Randomization，程序运行的时候，内存地址不固定，每次都不一样，虽然上面我们使用gdb动态调试的时候看到的都是固定的，那是因为gdb在调试的时候会关掉ASLR，一般系统都是开了</p>
+<p><strong>ASLR</strong>：全称Address Space Layout Randomization，程序运行的时候，内存地址不固定，每次都不一样，虽然上面我们使用gdb动态调试的时候看到的都是固定的，那是因为gdb在调试的时候会关掉ASLR，一般系统都是开了</p>
 <p>查看开没开ASLR，可能有同学只听过0和1，2是什么意思？做好心理准备：<strong>增强版ASLR</strong></p>
 <pre><code>root@toT0C:/home/wnagzihxain# cat /proc/sys/kernel/randomize_va_space
 2

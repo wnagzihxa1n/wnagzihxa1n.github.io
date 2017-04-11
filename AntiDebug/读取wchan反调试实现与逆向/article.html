@@ -686,7 +686,27 @@ if (2 == ret) {
 </code></pre><p>F9，跑飞了</p>
 <p>不过有个小问题，在单步的时候，有时候会读到0，不知道为什么</p>
 <pre><code>I(32081) wchaninfo = 0  (totoc)
-</code></pre>
+</code></pre><h3 id="-">更新</h3>
+<hr>
+<p><code>2017/4/11 星期二 12:37:17</code></p>
+<p>中午的时候本来想查看一下有没有HR小姐姐给我发了邮件，发现收到了四哥的一封邮件，看到scz三个字母我瞬间清醒了，邮件中帮我解决了最后单步调试会出现0的问题</p>
+<pre><code>/proc/[pid]/wchan (since Linux 2.6.0)
+
+    The symbolic name corresponding to the location in the kernel where
+    the process is sleeping.
+
+被检查进程有可能处于这样的状态，别人读它的/proc/&lt;pid&gt;/wchan时，它正好未阻塞
+在ptrace_stop处。这个反调试技术并不可靠。
+
+----
+
+        ☆ _______   ·     ☆     
+     伞   ノ____ノ□     ●    伞  
+    伞伞  ｜    ｜｜          伞伞 
+   伞伞伞 ˉˉˉˉˉ-_   ♀  伞伞伞
+     ‖               ˉ-へ    ‖
+</code></pre><p>四哥灵魂作图<del>~</del>~，感谢四哥</p>
+
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Base64编码原理与实现以及逆向分析</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="base64-">Base64编码算法原理与实现以及逆向分析</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>很多时候都会用到的一个编码算法，特征是最后面可能有<code>=</code>，非常常见的判断方法，同时编码只有<code>a-zA-Z0-9+/</code>字符</p>
+<h2 id="0x01-">0x01 原理分析</h2>
+<p>Base64编码的时候会使用下面64个可见字符</p>
+<pre><code>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+</code></pre><p>使用一个实例分析一下Base64编码的过程</p>
+<pre><code>&gt;&gt;&gt; def encode(s):
+...     return &#39; &#39;.join([bin(ord(c)).replace(&#39;0b&#39;, &#39;&#39;) for c in s])
+...
+&gt;&gt;&gt; encode(&#39;wnagzihxain&#39;)
+&#39;1110111 1101110 1100001 1100111 1111010 1101001 1101000 1111000 1100001 1101001 1101110&#39;
+</code></pre><p>编码是一个3变4的过程，3个8位数据转为4个6位数据，因为2的6次方就可以表示64个字符</p>
+<pre><code>以3字节为一组先分组，每一组有24位
+w        n        a                      
+01110111 01101110 01100001
+g        z        i
+01100111 01111010 01101001
+h        x        a
+01101000 01111000 01100001
+i        n    
+01101001 01101110
+
+每一组以6位为界限分开，最后一组不满6位的，右边补0
+最后一排假如只有`011010 010110 1`，那么就需要补`0`为`011010 010110 111000`
+最后剩余的一个6位由于并没有数据位涉及到，所以不补0
+011101 110110 111001 100001
+011001 110111 101001 101001
+011010 000111 100001 100001
+011010 010110 111000 
+
+前面填充00
+00011101 00110110 00111001 00100001
+00011001 00110111 00101001 00101001
+00011010 00000111 00100001 00100001
+00011010 00010110 00111000 
+
+计算成数字
+29 54 57 33 25 55 41 41 26 7 33 33 26 22 56
+</code></pre><p>根据上面那个表找到对应偏移</p>
+<pre><code>d25hZ3ppaHhhaW4
+</code></pre><p>但最后一组没有满足24位，最后空出来一个字符的位置补<code>=</code>，所以这也是判断Base64的一种常见方法原因</p>
+<pre><code>d25hZ3ppaHhhaW4=
+</code></pre><p>那么关于解码，一个字节8位，以二进制排列，去掉前面的<code>00</code>，再以8位为界转为字符</p>
+<p>以解码前4字节为例</p>
+<pre><code>d  2  5  h
+29 54 57 33
+
+转为二进制
+00011101 00110110 00111001 00100001
+
+去掉前面的00，刚好为24位
+011101 110110 111001 100001
+
+以8位为一字节进行排列
+01110111 01101110 01100001
+
+转为字符
+w        n        a
+</code></pre><p>但是这个对应表肯定是需要额外实现了，要么直接使用一个Base64Table，要么进行范围的判断再进行返回</p>
+<h2 id="0x02-java-">0x02 Java实现</h2>
+<p>Java有一个不公开的类，我们可以使用反射调用它</p>
+<pre><code>package com.wnagzihxain.base64;
+
+import java.lang.reflect.Method;
+
+public class Base64 {
+
+    public static void main(String[] args) throws Exception {
+        // TODO Auto-generated method stub
+        String sourceString = &quot;wnagzihxain&quot;;
+        String encodeString = encodeBase64(sourceString.getBytes());
+        String decodeString = new String(decodeBase64(encodeString));
+        System.out.println(&quot;sourceString : &quot; + sourceString);
+        System.out.println(&quot;encodeString : &quot; + encodeString);
+        System.out.println(&quot;decodeString : &quot; + decodeString);
+    }
+
+    public static String encodeBase64(byte[]input) throws Exception{
+        Class&lt;?&gt; clazz=Class.forName(&quot;com.sun.org.apache.xerces.internal.impl.dv.util.Base64&quot;);
+        Method mainMethod= clazz.getMethod(&quot;encode&quot;, byte[].class);
+        mainMethod.setAccessible(true);
+        Object retObj=mainMethod.invoke(null, new Object[]{input});
+        return (String)retObj;
+    }
+
+    public static byte[] decodeBase64(String input) throws Exception{
+        Class&lt;?&gt; clazz=Class.forName(&quot;com.sun.org.apache.xerces.internal.impl.dv.util.Base64&quot;);
+        Method mainMethod= clazz.getMethod(&quot;decode&quot;, String.class);
+        mainMethod.setAccessible(true);
+        Object retObj=mainMethod.invoke(null, input);
+        return (byte[])retObj;
+    }
+}
+</code></pre><p>测试结果</p>
+<pre><code>sourceString : wnagzihxain
+encodeString : d25hZ3ppaHhhaW4=
+decodeString : wnagzihxain
+</code></pre><h2 id="0x03-c-">0x03 C++实现</h2>
+<p>编码过程大同小异，都是一个64个可见字符的数组，然后分分合合对应一下算出结果</p>
+<pre><code>const char Base64Code[] = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;;
+
+void Base64_encode(char *lpString)
+{
+    char *lpBuffer;
+    int lpString_len = strlen(lpString);
+    while(lpString_len &gt; 0)
+    {
+        *lpBuffer++ = Base64Code[(lpString[0] &gt;&gt; 2 ) &amp; 0x3F];
+        if(lpString_len &gt; 2)
+        {
+            *lpBuffer++ = Base64Code[((lpString[0] &amp; 3) &lt;&lt; 4) | (lpString[1] &gt;&gt; 4)];
+            *lpBuffer++ = Base64Code[((lpString[1] &amp; 0xF) &lt;&lt; 2) | (lpString[2] &gt;&gt; 6)];
+            *lpBuffer++ = Base64Code[lpString[2] &amp; 0x3F];
+        }
+        else
+        {
+            switch(lpString_len)
+            {
+            case 1:
+                *lpBuffer ++ = Base64Code[(lpString[0] &amp; 3) &lt;&lt; 4 ];
+                *lpBuffer ++ = &#39;=&#39;;
+                *lpBuffer ++ = &#39;=&#39;;
+                break;
+            case 2:
+                *lpBuffer ++ = Base64Code[((lpString[0] &amp; 3) &lt;&lt; 4) | (lpString[1] &gt;&gt; 4)];
+                *lpBuffer ++ = Base64Code[((lpString[1] &amp; 0x0F) &lt;&lt; 2) | (lpString[2] &gt;&gt; 6)];
+                *lpBuffer ++ = &#39;=&#39;;
+                break;
+            }
+        }
+        lpString += 3;
+        lpString_len -= 3;
+    }
+    *lpBuffer = &#39;\0&#39;;
+}
+</code></pre><p>解码过程就分两种了，第一种使用一个Base64Table来逆出原来的字符，比较常规的做法</p>
+<pre><code>static char Base64Table[256] = {
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 0   - 15
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 16  - 31
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, // 32  - 47
+    52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, // 48  - 63
+    -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, // 64  - 79
+    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, // 80  - 95
+    -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, // 96  - 111
+    41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, // 112 - 127
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 128 - 143
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 144 - 159
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 160 - 175
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 176 - 191
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 192 - 207
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 208 - 223
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 224 - 239
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 240 - 255
+};
+
+void Base64_decode(char *lpString)
+{
+    char *lpBuffer;
+    lpBuffer[0] = &#39;\0&#39;;
+    if (lpString == NULL || lpBuffer == NULL)
+        printf(&quot;NULL\n&quot;);
+    int lpString_len = strlen(lpString);
+    if (lpString_len &lt; 4 || lpString_len % 4 != 0)
+        printf(&quot;NULL\n&quot;);
+    char *p = (char *)lpString;
+    char *p_out = lpBuffer;
+    char *p_end = (char *)lpString + lpString_len;
+    for (; p &lt; p_end; p += 4)
+    {
+        *p_out++ = ((Base64Table[p[0]] &lt;&lt; 2) &amp; 0xFC) | ((Base64Table[p[1]] &gt;&gt; 4) &amp; 0x03);
+        *p_out++ = ((Base64Table[p[1]] &lt;&lt; 4) &amp; 0xF0) | ((Base64Table[p[2]] &gt;&gt; 2) &amp; 0x0F);
+        *p_out++ = ((Base64Table[p[2]] &lt;&lt; 6) &amp; 0xC0) | (Base64Table[p[3]]);
+    }
+    if (*(lpString + lpString_len - 2) == &#39;=&#39;)
+    {
+        *(p_out - 2) = &#39;\0&#39;;
+    }
+    else if (*(lpString + lpString_len - 1) == &#39;=&#39;)
+    {
+        *(p_out - 1) = &#39;\0&#39;;
+    }
+    printf(&quot;%s\n&quot;, lpBuffer);
+    printf(&quot;%d\n&quot;, strlen(lpBuffer));
+}
+</code></pre><p>第二种就是直接根据编码后的数据来确定数据</p>
+<pre><code>char GetCharIndex(char c)
+{
+    if((c &gt;= &#39;A&#39;) &amp;&amp; (c &lt;= &#39;Z&#39;))
+    {
+        return c - &#39;A&#39;;
+    }
+    else if((c &gt;= &#39;a&#39;) &amp;&amp; (c &lt;= &#39;z&#39;))
+    {
+        return c - &#39;a&#39; + 26;
+    }
+    else if((c &gt;= &#39;0&#39;) &amp;&amp; (c &lt;= &#39;9&#39;))
+    {
+        return c - &#39;0&#39; + 52;
+    }
+    else if(c == &#39;+&#39;)
+    {
+        return 62;
+    }
+    else if(c == &#39;/&#39;)
+    {
+        return 63;
+    }
+    else if(c == &#39;=&#39;)
+    {
+        return 0;
+    }
+    return 0;
+}
+</code></pre><p>第二种简单做个补充，一般第一种用的多，逆向的时候经常会看到调用一个表的形式</p>
+<h2 id="0x04-">0x04 逆向分析</h2>
+<p>我们编译一个ELF出来，然后使用IDA分析</p>
+<p>来看特征，获取一个Base64Table</p>
+<pre><code>.text:00008624 C4 21 9F E5 LDR     R2, =(Base64Table - 0x8630)
+.text:00008628 02 20 8F E0 ADD     R2, PC, R2 ; Base64Table
+</code></pre><p><img src="Image/1.png" alt=""></p>
+<p>这看着乱，搞到偏移，使用Winhex把这一段抠出来</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>然后拷贝出来，和原来的Base64Table一对比</p>
+<pre><code>static char Base64Table[256] = {
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 0   - 15
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 16  - 31
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, // 32  - 47
+    52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, // 48  - 63
+    -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, // 64  - 79
+    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, // 80  - 95
+    -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, // 96  - 111
+    41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, // 112 - 127
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 128 - 143
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 144 - 159
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 160 - 175
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 176 - 191
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 192 - 207
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 208 - 223
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 224 - 239
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 240 - 255
+};
+
+unsigned char data[256] = {
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3E, 0xFF, 0xFF, 0xFF, 0x3F, 
+    0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 
+    0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 
+    0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+};
+</code></pre><p>再看一眼伪代码，具体的还是要看样本</p>
+<p><img src="Image/3.png" alt=""></p>
+<h2 id="0x05-">0x05 小结</h2>
+<p>3变4，4变3，这个特征还是蛮好记的</p>
+<h2 id="0x06-references">0x06 References</h2>
+<ul>
+<li>c语言Base64算法的实现: <a href="http://blog.csdn.net/weiyong1999/article/details/8762927">http://blog.csdn.net/weiyong1999/article/details/8762927</a></li><li>Base64 编解码的C语言实现: <a href="http://blog.csdn.net/irwin_chen/article/details/9360845">http://blog.csdn.net/irwin_chen/article/details/9360845</a></li><li>Base64编解码算法详解（附C/C++源码）: <a href="http://blog.csdn.net/prsniper/article/details/7097643">http://blog.csdn.net/prsniper/article/details/7097643</a></li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

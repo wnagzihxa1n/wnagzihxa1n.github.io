@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DexClassLoader和PathClassLoader(2)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="dexclassloader-pathclassloader-2-">DexClassLoader和PathClassLoader(2)</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>在DexClassLoader和PathClassLoader(1)中，我用了几个小例子介绍了一下DexClassLoader的用法，并给出了完整的代码，有兴趣的同学可以跟着玩一下，也可以根据代码进行扩展，在介绍完使用方法后，简单的介绍了下整个加载流程，篇幅问题，只是将大概的过程给梳理了一下，留了许多问题，如果是跟着走了一遍的同学一定是看出来了，虽然这些问题都没有明说</p>
+<ul>
+<li>DexFile结构</li><li>DvmDex结构</li><li>DexOrJar结构</li><li>......</li></ul>
+<p>这么一讲，是不是觉得还真的是这样？</p>
+<p>那么这一篇<strong>开始</strong>，就会详细的讲解这其中的各种结构体，各种关键点</p>
+<h2 id="0x01-dexclassloader-">0x01 从DexClassLoader的构造函数说起</h2>
+<p>我们从DexClassLoader的构造函数说起，这里是整个加载过程的入口，也是出口</p>
+<pre><code>public DexClassLoader(String dexPath, String optimizedDirectory,
+        String libraryPath, ClassLoader parent) {
+    super(dexPath, new File(optimizedDirectory), libraryPath, parent);
+}
+</code></pre><p>DexClassLoader继承BaseClassLoader，BaseClassLoader的构造函数</p>
+<pre><code>public BaseDexClassLoader(String dexPath, File optimizedDirectory,
+        String libraryPath, ClassLoader parent) {
+    super(parent);
+    this.pathList = new DexPathList(this, dexPath, libraryPath, optimizedDirectory);
+}
+</code></pre><p><code>DexPathList</code>的构造函数</p>
+<pre><code>public DexPathList(ClassLoader definingContext, String dexPath,
+        String libraryPath, File optimizedDirectory) {
+
+    //判断BaseClassLoader是否为空
+    if (definingContext == null) {
+        throw new NullPointerException(&quot;definingContext == null&quot;);
+    }
+
+    //待加载的Dex文件路径是否为空
+    if (dexPath == null) {
+        throw new NullPointerException(&quot;dexPath == null&quot;);
+    }
+
+    //判断优化后的ODex文件目录是否为空
+    if (optimizedDirectory != null) {
+        if (!optimizedDirectory.exists())  {
+            throw new IllegalArgumentException(
+                    &quot;optimizedDirectory doesn&#39;t exist: &quot;
+                    + optimizedDirectory);
+        }
+        //如果优化后的ODex文件目录不为空，则判断是否可读可写
+        if (!(optimizedDirectory.canRead()
+                        &amp;&amp; optimizedDirectory.canWrite())) {
+            throw new IllegalArgumentException(
+                    &quot;optimizedDirectory not readable/writable: &quot;
+                    + optimizedDirectory);
+        }
+    }
+
+    this.definingContext = definingContext;
+    ArrayList&lt;IOException&gt; suppressedExceptions = new ArrayList&lt;IOException&gt;();
+
+    //关键的一个函数
+    this.dexElements = makeDexElements(splitDexPath(dexPath), optimizedDirectory,
+                                       suppressedExceptions);
+    if (suppressedExceptions.size() &gt; 0) {
+        this.dexElementsSuppressedExceptions =
+            suppressedExceptions.toArray(new IOException[suppressedExceptions.size()]);
+    } else {
+        dexElementsSuppressedExceptions = null;
+    }
+    this.nativeLibraryDirectories = splitLibraryPath(libraryPath);
+}
+</code></pre><p>关键的一个函数调用</p>
+<pre><code>this.dexElements = makeDexElements(splitDexPath(dexPath), optimizedDirectory,
+                                           suppressedExceptions);
+</code></pre><p>首先看<code>dexElements</code>的定义，这是一个Dex文件的集合</p>
+<pre><code>/**
+ * List of dex/resource (class path) elements.
+ * Should be called pathElements, but the Facebook app uses reflection
+ * to modify &#39;dexElements&#39; (http://b/7726934).
+ */
+private final Element[] dexElements;
+</code></pre><p>Element类有一个关键的变量<code>dexFile</code></p>
+<pre><code>/**
+ * Element of the dex/resource file path
+ */
+/*package*/ static class Element {
+    private final File file;
+    private final boolean isDirectory;
+    private final File zip;
+    private final DexFile dexFile;
+
+    private ZipFile zipFile;
+    private boolean initialized;
+
+    public Element(File file, boolean isDirectory, File zip, DexFile dexFile) {
+        this.file = file;
+        this.isDirectory = isDirectory;
+        this.zip = zip;
+        this.dexFile = dexFile;
+    }
+    //......
+}
+</code></pre><p>再看<code>makeDexElements()</code>方法</p>
+<pre><code>private static Element[] makeDexElements(ArrayList&lt;File&gt; files, File optimizedDirectory,
+                                         ArrayList&lt;IOException&gt; suppressedExceptions) {
+
+    //定义一个Element ArrayList用于存储返回数据
+    //因为可能有多个Dex路径，所以这里用了ArrayList
+    ArrayList&lt;Element&gt; elements = new ArrayList&lt;Element&gt;();
+
+    //遍历files，这里在上一篇有详细讲过，传入的Dex文件Path会有多个，用&quot;:&quot;隔开
+    //在调用本函数的时候会先进行待加载Dex文件路径的解析
+
+    for (File file : files) {
+        //定义两个变量，都先置为空，然后根据后缀进行赋值
+        File zip = null;
+        DexFile dex = null;
+        String name = file.getName();
+
+        if (name.endsWith(DEX_SUFFIX)) {
+            try {
+                //如果是Dex，将加载后返回的DexFile数据赋值给dex
+                dex = loadDexFile(file, optimizedDirectory);
+            } catch (IOException ex) {
+                System.logE(&quot;Unable to load dex file: &quot; + file, ex);
+            }
+        } else if (name.endsWith(APK_SUFFIX) || name.endsWith(JAR_SUFFIX)
+                || name.endsWith(ZIP_SUFFIX)) {
+            //非Dex文件的分支，也就是加载的是Jar，Zip，APK
+            zip = file;
+
+            try {
+                //本质上还是调用loadDexFile()
+                dex = loadDexFile(file, optimizedDirectory);
+            } catch (IOException suppressed) {
+                suppressedExceptions.add(suppressed);
+            }
+        } else if (file.isDirectory()) {
+            elements.add(new Element(file, true, null, null));
+        } else {
+            System.logW(&quot;Unknown file type for: &quot; + file);
+        }
+
+        //将加载后的文件加到Element ArrayList中
+        if ((zip != null) || (dex != null)) {
+            elements.add(new Element(file, false, zip, dex));
+        }
+    }
+
+    return elements.toArray(new Element[elements.size()]);
+}
+</code></pre><p><code>loadDexFile()</code>返回<code>DexFile</code>类型的数据</p>
+<pre><code>private static DexFile loadDexFile(File file, File optimizedDirectory)
+        throws IOException {
+    //判断是否指定ODex的存储路径
+    if (optimizedDirectory == null) {
+        //未指定ODex存储路径则直接new一个DexFile对象返回
+        return new DexFile(file);
+    } else {
+        //如果有指定ODex的存储路径
+        //先处理ODex的存储路径，最后加上&quot;.dex&quot;
+        String optimizedPath = optimizedPathFor(file, optimizedDirectory);
+
+        //调用DexFile.loadDex()
+        return DexFile.loadDex(file.getPath(), optimizedPath, 0);
+    }
+}
+</code></pre><p>处理ODex文件的存储路径后缀，如果有<code>.dex</code>就不处理，如果没有就加上</p>
+<pre><code>private static String optimizedPathFor(File path,
+        File optimizedDirectory) {
+    String fileName = path.getName();
+    if (!fileName.endsWith(DEX_SUFFIX)) {
+        int lastDot = fileName.lastIndexOf(&quot;.&quot;);
+        if (lastDot &lt; 0) {
+            fileName += DEX_SUFFIX;
+        } else {
+            StringBuilder sb = new StringBuilder(lastDot + 4);
+            sb.append(fileName, 0, lastDot);
+            sb.append(DEX_SUFFIX);
+            fileName = sb.toString();
+        }
+    }
+
+    File result = new File(optimizedDirectory, fileName);
+    return result.getPath();
+}
+</code></pre><p><code>loadDex()</code>方法，注意和未指定ODex文件存储路径的区别，那个只有一个参数，这里有三个参数</p>
+<pre><code>static public DexFile loadDex(String sourcePathName, String outputPathName,
+    int flags) throws IOException {
+    //new一个DexFile对象然后返回
+    return new DexFile(sourcePathName, outputPathName, flags);
+}
+</code></pre><p>查看对应的构造函数</p>
+<pre><code>private DexFile(String sourceName, String outputName, int flags) throws IOException {
+    //判断指定的ODex存储路径是否是应用自身的私有文件夹
+    //如果不是自身的私有文件夹，会报异常
+    //Google处于安全考虑，在多处的注释里都提过这点
+    if (outputName != null) {
+        try {
+            String parent = new File(outputName).getParent();
+            if (Libcore.os.getuid() != Libcore.os.stat(parent).st_uid) {
+                throw new IllegalArgumentException(&quot;Optimized data directory &quot; + parent
+                        + &quot; is not owned by the current user. Shared storage cannot protect&quot;
+                        + &quot; your application from code injection attacks.&quot;);
+            }
+        } catch (ErrnoException ignored) {
+            // assume we&#39;ll fail with a more contextual error later
+        }
+    }
+
+    //这里关键
+    mCookie = openDexFile(sourceName, outputName, flags);
+    mFileName = sourceName;
+    guard.open(&quot;close&quot;);
+}
+</code></pre><p><code>mCookie</code>的定义，一个私有整型变量</p>
+<pre><code>private int mCookie;
+</code></pre><p><code>openDexFile()</code>方法的前两个参数是待加载的Dex文件路径以及ODex文件的存储路径，前两个参数都是获取一个合法的绝对路径，第三个参数目测暂时没什么用</p>
+<pre><code>private static int openDexFile(String sourceName, String outputName,
+    int flags) throws IOException {
+    return openDexFileNative(new File(sourceName).getCanonicalPath(),
+                             (outputName == null) ? null : new File(outputName).getCanonicalPath(),
+                             flags);
+}
+</code></pre><p>间接调用的是一个native函数</p>
+<pre><code>native private static int openDexFileNative(String sourceName, String outputName,
+    int flags) throws IOException;
+</code></pre><p>native层中的对应关系</p>
+<pre><code>const DalvikNativeMethod dvm_dalvik_system_DexFile[] = {
+    { &quot;openDexFileNative&quot;,  &quot;(Ljava/lang/String;Ljava/lang/String;I)I&quot;,
+        Dalvik_dalvik_system_DexFile_openDexFileNative },
+    { &quot;openDexFile&quot;,        &quot;([B)I&quot;,
+        Dalvik_dalvik_system_DexFile_openDexFile_bytearray },
+    { &quot;closeDexFile&quot;,       &quot;(I)V&quot;,
+        Dalvik_dalvik_system_DexFile_closeDexFile },
+    { &quot;defineClassNative&quot;,  &quot;(Ljava/lang/String;Ljava/lang/ClassLoader;I)Ljava/lang/Class;&quot;,
+        Dalvik_dalvik_system_DexFile_defineClassNative },
+    { &quot;getClassNameList&quot;,   &quot;(I)[Ljava/lang/String;&quot;,
+        Dalvik_dalvik_system_DexFile_getClassNameList },
+    { &quot;isDexOptNeeded&quot;,     &quot;(Ljava/lang/String;)Z&quot;,
+        Dalvik_dalvik_system_DexFile_isDexOptNeeded },
+    { NULL, NULL, NULL },
+};
+</code></pre><p>根据第一个Item找到对应的native函数，这里也是正是开始解析Dex文件的函数</p>
+<pre><code>static void Dalvik_dalvik_system_DexFile_openDexFileNative(const u4* args,
+    JValue* pResult)
+{
+    //前两个参数转换类型
+    //param1: sourceNameObj: 待加载Dex文件路径
+    //param2: outputNameObj: ODex文件存储路径
+    StringObject* sourceNameObj = (StringObject*) args[0];
+    StringObject* outputNameObj = (StringObject*) args[1];
+
+    //关键结构指针，解析Dex得到的数据，以及其它衍生出来的都会存储在这个结构里，用于返回
+    DexOrJar* pDexOrJar = NULL;
+
+    //如果加载的是Jar，Zip，APK文件会使用到这个变量
+    //DexOrJar结构的一个成员变量
+    JarFile* pJarFile;
+
+    ////如果加载的是Dex文件会使用到这个变量
+    //DexOrJar结构的一个成员变量
+    RawDexFile* pRawDexFile;
+
+    //两个char*类型的指针，用于存储两个路径
+    char* sourceName;
+    char* outputName;
+
+    //判断待加载Dex文件路径是否为空
+    //为空则无法加载，抛出异常
+    if (sourceNameObj == NULL) {
+        dvmThrowNullPointerException(&quot;sourceName == null&quot;);
+        RETURN_VOID();
+    }
+
+    //先将待加载Dex文件的路径转为C的char*类型
+    sourceName = dvmCreateCstrFromString(sourceNameObj);
+
+    //判断ODex文件的存储路径是否为空
+    //不为空则将路径转为char*类型
+    //但这里为空并不会抛出异常，而是赋值为NULL
+    if (outputNameObj != NULL)
+        outputName = dvmCreateCstrFromString(outputNameObj);
+    else
+        outputName = NULL;
+
+    //不能加载系统的Dex文件，这些Dex已经加载过了
+    //还有一个原因，感兴趣的同学可以读一下源码的注释
+    //注释就在这个位置，一大段
+    if (dvmClassPathContains(gDvm.bootClassPath, sourceName)) {
+        ALOGW(&quot;Refusing to reopen boot DEX &#39;%s&#39;&quot;, sourceName);
+        dvmThrowIOException(
+            &quot;Re-opening BOOTCLASSPATH DEX files is not allowed&quot;);
+        free(sourceName);
+        free(outputName);
+        RETURN_VOID();
+    }
+
+    //终于走完前面一大堆流程了
+    //这里开始根据后缀名进行加载
+    //dvmRawDexFileOpen()加载Dex文件
+    //dvmJarFileOpen()加载Jar，Zip，APK文件
+    if (hasDexExtension(sourceName)
+            &amp;&amp; dvmRawDexFileOpen(sourceName, outputName, &amp;pRawDexFile, false) == 0) {
+        ALOGV(&quot;Opening DEX file &#39;%s&#39; (DEX)&quot;, sourceName);
+
+        pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+        pDexOrJar-&gt;isDex = true;
+        pDexOrJar-&gt;pRawDexFile = pRawDexFile;
+        pDexOrJar-&gt;pDexMemory = NULL;
+    } else if (dvmJarFileOpen(sourceName, outputName, &amp;pJarFile, false) == 0) {
+        ALOGV(&quot;Opening DEX file &#39;%s&#39; (Jar)&quot;, sourceName);
+
+        pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+        pDexOrJar-&gt;isDex = false;
+        pDexOrJar-&gt;pJarFile = pJarFile;
+        pDexOrJar-&gt;pDexMemory = NULL;
+    } else {
+        ALOGV(&quot;Unable to open DEX file &#39;%s&#39;&quot;, sourceName);
+        dvmThrowIOException(&quot;unable to open DEX file&quot;);
+    }
+
+    //pDexOrJar就是前面说的一个关键数据结构指针，这个会返回存在Element List里
+    //添加这个DexOrJar结构到一个Hash Table里，这个Table存的都是Dex文件，还有一些其它数据
+    if (pDexOrJar != NULL) {
+        pDexOrJar-&gt;fileName = sourceName;
+        addToDexFileTable(pDexOrJar);
+    } else {
+        free(sourceName);
+    }
+
+    free(outputName);
+    RETURN_PTR(pDexOrJar);
+}
+</code></pre><p>返回的这个<code>pDexOrJar</code>指针，我们往上翻，期间会将<code>pDexOrJar</code>的值赋值给<code>mCookie</code>，然后会返回Java的DexFile类实例对象，这个实例对象会赋值给<code>makeDexElements()</code>方法中的<code>dex</code>变量，也就是<code>Element</code>类的<code>DexFile</code>类型变量<code>dexFile</code></p>
+<pre><code>- native private static int openDexFileNative(String sourceName, String outputName, int flags) throws IOException;
+- private static int openDexFile(String sourceName, String outputName, int flags) throws IOException;
+- private DexFile(String sourceName, String outputName, int flags) throws IOException;
+    - mCookie = openDexFile(sourceName, outputName, flags);
+    - mFileName = sourceName;
+- static public DexFile loadDex(String sourcePathName, String outputPathName, int flags) throws IOException;
+- private static DexFile loadDexFile(File file, File optimizedDirectory) throws IOException;
+- private static Element[] makeDexElements(ArrayList&lt;File&gt; files, File optimizedDirectory, ArrayList&lt;IOException&gt; suppressedExceptions)
+</code></pre><p>从这个方法开始，出现了多个结构体</p>
+<ul>
+<li>JarFile</li><li>RawDexFile</li><li>DexOrJar</li></ul>
+<p>这三个是直接就以迅雷不及掩耳盗铃之势出现的，其实还有两个很神奇的结构体，必须放最前面强势安利</p>
+<ul>
+<li>DexFile</li><li>DvmDex</li></ul>
+<p>首先是DexFile，这个不是Java层的DexFile，这个结构如果详细解析的话蛮复杂的，脱壳的时候得此结构指针者得Dex文件啊，虽然现在可能不能这么说了</p>
+<pre><code>/*
+ * Structure representing a DEX file.
+ *
+ * Code should regard DexFile as opaque, using the API calls provided here
+ * to access specific structures.
+ */
+struct DexFile {
+    /* directly-mapped &quot;opt&quot; header */
+    const DexOptHeader* pOptHeader;
+
+    /* pointers to directly-mapped structs and arrays in base DEX */
+    const DexHeader*    pHeader;
+    const DexStringId*  pStringIds;
+    const DexTypeId*    pTypeIds;
+    const DexFieldId*   pFieldIds;
+    const DexMethodId*  pMethodIds;
+    const DexProtoId*   pProtoIds;
+    const DexClassDef*  pClassDefs;
+    const DexLink*      pLinkData;
+
+    /*
+     * These are mapped out of the &quot;auxillary&quot; section, and may not be
+     * included in the file.
+     */
+    //存储类的Hash和偏移，用于快速查找
+    const DexClassLookup* pClassLookup;
+    const void*         pRegisterMapPool;       // RegisterMapClassPool
+
+    /* points to start of DEX file data */
+    //Dex文件的内存首地址
+    const u1*           baseAddr;
+
+    /* track memory overhead for auxillary structures */
+    int                 overhead;
+
+    /* additional app-specific data structures associated with the DEX */
+    //void*               auxData;
+};
+</code></pre><p><code>DvmDex</code>的第一个成员就是<code>DexFile*</code>指针类型变量<code>pDexFile</code>，至关重要！！！！！！</p>
+<pre><code>/*
+ * Some additional VM data structures that are associated with the DEX file.
+ */
+struct DvmDex {
+    /* pointer to the DexFile we&#39;re associated with */
+    DexFile*            pDexFile;
+
+    /* clone of pDexFile-&gt;pHeader (it&#39;s used frequently enough) */
+    const DexHeader*    pHeader;
+
+    /* interned strings; parallel to &quot;stringIds&quot; */
+    struct StringObject** pResStrings;
+
+    /* resolved classes; parallel to &quot;typeIds&quot; */
+    struct ClassObject** pResClasses;
+
+    /* resolved methods; parallel to &quot;methodIds&quot; */
+    struct Method**     pResMethods;
+
+    /* resolved instance fields; parallel to &quot;fieldIds&quot; */
+    /* (this holds both InstField and StaticField) */
+    struct Field**      pResFields;
+
+    /* interface method lookup cache */
+    struct AtomicCache* pInterfaceCache;
+
+    /* shared memory region with file contents */
+    bool                isMappedReadOnly;
+    MemMapping          memMap;
+
+    jobject dex_object;
+
+    /* lock ensuring mutual exclusion during updates */
+    pthread_mutex_t     modLock;
+};
+</code></pre><p>介绍完这俩结构体，接下来才轮到刚才那仨</p>
+<p>依次来分析一下，首先是<code>RawDexFile</code>，很是简单，就一个<code>pDvmDex</code>关键点</p>
+<pre><code>/*
+ * Structure representing a &quot;raw&quot; DEX file, in its unswapped unoptimized
+ * state.
+ */
+struct RawDexFile {
+    char*       cacheFileName;
+    DvmDex*     pDvmDex;
+};
+</code></pre><p>然后是<code>JarFile</code>，和上面的差不多，多了个<code>ZipArchive</code></p>
+<pre><code>/*
+ * This represents an open, scanned Jar file.  (It&#39;s actually for any Zip
+ * archive that happens to hold a Dex file.)
+ */
+struct JarFile {
+    ZipArchive  archive;
+    //MemMapping  map;
+    char*       cacheFileName;
+    DvmDex*     pDvmDex;
+};
+</code></pre><p>这个重要了，<code>DexOrJar</code>是作为返回的数据，看起来成员就多了些</p>
+<pre><code>/*
+ * Internal struct for managing DexFile.
+ */
+struct DexOrJar {
+    char*       fileName;//文件名
+    bool        isDex;//是否是Dex文件
+    bool        okayToFree;
+    RawDexFile* pRawDexFile;
+    JarFile*    pJarFile;
+    u1*         pDexMemory; // malloc()ed memory, if any
+};
+</code></pre><p>接下来，我们来整理一下中间调用到的几个函数</p>
+<pre><code>- hasDexExtension(sourceName);
+- dvmRawDexFileOpen(sourceName, outputName, &amp;pRawDexFile, false);
+- dvmJarFileOpen(sourceName, outputName, &amp;pJarFile, false);
+- addToDexFileTable(pDexOrJar);
+</code></pre><p><code>hasDexExtension()</code>方法用于判断是否是Dex文件</p>
+<pre><code>static bool hasDexExtension(const char* name) {
+    size_t len = strlen(name);
+
+    return (len &gt;= 5)
+        &amp;&amp; (name[len - 5] != &#39;/&#39;)
+        &amp;&amp; (strcmp(&amp;name[len - 4], &quot;.dex&quot;) == 0);
+}
+</code></pre><p><code>dvmRawDexFileOpen()</code>方法用于打开Dex以及一系列优化操作，这个才是真正的重点</p>
+<p>一共四个参数，注意第三个，第三个原本就是一个指针，现在取指针的指针，是一个二级指针</p>
+<ul>
+<li>sourceName</li><li>outputName</li><li>&amp;pRawDexFile</li><li>false</li></ul>
+<pre><code>int dvmRawDexFileOpen(const char* fileName, const char* odexOutputName,
+    RawDexFile** ppRawDexFile, bool isBootstrap)
+{
+    DvmDex* pDvmDex = NULL;
+    char* cachedName = NULL;
+    int result = -1;
+    int dexFd = -1;
+    int optFd = -1;
+    u4 modTime = 0;
+    u4 adler32 = 0;
+    size_t fileSize = 0;
+    bool newFile = false;
+    bool locked = false;
+
+    //打开文件，获取一个只读的文件描述符
+    dexFd = open(fileName, O_RDONLY);
+    if (dexFd &lt; 0) goto bail;
+
+    //设置通过exec()运行时文件描述符会关闭
+    dvmSetCloseOnExec(dexFd);
+
+    //校验Magic Number，并且获取checkcum存储在adler32
+    if (verifyMagicAndGetAdler32(dexFd, &amp;adler32) &lt; 0) {
+        ALOGE(&quot;Error with header for %s&quot;, fileName);
+        goto bail;
+    }
+
+    //获取修改时间和文件大小
+    if (getModTimeAndSize(dexFd, &amp;modTime, &amp;fileSize) &lt; 0) {
+        ALOGE(&quot;Error with stat for %s&quot;, fileName);
+        goto bail;
+    }
+
+    //对ODex文件存储路径做判断，如果为空，自动生成一个，不为空则使用指定的路径
+    if (odexOutputName == NULL) {
+        cachedName = dexOptGenerateCacheFileName(fileName, NULL);
+        if (cachedName == NULL)
+            goto bail;
+    } else {
+        cachedName = strdup(odexOutputName);
+    }
+
+    ALOGV(&quot;dvmRawDexFileOpen: Checking cache for %s (%s)&quot;,
+            fileName, cachedName);
+
+    //获取ODex文件的文件描述符，中间有不少其它操作和判断，包括newFile的赋值
+    optFd = dvmOpenCachedDexFile(fileName, cachedName, modTime,
+        adler32, isBootstrap, &amp;newFile, /*createIfMissing=*/true);
+
+    //获取ODex的文件描述符失败则退出
+    if (optFd &lt; 0) {
+        ALOGI(&quot;Unable to open or create cache for %s (%s)&quot;,
+                fileName, cachedName);
+        goto bail;
+    }
+    locked = true;
+
+    //如果是创建的新ODex文件，原先不存在，则进行处理
+    //因为可能以前加载过，这是第二次或者第n次加载，那么就不需要进行各种优化什么的
+    if (newFile) {
+        u8 startWhen, copyWhen, endWhen;
+        bool result;
+        off_t dexOffset;
+
+        dexOffset = lseek(optFd, 0, SEEK_CUR);
+        result = (dexOffset &gt; 0);
+
+        //拷贝Dex文件到ODex文件的存储目录
+        if (result) {
+            startWhen = dvmGetRelativeTimeUsec();
+            result = copyFileToFile(optFd, dexFd, fileSize) == 0;
+            copyWhen = dvmGetRelativeTimeUsec();
+        }
+
+        //优化Dex---&gt;ODex
+        if (result) {
+            result = dvmOptimizeDexFile(optFd, dexOffset, fileSize,
+                fileName, modTime, adler32, isBootstrap);
+        }
+
+        if (!result) {
+            ALOGE(&quot;Unable to extract+optimize DEX from &#39;%s&#39;&quot;, fileName);
+            goto bail;
+        }
+
+        endWhen = dvmGetRelativeTimeUsec();
+        ALOGD(&quot;DEX prep &#39;%s&#39;: copy in %dms, rewrite %dms&quot;,
+            fileName,
+            (int) (copyWhen - startWhen) / 1000,
+            (int) (endWhen - copyWhen) / 1000);
+    }
+
+    //把ODex文件映射到内存中，但不仅仅是做了映射
+    if (dvmDexFileOpenFromFd(optFd, &amp;pDvmDex) != 0) {
+        ALOGI(&quot;Unable to map cached %s&quot;, fileName);
+        goto bail;
+    }
+
+    //释放文件锁
+    if (locked) {
+        if (!dvmUnlockCachedDexFile(optFd)) {
+            ALOGE(&quot;Unable to unlock DEX file&quot;);
+            goto bail;
+        }
+        locked = false;
+    }
+
+    ALOGV(&quot;Successfully opened &#39;%s&#39;&quot;, fileName);
+
+    //申请空间，并给几个结构体成员赋值
+    *ppRawDexFile = (RawDexFile*) calloc(1, sizeof(RawDexFile));
+    (*ppRawDexFile)-&gt;cacheFileName = cachedName;
+    (*ppRawDexFile)-&gt;pDvmDex = pDvmDex;
+    cachedName = NULL;      // don&#39;t free it below
+    result = 0;
+
+bail:
+    free(cachedName);
+    if (dexFd &gt;= 0) {
+        close(dexFd);
+    }
+    if (optFd &gt;= 0) {
+        if (locked)
+            (void) dvmUnlockCachedDexFile(optFd);
+        close(optFd);
+    }
+    return result;
+}
+</code></pre><p>中间一些很重要的方法</p>
+<pre><code>- verifyMagicAndGetAdler32(dexFd, &amp;adler32)
+- getModTimeAndSize(dexFd, &amp;modTime, &amp;fileSize)
+- dexOptGenerateCacheFileName(fileName, NULL)
+- dvmOpenCachedDexFile(fileName, cachedName, modTime, adler32, isBootstrap, &amp;newFile, /*createIfMissing=*/true)
+- copyFileToFile(optFd, dexFd, fileSize)
+- dvmOptimizeDexFile(optFd, dexOffset, fileSize, fileName, modTime, adler32, isBootstrap)
+- dvmDexFileOpenFromFd(optFd, &amp;pDvmDex)
+</code></pre><p><code>verifyMagicAndGetAdler32()</code>方法会校验前12个字节的数据，<code>Magic Number</code>和<code>checksum</code></p>
+<pre><code>static int verifyMagicAndGetAdler32(int fd, u4 *adler32)
+{
+    //读取前12个字节，前八字节时Magic Number，后四个是checksum
+    u1 headerStart[12];
+    ssize_t amt = read(fd, headerStart, sizeof(headerStart));
+
+    if (amt &lt; 0) {
+        ALOGE(&quot;Unable to read header: %s&quot;, strerror(errno));
+        return -1;
+    }
+
+    if (amt != sizeof(headerStart)) {
+        ALOGE(&quot;Unable to read full header (only got %d bytes)&quot;, (int) amt);
+        return -1;
+    }
+
+    //校验是否是合法Magic Number
+    if (!dexHasValidMagic((DexHeader*) (void*) headerStart)) {
+        return -1;
+    }
+
+    //获取后四个字节的数据，存储在adler32中
+    *adler32 = (u4) headerStart[8]
+        | (((u4) headerStart[9]) &lt;&lt; 8)
+        | (((u4) headerStart[10]) &lt;&lt; 16)
+        | (((u4) headerStart[11]) &lt;&lt; 24);
+
+    return 0;
+}
+</code></pre><p>其中<code>dexHasValidMagic()</code>的参数转为<code>DexHeader*</code>类型</p>
+<pre><code>bool dexHasValidMagic(const DexHeader* pHeader)
+{
+    //获取前八字节
+    const u1* magic = pHeader-&gt;magic;
+
+    //指向第五个字节
+    const u1* version = &amp;magic[4];
+
+    //校验前四字节，DEX_MAGIC的定义如下
+    ///* DEX file magic number */
+    //#define DEX_MAGIC       &quot;dex\n&quot;
+    if (memcmp(magic, DEX_MAGIC, 4) != 0) {
+        ALOGE(&quot;ERROR: unrecognized magic number (%02x %02x %02x %02x)&quot;,
+            magic[0], magic[1], magic[2], magic[3]);
+        return false;
+    }
+
+    //校验第五到第八字节，两个校验的字段定义如下
+    //#define DEX_MAGIC_VERS  &quot;036\0&quot;
+    //#define DEX_MAGIC_VERS_API_13  &quot;035\0&quot;
+    if ((memcmp(version, DEX_MAGIC_VERS, 4) != 0) &amp;&amp;
+            (memcmp(version, DEX_MAGIC_VERS_API_13, 4) != 0)) {
+        /*
+         * Magic was correct, but this is an unsupported older or
+         * newer format variant.
+         */
+        ALOGE(&quot;ERROR: unsupported dex version (%02x %02x %02x %02x)&quot;,
+            version[0], version[1], version[2], version[3]);
+        return false;
+    }
+
+    //都校验通过返回True
+    return true;
+}
+</code></pre><p><code>getModTimeAndSize()</code>方法获取修改的时间以及文件大小，用到的<code>stat</code>结构体和<code>fstat()</code>有兴趣的同学可以深入分析一下，可以结合<code>ls -l</code>这个命令来理解</p>
+<pre><code>static int getModTimeAndSize(int fd, u4* modTime, size_t* size)
+{
+    struct stat buf;
+    int result = fstat(fd, &amp;buf);
+
+    if (result &lt; 0) {
+        ALOGE(&quot;Unable to determine mod time: %s&quot;, strerror(errno));
+        return -1;
+    }
+
+    *modTime = (u4) buf.st_mtime;
+    *size = (size_t) buf.st_size;
+    assert((size_t) buf.st_size == buf.st_size);
+
+    return 0;
+}
+</code></pre><p><code>stat</code>结构体大概是这样，具体我就不是很清楚了，但是可以直接通过文件描述符获取这些数据，然后直接获取<code>修改时间</code>和<code>文件大小</code>两个成员</p>
+<pre><code>struct stat {
+    unsigned long long  st_dev;
+    unsigned char       __pad0[4];
+
+    unsigned long       __st_ino;
+    unsigned int        st_mode;
+    unsigned int        st_nlink;
+
+    unsigned long       st_uid;
+    unsigned long       st_gid;
+
+    unsigned long long  st_rdev;
+    unsigned char       __pad3[4];
+
+    long long           st_size;
+    unsigned long    st_blksize;
+    unsigned long long  st_blocks;
+
+    unsigned long       st_atime;
+    unsigned long       st_atime_nsec;
+
+    unsigned long       st_mtime;
+    unsigned long       st_mtime_nsec;
+
+    unsigned long       st_ctime;
+    unsigned long       st_ctime_nsec;
+
+    unsigned long long  st_ino;
+};
+</code></pre><p>当未指定ODex文件的存储路径时，会调用<code>dexOptGenerateCacheFileName()</code>生成一个存储路径，这应该是<code>PathClassLoader</code>的执行路径</p>
+<pre><code>char* dexOptGenerateCacheFileName(const char* fileName, const char* subFileName)
+{
+    char nameBuf[512];
+    char absoluteFile[sizeof(nameBuf)];
+    const size_t kBufLen = sizeof(nameBuf) - 1;
+    const char* dataRoot;
+    char* cp;
+
+    absoluteFile[0] = &#39;\0&#39;;
+
+    //判断待加载Dex文件路径首字母，这里一定是相对路径
+    if (fileName[0] != &#39;/&#39;) {
+        //获取当前路径
+        if (getcwd(absoluteFile, kBufLen) == NULL) {
+            ALOGE(&quot;Can&#39;t get CWD while opening jar file&quot;);
+            return NULL;
+        }
+        //加上&quot;/&quot;
+        strncat(absoluteFile, &quot;/&quot;, kBufLen);
+    }
+    //再将两个路径结合，此时APK在&quot;/data/app&quot;下
+    //absoluteFile: /data/app/packagaName/
+    //fileName: xxx/xxx.dex
+    strncat(absoluteFile, fileName, kBufLen);
+
+    //我们讨论的情况它传进来的参数是空，这里不会执行
+    if (subFileName != NULL) {
+        strncat(absoluteFile, &quot;/&quot;, kBufLen);
+        strncat(absoluteFile, subFileName, kBufLen);
+    }
+
+    //除首字母&quot;/&quot;，把路径其余的&quot;/&quot;全部替换成&quot;@&quot;
+    cp = absoluteFile + 1;
+    while (*cp != &#39;\0&#39;) {
+        if (*cp == &#39;/&#39;) {
+            *cp = &#39;@&#39;;
+        }
+        cp++;
+    }
+
+    dataRoot = getenv(&quot;ANDROID_DATA&quot;);
+    if (dataRoot == NULL)
+        dataRoot = &quot;/data&quot;;
+
+    //生成前缀&quot;/data/dalvik-cache&quot;
+    snprintf(nameBuf, kBufLen, &quot;%s/%s&quot;, dataRoot, kCacheDirectoryName);
+
+    //再次结合
+    //&quot;/data/dalvik-cache/data@app@packageName.apk@xxx.dex&quot;
+    //举个例子: /data/dalvik-cache/data@app@com.wnagzihxain.dexclassloaderdemo-18.apk@classes.dex
+    //由于没有指定ODex文件的存储路径，其实这里就是PathClassLoader会执行的分支
+    //PathClassLoader用于加载这些已安装的APK的classes.dex文件
+    strncat(nameBuf, absoluteFile, kBufLen);
+
+    ALOGV(&quot;Cache file for &#39;%s&#39; &#39;%s&#39; is &#39;%s&#39;&quot;, fileName, subFileName, nameBuf);
+    return strdup(nameBuf);
+}
+</code></pre><p>那么到这里，前面的准备工作都已经完成，包括各种路径的有效性验证，输出路径的生成等</p>
+<p>下面的四个方法留着下一篇慢慢分析</p>
+<pre><code>- dvmOpenCachedDexFile(fileName, cachedName, modTime, adler32, isBootstrap, &amp;newFile, /*createIfMissing=*/true)
+- copyFileToFile(optFd, dexFd, fileSize)
+- dvmOptimizeDexFile(optFd, dexOffset, fileSize, fileName, modTime, adler32, isBootstrap)
+- dvmDexFileOpenFromFd(optFd, &amp;pDvmDex)
+</code></pre><h2 id="0x02-">0x02 小结</h2>
+<p>网上有几篇文章说<code>dexOptGenerateCacheFileName()</code>方法会进行Dex文件的读取还会优化。。。。。。</p>
+<p>能再扯点吗？</p>
+<p>您从方法命名也能看出来它只是生成一个名字啊！</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

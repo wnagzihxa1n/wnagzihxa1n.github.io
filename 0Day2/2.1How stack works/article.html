@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>2.1How stack works</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="how-stack-works">How stack works</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<pre><code>int func_B(int arg_B1, int arg_B2)
+{
+    int var_B1, var_B2;
+    var_B1 = arg_B1 + arg_B2;
+    var_B2 = arg_B1 - arg_B2;
+    return var_B1 * var_B2;
+}
+
+int func_A(int arg_A1, int arg_A2)
+{
+    int var_A;
+    system(&quot;pause&quot;);
+    var_A = func_B(arg_A1,arg_A2) + arg_A1 ;
+    return var_A;
+}
+
+int main(int argc, char **argv, char **envp)
+{
+    int var_main;
+    system(&quot;pause&quot;);
+    var_main = func_A(4, 3);
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre><p>小修改了一下代码，适合做笔记也适合观察指令执行的过程</p>
+<p>生成PE文件，载入OD</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>F8单步走下去,这三次明显的压栈操作，就是把main函数的三个参数压入栈里，从名字也可以看出来三个参数的压栈顺序</p>
+<pre><code>int main(int argc, char **argv, char **envp)
+</code></pre><p><img src="Image/2.png" alt=""></p>
+<p>然后下面的call就是调用main函数了</p>
+<p>F7跟进去，发现三个jmp</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>F8单步走啊走，碰到自个儿加的暂停，停下来观察一下，这里就是main函数的领空了</p>
+<p><img src="Image/4.png" alt=""></p>
+<p>想找到第一个pause的位置，直接F9，然后暂停，按k，然后就可以看到调用了，右键显示调用即可，然后先给下个断点</p>
+<p>结合刚刚的三个jmp，然后分析这三个片段，可以猜测这三个片段就是三个函数，继续往下分析</p>
+<pre><code>00401005   $ /E9 E6000000   jmp stack_sh.mainshort_argingAblock_page&gt;
+0040100A   $ |E9 71000000   jmp stack_sh.func_A_new_handlergiononom_&gt;
+0040100F   $ |E9 1C000000   jmp stack_sh.func_Bc_dbgelease_regionom_&gt;
+00401014     |CC            int3
+00401015     |CC            int3
+00401016     |CC            int3
+00401017     |CC            int3
+00401018     |CC            int3
+00401019     |CC            int3
+0040101A     |CC            int3
+0040101B     |CC            int3
+0040101C     |CC            int3
+0040101D     |CC            int3
+0040101E     |CC            int3
+0040101F     |CC            int3
+00401020     |CC            int3
+00401021     |CC            int3
+00401022     |CC            int3
+00401023     |CC            int3
+00401024     |CC            int3
+00401025     |CC            int3
+00401026     |CC            int3
+00401027     |CC            int3
+00401028     |CC            int3
+00401029     |CC            int3
+0040102A     |CC            int3
+0040102B     |CC            int3
+0040102C     |CC            int3
+0040102D     |CC            int3
+0040102E     |CC            int3
+0040102F     |CC            int3
+00401030 &gt;/&gt; |55            push ebp
+00401031  |. |8BEC          mov ebp,esp
+00401033  |. |83EC 48       sub esp,0x48
+00401036  |. |53            push ebx
+00401037  |. |56            push esi
+00401038  |. |57            push edi
+00401039  |. |8D7D B8       lea edi,[local.18]
+0040103C  |. |B9 12000000   mov ecx,0x12
+00401041  |. |B8 CCCCCCCC   mov eax,0xCCCCCCCC
+00401046  |. |F3:AB         rep stos dword ptr es:[edi]
+00401048  |. |8B45 08       mov eax,[arg.1]
+0040104B  |. |0345 0C       add eax,[arg.2]
+0040104E  |. |8945 FC       mov [local.1],eax
+00401051  |. |8B4D 08       mov ecx,[arg.1]
+00401054  |. |2B4D 0C       sub ecx,[arg.2]
+00401057  |. |894D F8       mov [local.2],ecx
+0040105A  |. |8B45 FC       mov eax,[local.1]
+0040105D  |. |0FAF45 F8     imul eax,[local.2]                       ;  kernel32.7C802608
+00401061  |. |5F            pop edi                                  ;  ntdll.7C92DF5A
+00401062  |. |5E            pop esi                                  ;  ntdll.7C92DF5A
+00401063  |. |5B            pop ebx                                  ;  ntdll.7C92DF5A
+00401064  |. |8BE5          mov esp,ebp
+00401066  |. |5D            pop ebp                                  ;  ntdll.7C92DF5A
+00401067  \. |C3            retn
+00401068     |CC            int3
+00401069     |CC            int3
+0040106A     |CC            int3
+0040106B     |CC            int3
+0040106C     |CC            int3
+0040106D     |CC            int3
+0040106E     |CC            int3
+0040106F     |CC            int3
+00401070     |CC            int3
+00401071     |CC            int3
+00401072     |CC            int3
+00401073     |CC            int3
+00401074     |CC            int3
+00401075     |CC            int3
+00401076     |CC            int3
+00401077     |CC            int3
+00401078     |CC            int3
+00401079     |CC            int3
+0040107A     |CC            int3
+0040107B     |CC            int3
+0040107C     |CC            int3
+0040107D     |CC            int3
+0040107E     |CC            int3
+0040107F     |CC            int3
+00401080 &gt;/&gt; |55            push ebp
+00401081  |. |8BEC          mov ebp,esp
+00401083  |. |83EC 44       sub esp,0x44
+00401086  |. |53            push ebx
+00401087  |. |56            push esi
+00401088  |. |57            push edi
+00401089  |. |8D7D BC       lea edi,[local.17]
+0040108C  |. |B9 11000000   mov ecx,0x11
+00401091  |. |B8 CCCCCCCC   mov eax,0xCCCCCCCC
+00401096  |. |F3:AB         rep stos dword ptr es:[edi]
+00401098  |. |68 1C404200   push offset stack_sh.??_C@_05PBCN@pause?&gt;;  ASCII &quot;pause&quot;
+0040109D  |. |E8 BE000000   call stack_sh.systemessageBoxAentStrings&gt;
+004010A2  |. |83C4 04       add esp,0x4
+004010A5  |. |8B45 0C       mov eax,[arg.2]
+004010A8  |. |50            push eax
+004010A9  |. |8B4D 08       mov ecx,[arg.1]
+004010AC  |. |51            push ecx
+004010AD  |. |E8 5DFFFFFF   call stack_sh.0040100F
+004010B2  |. |83C4 08       add esp,0x8
+004010B5  |. |0345 08       add eax,[arg.1]
+004010B8  |. |8945 FC       mov [local.1],eax
+004010BB  |. |8B45 FC       mov eax,[local.1]
+004010BE  |. |5F            pop edi                                  ;  ntdll.7C92DF5A
+004010BF  |. |5E            pop esi                                  ;  ntdll.7C92DF5A
+004010C0  |. |5B            pop ebx                                  ;  ntdll.7C92DF5A
+004010C1  |. |83C4 44       add esp,0x44
+004010C4  |. |3BEC          cmp ebp,esp
+004010C6  |. |E8 A5010000   call stack_sh.__chkespleBuffers@4ingsW@4&gt;
+004010CB  |. |8BE5          mov esp,ebp
+004010CD  |. |5D            pop ebp                                  ;  ntdll.7C92DF5A
+004010CE  \. |C3            retn
+004010CF     |CC            int3
+004010D0     |CC            int3
+004010D1     |CC            int3
+004010D2     |CC            int3
+004010D3     |CC            int3
+004010D4     |CC            int3
+004010D5     |CC            int3
+004010D6     |CC            int3
+004010D7     |CC            int3
+004010D8     |CC            int3
+004010D9     |CC            int3
+004010DA     |CC            int3
+004010DB     |CC            int3
+004010DC     |CC            int3
+004010DD     |CC            int3
+004010DE     |CC            int3
+004010DF     |CC            int3
+004010E0     |CC            int3
+004010E1     |CC            int3
+004010E2     |CC            int3
+004010E3     |CC            int3
+004010E4     |CC            int3
+004010E5     |CC            int3
+004010E6     |CC            int3
+004010E7     |CC            int3
+004010E8     |CC            int3
+004010E9     |CC            int3
+004010EA     |CC            int3
+004010EB     |CC            int3
+004010EC     |CC            int3
+004010ED     |CC            int3
+004010EE     |CC            int3
+004010EF     |CC            int3
+004010F0 &gt;/&gt; \55            push ebp
+004010F1  |.  8BEC          mov ebp,esp
+004010F3  |.  83EC 44       sub esp,0x44
+004010F6  |.  53            push ebx
+004010F7  |.  56            push esi
+004010F8  |.  57            push edi
+004010F9  |.  8D7D BC       lea edi,[local.17]
+004010FC  |.  B9 11000000   mov ecx,0x11
+00401101  |.  B8 CCCCCCCC   mov eax,0xCCCCCCCC
+00401106  |.  F3:AB         rep stos dword ptr es:[edi]
+00401108  |.  68 1C404200   push offset stack_sh.??_C@_05PBCN@pause?&gt;;  ASCII &quot;pause&quot;
+0040110D  |.  E8 4E000000   call stack_sh.systemessageBoxAentStrings&gt;
+00401112  |.  83C4 04       add esp,0x4
+00401115  |.  6A 03         push 0x3
+00401117  |.  6A 04         push 0x4
+00401119  |.  E8 ECFEFFFF   call stack_sh.0040100A
+0040111E  |.  83C4 08       add esp,0x8
+00401121  |.  8945 FC       mov [local.1],eax
+00401124  |.  68 1C404200   push offset stack_sh.??_C@_05PBCN@pause?&gt;;  ASCII &quot;pause&quot;
+00401129  |.  E8 32000000   call stack_sh.systemessageBoxAentStrings&gt;
+0040112E  |.  83C4 04       add esp,0x4
+00401131  |.  33C0          xor eax,eax
+00401133  |.  5F            pop edi                                  ;  ntdll.7C92DF5A
+00401134  |.  5E            pop esi                                  ;  ntdll.7C92DF5A
+00401135  |.  5B            pop ebx                                  ;  ntdll.7C92DF5A
+00401136  |.  83C4 44       add esp,0x44
+00401139  |.  3BEC          cmp ebp,esp
+0040113B  |.  E8 30010000   call stack_sh.__chkespleBuffers@4ingsW@4&gt;
+00401140  |.  8BE5          mov esp,ebp
+00401142  |.  5D            pop ebp                                  ;  ntdll.7C92DF5A
+00401143  \.  C3            retn
+</code></pre><p>然后看代码</p>
+<pre><code>int main(int argc, char **argv, char **envp)
+{
+    int var_main;
+    system(&quot;pause&quot;);
+    var_main=func_A(4,3);
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre><p>对比代码，可以看出，当前断点的call调用的的确是system(“pause”)，下面的push 3和push 4为func_A的参数</p>
+<p>那么在压入3和4参数之后就会进行调用call，继续运行，然后回车，回车后程序就继续运行到了第二个暂停，同样点击暂停，按k，右击显示调用</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>上下观察一下位置，发现在刚刚main函数领空的边上</p>
+<p>然后看下面的压栈操作，非常明显是这句程序</p>
+<pre><code>var_A = func_B(arg_A1,arg_A2) + arg_A1 ;
+</code></pre><p>调用前的压栈操作</p>
+<pre><code>004010A5  |.  8B45 0C       mov eax,[arg.2]
+004010A8  |.  50            push eax
+004010A9  |.  8B4D 08       mov ecx,[arg.1]
+004010AC  |.  51            push ecx
+</code></pre><p>继续运行，但是因为程序没有在func_B暂停，所以分析这里差不多就结束了</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

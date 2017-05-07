@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>cv</title>
+<title>Learn to Develop Android CM Step by Step-3E14666D39D4A9C4D92FFED676E3E8F3</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,17 +468,41 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="welcome-to-wnagzihxain-s-blog">Welcome to wnagzihxain&#39;s Blog</h1>
+<h1 id="learn-to-develop-android-cm-step-by-step-3e14666d39d4a9c4d92ffed676e3e8f3">Learn to Develop Android CM Step by Step-3E14666D39D4A9C4D92FFED676E3E8F3</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>一直到处找别人的Android CrackMe玩，看着题目，有时候会有一些不一样的想法，所以想写一些个人理解下的Android CrackMe，喜欢的同学可以来玩</p>
 <ul>
-<li>Name : wnagzihxain</li><li>E-Mail : <strong>tudouboom@163.com</strong></li><li>WeChat/QQ : 1040500943</li><li>Skills : Android application Reverse Engineering | Protect | Unpack | Crack | Pwn</li><li>Programming Languages : C | Python | Java</li><li>Others : ACM/ICPC爱好者 | 吉他爱好者</li><li>前校ACM集训队成员</li></ul>
-<p><strong>初入安全界的一名小学生，喜欢逆向的同学可以加个好友一起交流</strong></p>
-<p><strong>能力有限，水平一般，全靠师傅们平日的指点，才能勉强不被师傅吊打</strong></p>
-<p><strong>只是单纯喜欢计算机技术，并非外界所说的白帽子黑帽子灰帽子绿帽子黑客，也并非专注于xxx的技术研究</strong></p>
-<p><strong>不搞非授权渗透入侵，因为不会，不搞二进制漏洞挖掘利用，因为也不会</strong></p>
-<p><strong>不接软件破解私活，我知道你们很有钱，动不动好几万砸过来，我倒是真的想赚，可是我不会啊</strong></p>
-<p><strong>不加入会分配技术研究，写文章，挖漏洞，开发等任务的安全团队，谢谢，因为我真的不会，怕你们说我是骗子</strong></p>
-<p><strong>欢迎喜欢搞基一言不合就一起睡觉的安全团队来骚扰，搞基我是会的</strong></p>
-<p><strong>我门口没有埋雷，师傅们有空可以过来一起睡觉</strong></p>
+<li><a href="https://github.com/toToCW/AndroidCrackMes/tree/master/1.3E14666D39D4A9C4D92FFED676E3E8F3">https://github.com/toToCW/AndroidCrackMes/tree/master/1.3E14666D39D4A9C4D92FFED676E3E8F3</a></li></ul>
+<h2 id="0x01-description">0x01 Description</h2>
+<p>第一个Android CrackMe，非常简单，起个好节奏，你要Flag，我就给你Flag</p>
+<pre><code>public class MainActivity extends AppCompatActivity {
+
+    final String RegCode = &quot;I want Flag&quot;;
+    final String Flag = &quot;flag{Start_4ndr0id_Crack1ng_w1th_m3}&quot;;
+    private EditText et_RegCode;
+    private Button bt_CheckReg;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        et_RegCode = (EditText) findViewById(R.id.RegCode);
+        bt_CheckReg = (Button) findViewById(R.id.CheckReg);
+
+        bt_CheckReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (et_RegCode.getText().toString().equals(RegCode)) {
+                    Toast.makeText(MainActivity.this, Flag, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+}
+</code></pre><h2 id="0x02-">0x02 小结</h2>
+<p>Have Fun:)</p>
 
 </body>
 </html>

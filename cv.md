@@ -1,4 +1,4 @@
-# Welcome to wnagzihxain' Blog
+# Welcome to wnagzihxain's Blog
 
 - Name : wnagzihxain
 - E-Mail : **tudouboom@163.com**
@@ -8,9 +8,7 @@
 - Others : ACM/ICPC爱好者 | 吉他爱好者
 - 前校ACM集训队成员
 
-**喜欢逆向的同学可以加个好友一起交流**
-
-**初入安全界的一名小学生，日常大伙虽客气地叫我土豆师傅，但我清楚自己能力是配不上师傅这两字的，更不敢以此自居**
+**初入安全界的一名小学生，喜欢逆向的同学可以加个好友一起交流**
 
 **能力有限，水平一般，全靠师傅们平日的指点，才能勉强不被师傅吊打**
 

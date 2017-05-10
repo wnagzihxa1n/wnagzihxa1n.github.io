@@ -683,7 +683,7 @@ boolResult = DecryptUtils.Encrypt_MD5(String.valueOf(j)).equals(&quot;cfcd208495
 <pre><code>您查询的字符串是“cfcd208495d565ef66e7dff9f98764da”,解密的结果为“0”!
 </code></pre><p>。。。。。。</p>
 <p>那么说明计算完<code>j</code>是0</p>
-<p>回头看计算过程，<code>j</code>一直是相加的计算，想让<code>j</code>是0，那么在异或的时候两个值一定要想等，说明两个字符串相等，回溯到最前面，说明传进来的两个字符串相等，那么直接拿上面的32位字符串去解密，就可以得到正确的输入数据，输入那个数据，就可以弹出Flag</p>
+<p>回头看计算过程，<code>j</code>一直是相加的计算，想让<code>j</code>是0，那么在异或的时候两个值一定要相等，说明两个字符串相等，回溯到最前面，说明传进来的两个字符串相等，那么直接拿上面的32位字符串去解密，就可以得到正确的输入数据，输入那个数据，就可以弹出Flag</p>
 <p>输入<code>VVe1lD0ne^-^</code>，弹出Flag</p>
 <p><img src="Image/10.jpg" alt=""></p>
 <h2 id="0x02-">0x02 小结</h2>

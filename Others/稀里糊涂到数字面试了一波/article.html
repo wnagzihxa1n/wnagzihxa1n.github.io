@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>稀里糊涂到数字面试了一波</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-">稀里糊涂到数字面试了一波</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>本来只是找HR聊人生的，结果变成了技术面，面完后开始怀疑人生。。。。。。</p>
+<h2 id="0x01-">0x01 开始虐狗</h2>
+<h3 id="1-1-">1.1 问题一</h3>
+<p>如果现在给一个像高德这样的地图软件，非常大，各种包各种类各种so，完全没办法去手动一个个看函数分析，然后所有类，函数，变量都混淆了，abcdefg那种命名，如何去快速找到比如一打开高德，高德就会自动定位你的位置的相关代码，或者是一些功能型的代码，如何快速去定位？</p>
+<p>答：插桩，在有调用GPS这些地理位置相关的API所在的方法插桩。。。。。。（我自己都觉得这样回答完全是瞎扯，我没逆过地图类的，完全没有思路，不过要是知道地图类型的APP会调用哪些API，插桩和Hook应该是可以搞的，后来他和我说处理方法的时候略微有意思尴尬了，他说类名混淆了，函数没混淆，然后说这种大型的APP不会混淆方法名和变量名。。。。。。，一开始不是这样的啊！！！！！！你说的是类名，函数名，变量名都混淆了啊！！！！！！要是没混淆可以先来一波函数名分析啊！！！！！！）</p>
+<h3 id="1-2-">1.2 问题二</h3>
+<p>脱过哪些壳？</p>
+<p>答：梆梆，爱加密，数字壳等。。。。。。</p>
+<h3 id="1-3-">1.3 问题三</h3>
+<p>360早期的壳的脱壳思路？</p>
+<p>答：360早期有两个主要的反调试，一个是TracerPid字段检测，还有一个端口检测，自实现了<code>dvmDexFileOpenPartial()</code>函数，但是使用了<code>mmap()</code>映射解密后的Dex文件，所以可以在<code>mmap()</code>函数下断点，出现Dex魔数头即可整体内存dump脱壳</p>
+<h3 id="1-4-">1.4 问题四</h3>
+<p>360最新的壳怎么脱？</p>
+<p>答：第一个so会有反调试以及各种初始的过程，然后调用第二个so，过掉几个反调试，然后是VMP，对应opcode，去手动的还原（其实这个问题，在聊的时候面试官跟我讲了点，他说他们可以脱掉并且修复，猜测是做协议分析这方面什么的团队，从后来一直问我协议定位也可以看出来）</p>
+<h3 id="1-5-">1.5 问题五</h3>
+<p>微信逆过吗？</p>
+<p>答：没有（他问了不少这些大型的APP的逆向经验）</p>
+<h3 id="1-6-">1.6 问题六</h3>
+<p>如何去分析一个APK，平时分析的大概过程？</p>
+<p>答：先JEB分析Java层，再分析Native层，有需要的话就动态调试（这个问题我想的不够仔细，因为平时做的比较多的就是脱壳和CTF，这两种类型的逆向都是没有功能型的分析，也就是说，并没有各种功能的逆向，没有聊天，定位，购物之类的这种代码的分析，不过他也没说什么）</p>
+<h3 id="1-7-">1.7 问题七</h3>
+<p>病毒分析的流程，一般病毒的行为原理？</p>
+<p>答：直接分析，有需要就进行抓包等，行为一般是获取一些隐私，短信监控，个人信息，然后隐藏自己之类</p>
+<h3 id="1-8-">1.8 问题八</h3>
+<p>做过协议逆向吗？</p>
+<p>答：没有（他就开始和我说协议，也就是网络这方面是很主要的一块，他们Team应该就是搞协议的，我可以搞协议分析，不过出于道德的考虑，人家协议保护的好好地，突然把人家协议逆了，不是很好的感觉，所以我就一直没做协议分析，而是在做保护技术）</p>
+<h3 id="1-9-">1.9 问题九</h3>
+<p>Java调用Native层函数的方式？</p>
+<p>答：通过JNI，有动态注册和静态注册两种方式，动态注册需要使用一个注册函数，一个参数是待注册函数表，存储着Java层和Native层的两个函数名，动态注册两个函数名可以不一样，静态注册需要使用包名加上类名再加上函数名的形式</p>
+<h3 id="1-10-">1.10 问题十</h3>
+<p>Arm指令集熟吗？寄存器和栈之间数据存储以及获取的指令？</p>
+<p>答：还行，STR和LDR</p>
+<h3 id="1-11-">1.11 问题十一</h3>
+<p>smali熟吗？动态调试过吗？</p>
+<p>答：还行，平时有用IDEA调过</p>
+<h3 id="1-12-">1.12 问题十二</h3>
+<p>Python用的多吗？</p>
+<p>答：还行，平时Java和C写得多</p>
+<h3 id="1-13-">1.13 问题十三</h3>
+<p>解释一下<code>const char* p</code>和<code>char* const p</code>的区别？ </p>
+<p>答：不知道。。。。。。（在我的墙裂追问下，然后就跟我详解了一波，这个我只知道不能改变它的内容，但是这样一对比，确实一下子就混了）</p>
+<h3 id="1-14-">1.14 问题十四</h3>
+<p>给你一个bin，函数名有几个字母有意义，有一些字符串有意义，如何去快速定位需要的代码段？</p>
+<p>答：先看字符串和函数名，找一些有意义的可以往上翻调用</p>
+<h3 id="1-15-">1.15 问题十五</h3>
+<p>Arm64或者一些没法F5的汇编代码段，如何快速定位具体的代码？</p>
+<p>答：没有接触过64位的。。。。。。（接下来就开始面试官的科普时间，跟我讲64位跟32位的区别以及一些很大型的APP逆向后，没有<code>pop/push</code>指令，直接用的是<code>STMFD sp!, {R0-R4}</code>这种批量的指令，把我说的全程懵逼，不过还是很涨姿势，毕竟他搞的是很业务型的，多听听相当受益）</p>
+<h3 id="1-16-">1.16 问题十六</h3>
+<p>如果有一个有发包功能的程序，数据包用了某种协议加密了，如何快速定位到这个协议的位置？</p>
+<p>答：分析数据包数据的格式，首先是网址，然后是参数的字段，先是明文字段去搜字符串，有的可能字段数据加密了，但是字段名称没有加密，所以可以先尝试去搜，如果搜不到，可以试着去Hook或者插桩网络相关类的函数，再做调用路径的回溯分析</p>
+<h3 id="1-17-">1.17 问题十七</h3>
+<p>一个完全无符号的bin如何分析？</p>
+<p>答：这个尝试过，但是没搞出来（这个问题我没有问他怎么搞，相当后悔，我以前在看雪上面看过一篇文章，题目大概叫做《静态编译加剥离的ELF如何分析》，后来面试结束我还去问了几个老司机，并没有很好地解决方法，不过如果仅仅是ELF的话，从延迟绑定是不是可以恢复出一些需要重定位的函数呢？这个想法还有待尝试）</p>
+<h2 id="0x02-">0x02 小结</h2>
+<p>问了一个小时，问完后让我在会议室等，结果等了十分钟来了一拨人，说预约了会议室，让我先去外面等，结果我在外面待了两个小时。。。。。。</p>
+<p>后来有个HR小姐姐打电话跟我说安排时间办理入职。。。。。。</p>
+<p>然后我就走了，不熟悉数字怎么走，在里面到处闯，结果从六楼走楼梯到三楼的时候发现下不去了，后来想起来二楼是食堂。。。。。。又想起来七楼可以坐电梯，我又爬上了七楼。。。。。。身心俱疲。。。。。。</p>
+<p>说好的只是HR聊人生呢？？？？？？</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

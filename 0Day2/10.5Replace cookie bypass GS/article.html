@@ -469,7 +469,7 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="replace-cookie-bypass-gs">Replace cookie bypass GS</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include &lt;string.h&gt;
 #include &lt;stdlib.h&gt;
 
@@ -519,21 +519,21 @@ int main()
 <p>上面代码的翻译看起来好像很不好理解，这样说吧，就是讲shellcode的前四个字节赋值给<code>str+i</code>开始的四个字节，然后i可以控制偏移，这下好理解多了</p>
 <p>我们根据第一篇的设置，生成release版本，在调用test函数前面下个断点，比较好观察</p>
 <p>我们载入，然后单步，可以看到三个压栈操作，那是test的参数，遇到call，跟进去</p>
-<p>如下图，先来看左上角，标记的位置是取.data段的Cookie，可以看到这个地址是0x0040A004，Cookie的值可以不关心，反正都是要被覆盖掉的</p>
-<p>然后来看看右下角，右下角标记出来的是调用test函数的时候压栈的三个参数，那么可以看到0x00410048是指针str指向的堆的起始地址</p>
-<p>我们要做的就是让这个地址加上i的值等于Cookie的地址0x0040A004，这样我们就可以修改Cookie了</p>
+<p>如下图，先来看左上角，标记的位置是取.data段的Cookie，可以看到这个地址是<code>0x0040A004</code>，Cookie的值可以不关心，反正都是要被覆盖掉的</p>
+<p>然后来看看右下角，右下角标记出来的是调用test函数的时候压栈的三个参数，那么可以看到<code>0x00410048</code>是指针str指向的堆的起始地址</p>
+<p>我们要做的就是让这个地址加上i的值等于Cookie的地址<code>0x0040A004</code>，这样我们就可以修改Cookie了</p>
 <p><img src="Image/1.png" alt=""></p>
 <p>好了看到这里我们可以回去修改代码了</p>
-<p>为了避免不必要的异常和其它问题导致调试出问题，先把shellcode的代码删掉，留前面四个字节的“\x90”</p>
-<p>然后计算一下.data段的Cookie指针0x0040A004离指针str的长度，这里需要负数，因为是加上长度往回偏移，我这里算出来的是0xFFFF9FBC</p>
+<p>为了避免不必要的异常和其它问题导致调试出问题，先把shellcode的代码删掉，留前面四个字节的<code>\x90</code></p>
+<p>然后计算一下.data段的Cookie指针<code>0x0040A004</code>离指针str的长度，这里需要负数，因为是加上长度往回偏移，我这里算出来的是<code>0xFFFF9FBC</code></p>
 <p>然后修改test函数里面的参数，重新生成release版本，载入，然后单步来到test函数，我们F7跟入</p>
-<p>在数据区看一下.data段的Cookie，可以看到这时的Cookie是0x67B72058</p>
+<p>在数据区看一下.data段的Cookie，可以看到这时的Cookie是<code>0x67B72058</code></p>
 <p><img src="Image/2.png" alt=""></p>
 <p>我们走完四个字节的赋值语句，也就是strcpy前面，可以看到Cookie已经被我们修改了</p>
 <p><img src="Image/3.png" alt=""></p>
 <p>好了现在控制了.data段的Cookie，接下来就是构造栈中的Cookie了</p>
-<p>栈中的Cookie在ss:[ebp-4]的位置，我们需要先用“\x90\x90\x90\x90”和当前的ebp进行异或，将结果保存在ss:[ebp-4]</p>
-<p>然后ss:[ebp]填充“\x90\x90\x90\x90”，最后的返回地址填shellcode的起始位置</p>
+<p>栈中的Cookie在<code>ss:[ebp-4]</code>的位置，我们需要先用<code>\x90\x90\x90\x90</code>和当前的ebp进行异或，将结果保存在<code>ss:[ebp-4]</code></p>
+<p>然后<code>ss:[ebp]</code>填充<code>\x90\x90\x90\x90</code>，最后的返回地址填shellcode的起始位置</p>
 <p>至于shellcode的起始地址，调用strcpy的时候会压栈，第二个压栈的就是目的地址，也就是shellcode的起始位置</p>
 <p>补充一下：如果不知道怎么计算栈中Cookie的值，可以在生成Cookie前，将.data段Cookie的值手动修改成<code>\x90\x90\x90\x90</code>，然后就可以让汇编计算出Cookie了</p>
 <p><img src="Image/4.png" alt=""></p>

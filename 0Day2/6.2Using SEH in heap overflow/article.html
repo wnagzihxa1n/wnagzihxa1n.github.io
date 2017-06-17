@@ -469,7 +469,7 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="using-seh-in-heap-overflow">Using SEH in heap overflow</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include &lt;windows.h&gt;
 
 char shellcode[] = &quot;\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90&quot;
@@ -498,7 +498,7 @@ int main()
     }__except(MyExceptionhandler()){}
     return 0;
 }
-</code></pre><p>在第一个断点，可以看到创建堆块后的初始状态，标记出来的是0x130个堆单位，一个堆单位8字节</p>
+</code></pre><p>在第一个断点，可以看到创建堆块后的初始状态，标记出来的是<code>0x130</code>个堆单位，一个堆单位8字节</p>
 <p><img src="Image/1.png" alt=""></p>
 <p>然后来看看空表指针部分，那么在前面调试<code>堆溢出DWORD SHOOT</code>的时候有说过，如果申请的堆不可扩展那么这个堆是不会使用快表的，所以<code>0x00360688</code>这个位置就是尾块数据区的起始，其它指针都指向自身，等待分配</p>
 <p><img src="Image/2.png" alt=""></p>
@@ -507,7 +507,7 @@ int main()
 <p>去除第一个断点</p>
 <p>看看分配后的情况，主要看尾块的指针，这时候尾块的起始位置已经变成了<code>0x00360178</code>（堆块信息在前八字节，下面统一跳过，以指针为标准）</p>
 <p><img src="Image/4.png" alt=""></p>
-<p>这是分配的空间，接下来我们\x90填充看看</p>
+<p>这是分配的空间，接下来我们<code>\x90</code>填充看看</p>
 <p><img src="Image/5.png" alt=""></p>
 <p>略微有一丝尴尬没有！！！！！！</p>
 <p>0x00360750尾块乱掉了！！！！！！</p>

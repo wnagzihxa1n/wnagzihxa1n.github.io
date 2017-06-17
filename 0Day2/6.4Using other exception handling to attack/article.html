@@ -469,8 +469,8 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="using-other-exception-handling-to-attack">Using other exception handling to attack</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<h2 id="1-v-e-h-">1.V.E.H利用</h2>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="veh-">VEH利用</h2>
 <p>从windows xp开始，在全面兼容以前SEH异常处理机制的情况下，又加入了一种新的异常处理：VEH（Vectored Exception Handler，向量化异常处理）</p>
 <p>(1)VEH和进程异常处理类似，都是基于进程，而且需要使用API注册回调函数</p>
 <pre><code>PVOID AddVectoredExceptionHandler(
@@ -490,17 +490,17 @@ vertical-align:1px;
 <p>(6)VEH保存在堆中</p>
 <p>(7)最后呢，unwind操作只会对SEH产生作用，不会影响VEH</p>
 <p>如果能在堆溢出的时候使用DWORD SHOOT来修改VEH头节点的指针，在处理异常的时候就能够执行shellcode</p>
-<h2 id="2-teb-seh-">2.攻击TEB中的SEH头节点</h2>
+<h2 id="-teb-seh-">攻击TEB中的SEH头节点</h2>
 <p>前面有说，异常处理机制会遍历SEH链表，而第一个SEH指针在TEB第一个DWORD位置，而且永远指向离栈顶最近的SEH</p>
 <p>那么如果能用DWORD SHOOT来修改这个指针，使其指向shellcode的起始位置，就可以执行shellcode</p>
 <p>一个进程可能有多个线程，每个线程有一个线程环境块TEB，第一个TEB开始于地址<code>0x7FFDE000</code>，然后接下来每一个线程的TEB以间隔<code>0x1000</code>字节的规则向内存低址增长，如果一个线程退出，那么对应的TEB也会被销毁，空间会被以后的线程重复使用</p>
 <p>当遇到多线程的程序时，那么对应的TEB在什么位置就不好说了，这也是一个局限</p>
-<h2 id="3-uef">3.攻击UEF</h2>
+<h2 id="-uef">攻击UEF</h2>
 <p>UEF(<code>UnhandledExceptionFilter()</code>)，系统默认的异常处理函数，是系统处理异常的最后一个环节，当我们构造的异常所有异常处理都处理不了，那么系统就会调用这个异常处理，我们只需要利用DWORD SHOOT来修改这个异常的调用句柄，就可以执行shellcode</p>
 <p>但是不同的系统这个句柄也不愿意，所以我们来反汇编一下<code>kernel32.dll</code></p>
 <p>小书包里掏出IDA，搜<code>SetUnhandledExceptionFilter()</code></p>
 <p><img src="Image/1.png" alt=""></p>
-<h2 id="4-peb-">4.攻击PEB中的函数指针</h2>
+<h2 id="-peb-">攻击PEB中的函数指针</h2>
 <p>前面有一章我们使用<code>ExitProcess()</code>来结束进程，<code>ExitProcess()</code>在结束进程时会调用临界区的<code>RtlEnterCriticalSection()</code>和<code>RtlLeaveCriticalSection()</code></p>
 <p>而<code>ExitProcess()</code>调用这两个函数的时候是通过调用PEB里的两个指针，所以呢，我们可以使用DWORD SHOOT来修改这对指针，改为shellcode的入口就可以了，而且这种办法比TEB可靠的多</p>
 <h2 id="-">参考</h2>

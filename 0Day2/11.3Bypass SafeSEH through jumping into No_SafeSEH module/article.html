@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>11.3Using module unusing SafeSEH bypass SafeSEH</title>
+<title>11.3Bypass SafeSEH through jumping into No_SafeSEH module</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -469,12 +469,12 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="bypass-safeseh-through-jumping-into-no_safeseh-module">Bypass SafeSEH through jumping into No_SafeSEH module</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <p>当异常处理函数位于加载模块内，但是未启用SafeSEH，而且不是仅包含IL，校验函数就会通过校验</p>
 <p>那接下来我们就可以构造一个dll，利用里面的指令来实现跳转</p>
 <p>先来创建一个DLL工程</p>
 <p><img src="Image/1.png" alt=""></p>
-<p>然后接下来的一步选择“一个简单的DLL工程”就行了</p>
+<p>然后接下来的一步选择<code>一个简单的DLL工程</code>就行了</p>
 <p>代码如下</p>
 <pre><code>// SEH_NoSafeSEH_JUMP.cpp : Defines the entry point for the DLL application.
 //
@@ -495,16 +495,16 @@ __asm{
     }
 }
 </code></pre><p>生成Release版本，同时因为VC编译的DLL文件默认加载基址是<code>0x10000000</code>，为了防止地址中的<code>00</code>在赋值shellcode的时候造成截断，所以我们手动修改一下起始加载基址</p>
-<p>点击工程-设置-连接-&gt;最下面加上<code>/base:&quot;0x11120000&quot;</code>，但是要注意一点，最后面要加一个空格和后面的item隔开，不然link的时候会出错！！！！！！</p>
+<p>点击<code>工程-设置-连接-&gt;</code>最下面加上<code>/base:&quot;0x11120000&quot;</code>，但是要注意一点，最后面要加一个空格和后面的item隔开，不然link的时候会出错！！！！！！</p>
 <p><img src="Image/2.png" alt=""></p>
 <p>好了然后编译生成DLL就行了，我们来Load进OD看一下</p>
 <p>红色的OFF是未启用SafeSEH的模块，可以用于跳板</p>
 <p>绿色的ON是启用SafeSEH的模块</p>
-<p>绿色的NoSEH的意思是不支持S.E.H，异常直接忽略</p>
+<p>绿色的NoSEH的意思是不支持SEH，异常直接忽略</p>
 <p>起始还有一种Error，但是这里没有显示出来</p>
 <p><img src="Image/3.png" alt=""></p>
 <p>到这里已经准备好了未启用SafeSEH的模块</p>
-<p>接下来就来分析一下《0day2》上的代码</p>
+<p>接下来就来分析一下《0Day2》上的代码</p>
 <pre><code>#include &quot;stdafx.h&quot;
 #include &lt;string.h&gt;
 #include &lt;windows.h&gt;
@@ -710,7 +710,7 @@ int main()
 004017EA    C3              retn
 </code></pre><p>从代码中可以看出来，关键1是在函数开始的时候压栈的，也就是在Security Cookie生成之前，然后碰到一个try{}，在关键2可以看到，修改为0</p>
 <p>当退出的到时候，在关键3的位置，修改回<code>-2</code>，这个数字有一个功能是用于标记当前到了哪个try，应该使用哪个异常处理</p>
-<p>上面我们知道，它的位置是<code>ss:[ebp-4]</code>，我们重新去看看整个布局的情况还有SEH的位置</p>
+<p>上面我们知道，它的位置是<code>ss:[ebp-4]</code>，我们重新去观察整个布局的情况还有SEH的位置</p>
 <p>走完布置SEH的指令，可以看到右下角SEH，离<code>-2</code>有4字节，所以如果我们直接将shellcode跟在跳板后面，这个位置就会被破坏</p>
 <p>所以我们用<code>\x90</code>来填充，也就是上面代码的8字节<code>\x90</code></p>
 <p><img src="Image/9.png" alt=""></p>

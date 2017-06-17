@@ -469,7 +469,7 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="the-principles-of-safeseh">The principles of SafeSEH</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <p>这一章开始描述的是SafeSEH相关的内容，什么是SafeSEH呢？</p>
 <p>在以前的调试中，我们曾经直接覆盖异常处理指针来执行shellcode，那种简单粗暴的办法相当的好用，先溢出覆盖异常处理指针，然后构造个异常或者溢出后就会触发异常，触发异常后会取出异常处理指针，这时的异常处理指针已经被我们覆盖掉了</p>
 <p>一般是这样构造的：SEH指针覆盖成<code>pop pop retn</code>，为什么呢？</p>

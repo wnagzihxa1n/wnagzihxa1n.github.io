@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>3.1制作Santoku启动盘和安装Santoku</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-santoku-santoku">制作Santoku启动盘和安装Santoku</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>Santoku好像不同版本安装时基于的系统不一样，以前是Debian，后来是Ubuntu</p>
+<p>我在不同的地方看到的安装文章都不是很统一</p>
+<p>所以还是按照官网的说明来，第一个是Santoku的种子，第二个是安装Santoku，第三个是安装VMware Tools</p>
+<ul>
+<li><a href="https://jaist.dl.sourceforge.net/project/santoku/Torrents/santoku_0.5.iso.torrent">santoku_0.5.iso.torrent</a></li><li><a href="http://santoku-linux.com/howto/installing-santoku/installing-santoku-in-a-virtual-machine/">HOWTO install Santoku in a virtual machine</a></li><li><a href="http://santoku-linux.com/howto/installing-santoku/howto-install-vmware-tools-on-santoku-linux/">HOWTO install VMWare tools on Santoku Linux</a></li></ul>
+<p>另外官网在最前强调了几点</p>
+<ul>
+<li>Santoku Linux .ISO file<ul>
+<li>Note: Santoku Linux versions 0.4 and later are 64-bit and require 64-bit hardware to run</li></ul>
+</li><li>Virtual Box or VMWare Player</li><li>A host machine with a minimum dual-core processor, 2GB RAM, and 40 GB free hard drive space or larger recommended</li></ul>
+<p>简单翻译一下</p>
+<ul>
+<li>Santoku的<code>.iso</code>安装包<ul>
+<li>注意：Santoku 0.4及以后的版本是64位的，需要64位的机子作为硬件支持</li></ul>
+</li><li>Virtual Box或者VMWare Player</li><li>宿主机至少需要：双核处理器，2GB的内存和40G空余的硬盘容量</li></ul>
+<h2 id="0x01-">0x01 安装步骤</h2>
+<p>新建虚拟机，选择自定义模式，然后点击下一步</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>点击下一步</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>选择第三个<code>稍后安装操作系统</code></p>
+<p><img src="Image/3.png" alt=""></p>
+<p>这里的选择得根据官网提示，如果Santoku是0.4及以后的，比如我目前下载到的是0.5，所以需要选择<code>Ubuntu 64位</code></p>
+<pre><code>Note: For Santoku Linux 0.4 and newer, select “Ubuntu 64-bit”.
+</code></pre><p><img src="Image/4.png" alt=""></p>
+<p>给两个处理，毕竟我这有四核，大家根据自己机子的情况看着给</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>我的机子是8G内存，给4G，官网已经友情提示了如果想在Santoku里跑模拟器就至少得给4G的内存</p>
+<pre><code>Select an appropriate amount of memory for the VM. 512MB is standard, however increasing the memory size will typically make your VM run faster (but your host machine slower). If you’re going to use the Android Virtual Device Manager (AVD) and Android device Emulator frequently, we recommend selecting at least 4 GB of memory.
+</code></pre><p><img src="Image/6.png" alt=""></p>
+<p>这里网络连接的方式默认即可</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>默认</p>
+<p><img src="Image/8.png" alt=""></p>
+<p>默认</p>
+<p><img src="Image/9.png" alt=""></p>
+<p>选择创建新磁盘</p>
+<p><img src="Image/10.png" alt=""></p>
+<p>给60G，选择<code>将虚拟磁盘存储为单个文件</code></p>
+<p><img src="Image/11.png" alt=""></p>
+<p>默认，将来在赋值虚拟机文件夹的时候，如果需要重新打开，就是选择的这个文件</p>
+<p><img src="Image/12.png" alt=""></p>
+<p>点击<code>自定义硬件</code></p>
+<p><img src="Image/13.png" alt=""></p>
+<p>点击<code>新 CD/DVD</code>，看右边，先选择<code>使用ISO镜像文件</code>，再点击<code>浏览</code>，选择我们下载的Santoku镜像文件，最后点击右下角的关闭</p>
+<p><img src="Image/14.png" alt=""></p>
+<p>基本的配置完成后，回到主界面，点击<code>开启虚拟机</code></p>
+<p><img src="Image/15.png" alt=""></p>
+<p>选择第三项，按回车进行安装</p>
+<p><img src="Image/16.png" alt=""></p>
+<p>进入语言选择，我这里选择英语</p>
+<p><img src="Image/17.png" alt=""></p>
+<p>下面有两个选项，全都不勾选，安装过程中更新以及安装其它的软件会很慢</p>
+<p><img src="Image/18.png" alt=""></p>
+<p>选择第一个，作用是抹掉分配的硬盘空间所有数据</p>
+<p><img src="Image/19.png" alt=""></p>
+<p>最开始定位到了<code>Harbin</code>，我就不能理解了，手动回到<code>Shanghai</code></p>
+<p><img src="Image/20.png" alt=""></p>
+<p>键盘的选择默认即可，如果语言选择的是<code>简体中文</code>，那么这里应该是中文的键盘</p>
+<p><img src="Image/21.png" alt=""></p>
+<p>用户名，密码什么什么的</p>
+<p><img src="Image/22.png" alt=""></p>
+<p>然后漫长的安装过程，等等等等。。。。。。</p>
+<p><img src="Image/23.png" alt=""></p>
+<p>安装完后弹出登录框，按照设置的密码输入即可登录，然后点击<code>虚拟机-&gt;安装VMware Tools</code></p>
+<p><img src="Image/24.png" alt=""></p>
+<p>弹出一个窗口，点击<code>OK</code>，接着会弹出一个文件夹窗口，如图直接拷贝这个压缩文件到主目录下</p>
+<p><img src="Image/25.png" alt=""></p>
+<p>为了方便，我先切换到Root用户，因为是新装的系统，需要设置Root用户密码，然后输入密码，再输入两次密码即可</p>
+<pre><code>wnagzihxa1n@Santoku:~$ sudo passwd
+</code></pre><p>切换到Root用户</p>
+<pre><code>wnagzihxa1n@Santoku:~$ su
+Password:
+root@Santoku:/home/wnagzihxa1n/#
+</code></pre><p>想解压的话，得先给权限</p>
+<pre><code>root@Santoku:/home/wnagzihxa1n/# chmod 777 VMwareTools-10.1.6-5214329.tar.gz
+</code></pre><p>然后再解压</p>
+<pre><code>root@Santoku:/home/wnagzihxa1n/# tar -zxvf VMwareTools-10.1.6-5214329.tar.gz
+</code></pre><p>最后安装即可</p>
+<pre><code>root@Santoku:/home/wnagzihxa1n/# cd vmware-tools-distrip
+root@Santoku:/home/wnagzihxa1n/vmware-tools-distrip# ./vmware-install.pl
+</code></pre><p><img src="Image/26.png" alt=""></p>
+<p>执行安装脚本的时候，出现一个询问，输入<code>y</code></p>
+<pre><code>Do you still want to proceed with this installation?[no]
+</code></pre><p>然后一路回车，最后安装完成，重启</p>
+<p><img src="Image/27.png" alt=""></p>
+<h2 id="0x02-">0x02 工具介绍</h2>
+<p>最关键的工具在<code>Santoku</code>路径下</p>
+<p><img src="Image/28.png" alt=""></p>
+<p>简单的整理了一波，这是Santoku 0.5的工具集，直观的看，缺少了JEB，如果有需要可以自己补上</p>
+<ul>
+<li>Development Tools(开发工具)<ul>
+<li>Android SDK Manager(Android SDK管理工具)</li><li>Android Studio(目前开发安卓主流的工具)</li><li>AXMLPrinter 2(解析AndroidManifest.xml文件的工具)</li><li>Eclipse(Java开发工具，集成ADT版本)</li><li>Fastboot(刷机用的)</li><li>Google Play API</li><li>Heimdall(刷机工具)</li><li>Heimdall(GUI)(刷机工具界面版)</li><li>SBF Flash(这个工具没有用过，看了官网，好像是第三方开发者做的)</li></ul>
+</li><li>Device forensics(设备取证)<ul>
+<li>AF Logical OSE</li><li>Android Brute Force Encryption</li><li>ExifTool</li><li>iOS Backup Analyzer 2</li><li>libimobiledevice</li><li>scalpel</li><li>SleuthKit</li><li>Yaffey</li></ul>
+</li><li>Penetration Testing(渗透测试)<ul>
+<li>Burp Suite(渗透时强大的抓包工具)</li><li>Ettercap(我只在中间人攻击中用过)</li><li>nmap(强大的嗅探工具)</li><li>SSLStrip(配合Ettercap突破SSL加密的协议)</li><li>w3af(Console)(Web扫描框架-控制台版本)</li><li>w3af(GUI)(Web扫描框架-界面版)</li><li>ZAP(Zed Attack Proxy，主动扫描很强大)</li><li>Zenmap(as root)(NMap的界面化工具)</li></ul>
+</li><li>Reverse Engineering(逆向工程)<ul>
+<li>Androguard(静态分析蛮厉害的)</li><li>AntiLVL(这啥玩意我真的没用过)</li><li>APKTool(工具集)</li><li>Baksmali(把Dex文件转为smali文件)</li><li>Bulb Security SPF()</li><li>dex2jar(这其实是一个组合套件，早期逆向的工具集合)</li><li>Drozer(Android应用安全评估套件)</li><li>Jasmin(反编译Java)</li><li>JD-GUI(dex2jar套件把Dex文件转为Jar文件，JD-GUI可以对Jar文件进行分析)</li><li>Procyon(反编译Java)</li><li>radare2(开源的一个逆向平台)</li><li>Smali(把smali文件转为Dex文件)</li></ul>
+</li><li>Wireless Analyzers(无线分析)<ul>
+<li>Chaosreader()</li><li>dnschef(DNS欺骗的工具)</li><li>DSniff(嗅探数据的工具)</li><li>mitmproxy(中间人攻击)</li><li>tcpdump(抓包)</li><li>wifite(破解WiFi)</li><li>Wireshark(数据包捕获加分析)</li></ul>
+</li></ul>
+<h2 id="0x03-sdk">0x03 更新SDK</h2>
+<p>这个其实没有太大更新的必要，因为以前搞开发，所以随着谷歌的更新，4到7的SDK就全都下了，70个G。。。。。。</p>
+<p>这里只是简单地跑个模拟器而已，默认安装的那些就行了</p>
+<p><img src="Image/29.png" alt=""></p>
+<h2 id="0x04-android-studio">0x04 Android Studio</h2>
+<p>本来想看一下Santoku自带的Android Studio玩起来感觉咋样，解决是不咋样</p>
+<p>需要连VPN这里才能完成，不过，吃饱撑着才在虚拟机里开Android Studio，而且这里的Java是OpenJDK，Android Studio需要的是Oracle JDK</p>
+<p><img src="Image/30.png" alt=""></p>
+<p>所以这里我就不管了，反正开发这种活通常宿主机干</p>
+<h2 id="0x05-">0x05 小结</h2>
+<p>JEB和Jadx这些工具不打算在Santoku里装了，这种静态分析在宿主机搞搞就好，其实在Ubuntu里使用JEB的体验蛮差的</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

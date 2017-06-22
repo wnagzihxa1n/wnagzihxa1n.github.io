@@ -68,5 +68,5 @@ drozer-agent-2.3.4.apk
 
 那么就是说，需要在PC上安装Drozer，在安卓机上装`drozer-agent-2.x.x.apk`，然后通过端口进行控制和数据交互
 
-## 0x3 小结
+## 0x03 小结
 Have Fun:)

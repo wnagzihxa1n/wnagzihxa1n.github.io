@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2.1How stack works</title>
+<title>1.1How to crack a PE file</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,240 +468,66 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="how-stack-works">How stack works</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<pre><code>int func_B(int arg_B1, int arg_B2)
+<h1 id="how-to-crack-a-pe-file">How to crack a PE file</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<pre><code>#include &quot;stdio.h&quot;
+
+#define PASSWORD &quot;1234567&quot;
+
+int verify_password (char *password)
 {
-    int var_B1, var_B2;
-    var_B1 = arg_B1 + arg_B2;
-    var_B2 = arg_B1 - arg_B2;
-    return var_B1 * var_B2;
+    int authenticated;
+    authenticated=strcmp(password, PASSWORD);
+    return authenticated;
 }
 
-int func_A(int arg_A1, int arg_A2)
+int main()
 {
-    int var_A;
-    system(&quot;pause&quot;);
-    var_A = func_B(arg_A1,arg_A2) + arg_A1 ;
-    return var_A;
-}
-
-int main(int argc, char **argv, char **envp)
-{
-    int var_main;
-    system(&quot;pause&quot;);
-    var_main = func_A(4, 3);
+    int valid_flag = 0;
+    char password[1024];
+    while(1)
+    {
+        printf(&quot;please input password:       &quot;);
+        scanf(&quot;%s&quot;, password);
+        valid_flag = verify_password(password);
+        if(valid_flag)
+        {
+            printf(&quot;incorrect password!\n\n&quot;);
+        }
+        else
+        {
+            printf(&quot;Congratulation! You have passed the verification!\n&quot;);
+            break;
+        }
+    }
     system(&quot;pause&quot;);
     return 0;
 }
-</code></pre><p>小修改了一下代码，适合做笔记也适合观察指令执行的过程</p>
-<p>生成PE文件，载入OD</p>
+</code></pre><p>预备知识：</p>
+<ul>
+<li>F2：下断点</li><li>F7：跟入单步（比如一个call，会进入这个call的内部）</li><li>F8：不跟入单步（比如一个call，不会进入这个call内部，而是直接执行这个call里面所有语句）</li><li>F9：运行</li></ul>
+<p>使用VC++6.0编译，生成PE文件</p>
+<p>程序逻辑比较简单，一个控制台程序，如果输入的是&quot;1234567&quot;就正确，反之错误</p>
+<p>我们跟着0day2的排版走，使用IDA Pro载入这个PE，如果你是第一次用IDA Pro的话，一直ok下去，那些可以关掉的提示就永远关了</p>
 <p><img src="Image/1.png" alt=""></p>
-<p>F8单步走下去,这三次明显的压栈操作，就是把main函数的三个参数压入栈里，从名字也可以看出来三个参数的压栈顺序</p>
-<pre><code>int main(int argc, char **argv, char **envp)
-</code></pre><p><img src="Image/2.png" alt=""></p>
-<p>然后下面的call就是调用main函数了</p>
-<p>F7跟进去，发现三个jmp</p>
+<p>左边都是函数之类的模块，都已经标记好了，比如上面的main就是main函数，点进去看看，然后按空格就可以看到流程图了，很明显看出来if所在</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>如图亮点，第一个黄色正是if判断的跳转语句，记下VA，VA全名virtual address，是虚拟内存地址，还记不记得RVA，RVA是relative virtual address，是相对虚拟地址，Image Base是装载基址，PE被载入内存的时候，Image Base是最开始的地址，然后加上RVA就是VA，公式是VA = Image Base + RVA</p>
 <p><img src="Image/3.png" alt=""></p>
-<p>F8单步走啊走，碰到自个儿加的暂停，停下来观察一下，这里就是main函数的领空了</p>
+<p>上面搞清楚了之后讲一下节偏移：</p>
+<p>之所以有节偏移的存在是因为文件数据的存放单位和内存数据的存放单位不一样，PE文件中的数据按照磁盘数据存放，以0x200字节为基本单位，当一个数据节不足0x200字节时，多余的填充0x00，超过0x200字节的使用下一0x200字节的空间，所以PE数据节的大小为0x200的整数倍</p>
+<p>但是在内存里单位就不是0x200字节了，而是0x1000，所以就出现了节偏移</p>
+<p>那么文件偏移地址的计算公式就是：文件偏移地址 = VA - Image Base - 节偏移 = RVA-节偏移</p>
+<p>打开OD，载入控制台程序，找到刚刚那句跳转指令，Ctrl+G，直接输入VA：004010D5</p>
+<p>在跳转指令下个断点，F2或者直接双击都能下断点</p>
 <p><img src="Image/4.png" alt=""></p>
-<p>想找到第一个pause的位置，直接F9，然后暂停，按k，然后就可以看到调用了，右键显示调用即可，然后先给下个断点</p>
-<p>结合刚刚的三个jmp，然后分析这三个片段，可以猜测这三个片段就是三个函数，继续往下分析</p>
-<pre><code>00401005   $ /E9 E6000000   jmp stack_sh.mainshort_argingAblock_page&gt;
-0040100A   $ |E9 71000000   jmp stack_sh.func_A_new_handlergiononom_&gt;
-0040100F   $ |E9 1C000000   jmp stack_sh.func_Bc_dbgelease_regionom_&gt;
-00401014     |CC            int3
-00401015     |CC            int3
-00401016     |CC            int3
-00401017     |CC            int3
-00401018     |CC            int3
-00401019     |CC            int3
-0040101A     |CC            int3
-0040101B     |CC            int3
-0040101C     |CC            int3
-0040101D     |CC            int3
-0040101E     |CC            int3
-0040101F     |CC            int3
-00401020     |CC            int3
-00401021     |CC            int3
-00401022     |CC            int3
-00401023     |CC            int3
-00401024     |CC            int3
-00401025     |CC            int3
-00401026     |CC            int3
-00401027     |CC            int3
-00401028     |CC            int3
-00401029     |CC            int3
-0040102A     |CC            int3
-0040102B     |CC            int3
-0040102C     |CC            int3
-0040102D     |CC            int3
-0040102E     |CC            int3
-0040102F     |CC            int3
-00401030 &gt;/&gt; |55            push ebp
-00401031  |. |8BEC          mov ebp,esp
-00401033  |. |83EC 48       sub esp,0x48
-00401036  |. |53            push ebx
-00401037  |. |56            push esi
-00401038  |. |57            push edi
-00401039  |. |8D7D B8       lea edi,[local.18]
-0040103C  |. |B9 12000000   mov ecx,0x12
-00401041  |. |B8 CCCCCCCC   mov eax,0xCCCCCCCC
-00401046  |. |F3:AB         rep stos dword ptr es:[edi]
-00401048  |. |8B45 08       mov eax,[arg.1]
-0040104B  |. |0345 0C       add eax,[arg.2]
-0040104E  |. |8945 FC       mov [local.1],eax
-00401051  |. |8B4D 08       mov ecx,[arg.1]
-00401054  |. |2B4D 0C       sub ecx,[arg.2]
-00401057  |. |894D F8       mov [local.2],ecx
-0040105A  |. |8B45 FC       mov eax,[local.1]
-0040105D  |. |0FAF45 F8     imul eax,[local.2]                       ;  kernel32.7C802608
-00401061  |. |5F            pop edi                                  ;  ntdll.7C92DF5A
-00401062  |. |5E            pop esi                                  ;  ntdll.7C92DF5A
-00401063  |. |5B            pop ebx                                  ;  ntdll.7C92DF5A
-00401064  |. |8BE5          mov esp,ebp
-00401066  |. |5D            pop ebp                                  ;  ntdll.7C92DF5A
-00401067  \. |C3            retn
-00401068     |CC            int3
-00401069     |CC            int3
-0040106A     |CC            int3
-0040106B     |CC            int3
-0040106C     |CC            int3
-0040106D     |CC            int3
-0040106E     |CC            int3
-0040106F     |CC            int3
-00401070     |CC            int3
-00401071     |CC            int3
-00401072     |CC            int3
-00401073     |CC            int3
-00401074     |CC            int3
-00401075     |CC            int3
-00401076     |CC            int3
-00401077     |CC            int3
-00401078     |CC            int3
-00401079     |CC            int3
-0040107A     |CC            int3
-0040107B     |CC            int3
-0040107C     |CC            int3
-0040107D     |CC            int3
-0040107E     |CC            int3
-0040107F     |CC            int3
-00401080 &gt;/&gt; |55            push ebp
-00401081  |. |8BEC          mov ebp,esp
-00401083  |. |83EC 44       sub esp,0x44
-00401086  |. |53            push ebx
-00401087  |. |56            push esi
-00401088  |. |57            push edi
-00401089  |. |8D7D BC       lea edi,[local.17]
-0040108C  |. |B9 11000000   mov ecx,0x11
-00401091  |. |B8 CCCCCCCC   mov eax,0xCCCCCCCC
-00401096  |. |F3:AB         rep stos dword ptr es:[edi]
-00401098  |. |68 1C404200   push offset stack_sh.??_C@_05PBCN@pause?&gt;;  ASCII &quot;pause&quot;
-0040109D  |. |E8 BE000000   call stack_sh.systemessageBoxAentStrings&gt;
-004010A2  |. |83C4 04       add esp,0x4
-004010A5  |. |8B45 0C       mov eax,[arg.2]
-004010A8  |. |50            push eax
-004010A9  |. |8B4D 08       mov ecx,[arg.1]
-004010AC  |. |51            push ecx
-004010AD  |. |E8 5DFFFFFF   call stack_sh.0040100F
-004010B2  |. |83C4 08       add esp,0x8
-004010B5  |. |0345 08       add eax,[arg.1]
-004010B8  |. |8945 FC       mov [local.1],eax
-004010BB  |. |8B45 FC       mov eax,[local.1]
-004010BE  |. |5F            pop edi                                  ;  ntdll.7C92DF5A
-004010BF  |. |5E            pop esi                                  ;  ntdll.7C92DF5A
-004010C0  |. |5B            pop ebx                                  ;  ntdll.7C92DF5A
-004010C1  |. |83C4 44       add esp,0x44
-004010C4  |. |3BEC          cmp ebp,esp
-004010C6  |. |E8 A5010000   call stack_sh.__chkespleBuffers@4ingsW@4&gt;
-004010CB  |. |8BE5          mov esp,ebp
-004010CD  |. |5D            pop ebp                                  ;  ntdll.7C92DF5A
-004010CE  \. |C3            retn
-004010CF     |CC            int3
-004010D0     |CC            int3
-004010D1     |CC            int3
-004010D2     |CC            int3
-004010D3     |CC            int3
-004010D4     |CC            int3
-004010D5     |CC            int3
-004010D6     |CC            int3
-004010D7     |CC            int3
-004010D8     |CC            int3
-004010D9     |CC            int3
-004010DA     |CC            int3
-004010DB     |CC            int3
-004010DC     |CC            int3
-004010DD     |CC            int3
-004010DE     |CC            int3
-004010DF     |CC            int3
-004010E0     |CC            int3
-004010E1     |CC            int3
-004010E2     |CC            int3
-004010E3     |CC            int3
-004010E4     |CC            int3
-004010E5     |CC            int3
-004010E6     |CC            int3
-004010E7     |CC            int3
-004010E8     |CC            int3
-004010E9     |CC            int3
-004010EA     |CC            int3
-004010EB     |CC            int3
-004010EC     |CC            int3
-004010ED     |CC            int3
-004010EE     |CC            int3
-004010EF     |CC            int3
-004010F0 &gt;/&gt; \55            push ebp
-004010F1  |.  8BEC          mov ebp,esp
-004010F3  |.  83EC 44       sub esp,0x44
-004010F6  |.  53            push ebx
-004010F7  |.  56            push esi
-004010F8  |.  57            push edi
-004010F9  |.  8D7D BC       lea edi,[local.17]
-004010FC  |.  B9 11000000   mov ecx,0x11
-00401101  |.  B8 CCCCCCCC   mov eax,0xCCCCCCCC
-00401106  |.  F3:AB         rep stos dword ptr es:[edi]
-00401108  |.  68 1C404200   push offset stack_sh.??_C@_05PBCN@pause?&gt;;  ASCII &quot;pause&quot;
-0040110D  |.  E8 4E000000   call stack_sh.systemessageBoxAentStrings&gt;
-00401112  |.  83C4 04       add esp,0x4
-00401115  |.  6A 03         push 0x3
-00401117  |.  6A 04         push 0x4
-00401119  |.  E8 ECFEFFFF   call stack_sh.0040100A
-0040111E  |.  83C4 08       add esp,0x8
-00401121  |.  8945 FC       mov [local.1],eax
-00401124  |.  68 1C404200   push offset stack_sh.??_C@_05PBCN@pause?&gt;;  ASCII &quot;pause&quot;
-00401129  |.  E8 32000000   call stack_sh.systemessageBoxAentStrings&gt;
-0040112E  |.  83C4 04       add esp,0x4
-00401131  |.  33C0          xor eax,eax
-00401133  |.  5F            pop edi                                  ;  ntdll.7C92DF5A
-00401134  |.  5E            pop esi                                  ;  ntdll.7C92DF5A
-00401135  |.  5B            pop ebx                                  ;  ntdll.7C92DF5A
-00401136  |.  83C4 44       add esp,0x44
-00401139  |.  3BEC          cmp ebp,esp
-0040113B  |.  E8 30010000   call stack_sh.__chkespleBuffers@4ingsW@4&gt;
-00401140  |.  8BE5          mov esp,ebp
-00401142  |.  5D            pop ebp                                  ;  ntdll.7C92DF5A
-00401143  \.  C3            retn
-</code></pre><p>然后看代码</p>
-<pre><code>int main(int argc, char **argv, char **envp)
-{
-    int var_main;
-    system(&quot;pause&quot;);
-    var_main=func_A(4,3);
-    system(&quot;pause&quot;);
-    return 0;
-}
-</code></pre><p>对比代码，可以看出，当前断点的call调用的的确是system(“pause”)，下面的push 3和push 4为func_A的参数</p>
-<p>那么在压入3和4参数之后就会进行调用call，继续运行，然后回车，回车后程序就继续运行到了第二个暂停，同样点击暂停，按k，右击显示调用</p>
+<p>运行程序，控制台程序一载入OD就运行起来没有关系，F8单步走下去就好了，或者F9直接运行</p>
+<p>这里F9直接运行起来，输入“1111111”，回车，断在我们刚才下的断点处，先观察一下，可以看到je跳转未实现，那么修改的方法就比较多了，可以修改为jnz，或者直接jmp到下面去，或者直接修改寄存器的值</p>
 <p><img src="Image/5.png" alt=""></p>
-<p>上下观察一下位置，发现在刚刚main函数领空的边上</p>
-<p>然后看下面的压栈操作，非常明显是这句程序</p>
-<pre><code>var_A = func_B(arg_A1,arg_A2) + arg_A1 ;
-</code></pre><p>调用前的压栈操作</p>
-<pre><code>004010A5  |.  8B45 0C       mov eax,[arg.2]
-004010A8  |.  50            push eax
-004010A9  |.  8B4D 08       mov ecx,[arg.1]
-004010AC  |.  51            push ecx
-</code></pre><p>继续运行，但是因为程序没有在func_B暂停，所以分析这里差不多就结束了</p>
+<p>这里修改je为jnz，这两个跳转指令的条件刚好相反</p>
+<p><img src="Image/6.png" alt=""></p>
+<p>复制到可执行文件然后保存所有修改</p>
+<p>再运行即可</p>
 
 </body>
 </html>

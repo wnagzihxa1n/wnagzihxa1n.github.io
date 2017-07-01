@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>无意中看到的一个关于安卓应用脱壳的专利</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-">无意中看到的一个关于安卓应用脱壳的专利</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>无意间看到百度上面登记的一个专利</p>
+<ul>
+<li><a href="http://xueshu.baidu.com/s?wd=paperuri%3A%28b2340c5134d8b6eec669474e0bdd196d%29&amp;filter=sc_long_sign&amp;sc_ks_para=q%3D%E4%B8%80%E7%A7%8DAndroid%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8A%A8%E6%80%81%E8%84%B1%E5%A3%B3%E6%96%B9%E6%B3%95&amp;sc_us=4967322160281673527&amp;tn=SE_baiduxueshu_c1gjeupa&amp;ie=utf-8">CN 105930692 A - 一种Android应用程序的动态脱壳方法</a></li></ul>
+<p>Google上面有详细描述</p>
+<ul>
+<li><a href="http://www.google.com/patents/CN105930692A?cl=zh">CN 105930692 A - 一种Android应用程序的动态脱壳方法</a></li></ul>
+<p><img src="Image/1.png" alt=""></p>
+<h2 id="0x01-">0x01 分析一波这个专利</h2>
+<p>专利这种东西，两句话可以说清楚非要拆成一百句，我还给改正了里面一大堆的错别字（为了过检索？？？）</p>
+<h3 id="abstract">ABSTRACT</h3>
+<p>开头简单介绍，看起来像是在<code>dvmDexFileOpenPartial()</code>这个函数下断点脱壳</p>
+<blockquote>
+<p>本发明公布了一种Android应用程序的动态脱壳方法，以加固后的Android应用程序为目标程序，通过利用Xposed框架，获取目标程序的dex文件，从而实现对目标程序进行脱壳；所述动态脱壳方法包括Android手机预处理过程、目标程序调试过程、对目标程序进行脱壳的过程和提取目标程序中的dex文件并修复程序的过程。Android系统中的库<code>libdvm.so</code>包含函数参数是dex文件的函数如<code>openDexFile</code>函数，脱壳后的dex作为一个参数传到<code>openDexFile</code>函数，再通过在openDexFile函数下断点获取脱壳后的dex。利用本发明提供的技术方案，可有效地对恶意Android程序进行逆向分析，获取程序的源代码，从而实现对系统的安全保护</p>
+</blockquote>
+<h3 id="-">技术领域</h3>
+<p>废话</p>
+<blockquote>
+<p>本发明涉及Android应用程序，尤其涉及一种基于动态行为的Android应用程序的脱壳方法，使得加固后的Android程序能够动态地被脱壳修复</p>
+</blockquote>
+<h3 id="-">背景技术</h3>
+<p>介绍现状，典型的论文派</p>
+<blockquote>
+<p>随着移动设备的日益普及，移动应用产业尤其是Android应用得以飞速发展，与此同时伴随而来的移动安全问题也日益突出。由于受到资源和计算能力的限制，移动终端无法安装功能强大、性能要求高的病毒查杀软件，导致在使用广泛的Android终端上，窃取信息、恶意吸费等恶意软件层出不穷。逆向分析技术可以被用来在不知道应用程序源代码的情况下分析应用程序的功能流程、篡改应用程序的数据代码等。<br>为了保护开发者和用户的权益，保护文件的防逆向技术得到很大的发展。加壳的全称是可执行程序资源压缩，是保护文件的常用手段。加壳过的程序可以直接运行，但是不能查看源代码，要经过脱壳才可以查看源代码。加壳的程序可阻止外部程序对加壳程序进行反汇编或者动态分析。加壳技术常用来保护软件版权，防止软件被破解。然而，加壳技术也能被病毒等恶意程序所利用，使得恶意程序难以被分析。</p>
+</blockquote>
+<p>写论文就写论文，<code>当前还没有针对Android程序的成熟的脱壳方法</code>这句话的<code>当前</code>吓得我赶紧回去看了一波申请专利的时间，<code>Apr 20, 2016</code>，厉害厉害厉害，2016年，加壳都发展到了第三代，像数字这些厂商都已经要出VMP壳了，虽说VMP不好脱，但是至少针对类抽取还是可以搞的，<code>成熟</code>二字用的真是巧妙</p>
+<blockquote>
+<p>软件脱壳是软件加壳的逆操作，把软件上存在的壳去掉，获取源代码。对于Android程序来说，通过脱壳可获得Android程序的dex文件。现有脱壳方法多是针对PC端，当前还没有针对Android程序的成熟的脱壳方法。要破解传统程序的壳，需要跟踪控制流找到OEP(程序入口点)，然后把代码段从内存中dump出来转存到硬盘，重建输入表，但是，跟踪控制流找到OEP是技术的难点，使得对程序进行脱壳修复受到很大限制。通过现有方法也难以有效地针对加固后的Android程序进行脱壳修复</p>
+</blockquote>
+<h3 id="-">发明内容</h3>
+<p>请问<code>上述现有技术</code>是什么？上面除了说现在脱壳技术不成熟还说了什么？</p>
+<blockquote>
+<p>为了克服上述现有技术的不足，本发明提供一种Android应用程序的动态脱壳方法，针对加固后的Android程序进行脱壳，获取其dex文件</p>
+</blockquote>
+<p>又凑了一波字数</p>
+<blockquote>
+<p>本发明提供的技术方案是:<br>一种Andrοid应用程序的动态脱壳方法，以加固后的Andrοid应用程序为目标程序，通过利用Xposed框架，获取目标程序的dex文件，从而实现对目标程序进行脱壳;所述动态脱壳方法包括Android手机预处理过程、目标程序调试过程、对目标程序进行脱壳的过程和提取目标程序中的dex文件并修复程序的过程，具体步骤如下:</p>
+</blockquote>
+<p>安装<code>Xposed + ZjDroid</code>讲道理我是没懂的，毕竟要Hook <code>libdvm.so</code>的函数还是需要<code>Cydia Substrate</code>框架，不过Xposed去调用<code>Cydia Substrate</code>的so倒是也能搞，这个技巧是繁华师傅那里听来的</p>
+<blockquote>
+<p>A.对Android手机进行预处理时，在所述Android手机上安装Xposed模块和ZjDroid模块，并重启手机激活上述安装模块；</p>
+</blockquote>
+<p>启动<code>android_server</code></p>
+<blockquote>
+<p>B.在对Android手机上的目标程序进行调试时，执行如下操作:<br>B1 •在电脑端IDA工具包中找到<code>android_server</code>文件，将所述<code>android_server</code>文件发送到所述Android手机上，加上可执行权限后运行所述<code>android_server</code>文件，并监听所述Android手机端与电脑端的连接端口；<br>B2.在所述Android手机上安装目标程序，通过端口转发使得所述IDA连接本地端口进行远程调试；<br>B3.在所述Android手机端以调试模式启动目标程序；</p>
+</blockquote>
+<p>看到这里大概懂了，这就是IDA动态调试脱壳嘛，在<code>dvmDexFileOpenPartial()</code>函数下断点，然后解密后就可dump内存，不过这个是一代壳的东西啊，2016年都类抽取了啊，你这样dump出来Dex文件里的方法都是空的不知道吗？</p>
+<blockquote>
+<p>C.在电脑端实现对目标程序进行脱壳，具体执行如下操作:<br>Cl.通过所述IDA找到目标程序加载的模块<code>libdvm.so</code>，并针对模块<code>libdvm.so</code>中的可操作dex文件的函数下断点；<br>C2.判断内存中的dex文件是否是已经脱过壳的dex文件;如果不是脱壳后的dex文件，则返回执行步骤Cl;如果是脱壳后的dex文件，则执行步骤D;</p>
+</blockquote>
+<p>这里知道了原来<code>Xposed + ZjDroid</code>是为了将ODex文件转为Dex文件，那看来前面是要脱出ODex文件咯？ZjDroid到你这只用来转Dex也是蛮厉害的，不知道贾大牛知道会怎么想？</p>
+<blockquote>
+<p>D.在提取内存中的dex文件并修复程序时，执行如下操作:<br>D1.通过ZjDroid反编译内存中的dex文件并转存到本地文件系统中，得到dex文件；<br>D2.将D1得到的dex文件转成jar文件，打开jar文件得到程序的java源代码；或将D1得到的dex文件直接替换目标程序中的dex文件，再重新打包得到脱壳后的程序文件；由此完成程序修复</p>
+</blockquote>
+<p>这里一堆<code>进一步地</code>就不能放前面吗？</p>
+<blockquote>
+<p>针对上述Android应用程序的动态脱壳方法，进一步地，步骤A对Android手机进行预处理，在所述Android手机上安装Xposed模块和ZjDroid模块之前，对所述Android手机进行root提权使得手机程序拥有最高权限<br>针对上述Android应用程序的动态脱壳方法，进一步地，步骤B1所述手机端与电脑端的连接端口为端口23946<br>针对上述Andrοid应用程序的动态脱壳方法，进一步地，步骤C1所述模块<code>libdvm.so</code>中的可操作dex文件的函数为openDexFile函数<br>针对上述Android应用程序的动态脱壳方法，进一步地，步骤C2所述模块<code>libdvm.so</code>中的可操作dex文件的函数为<code>dexFileParse</code>函数或<code>dvmDexFileOpenPartial</code>函数<br>针对上述Android应用程序的动态脱壳方法，进一步地，步骤C2所述判断内存中的dex文件是否是已经脱过壳的dex文件，具体通过查看内存的数据块的前一个字节是否符合dex文件的magic字段的取值来得到。所述magic字段的取值是“dex\n”为未脱壳的dex文件，magic字段取值是“dey\n”为脱壳后的dex文件<br>针对上述Andrοid应用程序的动态脱壳方法，进一步地，步骤D1根据ZjDrοid中的baksmail命令来反编译内存中的dex文件，并转存到本地文件系统中，由此得到dex文件。针对上述Android应用程序的动态脱壳方法，进一步地，步骤D2通过使用dex2jar将dex文件转成jar文件，再使用jd-gui打开jar文件，得到程序的java源代码</p>
+</blockquote>
+<p>讲道理，现有技术哪个不比你这个有技术含量</p>
+<blockquote>
+<p>与现有技术相比，本发明的有益效果是:<br>Apk文件(应用程序文件)包含<code>AndroidManifest.xml</code>文件和dex文件，Apk中的代码大部分都在dex文件中。加壳的程序在运行前会有脱壳操作来保证正常的程序功能。安卓系统中的库<code>libdvm.so</code>包含函数参数是dex文件的函数，如<code>openDexFile</code>函数;脱壳后的dex会作为一个参数传到<code>openDexFile</code>函数。本发明实施例通过在<code>openDexFile</code>函数下断点获取脱壳后的dex。利用本发明提供的技术方案，可以有效地对恶意Android程序进行逆向分析，获取程序的源代码，从而实现对Android系统的安全保护</p>
+</blockquote>
+<h3 id="-">附图说明</h3>
+<p>这里没图</p>
+<blockquote>
+<p>图1是本发明提供的Android应用程序的动态脱壳方法的流程框图</p>
+</blockquote>
+<p>这里也没图</p>
+<blockquote>
+<p>图2本发明方法中对加固的apk进行逆向/脱壳过程的流程框图</p>
+</blockquote>
+<h3 id="-">具体实施方式</h3>
+<p>继续凑字数，不过你说安卓加固技术不成熟。。。。。。嗯，你说的也没错，<code>成熟</code>这俩字想怎么解释都行</p>
+<blockquote>
+<p>下面结合附图，通过实施例进一步描述本发明，但不以任何方式限制本发明的范围<br>本发明提供一种基于Android系统动态框架的脱壳和修复方法，使得加固后的Android程序能够被脱壳修复。另外，需保证在脱壳后重新打包的程序在语义上不发生改变，不影响程序的正常执行<br>在Android平台上，由于dex加壳技术不成熟，使得有可能无需分析源程序的算法而直接将源程序dump出来。Xposed框架是一款可以在不修改Android安装包(APK)的情况下影响程序运行的框架服务，基本原理是通过修改系统来影响程序运行。开源工具ZjDroid是基于Xposed框架的动态逆向分析模块，通过ZjDroid可完成逆向分析，ZjDroid可以实现的功能包括:DEX文件的内存dump;基于Dalvik关键指针的内存BakSmali，有效破解加固应用;敏感API的动态监控;指定内存区域数据dump;获取应用加载DEX信息;获取指定DEX文件加载类信息;Dump Dalvik中的java堆信息;在目标进程动态的运行Lua脚本<br>本发明方法通过利用Xposed框架，对加固后的Android程序进行脱壳，获取其dex文件。dex文件可以运行在Android系统的Davlik虚拟机上，一般的Android系统在apk安装的时候，会对dex文件进行优化处理，这种优化是Android系统自动完成的且不会影响dex正常工作</p>
+</blockquote>
+<p>这里并没有所谓的图一，过程大概就是Root手机，装Xposed框架，然后装ZjDroid，重启手机激活ZjDroid</p>
+<blockquote>
+<p>如图1所示，本发明提供的脱壳方法包括Android手机预处理过程、目标程序调试过程、对加固的apk进行脱壳过程和提取dex并修复apk过程，具体步骤如下:<br>A.在对Android手机进行预处理时，执行如下操作:<br>Al.对Android手机进行root，安装Xposed框架；<br>A2.安装ZjDroid;具体点击Xposed的模块选项，勾选ZjDroid选项；<br>A3.重启手机激活模块(Xposed框架和ZjDroid)；</p>
+</blockquote>
+<p>运行<code>android_server</code>监听23946端口，然后运行待脱壳程序，在<code>openDexFile()</code>函数下断点？？？？？？</p>
+<blockquote>
+<p>B.在手机端运行需要脱壳的Android程序，该Android程序作为待调试的目标程序，通过IDA调试对目标程序进行调试;在对目标程序进行调试时，执行如下操作:<br>B1.在电脑端的IDA工具包中找到<code>android_serve</code>r文件，然后push(发送)到Android手机上，加上可执行权限，在手机上运行<code>android_server</code>文件，并监听手机端与电脑端的连接端口(端口23946)；<br>B2.在Android手机上安装需要脱壳的Android程序(Android apk文件)，通过端口转发使得IDA可以连接本地端口进行远程调试；apk文件(应用程序文件)包含<code>AndroidManifest.xml</code>文件、dex文件。Apk中的代码大部分都在dex文件中，本发明的脱壳方法主要是针对dex的脱壳，<code>AndroidManifest.xml</code>文件主要包含了用来描述应用程序中暴露的一些组件、实现的类以及各种能被处理的数据和程序启动位置。<code>libdvm.so</code>是安卓系统中的库，<code>openDexFile</code>是其中的一个函数，这个<code>openDexFile</code>函数的参数是dex文件。由于加壳的程序在运行前肯定会有脱壳操作来保证正常的程序功能。脱壳后的dex肯定会作为一个参数传到这个<code>openDexFile</code>。本发明的方法是在这个<code>openDexFile</code>函数下断点，然后获取到脱壳后的dex<br>B3.在手机端以调试模式启动apk程序；</p>
+</blockquote>
+<p>并没有图二，利用IDA找到能操作Dex的函数，你说<code>dvmDexFileOpenPartial()</code>我理解，但是<code>openDexFile</code>是个Java层函数你知道吗？它会调用一个Native层函数<code>openDexFileNative()</code>你知道吗？这个Native层函数的作用是动态加载Dex你知道吗？第一个参数是Dex文件路径而不是内存中的Dex你知道吗？</p>
+<blockquote>
+<p>C.在电脑端借助IDA工具实现对加固apk(步骤B2中需要脱壳的apk文件)进行脱壳;具体执行如下操作(如图2所示):<br>Cl.通过IDA找到加固apk程序加载的模块<code>libdvm.so</code>，并找到其中的可以操作dex的函数(如<code>openDexFile</code>函数、<code>dexFileParse</code>函数、<code>dvmDexFileOpenPartial</code>函数等)下断点；在<code>libdvm.so</code>里提供了大量操作dex的函数，例如，<code>openDexFile</code>函数从内存中加载dex文件。也可以对其他操作dex的函数下断点。断点位置在函数入口位置<br>C2.通过查看内存中的dex文件(内存的数据块)的前一个字节是否符合dex文件的magic字段，判断是否是已经脱过壳的dex;如果不是脱壳后的dex，则返回执行步骤C1;如果是脱壳后的dex，则继续执行步骤D;<br>实施例中，具体根据<code>openDexFile</code>函数(方法)加载的内存地址空间，检查该空间的值是否是解密(脱壳)后的dex，主要依据dex文件头的magic字段来进行判断，即dex文件的标识符一般是”dex\n”，优化后的dex文件是”dey\n”</p>
+</blockquote>
+<p>你这个确实也是很厉害，优化后的是ODex，不是Dex，拿ZjDroid来转Dex文件天下应该独你一家</p>
+<blockquote>
+<p>D.提取加固apk程序(即内存中的dex文件)中的dex文件并修复该dex文件;在提取dex并修复时，执行如下操作:<br>Dl.根据ZjDroid中的baksmail命令来反编译内存中的dex文件，并转存(dump)至本地文件系统中，得到dex文件；<br>D2.得到dex文件后，可通过使用dex2jar将dex文件转成jar文件(得到的dex文件中的代码是smali语法的，而jar中的代码是java形式的)，然后使用jd-gui打开jar文件，得到程序的java源代码;也可以直接替换原apk包中的dex文件，重新打包得到脱壳后的apk</p>
+</blockquote>
+<p>而且<code>libdvm.so</code>也没有<code>openDexFile()</code>函数啊，这个函数在<code>libdvm.so</code>里是<code>Dalvik_dalvik_system_DexFile_openDexFileNative()</code>啊</p>
+<blockquote>
+<p>以下通过实例来说明本发明提供方法的实施过程。本实施例将IDA作为一种工具用来调试手机上的程序，具体地，IDA在电脑上运行，调试Android系统时需要在Android手机上运行IDA提供的<code>android_server</code>，通过网络通信来连接手机和电脑，通过两者之间进行通信来调试Android手机上的程序。本实施例针对一个加壳的app进行脱壳。该加壳的app为目标程序。首先，针对一个Android手机进行预处理，对该Android手机进行root，即针对Android手机提权，让程序可以拥有最高权限，安装Xposed框架;在电脑上运行IDA工具;然后通过IDA工具连接到Android手机端口进行调试，先把IDA和Android手机连接，在处理后的Android手机上安装需要脱壳的app程序，通过端口转发，使得IDA能够在本地端口进行调试。通过IDA找到程序加载的模块<code>libdvm.so</code>，并对<code>openDexFile</code>函数下断点。根据<code>openDexFile</code>方法加载的内存地址空间，检查该空间的值是否是解密(脱壳)后的dex，主要依据dex文件头的magic字段来进行判断，即dex文件的标识符一般是”dex\n”，优化后的dex是”dey\n”，因此，当所述magic字段的取值是“dex\n”或“dey\n”时，表示所述内存中的dex文件是脱壳后正常的dex文件。如果不是脱壳后的dex，则返回对模块<code>libdvm.so</code>中的<code>openDexFile</code>函数下断点后再进行检查是否是解密(脱壳)后的dex;如果是脱壳后的dex，则导出dex并修复apk文件，具体根据ZjDroid中的baksmali命令得到并导出dex，得到dex文件后可以得到程序源代码，也可以把dex替换回去重新打包运行，即完成对Android加壳程序进行脱壳</p>
+</blockquote>
+<p>哦，你这瞎几把扯的东西还牛逼的不行了？？？？？？厉害哦厉害哦厉害哦，鼓掌，很棒棒哦！！！！！！</p>
+<blockquote>
+<p>需要注意的是，公布实施例的目的在于帮助进一步理解本发明，但是本领域的技术人员可以理解:在不脱离本发明及所附权利要求的精神和范围内，各种替换和修改都是可能的。因此，本发明不应局限于实施例所公开的内容，本发明要求保护的范围以权利要求书界定的范围为准</p>
+</blockquote>
+<p>这里我不是很懂，没搞过专利相关的，是用来判断侵权的吗？你抄的人家的东西而且写的都是垃圾还怕别人侵权？？？</p>
+<blockquote>
+<p>CLAIMS(9)<br>1.一种Android应用程序的动态脱壳方法，以加固后的Android应用程序为目标程序，通过利用Xposed框架，获取目标程序的dex文件，从而实现对目标程序进行脱壳;所述动态脱壳方法包括Android手机预处理过程、目标程序调试过程、对目标程序进行脱壳的过程和提取目标程序中的dex文件并修复程序的过程，具体步骤如下:<br>A.对Android手机进行预处理时，在所述Android手机上安装Xposed模块和ZjDroid模块，并重启手机激活上述安装模块；<br>B.在对Android手机上的目标程序进行调试时，执行如下操作:<br>B1.在电脑端IDA工具包中找到<code>android_server</code>文件，将所述<code>android_server</code>文件发送到所述手机上，加上可执行权限后运行所述文件，并监听所述Android手机端与电脑端的连接端口 ；<br>B2.在所述Android手机上安装目标程序，通过端口转发使得所述IDA连接本地端口进行远程调试；<br>B3.在所述Android手机端以调试模式启动目标程序；<br>C.在电脑端实现对目标程序进行脱壳，具体执行如下操作:<br>Cl.通过所述IDA找到目标程序加载的模块<code>libdvm.so</code>，并针对模块<code>libdvm.so</code>中的可操作dex文件的函数下断点；<br>C2.判断内存中的dex文件是否是已经脱过壳的dex文件；如果不是脱壳后的dex文件，则返回执行步骤Cl;如果是脱壳后的dex文件，则执行步骤D;<br>D.在提取内存中的dex文件并修复程序时，执行如下操作:<br>Dl.通过ZjDroid反编译内存中的dex文件并转存到本地文件系统中，得到dex文件；<br>D2.将D1得到的dex文件转成jar文件，打开jar文件得到程序的java源代码;或将D1得到的dex文件直接替换目标程序中的dex文件，再重新打包得到脱壳后的程序文件；由此完成程序修复<br>2.如权利要求1所述Android应用程序的动态脱壳方法，其特征是，步骤A对Android手机进行预处理，在所述Android手机上安装Xposed模块和ZjDroid模块之前，对所述Android手机进行root提权使得手机程序拥有最高权限<br>3.如权利要求1所述Android应用程序的动态脱壳方法，其特征是，步骤B1所述手机端与电脑端的连接端口为端口23946<br>4.如权利要求1所述Android应用程序的动态脱壳方法，其特征是，步骤C1所述模块<code>libdvm.so</code>中的可操作dex文件的函数为<code>openDexFile</code>函数<br>5.如权利要求1所述Android应用程序的动态脱壳方法，其特征是，步骤C1所述模块<code>libdvm.so</code>中的可操作dex文件的函数为<code>dexFileParse</code>函数或<code>dvmDexFileOpenPartial</code>函数<br>6.如权利要求1所述Android应用程序的动态脱壳方法，其特征是，步骤C2所述判断内存中的dex文件是否是已经脱过壳的dex文件，具体通过查看所述内存中的dex文件的数据块的前一个字节是否符合dex文件的magic字段的取值来得到<br>7.如权利要求6所述Android应用程序的动态脱壳方法，其特征是，当所述magic字段的取值是“dex\n”或“dey\n”时，所述内存中的dex文件是脱壳后的dex文件<br>8.如权利要求1所述Android应用程序的动态脱壳方法，其特征是，步骤D1根据ZjDroid中的baksmail命令来反编译内存中的dex文件，并转存到本地文件系统中，由此得到dex文件<br>9.如权利要求1所述Android应用程序的动态脱壳方法，其特征是，步骤D2通过使用dex2jar将dex文件转成jar文件，再使用jd-gui打开jar文件，得到程序的java源代码</p>
+</blockquote>
+<h2 id="0x02-">0x02 小结</h2>
+<p>教授好厉害哦<del>~</del>~</p>
+<p><img src="Image/2.png" alt=""></p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

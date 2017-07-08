@@ -469,9 +469,10 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="jeb2-2-7-">JEB2.2.7破解版延长许可时间</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
-<p>在这普天同庆喜气洋洋众多码农专属的节日里，繁华祖师爷在吾爱发了JEB2.2.7的破解版，说起2.x，最近破解的频率有一点点高哇，几个月前还是1.x的时代，突然就进入了2.0.6，然后2.2.5，紧接着2.2.7，虽说泄露版早就有了，但是没有description password也是比较尴尬，导致硬盘里的2.x一直在吃灰，好在看雪吾爱总有大牛在做好事，感谢一波先</p>
-<p>那么这次的2.2.7破解版繁华并没有去修改许可证到期时间</p>
+<p><strong>Author：wnagzihxain<br><del>Mail：tudouboom@163.com</strong></del></p>
+<p><strong>Any problem please contact qtfreet00 , E-Mail : qtfreet@qq.com</strong></p>
+<p>在这普天同庆喜气洋洋众多码农专属的节日里，繁华师傅在吾爱发了JEB 2.2.7的破解版，说起2.x，最近破解的频率有一点点高哇，几个月前还是1.x的时代，突然就进入了2.0.6，然后2.2.5，紧接着2.2.7，虽说泄露版早就有了，但是没有<code>description password</code>也是比较尴尬，导致硬盘里的2.x一直在吃灰，好在看雪吾爱总有大牛在做好事，感谢一波先</p>
+<p>这次的2.2.7破解版繁华师傅并没有去修改许可证到期时间</p>
 <pre><code>JEB 版本 2.2.7.201608151620
 给Zhou Haibo (Huawei)的许可证
 电子邮件地址: haibo.zhou@huawei.com
@@ -481,12 +482,11 @@ vertical-align:1px;
 只对10用户有效
 Subscription expires on 2017-03-01
 </code></pre><p>那这个就比较尴尬了，现在是2016.10.24，再怎么算也就四个月了哇，在这四个月的时间里出泄露出新版本的JEB目测有点悬，所以还是自己动手把这个版本的许可证延一下期好了</p>
-<p>接下来开始动手</p>
-<p>首先我是不知道这个校验在哪个位置的，因为2.x和1.x的文件目录不一样，1.x的jeb.jar直接在bin文件夹下面，而2.x的jeb.jar在bin/plugins下面的com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar文件里面，使用jdgui打开的话可以很明显的看到，至于如何知道校验在这个文件里？首先是这个文件比较大，代码肯定比较多，然后名字里面有jeb，所以猜了一波，运气也是比较好，一下就猜中了，猜不中就慢慢找吧</p>
-<p>jdgui打开com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar文件后，使用搜索功能，搜索上面那个“Support expires on”字符串，可以看到有一处，那么肯定就是校验的地方了，或者说是调用校验的地方了</p>
+<p>首先一开始我是不知道这个校验在哪个位置的，因为2.x和1.x的文件目录不一样，1.x的jeb.jar直接在bin文件夹下面，而2.x的jeb.jar在<code>bin/plugins</code>下面的<code>com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar</code>文件里面，使用jdgui打开的话可以很明显的看到，至于如何知道校验在这个文件里？首先是这个文件比较大，代码肯定比较多，然后名字里面有jeb，所以猜了一波，运气也是比较好，一下就猜中了，猜不中就慢慢找吧</p>
+<p>jdgui打开<code>com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar</code>文件后，使用搜索功能，搜索上面那个<code>Support expires on</code>字符串，可以看到只有一处，那么肯定就是校验的地方了，或者说是调用校验的地方了</p>
 <p>双击跟过去</p>
 <p><img src="Image/1.png" alt=""></p>
-<p>可以看到先是获取一个数值赋值给i，这个i在后面还会用于显示日期，那么下面这个方法至关重要</p>
+<p>可以看到先是获取一个数值赋值给<code>i</code>，这个<code>i</code>在后面还会用于显示日期，那么下面这个方法至关重要</p>
 <pre><code>Licensing.getExpirationTimestamp()
 </code></pre><p>跟过去，实现的代码比较简单</p>
 <pre><code>public static final int getExpirationTimestamp()
@@ -496,8 +496,8 @@ Subscription expires on 2017-03-01
     }
     return real_license_ts + 31536000;
 }
-</code></pre><p>31536000经常搞破解的同学应该比较熟悉，就是365天，一年，那么隐约可以感觉到这个的意思是许可证只有一年的有效期</p>
-<p>那么real_license_ts是什么呢？</p>
+</code></pre><p><code>31536000</code>经常搞破解的同学应该比较熟悉，就是365天，一年，那么隐约可以感觉到这个的意思是许可证只有一年的有效期</p>
+<p>那么<code>real_license_ts</code>是什么呢？</p>
 <p>我们来看开头定义的一些变量</p>
 <pre><code>private static final ILogger logger = GlobalLog.getLogger(Licensing.class);
 public static final String user_name = &quot;Zhou Haibo&quot;;
@@ -508,8 +508,7 @@ public static final int user_count = 10;
 public static final int license_ts = 1456790400;
 public static final int license_validity = 365;
 public static int real_license_ts = 1456790400;
-public static int build_type = (build_type = (build_type = (build_type = 
-            (build_type = (build_type = build_type | 0x2) | 0x4) | 0x8) | 0x10) | 0x20) | 0x80;
+public static int build_type = (build_type = (build_type = (build_type = (build_type = (build_type = build_type | 0x2) | 0x4) | 0x8) | 0x10) | 0x20) | 0x80;
 public static final int FLAG_DEBUG = 1;
 public static final int FLAG_FULL = 2;
 public static final int FLAG_FLOATING = 4;
@@ -517,15 +516,15 @@ public static final int FLAG_AIRGAP = 8;
 public static final int FLAG_ANYCLIENT = 16;
 public static final int FLAG_COREAPI = 32;
 public static final int FLAG_JEB2 = 128;
-</code></pre><p>可以看到real_license_ts的值是1456790400，我们转换一下，大约是46.1945年，我们知道我们在进行日期计算或者取值的时候，基本日期是1970年，那么这里就可以猜到这是注册日期或者说是许可证生效的日期，大约是2016年的样子，结合我们原版的到期时间应该是2016年3月1号，然后刚才那个是计算许可证失效日期，大概就是这么个意思</p>
+</code></pre><p>可以看到<code>real_license_ts</code>的值是<code>1456790400</code>，我们转换一下，大约是<code>46.1945</code>年，我们知道我们在进行日期计算或者取值的时候，基本日期是1970年，那么这里就可以猜到这是注册日期或者说是许可证生效的日期，大约是2016年的样子，结合我们原版的到期时间应该是2016年3月1号，然后刚才那个是计算许可证失效日期，大概就是这么个意思</p>
 <p>那么现在可以思考一下，如何破解？</p>
 <p>一个是修改它返回的日期，另一个就是把检测许可证失效的那个方法去掉，当然这只是猜想，可以试一试</p>
 <p>有了大概的思路，我们来实现一下</p>
 <p>因为这是一个jar文件，所以直接修改的话不太现实，jar本质上是一个压缩包，里面是各种class文件</p>
 <p>这里我们采用javassit来修改，javassit也是一个jar包，在官方下载的文件夹里自带了一部分的sample，可以自己去读一读代码看看各种实现</p>
-<p>这里我用修改jeb.jar里Licensing.class文件的getExpirationTimestamp()方法来做一个简单的演示</p>
+<p>这里我用修改jeb.jar里<code>Licensing.class</code>文件的<code>getExpirationTimestamp()</code>方法来做一个简单的演示</p>
 <p>首先是创建一个Java工程，Eclipse就可以，导入javassit.jar文件</p>
-<p>代码如下：</p>
+<p>代码如下</p>
 <pre><code>import javassist.*;
 
 public class Main {
@@ -542,7 +541,7 @@ public class Main {
         }
     }
 }
-</code></pre><p>讲一下代码的意思：首先获取ClassPool，这个是池的意思，如果路径没有这个jeb.jar的话就需要下面进行插入，也就是insertClassPath()方法，把你的jeb.jar完整路径修改一下，接着获取class，这里就是Licensing.class，路径要完整，接着就是获取方法，我们直接将方法的Body设置为返回2000000000，这个数值足够大而不会导致int溢出，最下面一句是修改后的文件保存的路径，所以运行起来后会在E盘下面有一个com文件夹，将里面的Licensing.class文件替换掉最开始那个com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar文件里的Licensing.class文件即可</p>
+</code></pre><p>讲一下代码的意思：首先获取ClassPool，这个是池的意思，如果路径没有这个jeb.jar的话就需要下面进行插入，也就是<code>insertClassPath()</code>方法，把你的jeb.jar完整路径修改一下，接着获取class，这里就是<code>Licensing.class</code>，路径要完整，接着就是获取方法，我们直接将方法的Body设置为返回<code>2000000000</code>，这个数值足够大而不会导致int溢出，最下面一句是修改后的文件保存的路径，所以运行起来后会在E盘下面有一个com文件夹，将里面的<code>Licensing.class</code>文件替换掉最开始那个<code>com.pnfsoftware.jeb.rcpclient_2.2.7.201608151620.jar</code>文件里的<code>Licensing.class</code>文件即可</p>
 <p>这里我们可以来看看修改后的结果</p>
 <p><img src="Image/2.png" alt=""></p>
 <p>还是比较理想的</p>

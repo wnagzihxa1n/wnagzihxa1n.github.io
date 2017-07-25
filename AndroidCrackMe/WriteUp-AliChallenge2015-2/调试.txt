@@ -1,5 +1,0 @@
-./as -p1995
-
-adb forward tcp:1995 tcp:1995
-adb shell am start -D -n com.com.yaotong.crackme/.MainActivity
-jdb -connect com.sun.jdi.SocketAttach:hostname=127.0.0.1,port=

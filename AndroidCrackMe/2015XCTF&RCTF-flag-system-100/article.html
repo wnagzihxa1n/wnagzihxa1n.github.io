@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WriteUp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="2015xctf-rctf">2015XCTF-RCTF</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>2015XCTF福州站的第一道Mobile题，同时也是RCTF的题目，100分</p>
+<h2 id="0x01-">0x01 分析</h2>
+<p>第一个坑，先判断这是个啥玩意，file没看出来，但是应该是有的</p>
+<pre><code>wnagzihxain@toT0C:~$ file 2e204fe0ec33b1689f1c47bd60a9770c
+2e204fe0ec33b1689f1c47bd60a9770c: data
+</code></pre><p>后来查看16进制格式，才发现这是个Android Backup文件</p>
+<p>能搜到搞这玩意的文章确实是不多，这里根据外国网友提供的方法，我们来一发</p>
+<pre><code>wnagzihxain@toT0C:~$ dd if=2e204fe0ec33b1689f1c47bd60a9770c.ab bs=1 skip=24 of=compressed
+记录了8977280+0 的读入
+记录了8977280+0 的写出
+8977280 bytes (9.0 MB, 8.6 MiB) copied, 96.922 s, 92.6 kB/s
+wnagzihxain@toT0C:~$ printf &quot;\x1f\x8b\x08\x00\x00\x00\x00\x00&quot; | cat - compressed | gunzip -c &gt; decompressed.tar
+gzip: stdin: unexpected end of file
+wnagzihxain@toT0C:~$ tar xf decompressed.tar
+</code></pre><p>解压生成一个<code>apps</code>文件夹，查看一下文件树，发现有一个<code>BOOKS.db</code>，这一定是个关键文件</p>
+<pre><code>wnagzihxain@toT0C:~$ tree apps
+apps
+├── com.example.mybackup
+│   ├── a
+│   │   └── com.example.mybackup-1.apk
+│   ├── db
+│   │   └── BOOKS.db
+│   ├── f
+│   │   └── icu
+│   │       └── icudt46l.dat
+│   └── _manifest
+└── com.example.zi
+    ├── a
+    │   └── com.example.zi-2.apk
+    └── _manifest
+
+7 directories, 6 files
+</code></pre><p>再翻其余文件夹，发现有两个APK文件，在反编译查看代码后，确定<code>com.example.mybackup</code>这个比较有用</p>
+<p>在简单的分析过后，可以确定的是，这个<code>BOOKS.db</code>用了sqlcipher加密了，秘钥的生成方式如下</p>
+<pre><code>public BooksDB(Context context) {
+    super(context, DATABASE_NAME, null, 1);
+    this.k = Test.getSign(context);
+}
+</code></pre><p><code>getSign()</code>方法如下</p>
+<pre><code>public static String getSign(Context context) {
+    for (PackageInfo packageinfo : context.getPackageManager().getInstalledPackages(64)) {
+        if (packageinfo.packageName.equals(context.getPackageName())) {
+            return SHA1(packageinfo.signatures[0].toCharsString());
+        }
+    }
+    return &quot;&quot;;
+}
+</code></pre><p>然后SHA1加密</p>
+<pre><code>public static String SHA1(String decript) {
+    try {
+        MessageDigest digest = MessageDigest.getInstance(&quot;SHA-1&quot;);
+        digest.update(decript.getBytes());
+        byte[] messageDigest = digest.digest();
+        StringBuffer hexString = new StringBuffer();
+        for (byte b : messageDigest) {
+            String shaHex = Integer.toHexString(b &amp; MotionEventCompat.ACTION_MASK);
+            if (shaHex.length() &lt; 2) {
+                hexString.append(0);
+            }
+            hexString.append(shaHex);
+        }
+        return hexString.toString();
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+        return &quot;&quot;;
+    }
+}
+</code></pre><p>那么我们只需要写个APP去获取即可，只需要把<code>getSign()</code>方法中间的<code>equals()</code>方法里的参数换成样本的包名即可</p>
+<p>然后获取到加密秘钥</p>
+<pre><code>320b42d5771df37906eee0fff53c49059122eeaf
+</code></pre><p>获取到秘钥，接下来写个APP去解密</p>
+<p>首先将样本里的lib文件拷贝到工程的jniLibs文件夹里，再从下面的地址下载对应的jar包，解压后将三个jar包放到libs文件夹下</p>
+<pre><code>https://www.zetetic.net/sqlcipher/
+</code></pre><p>各种搞定文件的结构应该是这样的</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>然后写代码</p>
+<pre><code>package com.wnagzihxain.myapplication;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.util.Log;
+
+import net.sqlcipher.database.SQLiteDatabase;
+import java.io.File;
+
+public class MainActivity extends Activity {
+
+    private final String SDcardPath = &quot;/mnt/sdcard/&quot;;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        SQLiteDatabase.loadLibs(this);//引用SQLiteDatabase的方法之前必须先添加这句代码
+        decrypt(&quot;BOOKS.db&quot;, &quot;decryptedtest.db&quot;, &quot;320b42d5771df37906eee0fff53c49059122eeaf&quot;);
+    }
+
+    /**
+     * 解密数据库
+     * @param encryptedName 要解密的数据库名称
+     * @param decryptedName 解密后的数据库名称
+     * @param key 密码
+     */
+    private void decrypt(String encryptedName, String decryptedName, String key) {
+        try {
+            File databaseFile = getDatabasePath(SDcardPath + encryptedName);
+            SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseFile, key, null);
+            if (database != null) {
+                database.close();
+            }
+            database = SQLiteDatabase.openDatabase(databaseFile.toString(), key, null, SQLiteDatabase.OPEN_READWRITE);
+            File decrypteddatabaseFile = getDatabasePath(SDcardPath + decryptedName);
+            //连接到解密后的数据库，并设置密码为空
+            database.rawExecSQL(String.format(&quot;ATTACH DATABASE &#39;%s&#39; as &quot;+ decryptedName.split(&quot;\\.&quot;)[0] +&quot; KEY &#39;&#39;;&quot;, decrypteddatabaseFile.getAbsolutePath()));
+            database.rawExecSQL(&quot;SELECT sqlcipher_export(&#39;&quot;+ decryptedName.split(&quot;\\.&quot;)[0] + &quot;&#39;);&quot;);
+            database.rawExecSQL(&quot;DETACH DATABASE &quot;+ decryptedName.split(&quot;\\.&quot;)[0] + &quot;;&quot;);
+            SQLiteDatabase decrypteddatabase = SQLiteDatabase.openOrCreateDatabase(decrypteddatabaseFile, &quot;&quot;, null);
+            decrypteddatabase.close();
+            database.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre><p>添加权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+</code></pre><p>先把<code>BOOKS.db</code>文件push到<code>/sdcard/</code>路径下，然后运行APP，即可在<code>/sdcard/</code>下看到解密后的数据库文件，最后pull到本地</p>
+<pre><code>root@jflte:/sdcard # ls | grep &quot;.db&quot;
+BOOKS.db
+root@jflte:/sdcard # ls | grep &quot;.db&quot;
+BOOKS.db
+decryptedtest.db
+root@jflte:/sdcard # exit
+C:\Users\wangz&gt;adb pull /sdcard/decryptedtest.db C:\Users\wangz\Desktop
+[100%] /sdcard/decryptedtest.db
+</code></pre><p>使用sqlcipher.exe可视化工具打开</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>再结合要求，Flag：RCTF{backuuuuuP}</p>
+<h2 id="0x02-">0x02 小结</h2>
+<p>老铁，真的就这么简单吗？</p>
+<p>按理说到这里瞎扯两句<code>有兴趣的同学可以跟着玩玩</code>就行了，但我不！！！！！！</p>
+<p>我要把我的扎心经历讲粗来！！！！！！</p>
+<p>上面那么顺畅的解题过程问人间哪里有？？？？？？</p>
+<p>首先知道这是Android BackUp文件倒不是很难，因为十六进制看Magic Number一下子就看出来了</p>
+<p>难的地方在哪里，如何解压是个问题，一开始我并不熟悉这个文件的格式，所以在Github上找了个工具来解压</p>
+<pre><code>https://github.com/nelenkov/android-backup-extractor
+</code></pre><p>然而这玩意并不能解压给的<code>BOOKS.db</code>，问了某老铁才知道，因为只支持到v3，然而作者把这个字段改了一下。。。。。。</p>
+<p>改成3，继续解压，依旧不行，后来才知道，Compressed那个字段要改成1，作者也改了。。。。。。</p>
+<p>后来直接在Google上找了老外写的方法，一下子就搞出来了</p>
+<p>也就是上面写的方法</p>
+<p>解压出了文件之后，解密<code>BOOKS.db</code>是一个大问题</p>
+<p>作为一个开发者，第一想法是写个APP，用sqlcipher库去解密给的<code>BOOKS.db</code></p>
+<p>但是莫名不想写</p>
+<p>于是想着，网上应该有对这种数据库加密的解密工具吧，于是找啊找</p>
+<p>还真的找到了，凭借着神一般的记忆力，我给列一下</p>
+<ul>
+<li>CSDN---某命令行工具2.0版本，解密出错</li><li>CSDN---某命令行工具3.0版本，解密出错</li><li>Github---某需要自行编译的工具<ul>
+<li>32位Ubuntu编译出错，一直以为是编译环境问题</li><li>64位Ubuntu编译成功，解密出错</li></ul>
+</li><li>某可视化数据库查看工具---解密出错</li><li>还有好几个需要自己编译的。。。。。。</li></ul>
+<p>两天就这么过去了。。。。。。</p>
+<p>想了想，我还是回归开发者吧</p>
+<p>东拼西凑，根据别人的代码写了个解密的APP</p>
+<p>然而一直<code>unable to open......</code></p>
+<p>后来发现，权限没给。。。。。。</p>
+<p>然后就搞出来了</p>
+<h2 id="references">References</h2>
+<ul>
+<li>How do you extract an App&#39;s data from a full backup made through “adb backup”?: <a href="http://android.stackexchange.com/questions/28481/how-do-you-extract-an-apps-data-from-a-full-backup-made-through-adb-backup">http://android.stackexchange.com/questions/28481/how-do-you-extract-an-apps-data-from-a-full-backup-made-through-adb-backup</a></li><li>安卓hacking Part 15: 使用备份技术黑掉安卓应用: <a href="http://bobao.360.cn/learning/detail/169.html">http://bobao.360.cn/learning/detail/169.html</a></li><li>使用SQLCipher对数据库加密: <a href="http://blog.csdn.net/small_lee/article/details/50971132">http://blog.csdn.net/small_lee/article/details/50971132</a></li><li>sqlcipher: <a href="https://github.com/sqlcipher/sqlcipher">https://github.com/sqlcipher/sqlcipher</a></li><li>利用SQLCipher加解密数据库（包括加解密已有的数据库）: <a href="http://blog.csdn.net/wjk343977868/article/details/53410738">http://blog.csdn.net/wjk343977868/article/details/53410738</a></li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

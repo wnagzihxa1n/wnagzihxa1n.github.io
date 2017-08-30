@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Shellcode executing in heap overrun</title>
+<title>堆溢出利用（下）- 代码植入</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="shellcode-executing-in-heap-overrun">Shellcode executing in heap overrun</h1>
+<h1 id="-">堆溢出利用（下）- 代码植入</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include &lt;windows.h&gt;
 
@@ -510,7 +510,8 @@ int main()
 <p><img src="Image/1.png" alt=""></p>
 <p>直接来到分配的堆块，然后nop填充掉<code>int 3</code>，F8单步走下去，直到<code>0x90</code>覆盖整个堆块</p>
 <p><img src="Image/2.png" alt=""></p>
-<p>可以看出来，200字节的<code>0x90</code>刚好填充整个堆块，后面跟着的是尾块的块首，接下来就是用溢出来覆盖堆块的两个指针<br>先来看看需要使用的shellcode</p>
+<p>可以看出来，<code>200</code>字节的<code>0x90</code>刚好填充整个堆块，后面跟着的是尾块的块首，接下来就是用溢出来覆盖堆块的两个指针</p>
+<p>先来看看需要使用的shellcode</p>
 <pre><code>#include &lt;stdio.h&gt;
 
 char shellcode[] = 

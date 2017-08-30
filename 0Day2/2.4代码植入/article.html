@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2.4redirect EIP to executed extra binary code in buffer</title>
+<title>代码植入</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="redirect-eip-to-executed-extra-binary-code-in-buffer">Redirect EIP to executed extra binary code in buffer</h1>
+<h1 id="-">代码植入</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;windows.h&gt;
@@ -512,9 +512,9 @@ int main()
 </code></pre><p>一般情况下，在这个边上有三次压栈操作的call就是main函数</p>
 <p>找到main函数入口后直接F4到这，也可以下断，然后F9到这，或者F8慢慢走下来</p>
 <p><img src="Image/1.png" alt=""></p>
-<p>然后F7跟入，这是主函数领空，关于这种领空的提醒以后就不说啦，可以看到user32.dll的调用</p>
+<p>然后F7跟入，这是主函数领空，关于这种领空的提醒以后就不说啦，可以看到<code>user32.dll</code>的调用</p>
 <p><img src="Image/2.png" alt=""></p>
-<p>往下拉，找到verify_password ()函数的调用代码，至于怎么看出来这是哪个函数的调用的问题？多调试就会有经验了</p>
+<p>往下拉，找到<code>verify_password()</code>函数的调用代码，至于怎么看出来这是哪个函数的调用的问题？多调试就会有经验了</p>
 <p><img src="Image/3.png" alt=""></p>
 <p>F4运行到这里，或者下断然后F9运行到这都行，看个人喜欢，以后直接说运行到这，个人喜欢下断，然后F9</p>
 <p>F7跟进去，以后F7这些快捷键也尽量少提，因为随着代码越来越长，分析的时候如果连这些基本的都要提，那么还是先回去看前面的分析好了</p>
@@ -537,7 +537,7 @@ int main()
 0012FB20  /0012FF80  €.
 0012FB24  |00401118  @.  返回到 stack_ov.mainshort_argingAblock_pages+88 来自 stack_ov.00401005
 0012FB28  |0012FB7C  |?.   ASCII &quot;1234567&quot;
-</code></pre><p>然后修改password.txt为11个“4321”</p>
+</code></pre><p>然后修改<code>password.txt</code>为11个<code>4321</code></p>
 <p>运行观察栈的布局</p>
 <p><img src="Image/6.png" alt=""></p>
 <pre><code>0012FAF0   31323334  4321
@@ -556,14 +556,14 @@ int main()
 0012FB24  |00401118  @.  返回到 stack_ov.mainshort_argingAblock_pages+88 来自 stack_ov.00401005
 0012FB28  |0012FB7C  |?.   ASCII &quot;43214321432143214321432143214321432143214321&quot;
 </code></pre><p>如果是按照前面的，那接下来就很清楚了，但是接下来我们是要植入代码，所以要加点新东西进去</p>
-<p>打开Dependency Walker，在Tools里可以找到，然后随便拉一个图标进去</p>
+<p>打开<code>Dependency Walker</code>，在Tools里可以找到，然后随便拉一个图标进去</p>
 <p><img src="Image/7.png" alt=""></p>
-<p>然后可以看到user32.dll的基址，以及MessageBoxA的偏移</p>
+<p>然后可以看到<code>user32.dll</code>的基址，以及<code>MessageBoxA</code>的偏移</p>
 <pre><code>0x77D10000 + 0x000407EA = 0x77D507EA
 </code></pre><p>用工具计算</p>
 <p><img src="Image/8.png" alt=""></p>
 <p>不同计算机情况不一样 ，这个一定要在自己的计算机重新计算</p>
-<p>然后就可以编辑password.txt了，一定要注意最后<code>mov eax,77D507EA</code>，要根据自己计算机计算</p>
+<p>然后就可以编辑<code>password.txt</code>了，一定要注意最后<code>mov eax,77D507EA</code>，要根据自己计算机计算</p>
 <p><img src="Image/9.png" alt=""></p>
 <p>运行起来走啊走，来看看刚刚写的代码</p>
 <p><img src="Image/10.png" alt=""></p>
@@ -572,7 +572,7 @@ int main()
 <p>弹出来了</p>
 <p>点击确定，继续运行</p>
 <p><img src="Image/12.png" alt=""></p>
-<p>因为调用完MessageBoxA后，没有写后续代码让它退出，所以崩溃了</p>
+<p>因为调用完<code>MessageBoxA</code>后，没有写后续代码让它退出，所以崩溃了</p>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>11.1The principles of SafeSEH</title>
+<title>SafeSEH对异常处理的保护原理</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="the-principles-of-safeseh">The principles of SafeSEH</h1>
+<h1 id="safeseh-">SafeSEH对异常处理的保护原理</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <p>这一章开始描述的是SafeSEH相关的内容，什么是SafeSEH呢？</p>
 <p>在以前的调试中，我们曾经直接覆盖异常处理指针来执行shellcode，那种简单粗暴的办法相当的好用，先溢出覆盖异常处理指针，然后构造个异常或者溢出后就会触发异常，触发异常后会取出异常处理指针，这时的异常处理指针已经被我们覆盖掉了</p>

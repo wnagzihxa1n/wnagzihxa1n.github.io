@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>1.1How to crack a PE file</title>
+<title>如何破解一个PE文件</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="how-to-crack-a-pe-file">How to crack a PE file</h1>
+<h1 id="-pe-">如何破解一个PE文件</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include &quot;stdio.h&quot;
 
@@ -507,22 +507,21 @@ int main()
 <ul>
 <li>F2：下断点</li><li>F7：跟入单步（比如一个call，会进入这个call的内部）</li><li>F8：不跟入单步（比如一个call，不会进入这个call内部，而是直接执行这个call里面所有语句）</li><li>F9：运行</li></ul>
 <p>使用VC++6.0编译，生成PE文件</p>
-<p>程序逻辑比较简单，一个控制台程序，如果输入的是&quot;1234567&quot;就正确，反之错误</p>
-<p>我们跟着0day2的排版走，使用IDA Pro载入这个PE，如果你是第一次用IDA Pro的话，一直ok下去，那些可以关掉的提示就永远关了</p>
+<p>程序逻辑比较简单，一个控制台程序，如果输入的是<code>1234567</code>就正确，反之错误</p>
+<p>我们跟着0day2的排版走，使用IDA载入这个PE，如果你是第一次用IDA的话，一直ok下去，那些可以关掉的提示就永远关了</p>
 <p><img src="Image/1.png" alt=""></p>
-<p>左边都是函数之类的模块，都已经标记好了，比如上面的main就是main函数，点进去看看，然后按空格就可以看到流程图了，很明显看出来if所在</p>
+<p>左边都是函数之类的模块，都已经标记好了，比如上面的main就是main函数，点进去看看，然后按空格就可以看到流程图了，很明显看出来<code>if</code>所在</p>
 <p><img src="Image/2.png" alt=""></p>
-<p>如图亮点，第一个黄色正是if判断的跳转语句，记下VA，VA全名virtual address，是虚拟内存地址，还记不记得RVA，RVA是relative virtual address，是相对虚拟地址，Image Base是装载基址，PE被载入内存的时候，Image Base是最开始的地址，然后加上RVA就是VA，公式是VA = Image Base + RVA</p>
+<p>如图亮点，第一个黄色正是if判断的跳转语句，记下VA，VA全名<code>virtual address</code>，是虚拟内存地址，还记不记得RVA，RVA是<code>relative virtual address</code>，是相对虚拟地址，<code>Image Base</code>是装载基址，PE被载入内存的时候，Image Base是最开始的地址，然后加上RVA就是VA，公式是<code>VA = Image Base + RVA</code></p>
 <p><img src="Image/3.png" alt=""></p>
-<p>上面搞清楚了之后讲一下节偏移：</p>
-<p>之所以有节偏移的存在是因为文件数据的存放单位和内存数据的存放单位不一样，PE文件中的数据按照磁盘数据存放，以0x200字节为基本单位，当一个数据节不足0x200字节时，多余的填充0x00，超过0x200字节的使用下一0x200字节的空间，所以PE数据节的大小为0x200的整数倍</p>
-<p>但是在内存里单位就不是0x200字节了，而是0x1000，所以就出现了节偏移</p>
-<p>那么文件偏移地址的计算公式就是：文件偏移地址 = VA - Image Base - 节偏移 = RVA-节偏移</p>
-<p>打开OD，载入控制台程序，找到刚刚那句跳转指令，Ctrl+G，直接输入VA：004010D5</p>
+<p>上面搞清楚了之后讲一下节偏移：<br>之所以有节偏移的存在是因为文件数据的存放单位和内存数据的存放单位不一样，PE文件中的数据按照磁盘数据存放，以<code>0x200</code>字节为基本单位，当一个数据节不足<code>0x200</code>字节时，多余的填充<code>0x00</code>，超过<code>0x200</code>字节的使用下一<code>0x200</code>字节的空间，所以PE数据节的大小为<code>0x200</code>的整数倍</p>
+<p>但是在内存里单位就不是<code>0x200</code>字节了，而是<code>0x1000</code>，所以就出现了节偏移</p>
+<p>那么文件偏移地址的计算公式就是：<code>文件偏移地址 = VA - Image Base - 节偏移 = RVA-节偏移</code></p>
+<p>打开OD，载入控制台程序，找到刚刚那句跳转指令，Ctrl+G，直接输入<code>VA：004010D5</code></p>
 <p>在跳转指令下个断点，F2或者直接双击都能下断点</p>
 <p><img src="Image/4.png" alt=""></p>
 <p>运行程序，控制台程序一载入OD就运行起来没有关系，F8单步走下去就好了，或者F9直接运行</p>
-<p>这里F9直接运行起来，输入“1111111”，回车，断在我们刚才下的断点处，先观察一下，可以看到je跳转未实现，那么修改的方法就比较多了，可以修改为jnz，或者直接jmp到下面去，或者直接修改寄存器的值</p>
+<p>这里F9直接运行起来，输入<code>1111111</code>，回车，断在我们刚才下的断点处，先观察一下，可以看到je跳转未实现，那么修改的方法就比较多了，可以修改为jnz，或者直接jmp到下面去，或者直接修改寄存器的值</p>
 <p><img src="Image/5.png" alt=""></p>
 <p>这里修改je为jnz，这两个跳转指令的条件刚好相反</p>
 <p><img src="Image/6.png" alt=""></p>

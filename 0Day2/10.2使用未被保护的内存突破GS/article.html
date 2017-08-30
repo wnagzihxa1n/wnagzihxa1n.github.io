@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>10.2Using unprotected memory area bypass GS</title>
+<title>使用未被保护的内存突破GS</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,22 +468,17 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="using-unprotected-memory-area-bypass-gs">Using unprotected memory area bypass GS</h1>
+<h1 id="-gs">使用未被保护的内存突破GS</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <p>这篇比较短，就是利用未被保护的内存来突破GS</p>
 <p>VS的设置和上一篇一样，都是禁用优化，启用GS</p>
 <p><img src="Image/1.png" alt=""></p>
 <p>生成release之后打开，会发现断下来了</p>
 <p><img src="Image/2.png" alt=""></p>
-<p>如图，没有Security Cookie，那么我们就可以正常部署shellcode了</p>
+<p>如图，没有<code>Security Cookie</code>，那么我们就可以正常部署shellcode了</p>
 <p>《0day2》里面对VS是否启用GS做了解释：</p>
 <ol>
-<li><p>函数不包含缓冲区</p>
-</li><li><p>函数被定义为具有变量参数列表</p>
-</li><li><p>函数使用无保护的关键字标记</p>
-</li><li><p>函数在第一个语句中包含内嵌汇编代码</p>
-</li><li><p>缓冲区不是8字节类型且大小不大于4个字节</p>
-</li></ol>
+<li>函数不包含缓冲区</li><li>函数被定义为具有变量参数列表</li><li>函数使用无保护的关键字标记</li><li>函数在第一个语句中包含内嵌汇编代码</li><li>缓冲区不是8字节类型且大小不大于4个字节</li></ol>
 <p>有例外就有机会，这一篇比较简单，下面的文章就会开始调试各种对抗GS的方法</p>
 
 </body>

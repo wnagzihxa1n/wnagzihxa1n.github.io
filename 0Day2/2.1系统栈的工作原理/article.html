@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2.1How stack works</title>
+<title>系统栈的工作原理</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="how-stack-works">How stack works</h1>
+<h1 id="-">系统栈的工作原理</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>int func_B(int arg_B1, int arg_B2)
 {
@@ -690,8 +690,8 @@ int main(int argc, char **argv, char **envp)
     system(&quot;pause&quot;);
     return 0;
 }
-</code></pre><p>对比代码，可以看出，当前断点的call调用的的确是system(“pause”)，下面的push 3和push 4为func_A的参数</p>
-<p>那么在压入3和4参数之后就会进行调用call，继续运行，然后回车，回车后程序就继续运行到了第二个暂停，同样点击暂停，按k，右击显示调用</p>
+</code></pre><p>对比代码，可以看出，当前断点的call调用的的确是<code>system(&quot;pause&quot;)</code>，下面的<code>push 3</code>和<code>push 4</code>为<code>func_A</code>的参数</p>
+<p>那么在压入3和4参数之后就会进行调用call，继续运行，然后回车，回车后程序就继续运行到了第二个暂停，同样点击暂停，按<code>k</code>，右击显示调用</p>
 <p><img src="Image/5.png" alt=""></p>
 <p>上下观察一下位置，发现在刚刚main函数领空的边上</p>
 <p>然后看下面的压栈操作，非常明显是这句程序</p>
@@ -701,7 +701,7 @@ int main(int argc, char **argv, char **envp)
 004010A8  |.  50            push eax
 004010A9  |.  8B4D 08       mov ecx,[arg.1]
 004010AC  |.  51            push ecx
-</code></pre><p>继续运行，但是因为程序没有在func_B暂停，所以分析这里差不多就结束了</p>
+</code></pre><p>继续运行，但是因为程序没有在<code>func_B</code>暂停，所以分析这里差不多就结束了</p>
 
 </body>
 </html>

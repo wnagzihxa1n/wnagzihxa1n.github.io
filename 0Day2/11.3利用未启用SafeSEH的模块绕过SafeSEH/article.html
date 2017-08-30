@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>11.3Bypass SafeSEH through jumping into No_SafeSEH module</title>
+<title>利用未启用SafeSEH的模块绕过SafeSEH</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="bypass-safeseh-through-jumping-into-no_safeseh-module">Bypass SafeSEH through jumping into No_SafeSEH module</h1>
+<h1 id="-safeseh-safeseh">利用未启用SafeSEH的模块绕过SafeSEH</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <p>当异常处理函数位于加载模块内，但是未启用SafeSEH，而且不是仅包含IL，校验函数就会通过校验</p>
 <p>那接下来我们就可以构造一个dll，利用里面的指令来实现跳转</p>

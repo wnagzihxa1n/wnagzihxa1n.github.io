@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>4.2A stack overflow bug for exploit practice</title>
+<title>一个栈溢出攻击练习</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="a-stack-overflow-bug-for-exploit-practice">A stack overflow bug for exploit practice</h1>
+<h1 id="-">一个栈溢出攻击练习</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include&lt;iostream.h&gt;
 #include&lt;winsock2.h&gt;
@@ -534,7 +534,7 @@ void main()
 <p><img src="Image/1.png" alt=""></p>
 <p>然后重新载入运行起来，运行起来后就不用管这里了</p>
 <p>我使用的是kali作为攻击者</p>
-<p>这是exploit，保存为rb文件exploits/failwest/test.rb</p>
+<p>这是exploit，保存为rb文件<code>exploits/failwest/test.rb</code></p>
 <pre><code>require &#39;msf/core&#39; 
 
 class Metasploit3 &lt; Msf::Exploit::Remote 
@@ -678,7 +678,7 @@ cmd =&gt; calc
 exitfunc =&gt; seh
 </code></pre><p>利用</p>
 <pre><code>msf exploit(test) &gt; exploit
-</code></pre><p>然后回到xp，可以看到已经收到信息并且断在了msg_display()函数入口</p>
+</code></pre><p>然后回到xp，可以看到已经收到信息并且断在了<code>msg_display()</code>函数入口</p>
 <p>F9走一个，断在了<code>strcpy()</code>下面，也就是完成了溢出</p>
 <p><img src="Image/3.png" alt=""></p>
 <pre><code>0012FB60   CCCCCCCC  烫烫
@@ -717,7 +717,7 @@ EIP 77E1F2C8 advapi32.77E1F2C8
 <p><img src="Image/7.png" alt=""></p>
 <p>然后F8单步</p>
 <p><img src="Image/8.png" alt=""></p>
-<p>可以看到解码的代码，所以，按照上一篇文章讲的，在cld下断点然后F9就行了</p>
+<p>可以看到解码的代码，所以，按照上一篇文章讲的，在<code>cld</code>下断点然后F9就行了</p>
 <p><img src="Image/9.png" alt=""></p>
 <p>最后可以看到计算器弹出来了</p>
 <p><img src="Image/10.png" alt=""></p>
@@ -752,7 +752,7 @@ s.close()
 <p>运行，看到溢出的<code>jmp esp</code>在返回地址处</p>
 <p>继续F8，来到shellcode的领空</p>
 <p><img src="Image/12.png" alt=""></p>
-<p>熟悉的cld</p>
+<p>熟悉的<code>cld</code></p>
 <p>F9，看到了弹窗</p>
 <p><img src="Image/13.png" alt=""></p>
 <p>回车后就成功退出了</p>

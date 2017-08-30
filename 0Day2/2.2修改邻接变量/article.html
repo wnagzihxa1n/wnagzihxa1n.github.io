@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2.2Nearby var overrun in stack</title>
+<title>修改邻接变量</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="nearby-var-overrun-in-stack">Nearby var overrun in stack</h1>
+<h1 id="-">修改邻接变量</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;windows.h&gt;
@@ -528,29 +528,29 @@ int main(int argc, char **argv, char **envp)
 system(&quot;pause&quot;);
 printf(&quot;please input password:       &quot;);
 </code></pre><p><img src="Image/4.png" alt=""></p>
-<p>往下走，这是调用scanf的代码，从调用名就可以看出来，或者看到上面压了一个%s到栈里也可以判断，输入七个“q”</p>
+<p>往下走，这是调用scanf的代码，从调用名就可以看出来，或者看到上面压了一个<code>%s</code>到栈里也可以判断，输入七个<code>q</code></p>
 <pre><code>scanf(&quot;%s&quot;, password);
 </code></pre><p><img src="Image/5.png" alt=""></p>
-<p>回车继续，发现暂停了，暂停的位置在verify_password()</p>
+<p>回车继续，发现暂停了，暂停的位置在<code>verify_password()</code></p>
 <p>到了判断密码的函数了，C语言代码如下：</p>
 <pre><code>printf(&quot;call the verify_password()\n&quot;);
 system(&quot;pause&quot;);
 </code></pre><p><img src="Image/6.png" alt=""></p>
-<p>调用verify_password();</p>
+<p>调用<code>verify_password()</code></p>
 <pre><code>valid_flag = verify_password(password);
 </code></pre><p><img src="Image/8.png" alt=""></p>
 <p>继续回车，碰到pause，依旧暂停，点击k</p>
 <p><img src="Image/9.png" alt=""></p>
-<p>这是verify_password()函数的领空，这是刚才的pause</p>
+<p>这是<code>verify_password()</code>函数的领空，这是刚才的pause</p>
 <p><img src="Image/10.png" alt=""></p>
-<p>往下看，这个是调用strcmp的压栈操作，C语言代码：</p>
+<p>往下看，这个是调用<code>strcmp()</code>的压栈操作，C语言代码：</p>
 <pre><code>authenticated = strcmp(password, PASSWORD);
 </code></pre><p><img src="Image/11.png" alt=""></p>
 <p>回车走下去，碰到pause，依旧暂停找调用</p>
 <p><img src="Image/12.png" alt=""></p>
 <p>调用pause的位置</p>
 <p><img src="Image/13.png" alt=""></p>
-<p>往下拉，这是strcpy，C语言代码：</p>
+<p>往下拉，这是<code>strcpy()</code>，C语言代码：</p>
 <pre><code>strcpy(buffer, password);
 </code></pre><p><img src="Image/14.png" alt=""></p>
 <p>然后再回车其实就没了</p>
@@ -599,16 +599,16 @@ int main(int argc, char **argv, char **envp)
 <p><img src="Image/18.png" alt=""></p>
 <p>这是main函数的领空</p>
 <p><img src="Image/19.png" alt=""></p>
-<p>这是调用scanf函数</p>
+<p>这是调用<code>scanf()</code>函数</p>
 <pre><code>scanf(&quot;%s&quot;, password);
 </code></pre><p><img src="Image/20.png" alt=""></p>
-<p>F8单步走下来，开始调用verify_password()，F7单步跟入</p>
+<p>F8单步走下来，开始调用<code>verify_password()</code>，F7单步跟入</p>
 <p><img src="Image/21.png" alt=""></p>
 <p>碰到跳转，继续单步</p>
 <p><img src="Image/22.png" alt=""></p>
 <p>单步走下来注意看栈里的变化</p>
 <p><img src="Image/23.png" alt=""></p>
-<p>单步走到这，这是将strcmp比较的结果赋值给authenticated变量</p>
+<p>单步走到这，这是将<code>strcmp()</code>比较的结果赋值给<code>authenticated</code>变量</p>
 <p>同时注意栈里的变化</p>
 <p><img src="Image/24.png" alt=""></p>
 <pre><code>0012FB14   CCCCCCCC  烫烫
@@ -628,7 +628,7 @@ int main(int argc, char **argv, char **envp)
 0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
 0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqq&quot;
 0012FB30  |0012B74C  L?.
-</code></pre><p>然后就是调用strcpy进行复制，依旧要注意栈的变化</p>
+</code></pre><p>然后就是调用<code>strcpy()</code>进行复制，依旧要注意栈的变化</p>
 <p><img src="Image/25.png" alt=""></p>
 <p>栈变化</p>
 <pre><code>0012FB14   CCCCCCCC  烫烫
@@ -640,10 +640,10 @@ int main(int argc, char **argv, char **envp)
 0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqq&quot;
 0012FB30  |0012B74C  L?.
 </code></pre><p><img src="Image/26.png" alt=""></p>
-<p>好了，到这里大概就清楚了流程，可以看到authenticated变量在内存中的位置刚好在buffer数组下面，如果buffer数组过长就会覆盖authenticated变量的值</p>
+<p>好了，到这里大概就清楚了流程，可以看到<code>authenticated</code>变量在内存中的位置刚好在buffer数组下面，如果buffer数组过长就会覆盖<code>authenticated</code>变量的值</p>
 <p>取消其它所有断点，只在</p>
 <pre><code>00401054    E8 17010000     call stack_ov.strcpysgzeHeaderListle_pag&gt;
-</code></pre><p>下一个断点，重新运行起来，输入8个q</p>
+</code></pre><p>下一个断点，重新运行起来，输入8个<code>q</code></p>
 <p><img src="Image/27.png" alt=""></p>
 <p>回车，注意栈</p>
 <pre><code>0012FB14   CCCCCCCC  烫烫
@@ -663,11 +663,11 @@ int main(int argc, char **argv, char **envp)
 0012FB28  |004010EB  ?@.   返回到 stack_ov.004010EB 来自 stack_ov.00401005
 0012FB2C  |0012FB7C  |?.   ASCII &quot;qqqqqqqq&quot;
 0012FB30  |0012B74C  L?.
-</code></pre><p>已经覆盖掉了authenticated变量，返回的结果为0，因为字符串会在最后面加上一个结束符</p>
-<p>而buffer定义的时候只有8字节，所以8个q加上结束符，结束符就会覆盖authenticated变量在内存中的位置</p>
+</code></pre><p>已经覆盖掉了<code>authenticated</code>变量，返回的结果为<code>0</code>，因为字符串会在最后面加上一个结束符</p>
+<p>而buffer定义的时候只有8字节，所以8个<code>q</code>加上结束符，结束符就会覆盖<code>authenticated</code>变量在内存中的位置</p>
 <p><img src="Image/28.png" alt=""></p>
-<p>至于最后留下的关于输入比&quot;1234567&quot;小的字符串的问题，挺有意思的</p>
-<p>先在调用strcpy的地方下断点，重新载入，F9运行，输入&quot;01234567&quot;，观察栈的变化</p>
+<p>至于最后留下的关于输入比<code>1234567</code>小的字符串的问题，挺有意思的</p>
+<p>先在调用<code>strcpy()</code>的地方下断点，重新载入，F9运行，输入<code>01234567</code>，观察栈的变化</p>
 <p><img src="Image/29.png" alt=""></p>
 <p>如图右击，修改堆栈值，F9继续运行</p>
 <p><img src="Image/30.png" alt=""></p>

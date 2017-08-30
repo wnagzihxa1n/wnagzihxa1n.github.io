@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>11.4Bypass SafeSEH through jumping into outside memory of loaded modules</title>
+<title>利用加载模块之外的地址绕过SafeSEH</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -468,7 +468,7 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="bypass-safeseh-through-jumping-into-outside-memory-of-loaded-modules">Bypass SafeSEH through jumping into outside memory of loaded modules</h1>
+<h1 id="-safeseh">利用加载模块之外的地址绕过SafeSEH</h1>
 <p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <p>当异常处理函数在加载模块外时，SafeSEH是直接校验通过的</p>
 <p>所以如果我们能找到一个跳转指令位于加载模块外，就可以绕过SafeSEH的校验</p>

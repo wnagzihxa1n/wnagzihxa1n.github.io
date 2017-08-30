@@ -468,329 +468,179 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="2015xctf-rctf-where">2015XCTF&amp;RCTF-where</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h1 id="2015xctf-rctf">2015XCTF-RCTF</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <h2 id="0x00-">0x00 前言</h2>
-<p>2015XCTF福州站的第二道Mobile题，分值200</p>
+<p>2015XCTF福州站的第一道Mobile题，同时也是RCTF的题目，100分</p>
 <h2 id="0x01-">0x01 分析</h2>
-<p>想到第一题才100分就那么折腾，这题估计好不到哪里去</p>
-<p>使用JEB反编译，发现逻辑很是简单</p>
-<p><img src="Image/1.png" alt=""></p>
-<p>输入用户名和密码，长度要想等，用户名和密码的逆序串相等则输出字符串</p>
-<p>返回Flag</p>
-<p><img src="Image/2.png" alt=""></p>
-<p>Oops，出题的大佬良心发现故意来个简单的？？？？？？</p>
-<p><strong>Too simple sometimes naive</strong></p>
-<p><img src="Image/3.png" alt=""></p>
-<p>看文件夹结构</p>
-<pre><code>│  AndroidManifest.xml
-│  classes.dex
-│  resources.arsc
-│  
-├─assets
-│      abc
-│      flag
-│      
-├─META-INF
-│      CERT.RSA
-│      CERT.SF
-│      MANIFEST.MF
-│      y
-│      
-└─res
-......
-    │      
-    └─menu
-            main.xml
-</code></pre><p>删了一些布局文件，不然长的没天理了</p>
-<p>发现有两处看起来值得注意的，一个是<code>assets</code>文件夹，一个是签名文件夹下的<code>y</code></p>
-<p>熟悉Dex文件结构的同学应该很清楚这是<code>abc</code>文件其实就是Dex的Dex Header，从长度来看很清楚的<code>0x70</code></p>
-<p><img src="Image/4.png" alt=""></p>
-<p>再看<code>y</code>，看不出是什么，我就想：&quot;<code>y</code>会不会是Dex后面的数据，出题人把它拆分了&quot;，但是怎么都合不上</p>
-<p><img src="Image/5.png" alt=""></p>
-<p>到这里，思路真的就断了</p>
-<p>期间喝了四杯香飘飘</p>
-<p>本以为一杯草莓味的就可以有思路</p>
-<p>一杯又一杯</p>
-<p>四杯就喝完了</p>
-<p>晚上又啃了一只脆皮鸡</p>
-<p>外脆里嫩，一口咬下去还有油滋出来</p>
-<p>就在吃完的时候，想到了一个思路</p>
-<p>y会不会是加密了</p>
-<p>就这几个字节还加密？？？？？？</p>
-<p>当我看着<code>y</code>发呆的时候，突然。。。。。。</p>
-<p><img src="Image/6.png" alt=""></p>
-<p>按照常理，这个应该只有1kb左右</p>
-<p>这个为什么这么大？？？？？？</p>
-<p>由于一直对前面的Dex Header念念不忘，<strong>抱着打死出题人也要找出Dex后面数据的决心</strong>，做了一个大胆的猜测，Dex后面的数据肯定在这里！！！！！！</p>
-<p>找到1kb左右偏移的地方，左边偏移是十进制形式</p>
-<p><img src="Image/7.png" alt=""></p>
-<p>看到了关键的字眼<code>KEY=Misc@inf0#fjhx11</code>，这可能是在告诉我们秘钥</p>
-<p>接下来进入高潮<code>DEX=</code>，这个意味着后面的数据就是Dex Header以后的数据，再结合前面的KEY，说明这一片数据应该是被加密了，熟悉Dex格式的同学应该清楚Dex Header后面是String Ids，是一片很整齐的数据，而这里乱七八糟的，明显是加密了</p>
-<p>我们把它拷贝出来，就在看最后的数据长度的时候，发现另一个关键信息<code>aes-128-cbc</code></p>
-<p><img src="Image/8.png" alt=""></p>
-<p>这是在告诉我们加密方式</p>
-<p>接下去这一步就看个人了，搞过openssl的同学肯定记得这个，虽然到现在我也不知道到底<code>help</code>是哪个命令</p>
-<pre><code>[root@tot0c /home/wnagzihxain]# openssl -h
-openssl:Error: &#39;-h&#39; is an invalid command.
+<p>第一个坑，先判断这是个啥玩意，file没看出来，但是应该是有的</p>
+<pre><code>wnagzihxain@toT0C:~$ file 2e204fe0ec33b1689f1c47bd60a9770c
+2e204fe0ec33b1689f1c47bd60a9770c: data
+</code></pre><p>后来查看16进制格式，才发现这是个Android Backup文件</p>
+<p>能搜到搞这玩意的文章确实是不多，这里根据外国网友提供的方法，我们来一发</p>
+<pre><code>wnagzihxain@toT0C:~$ dd if=2e204fe0ec33b1689f1c47bd60a9770c.ab bs=1 skip=24 of=compressed
+记录了8977280+0 的读入
+记录了8977280+0 的写出
+8977280 bytes (9.0 MB, 8.6 MiB) copied, 96.922 s, 92.6 kB/s
+wnagzihxain@toT0C:~$ printf &quot;\x1f\x8b\x08\x00\x00\x00\x00\x00&quot; | cat - compressed | gunzip -c &gt; decompressed.tar
+gzip: stdin: unexpected end of file
+wnagzihxain@toT0C:~$ tar xf decompressed.tar
+</code></pre><p>解压生成一个<code>apps</code>文件夹，查看一下文件树，发现有一个<code>BOOKS.db</code>，这一定是个关键文件</p>
+<pre><code>wnagzihxain@toT0C:~$ tree apps
+apps
+├── com.example.mybackup
+│   ├── a
+│   │   └── com.example.mybackup-1.apk
+│   ├── db
+│   │   └── BOOKS.db
+│   ├── f
+│   │   └── icu
+│   │       └── icudt46l.dat
+│   └── _manifest
+└── com.example.zi
+    ├── a
+    │   └── com.example.zi-2.apk
+    └── _manifest
 
-Standard commands
-asn1parse         ca                ciphers           cms               
-crl               crl2pkcs7         dgst              dh                
-dhparam           dsa               dsaparam          ec                
-ecparam           enc               engine            errstr            
-gendh             gendsa            genpkey           genrsa            
-nseq              ocsp              passwd            pkcs12            
-pkcs7             pkcs8             pkey              pkeyparam         
-pkeyutl           prime             rand              req               
-rsa               rsautl            s_client          s_server          
-s_time            sess_id           smime             speed             
-spkac             srp               ts                verify            
-version           x509              
-
-Message Digest commands (see the `dgst&#39; command for more details)
-md4               md5               rmd160            sha               
-sha1              
-
-Cipher commands (see the `enc&#39; command for more details)
-aes-128-cbc       aes-128-ecb       aes-192-cbc       aes-192-ecb       
-aes-256-cbc       aes-256-ecb       base64            bf                
-bf-cbc            bf-cfb            bf-ecb            bf-ofb            
-camellia-128-cbc  camellia-128-ecb  camellia-192-cbc  camellia-192-ecb  
-camellia-256-cbc  camellia-256-ecb  cast              cast-cbc          
-cast5-cbc         cast5-cfb         cast5-ecb         cast5-ofb         
-des               des-cbc           des-cfb           des-ecb           
-des-ede           des-ede-cbc       des-ede-cfb       des-ede-ofb       
-des-ede3          des-ede3-cbc      des-ede3-cfb      des-ede3-ofb      
-des-ofb           des3              desx              rc2               
-rc2-40-cbc        rc2-64-cbc        rc2-cbc           rc2-cfb           
-rc2-ecb           rc2-ofb           rc4               rc4-40            
-seed              seed-cbc          seed-cfb          seed-ecb          
-seed-ofb
-</code></pre><p>所以看到<code>aes-128-cbc</code>我的第一想法就是openssl</p>
-<p>我们把最后面的<code>aes-128-cbc</code>删掉，使用openssl解密</p>
-<pre><code>[root@tot0c /home/wnagzihxain]# openssl aes-128-cbc -d -k &quot;Misc@inf0#fjhx11&quot; -nosalt -in encDexBody -out decDexBody
-</code></pre><p>解密后的数据就很漂亮了</p>
-<p><img src="Image/9.png" alt=""></p>
-<p>将解密后的的数据拼接到abc文件后面，使用JEB打开，提示不是有效Dex文件</p>
-<p>其它工具解析也是类似错误</p>
-<p>使用010Editor的模板功能分析</p>
-<p>红框内全是0，需要我们手动修复一下</p>
-<p><img src="Image/10.png" alt=""></p>
-<p>首先我们找一个正常的dex.classes文件，用010Editor解析一下</p>
-<p><img src="Image/11.png" alt=""></p>
-<p>列一下Dex Header的数据，因为是小端序，所以真实的数据应该是后面这种形式</p>
-<pre><code>Magic Number   : 6465780A30333500
-checksum       : F2F21D17---&gt;0x171DF2F2
-signature      : EF460EE1CAD15E850483A631BE08972BB135F3A2
-file size      : 30D11300---&gt;0x0013D130
-header size    : 70000000---&gt;0x00000070
-endian tag     : 78563412---&gt;0x12345678
-link size      : 00000000---&gt;0x00000000
-link off       : 00000000---&gt;0x00000000
-map off        : 60F40200---&gt;0x0002F460
-string_ids size: 69240000---&gt;0x00002469
-string_ids off : 70000000---&gt;0x00000070
-type_ids size  : 8A040000---&gt;0x0000048A
-type_ids off   : 14920000---&gt;0x00009214
-proto_ids size : 4C060000---&gt;0x0000064C
-proto_ids off  : 3CA40000---&gt;0x0000A43C
-field_ids size : D80D0000---&gt;0x00000DD8
-field_ids off  : CCEF0000---&gt;0x0000EFCC
-method_ids size: 14220000---&gt;0x00002214
-method_ids off : 8C5E0100---&gt;0x00015E8C
-class_defs size: E4020000---&gt;0x000002E4
-class_defs off : 2C6F0200---&gt;0x00026F2C
-data size      : D0DC1000---&gt;0x0010DCD0
-data off       : 60F40200---&gt;0x0002F460
-</code></pre><p>前面那些可以不在意，我们关注<code>_ids size</code>和<code>_ids off</code>这种数据</p>
-<p>首先是<code>string_ids</code>，起始偏移为<code>0x00000070</code>，紧跟着Dex Header，长度是<code>0x00002469 * 4</code>字节</p>
-<pre><code>string_ids size: 69240000---&gt;0x00002469
-string_ids off : 70000000---&gt;0x00000070
-</code></pre><p>再看<code>type_ids</code>，起始偏移为<code>0x00009214</code>，<code>(0x00009214 - 0x00000070) / 4</code>刚好是<code>0x00002469</code></p>
-<pre><code>type_ids size  : 8A040000---&gt;0x0000048A
-type_ids off   : 14920000---&gt;0x00009214
-</code></pre><p>再来看一组<code>proto_ids</code>，<code>(0x0000A43C - 0x00009214) / 4</code>是<code>0x0000048A</code></p>
-<pre><code>proto_ids size : 4C060000---&gt;0x0000064C
-proto_ids off  : 3CA40000---&gt;0x0000A43C
-</code></pre><p>我们正向算一次，<code>(0x0000A43C + 0x0000064C * 12)</code>是<code>0x0000EFCC</code>，这里长度是12是因为它的结构数据长度是12个字节</p>
-<pre><code>field_ids size : D80D0000---&gt;0x00000DD8
-field_ids off  : CCEF0000---&gt;0x0000EFCC
-</code></pre><p>对照着这种方法来修复一下刚才合成Dex文件</p>
-<pre><code>Magic Number   : 6465780A30333500
-checksum       : A3884319---&gt;0x194388A3
-signature      : C2877A0143D4146CACDE1A8BAEEF0C8C06A135E6
-file size      : F0491500---&gt;0x001549F0
-header size    : 70000000---&gt;0x00000070
-endian tag     : 78563412---&gt;0x12345678
-link size      : 00000000---&gt;0x00000000
-link off       : 00000000---&gt;0x00000000
-map off        : 94F80200---&gt;0x0002F894
-string_ids size: 00000000---&gt;0x00000000
-string_ids off : 70000000---&gt;0x00000070
-type_ids size  : 00000000---&gt;0x00000000
-type_ids off   : DC910000---&gt;0x000091DC
-proto_ids size : 00000000---&gt;0x00000000
-proto_ids off  : ECA30000---&gt;0x0000A3EC
-field_ids size : 00000000---&gt;0x00000000
-field_ids off  : 28EF0000---&gt;0x0000EF28
-method_ids size: 00000000---&gt;0x00000000
-method_ids off : B85D0100---&gt;0x00015DB8
-class_defs size: E2020000---&gt;0x000002E2
-class_defs off : C86D0200---&gt;0x00026DC8
-data size      : 5C511200---&gt;0x001251C5
-data off       : 94F80200---&gt;0x0002F894
-</code></pre><p>然后我们噼里啪啦一通啪啪啪(此处是按计算器的拟声词)算</p>
-<pre><code>string_ids size = (0x000091DC - 0x00000070) / 4  = 0x0000245B
-type_ids size   = (0x0000A3EC - 0x000091DC) / 4  = 0x00000484
-proto_ids size  = (0x0000EF28 - 0x0000A3EC) / 12 = 0x00000645
-field_ids size  = (0x00015DB8 - 0x0000EF28) / 8  = 0x00000DD2
-method_ids size = (0x00026DC8 - 0x00015DB8) / 8  = 0x00002202
-</code></pre><p>现在就已经计算完所有需要计算的数据了</p>
-<p>如果不想算，还有一个办法，就是maps数据</p>
-<p>正常的Dex文件maps数据，12个字节为一个item</p>
-<p><img src="Image/12.png" alt=""></p>
-<p>把合成的Dex文件maps段数据拷贝出来，整理一下</p>
-<pre><code>11000000---&gt;0x00000011
-0000-0000-01000000-00000000
-0100-0000-5B240000-70000000
-0200-0000-84040000-DC910000
-0300-0000-45060000-ECA30000
-0400-0000-D20D0000-28EF0000
-0500-0000-02220000-B85D0100
-0600-0000-E2020000-C86D0200
-0010-0000-01000000-94F80200
-0110-0000-D3030000-70F90200
-0310-0000-11030000-60220300
-0020-0000-CC020000-D0420300
-0120-0000-B6150000-9C5C0400
-0220-0000-5B240000-B8E60B00
-0320-0000-B6150000-745E0F00
-0420-0000-6D030000-E4141400
-0520-0000-7A000000-F4C01400
-0620-0000-5B020000-E8181500
-</code></pre><p>对比就可以发现其实这里就有我们需要的数据，而且已经计算好了</p>
-<p>将计算出来的偏移填充进去，注意是小端序</p>
-<p>修复完如下，可以直接修改010Editor右边窗口的数据，左边会自动修改为小端序</p>
-<p><img src="Image/13.png" alt=""></p>
-<p>使用JEB打开修复后的Dex文件</p>
-<p><img src="Image/14.png" alt=""></p>
-<p>发现<code>onCreate()</code>方法反编译失败</p>
-<p>查看对应的smali代码</p>
-<p><img src="Image/15.png" alt=""></p>
-<p>发现<code>onCreate()</code>方法的代码是<code>nop</code>，鉴于其它方法都是正常的，那么这里明显是被抽走了，搞过加固的同学肯定眼熟这种形式，运行时动态恢复指令，但是这里没有so，明显不是</p>
-<p>踌躇之际，我突然想到还有一个<code>y</code>，长度是<code>0x94</code></p>
-<p><img src="Image/16.png" alt=""></p>
-<p>再看这里<code>nop</code>指令长度</p>
-<pre><code>.method protected onCreate(Bundle)V
-          .registers 8
-          .param p1, &quot;savedInstanceState&quot;
-00000000  nop
-          .prologue
-00000002  nop
-00000004  nop
-00000006  nop
-00000008  nop
-0000000A  nop
-0000000C  nop
-0000000E  nop
-00000010  nop
-00000012  nop
-00000014  nop
-00000016  nop
-00000018  nop
-0000001A  nop
-0000001C  nop
-0000001E  nop
-00000020  nop
-          .local v1, &quot;strb&quot;:Ljava/lang/StringBuilder;
-00000022  nop
-00000024  nop
-00000026  nop
-00000028  nop
-0000002A  nop
-0000002C  nop
-0000002E  nop
-00000030  nop
-00000032  nop
-00000034  nop
-00000036  nop
-00000038  nop
-0000003A  nop
-0000003C  nop
-0000003E  nop
-00000040  nop
-00000042  nop
-00000044  nop
-00000046  nop
-00000048  nop
-0000004A  nop
-0000004C  nop
-0000004E  nop
-00000050  nop
-00000052  nop
-00000054  nop
-00000056  nop
-00000058  nop
-0000005A  nop
-0000005C  nop
-0000005E  nop
-00000060  nop
-00000062  nop
-00000064  nop
-          .local v0, &quot;flag&quot;:Ljava/lang/String;
-00000066  nop
-00000068  nop
-0000006A  nop
-0000006C  nop
-0000006E  nop
-00000070  nop
-00000072  nop
-00000074  nop
-00000076  nop
-00000078  nop
-0000007A  nop
-0000007C  nop
-0000007E  nop
-00000080  nop
-00000082  nop
-00000084  nop
-00000086  nop
-00000088  nop
-0000008A  nop
-0000008C  nop
-0000008E  nop
-00000090  nop
-00000092  nop
-.end method
-</code></pre><p>长度也是<code>0x94</code>，一条指令2字节长度，最后<code>0x92 + 2</code></p>
-<p>那么<code>y</code>就应该是被抽走的<code>onCreate()</code>方法的指令</p>
-<p>使用IDA打开Dex，找到对应的偏移<code>0x00097390</code></p>
-<p><img src="Image/17.png" alt=""></p>
-<p>找到偏移后，使用Winhex找到Dex文件对应的偏移</p>
-<p><img src="Image/18.png" alt=""></p>
-<p>一大片空白，将<code>y</code>的数据拷贝进去</p>
-<p><img src="Image/19.png" alt=""></p>
-<p>保存之后使用JEB打开最终的Dex文件</p>
-<p><img src="Image/20.png" alt=""></p>
-<p>写下代码跑出Flag</p>
-<pre><code>public class Main {
-    public static void main(String[] args) throws Exception{
-        String seed = &quot;m3ll0t_yetFLag&quot;;
-        StringBuilder v1 = new StringBuilder(seed);
-        v1.replace(0, 1, &quot;h&quot;);
-        v1.replace(5, 6, &quot;2&quot;);
-        v1.replace(10, 11, &quot;f&quot;);
-        v1.replace(7, 8, &quot;G&quot;);
-        System.out.println(v1.toString());
+7 directories, 6 files
+</code></pre><p>再翻其余文件夹，发现有两个APK文件，在反编译查看代码后，确定<code>com.example.mybackup</code>这个比较有用</p>
+<p>在简单的分析过后，可以确定的是，这个<code>BOOKS.db</code>用了sqlcipher加密了，秘钥的生成方式如下</p>
+<pre><code>public BooksDB(Context context) {
+    super(context, DATABASE_NAME, null, 1);
+    this.k = Test.getSign(context);
+}
+</code></pre><p><code>getSign()</code>方法如下</p>
+<pre><code>public static String getSign(Context context) {
+    for (PackageInfo packageinfo : context.getPackageManager().getInstalledPackages(64)) {
+        if (packageinfo.packageName.equals(context.getPackageName())) {
+            return SHA1(packageinfo.signatures[0].toCharsString());
+        }
+    }
+    return &quot;&quot;;
+}
+</code></pre><p>然后SHA1加密</p>
+<pre><code>public static String SHA1(String decript) {
+    try {
+        MessageDigest digest = MessageDigest.getInstance(&quot;SHA-1&quot;);
+        digest.update(decript.getBytes());
+        byte[] messageDigest = digest.digest();
+        StringBuffer hexString = new StringBuffer();
+        for (byte b : messageDigest) {
+            String shaHex = Integer.toHexString(b &amp; MotionEventCompat.ACTION_MASK);
+            if (shaHex.length() &lt; 2) {
+                hexString.append(0);
+            }
+            hexString.append(shaHex);
+        }
+        return hexString.toString();
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+        return &quot;&quot;;
     }
 }
-</code></pre><p>输出</p>
-<pre><code>h3ll02_GetfLag
-</code></pre><h2 id="0x02-">0x02 小结</h2>
-<p>这题我喜欢！！！！！！</p>
-<p>做出这题的成本 = 四杯奶茶 + 一只脆皮鸡 = 32(元)</p>
-<p>泡奶茶的五毛钱开水就不算了</p>
+</code></pre><p>那么我们只需要写个APP去获取即可，只需要把<code>getSign()</code>方法中间的<code>equals()</code>方法里的参数换成样本的包名即可</p>
+<p>然后获取到加密秘钥</p>
+<pre><code>320b42d5771df37906eee0fff53c49059122eeaf
+</code></pre><p>获取到秘钥，接下来写个APP去解密</p>
+<p>首先将样本里的lib文件拷贝到工程的jniLibs文件夹里，再从下面的地址下载对应的jar包，解压后将三个jar包放到libs文件夹下</p>
+<pre><code>https://www.zetetic.net/sqlcipher/
+</code></pre><p>各种搞定文件的结构应该是这样的</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>然后写代码</p>
+<pre><code>package com.wnagzihxain.myapplication;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.util.Log;
+
+import net.sqlcipher.database.SQLiteDatabase;
+import java.io.File;
+
+public class MainActivity extends Activity {
+
+    private final String SDcardPath = &quot;/mnt/sdcard/&quot;;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        SQLiteDatabase.loadLibs(this);//引用SQLiteDatabase的方法之前必须先添加这句代码
+        decrypt(&quot;BOOKS.db&quot;, &quot;decryptedtest.db&quot;, &quot;320b42d5771df37906eee0fff53c49059122eeaf&quot;);
+    }
+
+    /**
+     * 解密数据库
+     * @param encryptedName 要解密的数据库名称
+     * @param decryptedName 解密后的数据库名称
+     * @param key 密码
+     */
+    private void decrypt(String encryptedName, String decryptedName, String key) {
+        try {
+            File databaseFile = getDatabasePath(SDcardPath + encryptedName);
+            SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseFile, key, null);
+            if (database != null) {
+                database.close();
+            }
+            database = SQLiteDatabase.openDatabase(databaseFile.toString(), key, null, SQLiteDatabase.OPEN_READWRITE);
+            File decrypteddatabaseFile = getDatabasePath(SDcardPath + decryptedName);
+            //连接到解密后的数据库，并设置密码为空
+            database.rawExecSQL(String.format(&quot;ATTACH DATABASE &#39;%s&#39; as &quot;+ decryptedName.split(&quot;\\.&quot;)[0] +&quot; KEY &#39;&#39;;&quot;, decrypteddatabaseFile.getAbsolutePath()));
+            database.rawExecSQL(&quot;SELECT sqlcipher_export(&#39;&quot;+ decryptedName.split(&quot;\\.&quot;)[0] + &quot;&#39;);&quot;);
+            database.rawExecSQL(&quot;DETACH DATABASE &quot;+ decryptedName.split(&quot;\\.&quot;)[0] + &quot;;&quot;);
+            SQLiteDatabase decrypteddatabase = SQLiteDatabase.openOrCreateDatabase(decrypteddatabaseFile, &quot;&quot;, null);
+            decrypteddatabase.close();
+            database.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre><p>添加权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+</code></pre><p>先把<code>BOOKS.db</code>文件push到<code>/sdcard/</code>路径下，然后运行APP，即可在<code>/sdcard/</code>下看到解密后的数据库文件，最后pull到本地</p>
+<pre><code>root@jflte:/sdcard # ls | grep &quot;.db&quot;
+BOOKS.db
+root@jflte:/sdcard # ls | grep &quot;.db&quot;
+BOOKS.db
+decryptedtest.db
+root@jflte:/sdcard # exit
+C:\Users\wangz&gt;adb pull /sdcard/decryptedtest.db C:\Users\wangz\Desktop
+[100%] /sdcard/decryptedtest.db
+</code></pre><p>使用sqlcipher.exe可视化工具打开</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>再结合要求，Flag：RCTF{backuuuuuP}</p>
+<h2 id="0x02-">0x02 小结</h2>
+<p>老铁，真的就这么简单吗？</p>
+<p>按理说到这里瞎扯两句<code>有兴趣的同学可以跟着玩玩</code>就行了，但我不！！！！！！</p>
+<p>我要把我的扎心经历讲粗来！！！！！！</p>
+<p>上面那么顺畅的解题过程问人间哪里有？？？？？？</p>
+<p>首先知道这是Android BackUp文件倒不是很难，因为十六进制看Magic Number一下子就看出来了</p>
+<p>难的地方在哪里，如何解压是个问题，一开始我并不熟悉这个文件的格式，所以在Github上找了个工具来解压</p>
+<pre><code>https://github.com/nelenkov/android-backup-extractor
+</code></pre><p>然而这玩意并不能解压给的<code>BOOKS.db</code>，问了某老铁才知道，因为只支持到v3，然而作者把这个字段改了一下。。。。。。</p>
+<p>改成3，继续解压，依旧不行，后来才知道，Compressed那个字段要改成1，作者也改了。。。。。。</p>
+<p>后来直接在Google上找了老外写的方法，一下子就搞出来了</p>
+<p>也就是上面写的方法</p>
+<p>解压出了文件之后，解密<code>BOOKS.db</code>是一个大问题</p>
+<p>作为一个开发者，第一想法是写个APP，用sqlcipher库去解密给的<code>BOOKS.db</code></p>
+<p>但是莫名不想写</p>
+<p>于是想着，网上应该有对这种数据库加密的解密工具吧，于是找啊找</p>
+<p>还真的找到了，凭借着神一般的记忆力，我给列一下</p>
+<ul>
+<li>CSDN---某命令行工具2.0版本，解密出错</li><li>CSDN---某命令行工具3.0版本，解密出错</li><li>Github---某需要自行编译的工具<ul>
+<li>32位Ubuntu编译出错，一直以为是编译环境问题</li><li>64位Ubuntu编译成功，解密出错</li></ul>
+</li><li>某可视化数据库查看工具---解密出错</li><li>还有好几个需要自己编译的。。。。。。</li></ul>
+<p>两天就这么过去了。。。。。。</p>
+<p>想了想，我还是回归开发者吧</p>
+<p>东拼西凑，根据别人的代码写了个解密的APP</p>
+<p>然而一直<code>unable to open......</code></p>
+<p>后来发现，权限没给。。。。。。</p>
+<p>然后就搞出来了</p>
+<h2 id="references">References</h2>
+<ul>
+<li>How do you extract an App&#39;s data from a full backup made through “adb backup”?: <a href="http://android.stackexchange.com/questions/28481/how-do-you-extract-an-apps-data-from-a-full-backup-made-through-adb-backup">http://android.stackexchange.com/questions/28481/how-do-you-extract-an-apps-data-from-a-full-backup-made-through-adb-backup</a></li><li>安卓hacking Part 15: 使用备份技术黑掉安卓应用: <a href="http://bobao.360.cn/learning/detail/169.html">http://bobao.360.cn/learning/detail/169.html</a></li><li>使用SQLCipher对数据库加密: <a href="http://blog.csdn.net/small_lee/article/details/50971132">http://blog.csdn.net/small_lee/article/details/50971132</a></li><li>sqlcipher: <a href="https://github.com/sqlcipher/sqlcipher">https://github.com/sqlcipher/sqlcipher</a></li><li>利用SQLCipher加解密数据库（包括加解密已有的数据库）: <a href="http://blog.csdn.net/wjk343977868/article/details/53410738">http://blog.csdn.net/wjk343977868/article/details/53410738</a></li></ul>
 
 </body>
 </html>

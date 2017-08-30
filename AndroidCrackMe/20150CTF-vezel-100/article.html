@@ -468,111 +468,69 @@ vertical-align:1px;
 </style>
 </head>
 <body>
-<h1 id="20150ctf-vezel">20150CTF-vezel</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h1 id="20150ctf-simple">20150CTF-simple</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <h2 id="0x00-">0x00 前言</h2>
-<p>20150CTF的Mobile第一题，分值100</p>
+<p>20150CTF的Mobile第二题，分值150</p>
 <h2 id="0x01-">0x01 分析</h2>
-<p>JEB打开一瞧，没有so，想想0CTF分数动不动好几百的比赛，100分的题目还上so那就太不道德了，关键三段代码如下，非常简单</p>
-<pre><code>public void confirm(View v) {
-    if(&quot;0CTF{&quot; + String.valueOf(this.getSig(this.getPackageName())) + this.getCrc() + &quot;}&quot;.equals(
-            this.et.getText().toString())) {
-        Toast.makeText(((Context)this), &quot;Yes!&quot;, 0).show();
-    }
-    else {
-        Toast.makeText(((Context)this), &quot;0ops!&quot;, 0).show();
-    }
-}
+<p>Java层简单明了的写了从<code>res/raw</code>文件夹读取<code>flag.txt</code>，然后输入数据进行对比</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>对着目录找到<code>flag.txt</code></p>
+<p><img src="Image/2.png" alt=""></p>
+<p>Flag：0ctf{Too_Simple_Sometimes_Naive!!!}</p>
+<p>仿佛是在嘲笑我</p>
+<p>抱着<strong>打死不信出题人半个字</strong>的原则，输入APP验证，然而<code>Wrong</code></p>
+<p>发现有一个so文件</p>
+<p>IDA打开，发现有<code>.init_array</code>段，调用了<code>my_init()</code></p>
+<pre><code>__int64 my_init()
+{
+    int PID; // r0@3
+    __int64 v1; // ST00_8@3
 
-private String getCrc() {
-    String v1;
-    try {
-        v1 = String.valueOf(new ZipFile(this.getApplicationContext().getPackageCodePath()).getEntry(
-                &quot;classes.dex&quot;).getCrc());
-    }
-    catch(Exception v0) {
-        v0.printStackTrace();
-    }
-
+    j_j_set_logfunction(nullsub_2);
+    if ( CheckSig() )
+        j_j_exit(0);
+    PID = j_j_getpid();
+    j_j_hook(&amp;unk_6004, PID, &quot;libc.&quot;, &quot;read&quot;, CheckStrace, CheckPtrace, 0);
     return v1;
 }
+</code></pre><p>看着这命名，目测是签名验证反调试，然后有一个hook操作</p>
+<p>回想在Java层输入的Flag不正确，再结合这里，应该就是有坑，这个坑目测就是hook了某个函数</p>
+<p>再从传入的参数来看，应该是<code>read()</code></p>
+<p>于是就翻啊翻，找啊找，找到一个小朋友......</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>通常在自定义的函数里有异或操作往往说明这里是一个关键</p>
+<p>注意前面有一个<code>v5</code>，其中的两个参数用在了后面的异或操作中，<code>v3</code>可能是某数组的起始地址，<code>v10</code>可能是长度</p>
+<p>再进一步猜测，它是<code>read()</code>想到这里，我们把<code>dest[]</code>数组从so里拷贝出来</p>
+<p>这里有个小技巧，可以使用Winhex的拷贝功能，找到偏移后，右键用<code>C Source</code></p>
+<pre><code>unsigned AnsiChar data[35] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x1D, 0x1B, 0x48, 0x2C, 0x0C, 0x24, 0x02, 0x02, 0x09, 0x3A, 0x0B, 
+    0x3B, 0x0E, 0x03, 0x3A, 0x39, 0x0C, 0x08, 0x11, 0x00, 0x00, 0x1A, 0x09, 0x0C, 0x29, 0x20, 0x58, 
+    0x44, 0x00, 0x00
+};
+</code></pre><p>写个简单的脚本异或一下</p>
+<pre><code># coding = utf-8
 
-private int getSig(String packageName) {
-    int v4;
-    PackageManager v2 = this.getPackageManager();
-    int v5 = 64;
-    try {
-        v4 = v2.getPackageInfo(packageName, v5).signatures[0].toCharsString().hashCode();
-    }
-    catch(Exception v0) {
-        v0.printStackTrace();
-    }
+data = [
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x1D, 0x1B, 0x48, 0x2C, 0x0C, 0x24, 0x02, 0x02, 0x09, 0x3A, 0x0B, 
+    0x3B, 0x0E, 0x03, 0x3A, 0x39, 0x0C, 0x08, 0x11, 0x00, 0x00, 0x1A, 0x09, 0x0C, 0x29, 0x20, 0x58, 
+    0x44, 0x00, 0x00]
 
-    return v4;
-}
-</code></pre><p>首先是签名部分，有的同学会认为这里是<code>Dex Header</code>里的<code>SHA1 Signature</code>，不是的，这里计算出来是很长的一大串</p>
-<p>如果要算的话，我们写个APP去获取，代码如下（百度上临时找的）</p>
-<pre><code>package com.wnagzihxain.myapplication;
+old_flag = &quot;0ctf{Too_Simple_Sometimes_Naive!!!}&quot;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
+def main():
+    flag = []
+    for i in range(len(old_flag)):
+        flag.append(chr(ord(old_flag[i]) ^ data[i]))
+    print &quot;&quot;.join(flag)
 
-public class MainActivity extends AppCompatActivity {
-
-    private StringBuilder builder;
-
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        PackageManager manager = getPackageManager();
-        builder = new StringBuilder();
-        String pkgname = &quot;com.ctf.vezel&quot;;
-        boolean isEmpty = TextUtils.isEmpty(pkgname);
-        if (isEmpty) {
-            Toast.makeText(this, &quot;应用程序的包名不能为空！&quot;, Toast.LENGTH_SHORT);
-        } else {
-            try {
-                PackageInfo packageInfo = manager.getPackageInfo(pkgname, PackageManager.GET_SIGNATURES);
-                Signature[] signatures = packageInfo.signatures;
-                for (Signature signature : signatures) {
-                    builder.append(signature.toCharsString());
-                }
-                String signature = builder.toString();
-                Log.i(&quot;toT0C&quot;, signature);
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}
+if __name__ == &#39;__main__&#39;:
+    main()
 </code></pre><p>输出</p>
-<pre><code>04-01 23:35:12.497 5939-5939/com.wnagzihxain.myapplication I/toT0C: 308203473082022fa00302010202043920b637300d06092a864886f70d01010b05003054310b300906035504061302434e310b300906035504081302434e310b3009060355040713025348310d300b060355040a1304534a5455310d300b060355040b1304306f7073310d300b0603550403130430637466301e170d3135303330363035323930315a170d3430303232383035323930315a3054310b300906035504061302434e310b300906035504081302434e310b3009060355040713025348310d300b060355040a1304534a5455310d300b060355040b1304306f7073310d300b060355040313043063746630820122300d06092a864886f70d01010105000382010f003082010a0282010100dd03fbab4ce3ba02230cf7a6a756309c8a45ae25384fef3d4a293c1b298082aee969e689128bef54bd763bb5f1a20218d824ac934d86a97d4a17bff345e146bbe3d506246bb86766745da46d16bad78e692db746528dbbf365c15b8e529132631e2cc3970910fb58caa3d082ab419f61d9c80379b6b7b40b1458173871efcaf2e7f69ffc29521cbefc641461de8a799c88d359f0bed6c1fcda939c954fe117ae45888829b6a8ae12d566709b434f2f8ae0c13bd3fbd9a4492c1a09201521b8e8a299adc4b6e8a1adeb7a11a7aef4a9ae13806b11acc4da0d6c420450e073927f6d094e91b5a18e74beec3083f8ff95ce8fcb091a411db1e4d64a6733d4942c590203010001a321301f301d0603551d0e04160414c5f5c9198b5ccc546570fd243a268f50277d7e0d300d06092a864886f70d01010b05000382010100c77bcd399b74e42c2b97171a264492e8bbd47ba3871057d1bc902c5f207aa2609d80992d3702f3ed70f888faf0ea90421e57bf53ec7852af8c31e073788e7a0fc45f421d687a367361ae0643ee81acc8e47e2fda7b14cf633eb78bac43bd95c97519466c6f8c0e0f23a105b871958ae4c6e54997ea2034185a7eb46369657e4f4b1594ef8c9ead2fb74b85d60fcabe7764c57169c89b5d8da43103d619bb8002e9917751afe8572217f8e7f13f3f308659bd8bc8f95a23f351c62c617d9748e27789807022508daf4bfa1605b58986c4d67f254f3fd4dcad2d31059d304b304d6643e2d44a9265427b72d93e83b3fc4f5a803cb586764fa3e28863eaf29961c9
-</code></pre><p>算一下<code>hashCode()</code></p>
-<pre><code>-183971537
-</code></pre><p>然后获取<code>classes.dex</code>的CRC32值</p>
-<p>这个在线算一下就行，连同MD5什么的一条龙服务</p>
-<pre><code>MD5: 3217b0ad6c769233ea2a49d17885b5ba 
-SHA1: ec3b4730654248a02b016d00c9ae2425379bf78f 
-CRC32: 46E26557
-</code></pre><p>这里需要转成十进制</p>
-<pre><code>&gt;&gt;&gt; print int(&quot;46E26557&quot;, 16)
-1189242199
-</code></pre><p>两部分算完合起来就是Flag</p>
-<p>Flag：0ctf{-1839715371189242199}</p>
-<p>这样搞有点麻烦，其实动态调试一下就出来了，int要改为string类型，然而我并不会改，一改就崩溃</p>
-<p><img src="Image/1.png" alt=""></p>
-<p>JEB2有动态调试的功能，我用的有点残</p>
-<p>这里有个哥们写了篇使用JEB2调试APK的文章，这么详细的文章可惜百度搜半天搜不出来</p>
-<ul>
-<li>jeb2.2.7动态调试apk: <a href="http://balis0ng.com/post/android/2016-11-27">http://balis0ng.com/post/android/2016-11-27</a></li></ul>
+<pre><code>0ctf{It&#39;s_More_Than_Meets_The_Eye!}
+</code></pre><p>到这里可以确定我们的猜测，so里hook了<code>read()</code>函数，我们输入的字符串被异或后再和<code>flag.txt</code>里的数据对比</p>
 <h2 id="0x02-">0x02 小结</h2>
-<p>挺简单一东西整的这么扎心</p>
+<p>相比另一道150的Mobile，我觉得这题很值</p>
 
 </body>
 </html>

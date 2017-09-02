@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>写一个Dex解析器</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-dex-">写一个Dex解析器</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<p>去百度上搜Dex格式解析相关的文章，出现不少文章，特别是第一篇，看着那么长，很是详细，可惜的是，只要自己实践一遍，就会发现作者给的代码是有不少问题的，比如读取字符串，处理某些索引等</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>不过代码可以参考一下，闲着无聊简单写了个解析的，这玩意还是得自己写一下代码撸一遍，记忆才深刻，我这主要是提供一下思路，以及其中比较关键的点</p>
+<p>首先是整个入口，虽然都做了返回值，但是并没有后续的操作，解析出来的数据可以进一步做处理，比如找到官方文档翻译成Smali代码</p>
+<pre><code>package com.wnagzihxa1n.parser;
+
+import com.wnagzihxa1n.parser.DexFile.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Parser {
+    private static String dexFilePath = &quot;classes2.dex&quot;;
+    private static DexHeader dexHeader = new DexHeader();
+    private static List&lt;DexStringId&gt; dexStringIdList = new ArrayList&lt;DexStringId&gt;();
+    private static List&lt;DexTypeId&gt; dexTypeIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexProtoId&gt; dexProtoIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexFieldId&gt; dexFieldIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexMethodId&gt; dexMethodIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexClassDef&gt; dexClassDefList = new ArrayList&lt;&gt;();
+    private static List&lt;DexClass&gt; dexClassList = new ArrayList&lt;&gt;();
+
+    public static void main(String[] args) throws Exception{
+        byte[] sourceDexFile = Utils.readDexFile(dexFilePath);
+        dexHeader = ParserMain.parseDexHeader(sourceDexFile);
+        System.out.println(dexHeader.toString());
+        dexStringIdList = ParserMain.parseDexStringId(sourceDexFile);
+        dexTypeIdList = ParserMain.parseDexTypeId(sourceDexFile);
+        dexProtoIdList = ParserMain.parseDexProtoId(sourceDexFile);
+        dexFieldIdList = ParserMain.parseDexFieldId(sourceDexFile);
+        dexMethodIdList = ParserMain.parseDexMethodId(sourceDexFile);
+        dexClassDefList = ParserMain.parseDexClassDef(sourceDexFile);
+    }
+}
+</code></pre><p>写一个工具类来处理数据，有一个比较关键的就是ULEB128的读取和转化</p>
+<pre><code>package com.wnagzihxain.parser;
+
+import com.wnagzihxain.parser.DexFile.DexHeader;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Utils {
+
+    public static byte[] readDexFile(String dexFilePath) {
+        byte[] buffer = new byte[1024];
+        InputStream inputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        try {
+            inputStream = new FileInputStream(dexFilePath);
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            int index = 0;
+            while ((index = inputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, index);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+                byteArrayOutputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    public static byte[] getBytes(byte[] sourceDexFile, int start, int len) {
+        byte[] temp = new byte[len];
+        if (sourceDexFile.length &lt; start +len) {
+            return temp;
+        }
+        for (int i = 0; i &lt; len; i++) {
+            temp[i] = sourceDexFile[start + i];
+        }
+        return temp;
+    }
+
+    public static int byte2int(byte[] ary) {
+        int value = 0;
+        if (ary.length == 1) {
+            value = (int) ((ary[0] &amp; 0xFF));
+        } else if (ary.length == 2) {
+            value = (int) ((ary[0] &amp; 0xFF) | ((ary[1] &lt;&lt; 8) &amp; 0xFF00));
+        } else if (ary.length == 3) {
+            value = (int) ((ary[0] &amp; 0xFF) | ((ary[1] &lt;&lt; 8) &amp; 0xFF00) | ((ary[2] &lt;&lt; 16) &amp; 0xFF0000));
+        } else if (ary.length == 4) {
+            value = (int) ((ary[0] &amp; 0xFF) | ((ary[1] &lt;&lt; 8) &amp; 0xFF00) | ((ary[2] &lt;&lt; 16) &amp; 0xFF0000) | ((ary[3] &lt;&lt; 24) &amp; 0xFF000000));
+        }
+        return value;
+    }
+
+    public static byte[] int2Byte(int source) {
+        int byteNum = (40 -Integer.numberOfLeadingZeros (source &lt; 0 ? ~source : source)) / 8;
+        byte[] byteArray = new byte[4];
+        for (int n = 0; n &lt; byteNum; n++)
+            byteArray[3 - n] = (byte) (source &gt;&gt;&gt; (n * 8));
+        return (byteArray);
+    }
+
+    public static byte[] short2Byte(short number) {
+        int temp = number;
+        byte[] b = new byte[2];
+        for (int i = 0; i &lt; b.length; i++) {
+            b[i] = new Integer(temp &amp; 0xFF).byteValue();
+            temp = temp &gt;&gt; 8;
+        }
+        return b;
+    }
+
+    public static short byte2Short(byte[] b) {
+        short s = 0;
+        short s0 = (short) (b[0] &amp; 0xFF);
+        short s1 = (short) (b[1] &amp; 0xFF);
+        s1 &lt;&lt;= 8;
+        s = (short) (s0 | s1);
+        return s;
+    }
+
+    public static String byte2HexString(byte[] source) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (source == null || source.length &lt;= 0) {
+            return null;
+        }
+        for (byte b : source) {
+            int temp = b &amp; 0xFF;
+            String str = Integer.toHexString(temp);
+            if (str.length() &lt; 2) {
+                stringBuilder.append(&quot;0&quot;);
+            }
+            stringBuilder.append(str + &quot; &quot;);
+        }
+        return stringBuilder.toString().trim();
+    }
+
+    public static byte[] readUleb128(byte[] srcByte, int offset) {
+        List&lt;Byte&gt; byteAryList = new ArrayList&lt;Byte&gt;();
+        byte bytes = Utils.getBytes(srcByte, offset, 1)[0];
+        byte highBit = (byte)(bytes &amp; 0x80);
+        byteAryList.add(bytes);
+        offset++;
+        while (highBit != 0){
+            bytes = Utils.getBytes(srcByte, offset, 1)[0];
+            highBit = (byte)(bytes &amp; 0x80);
+            offset++;
+            byteAryList.add(bytes);
+        }
+        byte[] byteAry = new byte[byteAryList.size()];
+        for(int i = 0; i &lt; byteAryList.size(); i++) {
+            byteAry[i] = byteAryList.get(i);
+        }
+        return byteAry;
+    }
+
+    public static int decodeUleb128(byte[] byteAry) {
+        if (byteAry.length == 1) {
+            return (byteAry[0] &amp; 0x7F);
+        }
+        if (byteAry.length == 2) {
+            return (byteAry[0] &amp; 0x7F) | ((byteAry[1] &amp; 0x7F) &lt;&lt; 7);
+        }
+        if (byteAry.length == 3) {
+            return (byteAry[0] &amp; 0x7F) | ((byteAry[1] &amp; 0x7F) &lt;&lt; 7) | (byteAry[2] &amp; 0x7F) &lt;&lt; 14;
+        }
+        if (byteAry.length == 4) {
+            return (byteAry[0] &amp; 0x7F) | ((byteAry[1] &amp; 0x7F) &lt;&lt; 7) | (byteAry[2] &amp; 0x7F) &lt;&lt; 14 | (byteAry[3] &amp; 0x7F) &lt;&lt; 21;
+        }
+        if (byteAry.length == 5) {
+            return (byteAry[0] &amp; 0x7F) | ((byteAry[1] &amp; 0x7F) &lt;&lt; 7) | (byteAry[2] &amp; 0x7F) &lt;&lt; 14 | (byteAry[3] &amp; 0x7F) &lt;&lt; 21 | (byteAry[4] &amp; 0x7F) &lt;&lt; 28;
+        }
+        return 0;
+    }
+}
+</code></pre><p>整个解析的代码，先解析字符串，因为后面的东西都是字符串的索引，我们只需要根据定义的结构体，用相应的对象列表来存储其中的数据即可，可以有两种方式，第一种是存储索引，获取数据放到了后面，第二种方式是存储结构体，一层结构体里又有一个结构体，一个列表存储着所有的数据</p>
+<pre><code>package com.wnagzihxain.parser;
+
+import com.wnagzihxain.parser.DexFile.*;
+import com.sun.deploy.uitoolkit.UIToolkit;
+
+import javax.annotation.processing.SupportedSourceVersion;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ParserMain {
+
+    private static DexHeader dexHeader = new DexHeader();
+
+    private static List&lt;DexStringId&gt; dexStringIdList = new ArrayList&lt;&gt;();
+    private static List&lt;String&gt; dexStringList = new ArrayList&lt;&gt;();
+
+    private static List&lt;DexTypeId&gt; dexTypeIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexType&gt; dexTypeList = new ArrayList&lt;&gt;();
+
+    private static List&lt;DexProtoId&gt; dexProtoIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexProto&gt; dexProtoList = new ArrayList&lt;&gt;();
+
+    private static List&lt;DexFieldId&gt; dexFieldIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexField&gt; dexFieldList = new ArrayList&lt;&gt;();
+
+    private static List&lt;DexMethodId&gt; dexMethodIdList = new ArrayList&lt;&gt;();
+    private static List&lt;DexMethod&gt; dexMethodList = new ArrayList&lt;&gt;();
+
+    private static List&lt;DexClassDef&gt; dexClassDefList = new ArrayList&lt;&gt;();
+    private static List&lt;DexClass&gt; dexClassList = new ArrayList&lt;&gt;();
+
+    public static DexHeader parseDexHeader(byte[] sourceDexFile) {
+        dexHeader.setMagic(Utils.getBytes(sourceDexFile, 0, 8));
+        dexHeader.setChecksum(Utils.byte2int(Utils.getBytes(sourceDexFile,8, 4)));
+        dexHeader.setSignature(Utils.getBytes(sourceDexFile, 12, 20));
+        dexHeader.setFileSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 32, 4)));
+        dexHeader.setHeaderSize(Utils.byte2int(Utils.getBytes(sourceDexFile,36, 4)));
+        dexHeader.setEndianTag(Utils.byte2int(Utils.getBytes(sourceDexFile,40, 4)));
+        dexHeader.setLinkSize(Utils.byte2int(Utils.getBytes(sourceDexFile,44, 4)));
+        dexHeader.setLinkOff(Utils.byte2int(Utils.getBytes(sourceDexFile,48, 4)));
+        dexHeader.setMapOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 52, 4)));
+        dexHeader.setStringIdsSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 56, 4)));
+        dexHeader.setStringIdsOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 60, 4)));
+        dexHeader.setTypeIdsSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 64 , 4)));
+        dexHeader.setTypeIdsOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 68, 4)));
+        dexHeader.setProtoIdsSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 72, 4)));
+        dexHeader.setProtoIdsOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 76, 4)));
+        dexHeader.setFieldIdsSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 80, 4)));
+        dexHeader.setFieldIdsOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 84, 4)));
+        dexHeader.setMethodIdsSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 88, 4)));
+        dexHeader.setMethodIdsOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 92, 4)));
+        dexHeader.setClassDefsSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 96, 4)));
+        dexHeader.setClassDefsOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 100, 4)));
+        dexHeader.setDataSize(Utils.byte2int(Utils.getBytes(sourceDexFile, 104, 4)));
+        dexHeader.setDataOff(Utils.byte2int(Utils.getBytes(sourceDexFile, 108, 4)));
+        return dexHeader;
+    }
+
+    public static List&lt;DexStringId&gt; parseDexStringId(byte[] sourceDexFile) {
+        int stringIdsOff = dexHeader.getStringIdsOff();
+        int size = dexHeader.getStringIdsSize();
+        int length = DexStringId.getSize();
+        for (int i = 0; i &lt; size; i++) {
+            DexStringId dexStringId = new DexStringId();
+            dexStringId.setStringDataOff(Utils.byte2int(Utils.getBytes(sourceDexFile, stringIdsOff + i * length, length)));
+            dexStringIdList.add(dexStringId);
+        }
+        parseDexString(sourceDexFile);
+        return dexStringIdList;
+    }
+
+    public static void parseDexString(byte[] sourceDexFile) {
+        for (DexStringId dexStringId : dexStringIdList) {
+            int stringDataOff = dexStringId.getStringDataOff();
+            List&lt;Byte&gt; byteAryList = new ArrayList&lt;Byte&gt;();
+            byte bytes = Utils.getBytes(sourceDexFile, stringDataOff, 1)[0];
+            byte highBit = (byte)(bytes &amp; 0x80);
+            int index = 1;
+            while(highBit != 0){
+                bytes = Utils.getBytes(sourceDexFile, stringDataOff + index++, 1)[0];
+                highBit = (byte)(bytes &amp; 0x80);
+            }
+            byte b = Utils.getBytes(sourceDexFile, stringDataOff + index, 1)[0];
+            byteAryList.clear();
+            byteAryList.add(b);
+            while (b != 0) {
+                b = Utils.getBytes(sourceDexFile, stringDataOff + ++index, 1)[0];
+                byteAryList.add(b);
+            }
+            byte[] byteAry = new byte[byteAryList.size()];
+            for(int i = 0; i &lt; byteAryList.size(); i++) {
+                byteAry[i] = byteAryList.get(i);
+            }
+            try {
+                String string = new String(byteAry, &quot;UTF-8&quot;);
+                dexStringList.add(string.trim());
+//                System.out.println(string);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static List&lt;DexTypeId&gt; parseDexTypeId(byte[] sourceDexFile) {
+        int typeIdsOff = dexHeader.getTypeIdsOff();
+        int size = dexHeader.getTypeIdsSize();
+        int length = DexTypeId.getSize();
+        for (int i = 0; i &lt; size; i++) {
+            DexTypeId dexTypeId = new DexTypeId();
+            dexTypeId.setDescriptorIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, typeIdsOff + i * length, length)));
+            dexTypeIdList.add(dexTypeId);
+        }
+        parseDexType();
+        return dexTypeIdList;
+    }
+
+    public static void parseDexType() {
+        for (DexTypeId dexTypeId : dexTypeIdList) {
+            DexType dexType = new DexType();
+            dexType.setType(dexStringList.get(dexTypeId.getDescriptorIdx()));
+            dexTypeList.add(dexType);
+//            System.out.println(dexStringList.get(dexTypeId.getDescriptorIdx()));
+        }
+    }
+
+    public static List&lt;DexProtoId&gt; parseDexProtoId(byte[] sourceDexFile) {
+        int protoIdsOff = dexHeader.getProtoIdsOff();
+        int size = dexHeader.getProtoIdsSize();
+        int length = DexProtoId.getSize();
+        for (int i = 0; i &lt; size; i++) {
+            DexProtoId dexProtoId = new DexProtoId();
+            dexProtoId.setShortyIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, protoIdsOff + i * length, 4)));
+            dexProtoId.setReturnTypeIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, protoIdsOff + i * length + 4, 4)));
+            dexProtoId.setParametersOff(Utils.byte2int(Utils.getBytes(sourceDexFile, protoIdsOff + i * length + 8, 4)));
+            dexProtoIdList.add(dexProtoId);
+        }
+        parseDexProto(sourceDexFile);
+        return dexProtoIdList;
+    }
+
+    public static void parseDexProto(byte[] sourceDexFile) {
+        for (DexProtoId dexProtoId : dexProtoIdList) {
+            DexProto dexProto = new DexProto();
+            dexProto.setProtoShorty(dexStringList.get(dexProtoId.getShortyIdx()));
+            dexProto.setProtoReturnType(dexTypeList.get(dexProtoId.getReturnTypeIdx()).getType());
+            List&lt;String&gt; paramList = new ArrayList&lt;&gt;();
+            paramList.clear();
+            if (dexProtoId.getParametersOff() == 0) {
+                dexProto.setProtoParameters(paramList);
+            } else {
+                int paramSize = Utils.byte2int(Utils.getBytes(sourceDexFile, dexProtoId.getParametersOff(), 4));
+                for (int i = 0; i &lt; paramSize; i++) {
+                    paramList.add(dexTypeList.get((int)Utils.byte2Short(Utils.getBytes(sourceDexFile, dexProtoId.getParametersOff() + 4 + i * 2, 2))).getType());
+                }
+                dexProto.setProtoParameters(paramList);
+            }
+//            System.out.println(&quot;-------------------------------------------------&quot;);
+//            System.out.println(&quot;ShortyIdx       : &quot; + dexProto.getProtoShorty());
+//            System.out.println(&quot;ReturnTypeIdx   : &quot; + dexProto.getProtoReturnType());
+//            System.out.println(&quot;ProtoParameters : &quot; + dexProto.getProtoParameters());
+            dexProtoList.add(dexProto);
+        }
+    }
+
+    public static List&lt;DexFieldId&gt; parseDexFieldId(byte[] sourceDexFile) {
+        int fieldIdsOff = dexHeader.getFieldIdsOff();
+        int size = dexHeader.getFieldIdsSize();
+        int length = DexFieldId.getSize();
+        for (int i = 0; i &lt; size; i++) {
+            DexFieldId dexFieldId = new DexFieldId();
+            dexFieldId.setClassIdx(Utils.byte2Short(Utils.getBytes(sourceDexFile, fieldIdsOff + i * length, 2)));
+            dexFieldId.setTypeIdx(Utils.byte2Short(Utils.getBytes(sourceDexFile, fieldIdsOff + i * length + 2, 2)));
+            dexFieldId.setNameIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, fieldIdsOff + i * length + 4, 4)));
+            dexFieldIdList.add(dexFieldId);
+        }
+        parseDexField();
+        return dexFieldIdList;
+    }
+
+    public static void parseDexField() {
+        for (DexFieldId dexFieldId : dexFieldIdList) {
+            DexField dexField = new DexField();
+            dexField.setFieldClass(dexTypeList.get((dexFieldId.getClassIdx())).getType());
+            dexField.setFieldType(dexTypeList.get(dexFieldId.getTypeIdx()).getType());
+            dexField.setFieldName(dexStringList.get(dexFieldId.getNameIdx()));
+//            System.out.println(&quot;-------------------------------------------------&quot;);
+//            System.out.println(&quot;ClassIdx : &quot; + dexField.getFieldClass());
+//            System.out.println(&quot;TypeIdx  : &quot; + dexField.getFieldType());
+//            System.out.println(&quot;NameIdx  : &quot; + dexField.getFieldName());
+            dexFieldList.add(dexField);
+        }
+    }
+
+    public static List&lt;DexMethodId&gt; parseDexMethodId(byte[] sourceDexFile) {
+        int methodIdsOff = dexHeader.getMethodIdsOff();
+        int size = dexHeader.getMethodIdsSize();
+        int length = DexMethodId.getSize();
+        for (int i = 0; i &lt; size; i++) {
+            DexMethodId dexMethodId = new DexMethodId();
+            dexMethodId.setClassIdx(Utils.byte2Short(Utils.getBytes(sourceDexFile, methodIdsOff + i * length, 2)));
+            dexMethodId.setProtoIdx(Utils.byte2Short(Utils.getBytes(sourceDexFile, methodIdsOff + i * length + 2, 2)));
+            dexMethodId.setNameIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, methodIdsOff + i * length + 4, 4)));
+            dexMethodIdList.add(dexMethodId);
+        }
+        parseDexMethod();
+        return dexMethodIdList;
+    }
+
+    public static void parseDexMethod() {
+        for (DexMethodId dexMethodId : dexMethodIdList) {
+            DexMethod dexMethod = new DexMethod();
+            dexMethod.setMethodClass(dexTypeList.get(dexMethodId.getClassIdx()).getType());
+            dexMethod.setMethodProto(dexProtoList.get(dexMethodId.getProtoIdx()));
+            dexMethod.setMethodName(dexStringList.get(dexMethodId.getNameIdx()));
+//            System.out.println(&quot;-------------------------------------------------&quot;);
+//            System.out.println(&quot;MethodClass : &quot; + dexMethod.getMethodClass());
+//            System.out.println(&quot;MethodProto : &quot; + dexMethod.getMethodProto().getProtoReturnType());
+//            System.out.println(&quot;MethodName  : &quot; + dexMethod.getMethodName());
+            dexMethodList.add(dexMethod);
+        }
+    }
+
+    public static List&lt;DexClassDef&gt; parseDexClassDef(byte[] sourceDexFile) {
+        int classDefsOff = dexHeader.getClassDefsOff();
+        int size = dexHeader.getClassDefsSize();
+        int length = DexClassDef.getSize();
+        for (int i = 0; i &lt; size; i++) {
+            DexClassDef dexClassDef = new DexClassDef();
+            dexClassDef.setClassIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length, 4)));
+            dexClassDef.setAccessFlags(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length + 4, 4)));
+            dexClassDef.setSuperclassIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length + 8, 4)));
+            dexClassDef.setInterfacesOff(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length + 12, 4)));
+            dexClassDef.setSourceFileIdx(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length + 16, 4)));
+            dexClassDef.setAnnotationsOff(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length + 20, 4)));
+            dexClassDef.setClassDataOff(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length + 24, 4)));
+            dexClassDef.setStaticValuesOff(Utils.byte2int(Utils.getBytes(sourceDexFile, classDefsOff + i * length + 28, 4)));
+            dexClassDefList.add(dexClassDef);
+        }
+        parseDexClass(sourceDexFile);
+        return dexClassDefList;
+    }
+
+    public static void parseDexClass(byte[] sourceDexFile) {
+        int index = 0;
+        for (DexClassDef dexClassDef : dexClassDefList) {
+            DexClass dexClass = new DexClass();
+            dexClass.setClassName(dexTypeList.get(dexClassDef.getClassIdx()).getType());
+            dexClass.setAccessFlags(dexClassDef.getAccessFlags());
+            dexClass.setSuperClass(dexTypeList.get(dexClassDef.getSuperclassIdx()).getType());
+
+            //解析接口
+            int interfaceSize = Utils.byte2int(Utils.getBytes(sourceDexFile, dexClassDef.getInterfacesOff(), 4));
+            List&lt;String&gt; interfaceList = new ArrayList&lt;&gt;();
+            interfaceList.clear();
+            if (dexClassDef.getInterfacesOff() == 0) {
+                dexClass.setInterfaces(interfaceList);
+            } else {
+                for (int i = 0; i &lt; interfaceSize; i++) {
+                    interfaceList.add(dexTypeList.get((int)Utils.byte2Short(Utils.getBytes(sourceDexFile, dexClassDef.getInterfacesOff() + 4 + i * 2, 2))).getType());
+                    dexClass.setInterfaces(interfaceList);
+                }
+            }
+            int sourceFileIdx = dexClassDef.getSourceFileIdx();
+            dexClass.setSourceFile(sourceFileIdx == -1 ? &quot;No_SourceFile&quot; : dexStringList.get(sourceFileIdx));
+
+            DexClassData dexClassData = new DexClassData();
+
+            //解析DexClass
+            int uleb128Size = 0;
+            if (dexClassDef.getClassDataOff() == 0) {
+                dexClass.setDexClassData(dexClassData);
+            } else {
+                byte[] uleb128Array = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff());
+                uleb128Size = uleb128Array.length;
+                dexClassData.setStaticFieldSize(Utils.decodeUleb128(uleb128Array));
+                uleb128Array = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size);
+                uleb128Size = uleb128Size + uleb128Array.length;
+                dexClassData.setInstanceFieldSize(Utils.decodeUleb128(uleb128Array));
+                uleb128Array = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size);
+                uleb128Size = uleb128Size + uleb128Array.length;
+                dexClassData.setDirectMethodSize(Utils.decodeUleb128(uleb128Array));
+                uleb128Array = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size);
+                uleb128Size = uleb128Size + uleb128Array.length;
+                dexClassData.setVirtualMethodSize(Utils.decodeUleb128(uleb128Array));
+                dexClass.setDexClassData(dexClassData);
+            }
+
+            int fieldOff = 0;
+            int curr_index = 0;
+            //解析DexStaticField
+            List&lt;DexEncodedField&gt; dexStaticFieldList = new ArrayList&lt;&gt;();
+            dexStaticFieldList.clear();
+            int staticFieldSize = dexClass.getDexClassData().getStaticFieldSize();
+            System.out.println(&quot;\nindex : &quot; + index + &quot; : ###############################################################&quot;);
+//            System.out.println(index++ + &quot;-------------------------------------------------&quot;);
+            System.out.println(&quot;ClassName     : &quot; + dexClass.getClassName().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;));
+            System.out.println(&quot;AccessFlags   : &quot; + dexClass.getAccessFlags());
+            System.out.println(&quot;Superclass    : &quot; + dexClass.getSuperClass());
+            System.out.println(&quot;Interfaces    : &quot; + dexClass.getInterfaces());
+            System.out.println(&quot;SourceFile    : &quot; + dexClass.getSourceFile());
+//            System.out.println(index +  &quot; ：&quot; + staticFieldSize + &quot;-------------------------------------------------&quot;);
+            for (int i = 0; i &lt; staticFieldSize; i++) {
+                DexEncodedField dexEncodedField = new DexEncodedField();
+                byte[] fieldArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + fieldOff);
+                curr_index = Utils.decodeUleb128(fieldArray) + curr_index;
+                fieldOff = fieldOff + fieldArray.length;
+                byte[] accessArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + fieldOff);
+                int accessSize = accessArray.length;
+                dexEncodedField.setAccessFlags(Utils.decodeUleb128(accessArray));
+                fieldOff = fieldOff + accessSize;
+//                System.out.println(&quot;curr_index : &quot; + curr_index);
+//                System.out.println(&quot;[&quot; + Utils.byte2HexString(fieldArray) + &quot;]&quot;);
+                DexField dexField = new DexField();
+                dexField.setFieldClass(dexFieldList.get(curr_index).getFieldClass());
+                dexField.setFieldName(dexFieldList.get(curr_index).getFieldName());
+                dexField.setFieldType(dexFieldList.get(curr_index).getFieldType());
+                dexEncodedField.setEncodedField(dexField);
+                System.out.println(&quot;StaticField   : &quot; + dexEncodedField.getAccessFlags()
+                        + dexEncodedField.getEncodedField().getFieldType().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;)
+                        + &quot; &quot; + dexEncodedField.getEncodedField().getFieldClass().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;, &quot;.&quot;)
+                        + &quot;.&quot; + dexEncodedField.getEncodedField().getFieldName());
+                dexStaticFieldList.add(dexEncodedField);
+            }
+            dexClassData.setDexStaticFieldList(dexStaticFieldList);
+
+            //解析DexInstanceField
+            curr_index = 0;
+            int instanceFieldSize = dexClassData.getInstanceFieldSize();
+            List&lt;DexEncodedField&gt; dexInstanceFieldList = new ArrayList&lt;&gt;();
+            dexStaticFieldList.clear();
+            for (int i = 0; i &lt; instanceFieldSize; i++) {
+//                System.out.println(index +  &quot; ：&quot; + instanceFieldSize + &quot; ：&quot; + i + &quot;-------------------------------------------------&quot;);
+                DexEncodedField dexEncodedField = new DexEncodedField();
+                byte[] fieldArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + fieldOff);
+                curr_index = Utils.decodeUleb128(fieldArray) + curr_index;
+                fieldOff = fieldOff + fieldArray.length;
+                byte[] accessArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + fieldOff);
+                dexEncodedField.setAccessFlags(Utils.decodeUleb128(accessArray));
+                fieldOff = fieldOff + accessArray.length;
+//                System.out.println(&quot;curr_index : &quot; + curr_index);
+//                System.out.println(&quot;[&quot; + Utils.byte2HexString(fieldArray) + &quot;]&quot;);
+                DexField dexField = new DexField();
+                dexField.setFieldClass(dexFieldList.get(curr_index).getFieldClass());
+                dexField.setFieldName(dexFieldList.get(curr_index).getFieldName());
+                dexField.setFieldType(dexFieldList.get(curr_index).getFieldType());
+                dexEncodedField.setEncodedField(dexField);
+                System.out.println(&quot;InstanceField : &quot; + dexEncodedField.getAccessFlags()
+                        + dexEncodedField.getEncodedField().getFieldType().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;)
+                        + &quot; &quot; + dexEncodedField.getEncodedField().getFieldClass().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;, &quot;.&quot;)
+                        + &quot;.&quot; + dexEncodedField.getEncodedField().getFieldName());
+                dexInstanceFieldList.add(dexEncodedField);
+            }
+            dexClassData.setDexInstanceFieldList(dexInstanceFieldList);
+
+            //解析DexDirectMethod
+            curr_index = 0;
+            int methodOff = fieldOff;
+            int directMethodSize = dexClassData.getDirectMethodSize();
+            List&lt;DexEncodedMethod&gt; dexDirectMethodList = new ArrayList&lt;&gt;();
+            dexDirectMethodList.clear();
+            for (int i = 0; i &lt; directMethodSize; i++) {
+                DexEncodedMethod dexEncodedMethod = new DexEncodedMethod();
+                byte[] methodArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + methodOff);
+                curr_index = Utils.decodeUleb128(methodArray) + curr_index;
+                methodOff = methodOff + methodArray.length;
+                byte[] accessArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + methodOff);
+                dexEncodedMethod.setAccessFlags(Utils.decodeUleb128(accessArray));
+                methodOff = methodOff + accessArray.length;
+                byte[] codeOffArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + methodOff);
+                methodOff = methodOff + codeOffArray.length;
+//                System.out.println(&quot;curr_index : &quot; + curr_index);
+//                System.out.println(Utils.byte2HexString(methodArray));
+                dexEncodedMethod.setDexMethod(dexMethodList.get(curr_index));
+                String string = dexEncodedMethod.getAccessFlags()
+                        + &quot; &quot; + dexEncodedMethod.getDexMethod().getMethodProto().getProtoReturnType().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;)
+                        + &quot; &quot; + dexEncodedMethod.getDexMethod().getMethodClass().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;)
+                        + &quot;.&quot; + dexEncodedMethod.getDexMethod().getMethodName().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;);
+                System.out.println(&quot;DirectMethod  : &quot; + string.trim());
+            }
+
+            dexClassData.setDexDirectMethodList(dexDirectMethodList);
+
+            //解析DexVirtualMethod
+            curr_index = 0;
+            int virtualMethodSize = dexClassData.getVirtualMethodSize();
+            List&lt;DexEncodedMethod&gt; dexVirtualMethodList = new ArrayList&lt;&gt;();
+            dexVirtualMethodList.clear();
+            for (int i = 0; i &lt; virtualMethodSize; i++) {
+                DexEncodedMethod dexEncodedMethod = new DexEncodedMethod();
+                byte[] methodArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + methodOff);
+                curr_index = Utils.decodeUleb128(methodArray) + curr_index;
+                methodOff = methodOff + methodArray.length;
+                byte[] accessArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + methodOff);
+                dexEncodedMethod.setAccessFlags(Utils.decodeUleb128(accessArray));
+                methodOff = methodOff + accessArray.length;
+                byte[] codeOffArray = Utils.readUleb128(sourceDexFile, dexClassDef.getClassDataOff() + uleb128Size + methodOff);
+                methodOff = methodOff + codeOffArray.length;
+//                System.out.println(&quot;curr_index : &quot; + curr_index);
+//                System.out.println(Utils.byte2HexString(methodArray));
+                dexEncodedMethod.setDexMethod(dexMethodList.get(curr_index));
+                String string = dexEncodedMethod.getAccessFlags()
+                        + &quot; &quot; + dexEncodedMethod.getDexMethod().getMethodProto().getProtoReturnType().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;)
+                        + &quot; &quot; + dexEncodedMethod.getDexMethod().getMethodClass().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;)
+                        + &quot;.&quot; + dexEncodedMethod.getDexMethod().getMethodName().replace(&quot;L&quot;, &quot;&quot;).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;,&quot;.&quot;);
+                System.out.println(&quot;VirtualMethod : &quot; + string.trim());
+            }
+            dexClassData.setDexVirtualMethodList(dexVirtualMethodList);
+
+            if (index == 2) {
+                break;
+            }
+
+            index++;
+
+            dexClass.setDexClassData(dexClassData);
+            dexClassList.add(dexClass);
+        }
+    }
+}
+</code></pre><p>有几点注意的地方，我们来闲聊一下，一个是字符串的读取，字符串的偏移池存储着所有字符串的偏移，四字节一个偏移，再加上文件头中字符串的数量，我们可以整理出所有的字符串偏移，当我们解析字符串的时候，会遍历其中的偏移值，这个偏移值指向的位置即是字符串，但是呢，这个位置的读取，比较关键，因为指向的首地址是整个字符串的长度，但是它是ULEB128类型的数据，长度是会变的，所以我们在读取的时候需要先读取这个长度的byte数组，然后计算这个byte数组的长度作为偏移，因为字符串是从它标记长度的数据之后才开始的，这就是第一个需要注意的点，不能简单的把偏移指向的首地址数据作为整个字符串长度，另一点是<code>codeoff</code>相关，这个偏移存着关键的指令，它的偏移是前面的偏移进行循环叠加，相应的数据长度也是变化的，所以需要使用几个变量做好偏移的存储</p>
+<p>我并没有解析出所有的指令，<code>try/catch</code>什么的都没有处理</p>
+<p>这篇文章写的真水，我自己都看不下去了，洗洗睡了</p>
+<p>对了，这个月有很多不错的会议我去凑热闹，九月六号XPwn，在798，九月十一号下午补天白帽大会，在798火车头广场，九月十二号和十三号2017ISC，在国家会议中心，师傅们要是也去这些会议的话，我们可以面基啊</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

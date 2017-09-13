@@ -482,7 +482,7 @@ for(dex_addr = 0xA357D000; dex_addr &lt; 0xA35DE000; dex_addr++)
 <p>但是我们跟入后，发现壳好像没有脱干净（后来发现其实不是没脱干净）</p>
 <p><img src="Image/3.png" alt=""></p>
 <p>再次动态调试脱壳，这次我们找到校验函数，单步跟下去看看具体是什么情况</p>
-<p>我们需要先找到校验函数的地址，使用给<code>dvmUserJNIBridge</code>函数下断点的方法</p>
+<p>我们需要先找到校验函数的地址，使用给<code>dvmUseJNIBridge</code>函数下断点的方法</p>
 <p><img src="Image/4.png" alt=""></p>
 <p>我们使用调试模式启动应用，IDA挂上去，找到<code>libdvm.so</code>的<code>dvmUseJNIBridge</code>函数，下断点</p>
 <p>然后把IDA跑起来，在应用界面输入账号密码，点击登录，就可以发现断在这里了，我们注意观察参数，第二个参数就是我们的<code>crackme</code>函数</p>

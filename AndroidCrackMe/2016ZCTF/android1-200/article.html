@@ -958,15 +958,15 @@ public class Demo {
 <p>知道起始地址，整个堆空间长度是<code>0x1460</code>，我们可以直接用脚本拷贝这片堆数据，走一个</p>
 <pre><code>auto fp, dex_addr, end_addr;  
 fp = fopen(&quot;E:\\Picture.png&quot;, &quot;wb&quot;);  
-for(dex_addr = 0xB7E5BF58; dex_addr &lt; 0xB7E5BF58 + 0X1460; dex_addr++)
+for(dex_addr = 0xB7E5BF58; dex_addr &lt; 0xB7E5BF58 + 0x1460; dex_addr++)
     fputc(Byte(dex_addr), fp);
 </code></pre><p>然后使用StegSolve进行处理</p>
 <p><img src="Image/10.png" alt=""></p>
-<p>最后，有个很玄学的问题，为了找到为什么一开始写代码解密会出错，我特意看了一下秘钥</p>
+<p>最后，有个很玄学的问题，为了找到为什么一开始写代码解密会出错的原因，我特意看了一下秘钥</p>
 <p><img src="Image/11.png" alt=""></p>
 <p>喵喵喵~~~</p>
 <p>那看来，是我代码写挫了，到这里告一段落吧，让我休息几天，现在的CTF题WriteUp真难写。。。。。。</p>
-<p>师傅们出题能少写套路多写真诚吗？</p>
+<p>师傅们出题能少些套路多些真诚吗？</p>
 <p>爱你们</p>
 
 </body>

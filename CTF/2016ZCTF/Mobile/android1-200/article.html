@@ -951,7 +951,7 @@ public class Demo {
 .text:00001ADE             ; End of function Java_com_zctf_app_JNIclass_add
 </code></pre><p>接下来记得<code>apply change</code></p>
 <p>替换源so文件，重打包签名，进行动态调试</p>
-<p>如果碰到动态调试断不下来，可以使用在<code>libdvm.so</code>的<code>dvmJNIUseBridge</code>函数下断点的方法</p>
+<p>如果碰到动态调试断不下来，可以使用在<code>libdvm.so</code>的<code>dvmUseJNIBridge</code>函数下断点的方法</p>
 <p><img src="Image/8.png" alt=""></p>
 <p>释放前下断，找到<code>R0</code>指向的堆空间，可以看到解密出来的是一个PNG文件</p>
 <p><img src="Image/9.png" alt=""></p>

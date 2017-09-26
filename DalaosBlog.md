@@ -4,11 +4,17 @@
 
 ### 我太菜了，不敢叫友链
 
+- 我曾经的Boss：https://liaozheqi.cn/cplusplus/singleton/
+	- 感觉就是全能的程序猿
+	- 贼厉害，问啥啥会
+- 奇哥：http://www.yszdt.com/
+	- 安全客开发者
+- 鸡总：https://ymr.me/
+	- 知名女装黑客
+	- 那个羞耻のDJB开发者
 - koshi: http://whereisk0shl.top/
 	- 二进制大牛，挖漏洞贼强
 	- 超谦虚，而且超热心分享技术，向koshi师傅学习！！！！！！
-	- (天地良心！！！！！！！)二进制漏洞实例分析: http://www.ichunqiu.com/course/56119
-	- **袁哥曾向他发出邀请结果没去！！！！！！对，腾讯湛卢实验室的袁哥！！！！！！**
 - o0xmuhe: http://o0xmuhe.me/ | http://www.cnblogs.com/0xmuhe
 	- 沐湿敷
 	- Pwn狂魔
@@ -41,5 +47,6 @@
 - Anhkgg：http://anhkgg.github.io/
 - 蓝狐网安：http://www.xn--49sp55cn0iirf.cc/
 - iromise：http://www.iromise.com/
+- ：http://phrack.org/
 
 大牛们贼强，后生也可畏，我只能默默蹲街角卖红薯

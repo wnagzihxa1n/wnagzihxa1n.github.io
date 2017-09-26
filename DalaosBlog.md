@@ -12,6 +12,9 @@
 - 鸡总：https://ymr.me/
 	- 知名女装黑客
 	- 那个羞耻のDJB开发者
+- 嘉豪：https://gorgias.me/
+	- 女装黑客
+	- 跟楼上那个一样
 - koshi: http://whereisk0shl.top/
 	- 二进制大牛，挖漏洞贼强
 	- 超谦虚，而且超热心分享技术，向koshi师傅学习！！！！！！

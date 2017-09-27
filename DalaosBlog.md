@@ -44,12 +44,16 @@
 - 从容：http://www.thinkings.org/
 	- 所有WAF看到从容师傅的ID就自动关闭了
 - Huikang Liu's Blog: https://huikangliu.github.io/
-	- 刚搭建的博客，期待未来会有好文章
-	- CTF: Web
 - 维一零：https://weiyiling.cn/
 - Anhkgg：http://anhkgg.github.io/
 - 蓝狐网安：http://www.xn--49sp55cn0iirf.cc/
 - iromise：http://www.iromise.com/
 - ：http://phrack.org/
+- phithon：https://www.leavesongs.com/
+	- p牛
+	- 文章写得贼棒
+- 王松_Striker：http://www.hackersb.cn/
+- 零の杂货铺：http://phantom0301.cc/
+- l3m0n：http://iamstudy.cnblogs.com/
 
 大牛们贼强，后生也可畏，我只能默默蹲街角卖红薯

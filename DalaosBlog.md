@@ -54,6 +54,8 @@
 	- 文章写得贼棒
 - 王松_Striker：http://www.hackersb.cn/
 - 零の杂货铺：http://phantom0301.cc/
+- sixwhale：http://sixwha1e.github.io/
+	- 突然可爱的妹纸
 - l3m0n：http://iamstudy.cnblogs.com/
 
 大牛们贼强，后生也可畏，我只能默默蹲街角卖红薯

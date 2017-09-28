@@ -4,6 +4,10 @@
 
 ### 我太菜了，不敢叫友链
 
+- Sound：https://reverser.im/
+	- 音帝
+	- 活好又有钱
+	- 人生大赢家
 - 我曾经的Boss：https://liaozheqi.cn/cplusplus/singleton/
 	- 感觉就是全能的程序猿
 	- 贼厉害，问啥啥会
@@ -18,7 +22,7 @@
 - koshi: http://whereisk0shl.top/
 	- 二进制大牛，挖漏洞贼强
 	- 超谦虚，而且超热心分享技术，向koshi师傅学习！！！！！！
-- o0xmuhe: http://o0xmuhe.me/ | http://www.cnblogs.com/0xmuhe
+- muhe: http://o0xmuhe.me/ | http://www.cnblogs.com/0xmuhe
 	- 沐湿敷
 	- Pwn狂魔
 - scz: http://scz.617.cn/
@@ -35,12 +39,12 @@
 	- 写了很多好文章，看雪上面各种精华
 - qtfreet00: http://qtfreet.com/
 	- 吾爱破解安卓安全区版主
-	- 死基佬
 - 鬼哥: http://blog.csdn.net/guiguzi1110
 	- Qihoo 360 Vulpecker Team Member
 	- 很Nice的一位大牛，曾经我在朋友圈问了篇文章，他就帮我去找作者要，到现在我还感动着~~~
-- flanker_017: https://blog.flanker017.me/
+- Flanker: https://blog.flanker017.me/
 	- 蛋总是科恩的老司机
+	- 挖洞贼厉害
 - 从容：http://www.thinkings.org/
 	- 所有WAF看到从容师傅的ID就自动关闭了
 - Huikang Liu's Blog: https://huikangliu.github.io/
@@ -49,13 +53,14 @@
 - 蓝狐网安：http://www.xn--49sp55cn0iirf.cc/
 - iromise：http://www.iromise.com/
 - ：http://phrack.org/
-- phithon：https://www.leavesongs.com/
+- Phithon：https://www.leavesongs.com/
 	- p牛
 	- 文章写得贼棒
 - 王松_Striker：http://www.hackersb.cn/
 - 零の杂货铺：http://phantom0301.cc/
 - sixwhale：http://sixwha1e.github.io/
 	- 突然可爱的妹纸
+	- 萌
 - l3m0n：http://iamstudy.cnblogs.com/
 
 大牛们贼强，后生也可畏，我只能默默蹲街角卖红薯

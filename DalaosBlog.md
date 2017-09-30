@@ -1,13 +1,18 @@
 # 各位大牛的博客(持续整理中)
 
 ### 我是看着各位师傅的博客长大的！！！！！！
-
 ### 我太菜了，不敢叫友链
 
 - Sound：https://reverser.im/
 	- 音帝
+	- 吾爱破解版主
 	- 活好又有钱
 	- 人生大赢家
+	- 我偶像，由内而发的膜拜
+- 三哥：http://www.cnblogs.com/2014asm/
+	- 很厉害很厉害很厉害的大牛
+	- 每次看三哥的文章都有一种特别的感受
+	- 三哥文章常看常新
 - 我曾经的Boss：https://liaozheqi.cn/cplusplus/singleton/
 	- 感觉就是全能的程序猿
 	- 贼厉害，问啥啥会
@@ -29,6 +34,7 @@
 	- 大家叫他小四而我叫四哥的前辈
 	- 我的美学很大部分受他影响，包括博客风格
 	- 四哥破解JEB那些文章我反复读了很久，自己还是太笨了
+	- 四哥破解JEB这事让我深刻明白什么叫基础扎实而后融会贯通的神奇
 - 4ido10n: https://www.hackfun.org/
 	- 各种Team核心Member
 - Ox9A82: http://www.cnblogs.com/Ox9A82/
@@ -62,5 +68,21 @@
 	- 突然可爱的妹纸
 	- 萌
 - l3m0n：http://iamstudy.cnblogs.com/
+- Homik：https://cdjhky.com.cn/
+- AloneMonkey：http://www.alonemonkey.com/
+- /DEV/TTYS0：http://www.devttys0.com/
+	- 嵌入式设备攻击
+- B1nGzL：http://www.expshell.com/
+	- 美团移动安全团队负责人
+- Carter：https://cartermgj.github.io/
+
 
 大牛们贼强，后生也可畏，我只能默默蹲街角卖红薯
+
+以下仅供瞻仰
+- Kido：http://blog.kidoplay.com/
+	- 以下介绍估计是大P写的：
+	- 吾爱破解论坛软件安全分区大版主，擅长逆向分析，也是编程高手，曾留学澳洲大学
+	- 熟人在吾爱破解里称Kido为老师
+	- 个人生活潇洒倜傥，喜欢泡妞，获得很多中外女性青睐
+	- 因其博古通今、英语6级造就其在密界一哥位置

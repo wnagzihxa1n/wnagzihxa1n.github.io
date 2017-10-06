@@ -18,6 +18,7 @@
 	- 贼厉害，问啥啥会
 - 奇哥：http://www.yszdt.com/
 	- 安全客开发者
+	- 大二那年，我在社团看到奇哥的简介，瞬间成为奇哥粉丝
 - 鸡总：https://ymr.me/
 	- 知名女装黑客
 	- 那个羞耻のDJB开发者
@@ -64,9 +65,6 @@
 	- 文章写得贼棒
 - 王松_Striker：http://www.hackersb.cn/
 - 零の杂货铺：http://phantom0301.cc/
-- sixwhale：http://sixwha1e.github.io/
-	- 突然可爱的妹纸
-	- 萌
 - l3m0n：http://iamstudy.cnblogs.com/
 - Homik：https://cdjhky.com.cn/
 - AloneMonkey：http://www.alonemonkey.com/

@@ -1,4 +1,4 @@
-# wnagzihxain's Blog
+# 土豆夫妇's Blog
 
- - 安卓逆向爱好者
- - ACM/ICPC爱好者
+- 本博客由土豆夫妇共同维护
+- ACM/ICPC爱好者

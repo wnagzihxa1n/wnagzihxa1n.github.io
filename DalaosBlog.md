@@ -1,7 +1,6 @@
 # 各位大牛的博客(持续整理中)
 
-### 我是看着各位师傅的博客长大的！！！！！！
-### 我太菜了，不敢叫友链
+### 我是看着各位师傅的博客长大的！！！！！！ <br> 我太菜了，不敢叫友链 <br> 看，地上跪着的，是我的灵魂
 
 - Sound：https://reverser.im/
 	- 音帝
@@ -17,25 +16,30 @@
 	- 感觉就是全能的程序猿
 	- 贼厉害，问啥啥会
 - 奇哥：http://www.yszdt.com/
-	- 安全客开发者
-	- 大二那年，我在社团看到奇哥的简介，瞬间成为奇哥粉丝
+	- 安全客三个平台的开发者
+	- 大二那年，我在社团看到陈叔叔的简介，瞬间成为陈叔叔粉丝
+	- 陈叔叔为人和蔼可亲，技术非常厉害，经常教我技术
+	- 胃口也是比较惊人，大概夜宵可以吃掉一大只干蒸鸡
 - 鸡总：https://ymr.me/
 	- 知名女装黑客
 	- 那个羞耻のDJB开发者
-- 嘉豪：https://gorgias.me/
+- gorgias：https://gorgias.me/
 	- 女装黑客
+	- 高贵的HackPwn Speaker
+	- 数字Skygo团队的巨佬，每天各种研究硬件漏洞
 	- 跟楼上那个一样
-- koshi: http://whereisk0shl.top/
+- k0shl: http://whereisk0shl.top/
+	- koshi师傅
 	- 二进制大牛，挖漏洞贼强
 	- 超谦虚，而且超热心分享技术，向koshi师傅学习！！！！！！
-- muhe: http://o0xmuhe.me/ | http://www.cnblogs.com/0xmuhe
-	- 沐湿敷
+- 0xmuhe: http://www.cnblogs.com/0xmuhe
+	- 沐师傅
 	- Pwn狂魔
 - scz: http://scz.617.cn/
 	- 大家叫他小四而我叫四哥的前辈
 	- 我的美学很大部分受他影响，包括博客风格
 	- 四哥破解JEB那些文章我反复读了很久，自己还是太笨了
-	- 四哥破解JEB这事让我深刻明白什么叫基础扎实而后融会贯通的神奇
+	- 让我深刻明白什么叫基础扎实而后融会贯通的神奇
 - 4ido10n: https://www.hackfun.org/
 	- 各种Team核心Member
 - Ox9A82: http://www.cnblogs.com/Ox9A82/
@@ -46,8 +50,9 @@
 	- 写了很多好文章，看雪上面各种精华
 - qtfreet00: http://qtfreet.com/
 	- 吾爱破解安卓安全区版主
+	- 大概是个一米八的基佬吧
 - 鬼哥: http://blog.csdn.net/guiguzi1110
-	- Qihoo 360 Vulpecker Team Member
+	- 数字威派克团队的负责人
 	- 很Nice的一位大牛，曾经我在朋友圈问了篇文章，他就帮我去找作者要，到现在我还感动着~~~
 - Flanker: https://blog.flanker017.me/
 	- 蛋总是科恩的老司机
@@ -57,7 +62,6 @@
 - Huikang Liu's Blog: https://huikangliu.github.io/
 - 维一零：https://weiyiling.cn/
 - Anhkgg：http://anhkgg.github.io/
-- 蓝狐网安：http://www.xn--49sp55cn0iirf.cc/
 - iromise：http://www.iromise.com/
 - ：http://phrack.org/
 - Phithon：https://www.leavesongs.com/
@@ -71,6 +75,7 @@
 - /DEV/TTYS0：http://www.devttys0.com/
 	- 嵌入式设备攻击
 - B1nGzL：http://www.expshell.com/
+	- 冰粥师傅
 	- 美团移动安全团队负责人
 - Carter：https://cartermgj.github.io/
 

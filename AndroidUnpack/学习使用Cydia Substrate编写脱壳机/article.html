@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>学习使用Cydia Substrate编写脱壳机</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-cydia-substrate-">学习使用Cydia Substrate编写脱壳机</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>Xposed只能Hook Java层的函数，如果我们想要Hook native层的函数就需要使用到Cydia Substrate</p>
+<h2 id="0x01-">0x01 环境准备</h2>
+<ol>
+<li><code>com.saurik.substrate_0.9.4010.apk</code>: <a href="https://cache.saurik.com/apks/com.saurik.substrate_0.9.4010.apk">https://cache.saurik.com/apks/com.saurik.substrate_0.9.4010.apk</a></li><li>添加SDK: <a href="http://www.cydiasubstrate.com/id/73e45fe5-4525-4de7-ac14-6016652cc1b8/">http://www.cydiasubstrate.com/id/73e45fe5-4525-4de7-ac14-6016652cc1b8/</a></li></ol>
+<p>打开SDK Manager，点击<code>+</code></p>
+<p><img src="Image/1.png" alt=""></p>
+<p>添加</p>
+<pre><code>Android Cydia Substrate
+http://asdk.cydiasubstrate.com/addon.xml
+</code></pre><p><img src="Image/2.png" alt=""></p>
+<p>然后勾选<code>Cydia Substrate API</code>安装就行了</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>安装完后的目录</p>
+<pre><code>sdk\extras\saurikit\cydia_substrate
+</code></pre><p>目录下文件不多</p>
+<pre><code>D:\Android\sdk\extras\saurikit&gt;tree /f
+卷 D 的文件夹 PATH 列表
+卷序列号为 00000001 000E:2B56
+D:.
+└─cydia_substrate
+    │  aspectjweaver.jar
+    │  package.xml
+    │  substrate-api.jar
+    │  substrate-bless.jar
+    │  substrate.h
+    │
+    └─lib
+        ├─armeabi
+        │      libsubstrate-dvm.so
+        │      libsubstrate.so
+        │
+        └─x86
+                libsubstrate-dvm.so
+                libsubstrate.so
+</code></pre><h2 id="0x2-hook-native">0x2 Hook native</h2>
+<p>新建工程，删掉默认的<code>MainActivity.java</code>和<code>activity_main.xml</code></p>
+<p>在<code>src\main\</code>目录下新建jni文件夹</p>
+<p>我们这里使用的是arm平台，所以从sdk中拷贝对应的so文件和头文件到jni目录下</p>
+<pre><code>libsubstrate-dvm.so
+libsubstrate.so
+substrate.h
+</code></pre><p>修改<code>AndroidManifest.xml</code></p>
+<p>添加下面两句</p>
+<pre><code>android:installLocation=&quot;internalOnly&quot;
+android:hasCode=&quot;false&quot;
+</code></pre><p>再添加个权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;cydia.permission.SUBSTRATE&quot;/&gt;
+</code></pre><p>最终</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest package=&quot;com.wnagzihxain.demo&quot;
+          android:installLocation=&quot;internalOnly&quot;
+          xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+
+    &lt;application
+        android:hasCode=&quot;false&quot;
+        android:icon=&quot;@mipmap/ic_launcher&quot;
+        android:label=&quot;@string/app_name&quot;
+        android:roundIcon=&quot;@mipmap/ic_launcher_round&quot;
+        android:supportsRtl=&quot;true&quot;
+        android:theme=&quot;@style/AppTheme&quot;&gt;
+    &lt;/application&gt;
+    &lt;uses-permission android:name=&quot;cydia.permission.SUBSTRATE&quot;/&gt;
+&lt;/manifest&gt;
+</code></pre><p>在jni目录下新建<code>totoc.cy.cpp</code>，一定记得加<code>.cy</code></p>
+<p>然后新建在jni目录下新建<code>Android.mk</code>文件</p>
+<pre><code>LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= substrate-dvm
+LOCAL_SRC_FILES := libsubstrate-dvm.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= substrate
+LOCAL_SRC_FILES := libsubstrate.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE    := totoc.cy
+LOCAL_SRC_FILES := totoc.cy.cpp
+LOCAL_LDLIBS := -llog
+LOCAL_LDLIBS += -L$(LOCAL_PATH) -lsubstrate-dvm -lsubstrate
+
+include $(BUILD_SHARED_LIBRARY)
+</code></pre><p>在jni目录下新建<code>Application.mk</code>文件</p>
+<pre><code>APP_ABI := armeabi
+</code></pre><p>修改<code>build.gradle</code>，在<code>android</code>标签里添加</p>
+<pre><code>sourceSets.main {
+    jniLibs.srcDir &#39;src/main/libs&#39;
+    jni.srcDirs = [] //disable automatic ndk-build call
+}
+</code></pre><p>修改代码，大佬的文章里选择在<code>dexFileParse</code>函数下钩子，而我在<code>dvmDexFileOpenPartial</code>函数下钩子</p>
+<pre><code>#include &quot;totoc.cy.h&quot;
+
+#define BUFLEN 1024
+#define TAG &quot;toT0C&quot;
+#define errno (*__errno())
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__)
+
+MSConfig(MSFilterLibrary, &quot;/system/lib/libdvm.so&quot;)
+
+//int dvmDexFileOpenPartial(const void* addr, int len, DvmDex** ppDvmDex)
+int (*_dvmDexFileOpenPartial)(const void* addr, int len, void** ppDvmDex);
+
+//get packagename from pid
+int getProcessName(char* buffer) {
+    char path_t[256] = {0};
+    pid_t pid = getpid();
+    char str[15];
+    sprintf(str, &quot;%d&quot;, pid);
+    memset(path_t, 0, sizeof(path_t));
+    strcat(path_t, &quot;/proc/&quot;);
+    strcat(path_t, str);
+    strcat(path_t, &quot;/cmdline&quot;);
+
+    int fd_t = open(path_t, O_RDONLY);
+    if(fd_t &gt; 0) {
+        int read_count = read(fd_t, buffer, BUFLEN);
+        if(read_count &gt; 0) {
+            int processIndex = 0;
+            for(processIndex = 0; processIndex &lt; strlen(buffer); processIndex++) {
+                if(buffer[processIndex] == &#39;:&#39;){
+                    buffer[processIndex] = &#39;_&#39;;
+                }
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int my_dvmDexFileOpenPartial(const void* addr, int len, void** dvmdex) {
+    extern volatile int* __errno(void);
+    LOGI(&quot;Call myDexFileParse Pid is : %d&quot;, getpid());
+    char dexbuffer[64] = {0};
+    char dexbufferNamed[128] = {0};
+    char *bufferProcess = (char *)calloc(256, sizeof(char));
+    int  processStatus = getProcessName(bufferProcess);
+
+    sprintf(dexbuffer, &quot;_dump_%d&quot;, len);
+    strcat(dexbufferNamed, &quot;/sdcard/&quot;);
+
+    if (processStatus == 1) {
+        strcat(dexbufferNamed, bufferProcess);
+        strcat(dexbufferNamed, dexbuffer);
+    }
+    else {
+        LOGI(&quot;Fault Pid not found\n&quot;);
+    }
+
+    if(bufferProcess != NULL) {
+        free(bufferProcess);
+    }
+
+    strcat(dexbufferNamed, &quot;.dex&quot;);
+
+    FILE *f = fopen(dexbufferNamed, &quot;wb&quot;);
+    if(!f) {
+        LOGI(&quot;##########%s########## : Error open sdcard file to write&quot;, dexbufferNamed);
+        LOGI(&quot;##########%s##########&quot;, strerror(errno));
+    }
+    else {
+        fwrite(addr, 1, len, f);
+        fclose(f);
+        LOGI(&quot;Write %s successfully!!!!!!&quot;, dexbufferNamed);
+    }
+    return _dvmDexFileOpenPartial(addr, len, dvmdex);
+}
+
+//Substrate entry point
+MSInitialize {
+    MSImageRef image;
+    image = MSGetImageByName(&quot;/system/lib/libdvm.so&quot;);
+    if (image != NULL) {
+        void *dexload = MSFindSymbol(image, &quot;_Z21dvmDexFileOpenPartialPKviPP6DvmDex&quot;);
+        if(dexload == NULL) {
+            LOGI(&quot;Error find _Z21dvmDexFileOpenPartialPKviPP6DvmDex&quot;);
+        }
+        else {
+            LOGI(&quot;dvmDexFileOpenPartial : 0x%p&quot;, dexload);
+            MSHookFunction(dexload,
+                           (void *)&amp;my_dvmDexFileOpenPartial,
+                           (void **)&amp;_dvmDexFileOpenPartial);
+        }
+    }
+    else{
+        LOGI(&quot;Error find libdvm.so&quot;);
+    }
+}
+</code></pre><p>进入<code>jni</code>目录编译生成so</p>
+<pre><code>C:\Users\wangz\Desktop\Demo\app\src\main\jni&gt;ndk-build
+Android NDK: WARNING:C:/Users/wangz/Desktop/Demo/app/src/main/jni/Android.mk:totoc.cy: non-system libraries in linker flags: -lsubstrate-dvm -lsubstrate
+Android NDK:     This is likely to result in incorrect builds. Try using LOCAL_STATIC_LIBRARIES
+Android NDK:     or LOCAL_SHARED_LIBRARIES instead to list the library dependencies of the
+Android NDK:     current module
+[armeabi] Install        : libsubstrate.so =&gt; libs/armeabi/libsubstrate.so
+[armeabi] Install        : libsubstrate-dvm.so =&gt; libs/armeabi/libsubstrate-dvm.so
+[armeabi] Compile++ thumb: totoc.cy &lt;= totoc.cy.cpp
+In file included from C:/Users/wangz/Desktop/Demo/app/src/main/jni/totoc.cy.cpp:6:
+C:/Users/wangz/Desktop/Demo/app/src/main/jni/substrate.h:315:52: warning: variadic templates are a C++11 extension [-Wc++11-extensions]
+template &lt;typename Type_, typename Kind_, typename ...Args_&gt;
+                                                   ^
+1 warning generated.
+[armeabi] SharedLibrary  : libtotoc.cy.so
+[armeabi] Install        : libtotoc.cy.so =&gt; libs/armeabi/libtotoc.cy.so
+</code></pre><p>编译打包出来，然后安装到手机上，激活重启之类的就不说了</p>
+<p>然后安装应用后，点击应用，就会在<code>/sdcard/</code>下发现dump下来的Dex文件</p>
+<h2 id="0x03-">0x03 小结</h2>
+<p>这篇文章其实是很早很早之前写的学习笔记，一直没有发出来，这几天整理资料的时候发现了，其实就是跟着别人的文章学习然后自己实践了一波写的记录，因为NDK开发的环境需要每次都配置很多地方，每隔一段时间又会有新方法之类的，所以现在来看之前的方法，其实也是比较麻烦的，而我一直用的是修改<code>build.gradle</code>这种方法，所以碰到使用<code>.mk</code>的，还是略微有些不知道怎么处理，所以中间加了一些步骤</p>
+<h2 id="0x04-references">0x04 References</h2>
+<ul>
+<li><a href="http://blog.csdn.net/u012350993/article/details/51146205">Android Jni开发之Android Studio中使用Android.mk:</a></li><li><a href="http://www.cnblogs.com/leoparadox/p/5581269.html">最简单的Android项目（NDK命令行编译）</a></li><li><a href="http://wooyun.jozxing.cc/static/drops/tips-8084.html">Android.Hook框架Cydia篇(脱壳机制作)</a></li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

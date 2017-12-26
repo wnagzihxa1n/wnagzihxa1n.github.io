@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WriteUp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="naga-piowind-2014-app-">NAGA &amp; PIOWIND 2014 APP应用攻防竞赛第二阶段第二题题解</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<p>Java层加了不知道是什么的花指令</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>其实认真看一下大概还是能看出来的，我闲着无聊给处理了一下</p>
+<pre><code>package com.crackme;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.Editable;
+import android.view.View$OnClickListener;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import java.io.PrintStream;
+
+public class MainActivity extends Activity {
+    private Button btn_login;
+    private Button btn_reset;
+    public static MainActivity m_lpThisBen;
+    private EditText txt_name;
+    private EditText txt_passwd;
+    private TextView txt_result;
+
+    static {
+        String v0 = &quot;crackme&quot;;
+        System.loadLibrary(v0);
+    }
+
+    public MainActivity() {
+        super();
+    }
+
+    static EditText access$0(MainActivity arg2) {
+        EditText v0 = arg2.txt_name;
+        return v0;
+    }
+
+    static EditText access$1(MainActivity arg2) {
+        EditText v0 = arg2.txt_passwd;
+        return v0;
+    }
+
+    static TextView access$2(MainActivity arg2) {
+        TextView v0 = arg2.txt_result;
+        return v0;
+    }
+
+    static String access$3(MainActivity arg2, String arg3, String arg4) {
+        String v0 = arg2.crackme(arg3, arg4);
+        return v0;
+    }
+
+    private native String crackme(String arg1, String arg2) {
+    }
+
+    protected void onCreate(Bundle arg4) {
+        super.onCreate(arg4);
+        int v0 = 2130903040;
+        this.setContentView(v0);
+        v0 = 2131165184;
+        View v0_1 = this.findViewById(v0);
+        this.txt_name = ((EditText)v0_1);
+        v0 = 2131165185;
+        v0_1 = this.findViewById(v0);
+        this.txt_passwd = ((EditText)v0_1);
+        v0 = 2131165186;
+        v0_1 = this.findViewById(v0);
+        this.btn_login = ((Button)v0_1);
+        v0 = 2131165187;
+        v0_1 = this.findViewById(v0);
+        this.btn_reset = ((Button)v0_1);
+        v0 = 2131165188;
+        v0_1 = this.findViewById(v0);
+        this.txt_result = ((TextView)v0_1);
+        Button v0_2 = this.btn_login;
+        com.crackme.MainActivity$1 v1 = new View$OnClickListener() {
+            public void onClick(View arg8) {
+                TextView v3_6;
+                String v4;
+                PrintStream v3_5;
+                MainActivity v3 = MainActivity.this;
+                EditText v3_1 = MainActivity.access$0(v3);
+                Editable v3_2 = v3_1.getText();
+                String v0 = v3_2.toString();
+                v3 = MainActivity.this;
+                v3_1 = MainActivity.access$1(v3);
+                v3_2 = v3_1.getText();
+                String v1 = v3_2.toString();
+                String v3_3 = &quot;&quot;;
+                boolean v3_4 = v3_3.equals(v0);
+                if(v3_4) {
+                    v3_5 = System.out;
+                    v4 = &quot;name is null or \&#39;\&#39;&quot;;
+                    v3_5.println(v4);
+                    v3 = MainActivity.this;
+                    v3_6 = MainActivity.access$2(v3);
+                    v4 = &quot;账户为空&quot;;
+                    v3_6.setText(((CharSequence)v4));
+                }
+                else {
+                    v3_3 = &quot;&quot;;
+                    v3_4 = v3_3.equals(v1);
+                    if(v3_4) {
+                        v3_5 = System.out;
+                        v4 = &quot;passwd is null or \&#39;\&#39;&quot;;
+                        v3_5.println(v4);
+                        v3 = MainActivity.this;
+                        v3_6 = MainActivity.access$2(v3);
+                        v4 = &quot;密码为空&quot;;
+                        v3_6.setText(((CharSequence)v4));
+                        while(true) {
+                            if(98 &gt;= 0) {
+                                goto label_152;
+                            }
+                        }
+                    }
+                    v3_5 = System.out;
+                    String v5 = &quot;name:&quot;;
+                    StringBuilder v4_1 = new StringBuilder(v5);
+                    v4_1 = v4_1.append(v0);
+                    v4 = v4_1.toString();
+                    v3_5.println(v4);
+                    v3_5 = System.out;
+                    v5 = &quot;passwd:&quot;;
+                    v4_1 = new StringBuilder(v5);
+                    v4_1 = v4_1.append(v1);
+                    v4 = v4_1.toString();
+                    v3_5.println(v4);
+                    v3_5 = System.out;
+                    v4 = &quot;Please treat me gently, you have to go a long way.&quot;;
+                    v3_5.println(v4);
+                    v3 = MainActivity.this;
+                    String v2 = MainActivity.access$3(v3, v0, v1);
+                    v3 = MainActivity.this;
+                    v3_6 = MainActivity.access$2(v3);
+                    v3_6.setText(((CharSequence)v2));
+                }
+            label_152:
+            }
+        };
+        v0_2.setOnClickListener(((View$OnClickListener)v1));
+        v0_2 = this.btn_reset;
+        com.crackme.MainActivity$2 v1_1 = new View$OnClickListener() {
+            public void onClick(View arg4) {
+                MainActivity v0 = MainActivity.this;
+                EditText v0_1 = MainActivity.access$0(v0);
+                String v1 = &quot;&quot;;
+                v0_1.setText(((CharSequence)v1));
+                v0 = MainActivity.this;
+                v0_1 = MainActivity.access$1(v0);
+                v1 = &quot;&quot;;
+                v0_1.setText(((CharSequence)v1));
+                v0 = MainActivity.this;
+                TextView v0_2 = MainActivity.access$2(v0);
+                v1 = &quot;&quot;;
+                v0_2.setText(((CharSequence)v1));
+            }
+        };
+        v0_2.setOnClickListener(((View$OnClickListener)v1_1));
+    }
+}
+</code></pre><p>和第一题大概是一样的，再看so文件，同样加密了，使用第一题的方法动态调试</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>撸回本地</p>
+<pre><code>auto fp, dex_addr, end_addr;  
+fp = fopen(&quot;E:\\libcrackme.so&quot;, &quot;wb&quot;);  
+for(dex_addr = 0xA350E000; dex_addr &lt; 0xA355B000; dex_addr++)
+    fputc(Byte(dex_addr), fp);
+</code></pre><p>但是我们使用IDA打开的时候，发现出错，使用010editor分析，发现文件头没了</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>我们找个正常的so文件的文件头拷贝回去，然后再使用IDA打开，发现可以打开了</p>
+<p><img src="Image/4.png" alt=""></p>
+<p>我们继续分析，整个程序的结构和第一题是一样的</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>新建内存空间</p>
+<p><img src="Image/6.png" alt=""></p>
+<p>Base64解码</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>但是我们在最后校验的地方发现了不一样的地方，它校验的方式是反过来的</p>
+<p><img src="Image/8.png" alt=""></p>
+<p>突然界面就酷炫了起来</p>
+<p>那么就比较简单了，注册码就是用户名倒序的Base64编码再插入<code>-</code></p>
+<p><img src="Image/9.png" alt=""></p>
+<p>注册算法</p>
+<pre><code>public class MyKeyGen {
+    public static void main(String[] args) throws Exception {
+        String userName = &quot;wnagzihxain&quot;;
+        StringBuilder re_userName = new StringBuilder(userName).reverse();
+        StringBuilder temp = new StringBuilder(Base64.getBase64(re_userName.toString()));
+        System.out.println(temp);
+        StringBuilder regCode = new StringBuilder();
+        for (int i = 0; i &lt; temp.length(); i++) {
+            regCode.append(temp.charAt(i));
+            if (temp.charAt(i + 1) == &#39;=&#39;) {
+                break;
+            }
+            if ((i + 1) % 3 == 0) {
+                regCode.append(&#39;-&#39;);
+            }
+        }
+        System.out.println(regCode);
+    }
+}
+</code></pre>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

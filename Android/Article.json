@@ -1,0 +1,8 @@
+[
+	{"post_time": "2017-12-19", "link": "Android/CVE-2017-17553 Dolphin Browser for Android Insecure Intent URI Scheme Parsing Vulnerability/article.html", "article_name": "CVE-2017-17553 Dolphin Browser for Android Insecure Intent URI Scheme Parsing Vulnerability", "type": "Vulnerability Analysis"},
+	{"post_time": "2017-12-19", "link": "Android/CVE-2017-17551 Dolphin Browser for Android Backup & Restore Arbitrary File Write Vulnerability/article.html", "article_name": "CVE-2017-17551 Dolphin Browser for Android Backup & Restore Arbitrary File Write Vulnerability", "type": "Vulnerability Analysis"},
+	{"post_time": "2017-12-19", "link": "Android/JEB Directory Traversal Vulnerability/article.html", "article_name": "JEB Directory Traversal Vulnerability", "type": "Vulnerability Analysis"},
+	{"post_time": "2017-12-19", "link": "Android/APKTool Directory Traversal Vulnerability/article.html", "article_name": "APKTool Directory Traversal Vulnerability", "type": "Vulnerability Analysis"},
+	{"post_time": "2017-12-18", "link": "Android/APKTool XML External Entity(XXE) Vulnerability/article.html", "article_name": "APKTool XML External Entity(XXE) Vulnerability", "type": "Vulnerability Analysis"},
+	{"post_time": "2017-12-13", "link": "Android/CVE-2017-13156 Android Janus Vulnerability/article.html", "article_name": "CVE-2017-13156 Android Janus Vulnerability", "type": "Vulnerability Analysis"}
+]

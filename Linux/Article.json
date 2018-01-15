@@ -1,6 +1,6 @@
 [
-
-	{"post_time": "2018-01-10", "link": "Linux/学习使用AFL Fuzzing Tcpdump/article.html", "article_name": "学习使用AFL Fuzzing Tcpdump", "type": "Vulnerability Analysis"},
+	{"post_time": "2018-01-10", "link": "Linux/学习使用AFL Fuzzing ImageMagick/article.html", "article_name": "学习使用AFL Fuzzing ImageMagick", "type": "Fuzz"},
+	{"post_time": "2018-01-10", "link": "Linux/学习使用AFL Fuzzing Tcpdump/article.html", "article_name": "学习使用AFL Fuzzing Tcpdump", "type": "Fuzz"},
 	{"post_time": "2018-01-10", "link": "Linux/CVE-2005-1280 Tcpdump 3.9.1 rsvp_print Infinite Loop Denial of Service Vulnerability/article.html", "article_name": "CVE-2005-1280 Tcpdump 3.9.1 rsvp_print Infinite Loop Denial of Service Vulnerability", "type": "Vulnerability Analysis"},
 	{"post_time": "2018-01-10", "link": "Linux/CVE-2005-1267 Tcpdump 3.9.1 bgp_update_print Remote Denial of Service Vulnerability/article.html", "article_name": "CVE-2005-1267 Tcpdump 3.9.1 bgp_update_print Remote Denial of Service Vulnerability", "type": "Vulnerability Analysis"},
 	{"post_time": "2018-01-10", "link": "Linux/CVE-2000-1026 Tcpdump 3.5 AFS ACL Packet Buffer Overflow Vulnerability/article.html", "article_name": "CVE-2000-1026 Tcpdump 3.5 AFS ACL Packet Buffer Overflow Vulnerability", "type": "Vulnerability Analysis"},

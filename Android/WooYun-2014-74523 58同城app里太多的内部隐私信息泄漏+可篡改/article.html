@@ -607,7 +607,7 @@ ocAPK\
     UserActionDBProvider.uriMatcher.addURI(&quot;com.wuba.android.provider.useraction&quot;, &quot;initdata&quot;, 26);
 }
 </code></pre><p>由于我们要查询的是<code>persistent</code>表，所以找到查询该表的代码</p>
-<p><img src="Image/6.png" alt=""></p>
+<p><img src="Image/7.png" alt=""></p>
 <p>对应的是25，查询URI对应的是<code>content://com.wuba.android.provider.useraction/persistent/key</code>，以下的查询代码我缩减过，看起来简洁点</p>
 <pre><code>public final Cursor query(Uri uri, String[] projection, String arg11, String[] arg12, String arg13) {
     SQLiteQueryBuilder sqliteQueryBuilder = new SQLiteQueryBuilder();

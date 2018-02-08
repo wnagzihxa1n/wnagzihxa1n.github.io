@@ -1,6 +1,6 @@
 # Learn to Develop Android CM Step by Step-08199CDAC10B05FB828F9D68461F0045
 
-**Author：wnagzihxain
+**Author：wnagzihxa1n
 Mail：tudouboom@163.com**
 
 ## 0x00 前言

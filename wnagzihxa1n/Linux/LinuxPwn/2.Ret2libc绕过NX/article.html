@@ -469,7 +469,7 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="ret2libc-nx">Ret2libc绕过NX</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <h2 id="0x00-">0x00 前言</h2>
 <p>在上一篇<a href="http://www.wangzhixian.org/LinuxPwn/1.%E6%9C%80%E5%8D%95%E7%BA%AF%E7%9A%84%E6%A0%88%E6%BA%A2%E5%87%BA/article.html">最单纯的栈溢出</a>中，简单的介绍了下如何使用gdb+peda插件调试一个可执行文件，并简单的介绍了一下比较好用的测试方法，比如<code>pattern create</code>这种，在结尾使用pwntools和zio工具来开发EXP，执行远程攻击，当然，这是在关闭了所有防护措施的情况下进行的攻击，从本篇文章开始，我会分享一些绕过防护措施的技巧和方法</p>
 <p><strong>声明：网上关于使用ret2libc来绕过NX的文章<font color="red">非常多，非常多，非常多</font>，而且看起来<font color="red">都一样，都一样，都一样</font>，我怕你们说我<font color="red">抄袭，抄袭，抄袭</font>，单纯是跟大家分享自己的学习心得，所以，本文只是本菜的<font color="red">学习笔记，学习笔记，学习笔记</font></strong></p>

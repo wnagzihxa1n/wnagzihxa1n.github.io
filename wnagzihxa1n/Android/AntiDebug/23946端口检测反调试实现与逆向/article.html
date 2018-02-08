@@ -469,7 +469,7 @@ vertical-align:1px;
 </head>
 <body>
 <h1 id="23946-">23946端口检测反调试实现与逆向</h1>
-<p><strong>Author：wnagzihxain<br>Mail：tudouboom@163.com</strong></p>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
 <p>当我们在使用IDA调试安卓应用的时候，需要先把<code>android_server</code>传到手机里，运行起来后会默认监听<code>23946</code>端口</p>
 <p>在PC上开启端口转发，这时候我们才能使用IDA挂接上应用</p>
 <p>那么我们就可以通过检测<code>/proc/net/tcp</code>文件里是否有<code>00000000:5D8A</code>，<code>0x5D8A</code>的十进制就是<code>23946</code></p>

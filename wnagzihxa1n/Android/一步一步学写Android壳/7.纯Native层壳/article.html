@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>纯Native层壳</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-android-native-">一步一步学写Android壳---纯Native层壳</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：tudouboom@163.com</strong></p>
+<p>之前我们把壳从Java层转到了Native层，但是我们依旧是通过调用Java层的<code>loadDex()</code>方法来加载Dex文件</p>
+<pre><code>jclass clazz_DexFile = env-&gt;FindClass(&quot;dalvik/system/DexFile&quot;);
+if (clazz_DexFile != nullptr) {
+    LOGI(&quot;---&gt; Find Class dalvik.system.DexFile&quot;);
+}
+
+jmethodID methodID_loadDex = env-&gt;GetStaticMethodID(clazz_DexFile,
+                                        &quot;loadDex&quot;,
+                                        &quot;(Ljava/lang/String;Ljava/lang/String;I)Ldalvik/system/DexFile;&quot;);
+if (methodID_loadDex != nullptr) {
+    LOGI(&quot;---&gt; Get methodID_loadDex&quot;);
+}
+
+auto jobj_dexFile = env-&gt;CallStaticObjectMethod(clazz_DexFile,
+                                                methodID_loadDex,
+                                                jstr_cachefilePath,
+                                                jstr_cachefileOpt,
+                                                false);
+</code></pre><p>从<code>loadDex()</code>函数开始</p>
+<pre><code>private static DexFile loadDexFile(File file, File optimizedDirectory)
+        throws IOException {
+    if (optimizedDirectory == null) {
+        return new DexFile(file);
+    } else {
+        String optimizedPath = optimizedPathFor(file, optimizedDirectory);
+        return DexFile.loadDex(file.getPath(), optimizedPath, 0);
+    }
+}
+</code></pre><p>进入，其返回的是一个<code>DexFile</code>对象</p>
+<pre><code>static public DexFile loadDex(String sourcePathName, String outputPathName,
+    int flags) throws IOException {
+
+    return new DexFile(sourcePathName, outputPathName, flags);
+}
+</code></pre><p>其构造函数，通过<code>openDexFile()</code>函数进行Dex文件的加载，返回一个<code>mCookie</code>，这个会加入一个全局Table，暂且不说</p>
+<pre><code>private DexFile(String sourceName, String outputName, int flags) throws IOException {
+    if (outputName != null) {
+        try {
+            String parent = new File(outputName).getParent();
+            if (Libcore.os.getuid() != Libcore.os.stat(parent).st_uid) {
+                throw new IllegalArgumentException(&quot;Optimized data directory &quot; + parent
+                        + &quot; is not owned by the current user. Shared storage cannot protect&quot;
+                        + &quot; your application from code injection attacks.&quot;);
+            }
+        } catch (ErrnoException ignored) {
+            // assume we&#39;ll fail with a more contextual error later
+        }
+    }
+
+    mCookie = openDexFile(sourceName, outputName, flags);
+    mFileName = sourceName;
+    guard.open(&quot;close&quot;);
+}
+</code></pre><p><code>openDexFile()</code>函数调用了一个Native函数<code>openDexFileNative()</code></p>
+<pre><code>private static int openDexFile(String sourceName, String outputName,
+    int flags) throws IOException {
+    return openDexFileNative(new File(sourceName).getCanonicalPath(),
+                             (outputName == null) ? null : new File(outputName).getCanonicalPath(),
+                             flags);
+}
+</code></pre><p><code>openDexFileNative()</code>函数定义</p>
+<pre><code>native private static int openDexFileNative(String sourceName, String outputName,
+    int flags) throws IOException;
+</code></pre><p>该函数在Native层使用动态注册的方式注册，函数注册表相应的Item如下</p>
+<pre><code>{ &quot;openDexFileNative&quot;,  &quot;(Ljava/lang/String;Ljava/lang/String;I)I&quot;,
+        Dalvik_dalvik_system_DexFile_openDexFileNative },
+</code></pre><p>终于找到关键的地方了</p>
+<pre><code>static void Dalvik_dalvik_system_DexFile_openDexFileNative(const u4* args,
+    JValue* pResult)
+{
+    StringObject* sourceNameObj = (StringObject*) args[0];
+    StringObject* outputNameObj = (StringObject*) args[1];
+    DexOrJar* pDexOrJar = NULL;
+    JarFile* pJarFile;
+    RawDexFile* pRawDexFile;
+    char* sourceName;
+    char* outputName;
+
+    if (sourceNameObj == NULL) {
+        dvmThrowNullPointerException(&quot;sourceName == null&quot;);
+        RETURN_VOID();
+    }
+
+    sourceName = dvmCreateCstrFromString(sourceNameObj);
+    if (outputNameObj != NULL)
+        outputName = dvmCreateCstrFromString(outputNameObj);
+    else
+        outputName = NULL;
+
+    if (dvmClassPathContains(gDvm.bootClassPath, sourceName)) {
+        ALOGW(&quot;Refusing to reopen boot DEX &#39;%s&#39;&quot;, sourceName);
+        dvmThrowIOException(
+            &quot;Re-opening BOOTCLASSPATH DEX files is not allowed&quot;);
+        free(sourceName);
+        free(outputName);
+        RETURN_VOID();
+    }
+
+    if (hasDexExtension(sourceName)
+            &amp;&amp; dvmRawDexFileOpen(sourceName, outputName, &amp;pRawDexFile, false) == 0) {
+        ALOGV(&quot;Opening DEX file &#39;%s&#39; (DEX)&quot;, sourceName);
+
+        pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+        pDexOrJar-&gt;isDex = true;
+        pDexOrJar-&gt;pRawDexFile = pRawDexFile;
+        pDexOrJar-&gt;pDexMemory = NULL;
+    } else if (dvmJarFileOpen(sourceName, outputName, &amp;pJarFile, false) == 0) {
+        ALOGV(&quot;Opening DEX file &#39;%s&#39; (Jar)&quot;, sourceName);
+
+        pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+        pDexOrJar-&gt;isDex = false;
+        pDexOrJar-&gt;pJarFile = pJarFile;
+        pDexOrJar-&gt;pDexMemory = NULL;
+    } else {
+        ALOGV(&quot;Unable to open DEX file &#39;%s&#39;&quot;, sourceName);
+        dvmThrowIOException(&quot;unable to open DEX file&quot;);
+    }
+
+    if (pDexOrJar != NULL) {
+        pDexOrJar-&gt;fileName = sourceName;
+        addToDexFileTable(pDexOrJar);
+    } else {
+        free(sourceName);
+    }
+
+    free(outputName);
+    RETURN_PTR(pDexOrJar);
+}
+</code></pre><p>我们要摆脱通过调用Java层函数进行Dex文件加载这种方式，必须是手动实现<code>loadDex()</code>到<code>Dalvik_dalvik_system_DexFile_openDexFileNative()</code>之间所有调用过程，不一定要完整模拟出来，但是关键的参数什么的要到位，所以要研究<code>libdvm.so</code>，毕竟这些函数都编译进去了，我们使用<code>dlopen()</code>和<code>dlsym()</code>来进行Native层函数的调用</p>
+<p>由于这个还是要对应手机上的<code>libdvm.so</code>，我这里使用的是模拟器，从模拟器中导出</p>
+<pre><code>E:\&gt;adb pull /system/lib/libdvm.so E:\OJ
+/system/lib/libdvm.so: 1 file pulled. 1.1 MB/s (2629626 bytes in 2.368s)
+</code></pre><p>记住这个方法是动态注册的，所以使用IDA反编译，找到<code>Dalvik_dalvik_system_DexFile_openDexFileNative()</code></p>
+<p><img src="Image/1.png" alt=""></p>
+<p>这个很明显是C++编译的，因为C++里有重载，所以函数前后会加上前缀和后缀，C语言就不存在这种问题了</p>
+<p>我们看到<code>Dalvik_dalvik_system_DexFile_openDexFileNative</code>变成了<code>_ZL46Dalvik_dalvik_system_DexFile_openDexFileNativePKjP6JValue</code></p>
+<p>不过这样毕竟不是很靠谱，每个手机都不一样那还了得，所以我们使用一种通用的方法</p>
+<p>还记得之前我们说这个函数是使用动态注册吗？</p>
+<p>那么它必然有一个函数表，并且这个函数表的名字是不会变的，通过查看源码，确定是<code>dvm_dalvik_system_DexFile</code></p>
+<p>于是乎使用<code>dlopen()</code>和<code>dlsym()</code>进行定位并循环遍历，对比名字及签名，并获取其函数指针</p>
+<pre><code>auto libdvm = dlopen(&quot;libdvm.so&quot;, RTLD_NOW);
+auto dvm_dalvik_system_DexFile = (JNINativeMethod *) dlsym(libdvm, &quot;dvm_dalvik_system_DexFile&quot;);
+void (*fnOpenDexFileNative)(const u4* args, JValue* pResult) = nullptr;
+for (auto p = dvm_dalvik_system_DexFile; p-&gt;fnPtr != nullptr; p++) {
+    if (strcmp(p-&gt;name, &quot;openDexFileNative&quot;) == 0
+        &amp;&amp; strcmp(p-&gt;signature, &quot;(Ljava/lang/String;Ljava/lang/String;I)I&quot;) == 0) {
+        fnOpenDexFileNative = (void (*)(const u4 *, JValue *)) p-&gt;fnPtr;
+        break;
+    }
+}
+
+if (fnOpenDexFileNative != nullptr) {
+    LOGI(&quot;Found fnOpenDexFileNative&quot;);
+}
+</code></pre><p>跑起来看效果</p>
+<pre><code>03-07 12:28:02.172 2270-2270/com.wnagzihxa1n.protectapk I/toT0C: Found fnOpenDexFileNative
+</code></pre><p>函数指针获取到了，接着来观察参数并尝试构造，第一个参数是<code>u4*</code>的指针，第二个参数是<code>JValue*</code>类型的指针</p>
+<pre><code>static void Dalvik_dalvik_system_DexFile_openDexFileNative(const u4* args,
+    JValue* pResult)
+</code></pre><p>继续看，<code>args</code>一共有两个值，第一个是待加载的Dex文件路径，第二个是优化后的ODex文件路径</p>
+<pre><code>StringObject* sourceNameObj = (StringObject*) args[0];
+StringObject* outputNameObj = (StringObject*) args[1];
+</code></pre><p>但是我们观察到这两个参数转换成了<code>StringObject*</code>类型，其定义如下</p>
+<pre><code>struct StringObject : Object {
+    u4 instanceData[1];
+    int length() const;
+    int utfLength() const;
+    ArrayObject* array() const;
+    const u2* chars() const;
+};
+</code></pre><p>而且幸运的是，我们发现了一个函数，可以帮助我们直接将<code>char*</code>字符串转换成<code>StringObject*</code></p>
+<pre><code>StringObject* dvmCreateStringFromCstr(const char* utf8Str) {
+    assert(utf8Str != NULL);
+    return dvmCreateStringFromCstrAndLength(utf8Str, dvmUtf8Len(utf8Str));
+}
+</code></pre><p>使用IDA找到这个函数的定义为<code>_Z23dvmCreateStringFromCstrPKc</code></p>
+<p>所以继续写代码来调用，其中需要强制转换类型</p>
+<pre><code>if (fnOpenDexFileNative != nullptr) {
+    LOGI(&quot;Found fnOpenDexFileNative&quot;);
+    auto fndvmCreateStringFromCstr = (void* (*)(const char* utf8Str)) dlsym(libdvm, &quot;_Z23dvmCreateStringFromCstrPKc&quot;);
+    u4 args[2];
+    args[0] = static_cast&lt;u4&gt;(reinterpret_cast&lt;uintptr_t&gt;(fndvmCreateStringFromCstr(cachefilePath.c_str())));
+    args[1] = static_cast&lt;u4&gt;(reinterpret_cast&lt;uintptr_t&gt;(fndvmCreateStringFromCstr(cachefileOpt.c_str())));
+    JValue result;
+    fnOpenDexFileNative(args, &amp;result);
+}
+</code></pre><p>这样就可以跑起来了，但是呢，这仅仅是跑起来，我们接着要取出返回值并进行后续的调用，此处如果大家没有使用<code>Dalvik</code>虚拟机源码包的话，可以手动的一个个结构体添加，把不必要的注释去掉之后代码如下</p>
+<pre><code>#include &lt;jni.h&gt;
+#include &quot;Common.h&quot;
+#include &quot;DexFile.h&quot;
+
+#ifndef PROTECTAPK_MANDROID_H
+#define PROTECTAPK_MANDROID_H
+
+#endif //PROTECTAPK_MANDROID_H
+
+typedef struct MemMapping {
+    void*   addr;           /* start of data */
+    size_t  length;         /* length of data */
+
+    void*   baseAddr;       /* page-aligned base address */
+    size_t  baseLength;     /* length of mapping */
+} MemMapping;
+
+struct DvmDex {
+    DexFile*            pDexFile;
+    const DexHeader*    pHeader;
+    struct StringObject** pResStrings;
+    struct ClassObject** pResClasses;
+    struct Method**     pResMethods;
+    struct Field**      pResFields;
+    struct AtomicCache* pInterfaceCache;
+    bool                isMappedReadOnly;
+    MemMapping          memMap;
+    jobject dex_object;
+    pthread_mutex_t     modLock;
+};
+
+struct RawDexFile {
+    char*       cacheFileName;
+    DvmDex*     pDvmDex;
+};
+
+typedef struct ZipHashEntry {
+    const char*     name;
+    unsigned short  nameLen;
+} ZipHashEntry;
+
+typedef struct ZipArchive {
+    int         mFd;
+    MemMapping  mMap;
+    int         mNumEntries;
+    int         mHashTableSize;
+    ZipHashEntry* mHashTable;
+} ZipArchive;
+
+struct JarFile {
+    ZipArchive  archive;
+    char*       cacheFileName;
+    DvmDex*     pDvmDex;
+};
+
+struct DexOrJar {
+    char*       fileName;
+    bool        isDex;
+    bool        okayToFree;
+    RawDexFile* pRawDexFile;
+    JarFile*    pJarFile;
+    u1*         pDexMemory; // malloc()ed memory, if any
+};
+</code></pre><p>我们获取返回的<code>pDexOrJar</code>指针</p>
+<pre><code>DexOrJar* pDexOrJar = nullptr;
+if (fnOpenDexFileNative != nullptr) {
+    LOGI(&quot;Found fnOpenDexFileNative&quot;);
+    auto fndvmCreateStringFromCstr = (void* (*)(const char* utf8Str)) dlsym(libdvm, &quot;_Z23dvmCreateStringFromCstrPKc&quot;);
+    u4 args[2];
+    args[0] = static_cast&lt;u4&gt;(reinterpret_cast&lt;uintptr_t&gt;(fndvmCreateStringFromCstr(cachefilePath.c_str())));
+    args[1] = static_cast&lt;u4&gt;(reinterpret_cast&lt;uintptr_t&gt;(fndvmCreateStringFromCstr(cachefileOpt.c_str())));
+    JValue result;
+    fnOpenDexFileNative(args, &amp;result);
+    pDexOrJar = (DexOrJar*) result.l;
+}
+</code></pre><p>根据之前的分析，有一个地方是需要我们手动调用进行恢复的，就是下面这个<code>mCookie</code></p>
+<pre><code>mCookie = openDexFile(sourceName, outputName, flags);
+</code></pre><p>进行修改，把<code>mCookie</code>替换回去，这个值就是返回的<code>pDexOrJar</code></p>
+<pre><code>jclass clazz_dalvik_system_DexFile = env-&gt;FindClass(&quot;dalvik/system/DexFile&quot;);
+jobject jobj_dexFile = env-&gt;AllocObject(clazz_dalvik_system_DexFile);
+
+jfieldID fieldID_mCookie = env-&gt;GetFieldID(clazz_dalvik_system_DexFile, &quot;mCookie&quot;, &quot;I&quot;);
+env-&gt;SetIntField(jobj_dexFile, fieldID_mCookie, static_cast&lt;jint&gt;(reinterpret_cast&lt;uintptr_t&gt;(pDexOrJar)));
+</code></pre><p>拿到<code>mCookie</code>后，再加到<code>dexElements</code>里就行了</p>
+<p>跑起来的效果</p>
+<p><img src="Image/2.png" alt=""></p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

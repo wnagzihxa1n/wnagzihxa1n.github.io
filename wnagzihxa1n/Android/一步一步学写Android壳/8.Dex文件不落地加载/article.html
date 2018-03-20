@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dex文件不落地加载</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-android-dex-">一步一步学写Android壳---Dex文件不落地加载</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：wnagzihxa1n@163.com</strong></p>
+<p>之前的文章中，我们实现了在Native层中加载Dex文件，但是有个问题在于，解密后的Dex文件有那么一小段时间是写出到文件里的</p>
+<p>写出的Dex文件通过调用Native层的函数进行加载，那么所调用的函数也是要先读取，再接着调用某函数进行Dex的加载，所以我们可以直接把解密后的Dex数据存在内存中，直接调用<code>libdvm.so</code>中的相关函数进行Dex加载即可</p>
+<p>先来看Dex文件在Native层的读取加载过程，我们通过调用Native层的函数进行了文件的加载，这个函数使用的是匹配签名和Java层函数名获取，在Native层命名为<code>Dalvik_dalvik_system_DexFile_openDexFileNative()</code></p>
+<pre><code>auto libdvm = dlopen(&quot;libdvm.so&quot;, RTLD_NOW);
+auto dvm_dalvik_system_DexFile = (JNINativeMethod *) dlsym(libdvm, &quot;dvm_dalvik_system_DexFile&quot;);
+void (*fnOpenDexFileNative)(const u4* args, JValue* pResult) = nullptr;
+for (auto p = dvm_dalvik_system_DexFile; p-&gt;fnPtr != nullptr; p++) {
+    if (strcmp(p-&gt;name, &quot;openDexFileNative&quot;) == 0
+        &amp;&amp; strcmp(p-&gt;signature, &quot;(Ljava/lang/String;Ljava/lang/String;I)I&quot;) == 0) {
+        fnOpenDexFileNative = (void (*)(const u4 *, JValue *)) p-&gt;fnPtr;
+        break;
+    }
+}
+
+DexOrJar* pDexOrJar = nullptr;
+if (fnOpenDexFileNative != nullptr) {
+    LOGI(&quot;Found fnOpenDexFileNative&quot;);
+    auto fndvmCreateStringFromCstr = (void* (*)(const char* utf8Str)) dlsym(libdvm, &quot;_Z23dvmCreateStringFromCstrPKc&quot;);
+    u4 args[2];
+    args[0] = static_cast&lt;u4&gt;(reinterpret_cast&lt;uintptr_t&gt;(fndvmCreateStringFromCstr(cachefilePath.c_str())));
+    args[1] = static_cast&lt;u4&gt;(reinterpret_cast&lt;uintptr_t&gt;(fndvmCreateStringFromCstr(cachefileOpt.c_str())));
+    JValue result;
+    fnOpenDexFileNative(args, &amp;result);
+    pDexOrJar = (DexOrJar*) result.l;
+}
+</code></pre><p>而函数<code>Dalvik_dalvik_system_DexFile_openDexFileNative()</code>有一个双胞胎弟弟<code>Dalvik_dalvik_system_DexFile_openDexFileNative()</code>，我们看其定义，传入的参数为字节数组，也就是说，这个函数也是用于加载Dex的，功能和上面那个函数一样，只是它传入的参数是字节数组</p>
+<pre><code>{ &quot;openDexFile&quot;, &quot;([B)I&quot;, Dalvik_dalvik_system_DexFile_openDexFile_bytearray }
+</code></pre><p>如果说可以用Java层来操作文件，那么我们只需要在Java层解密Dex文件，然后直接调用这个函数进行Dex的加载，这就可以做到不落地了</p>
+<p>但是这里并不能使用Java层的函数，emmmmmmmmmmmmmmmmmm</p>
+<p>我们可以换一种思路，既然传进来的是字节数组，那就说明后面也是将字节数组转为C++的数组类型或者其它文件流等Native层可以处理的数据</p>
+<p>我们只需要摸清这个函数接下来的操作，模拟一下不就好了吗？</p>
+<p>而且代码都是现成的，有些函数还可以通过<code>dlopen</code>和<code>dlsym</code>进行调用，所以现在的任务就是分析一下这个函数都做了哪些操作</p>
+<p>第一个函数是<code>Dalvik_dalvik_system_DexFile_openDexFile_bytearray()</code>，通过拷贝操作把字节数组的数据赋值给<code>pBytes</code>，然后传入<code>dvmRawDexFileOpenArray()</code>，然后是一些<code>pDexOrJar</code>指向的结构体成员赋值操作，最后返回<code>pDexOrJar</code>指针</p>
+<pre><code>static void Dalvik_dalvik_system_DexFile_openDexFile_bytearray(const u4* args,
+    JValue* pResult)
+{
+    ArrayObject* fileContentsObj = (ArrayObject*) args[0];
+    u4 length;
+    u1* pBytes;
+    RawDexFile* pRawDexFile;
+    DexOrJar* pDexOrJar = NULL;
+
+    if (fileContentsObj == NULL) {
+        dvmThrowNullPointerException(&quot;fileContents == null&quot;);
+        RETURN_VOID();
+    }
+
+    /* TODO: Avoid making a copy of the array. (note array *is* modified) */
+    length = fileContentsObj-&gt;length;
+    pBytes = (u1*) malloc(length);
+
+    if (pBytes == NULL) {
+        dvmThrowRuntimeException(&quot;unable to allocate DEX memory&quot;);
+        RETURN_VOID();
+    }
+
+    memcpy(pBytes, fileContentsObj-&gt;contents, length);
+
+    if (dvmRawDexFileOpenArray(pBytes, length, &amp;pRawDexFile) != 0) {
+        ALOGV(&quot;Unable to open in-memory DEX file&quot;);
+        free(pBytes);
+        dvmThrowRuntimeException(&quot;unable to open in-memory DEX file&quot;);
+        RETURN_VOID();
+    }
+
+    ALOGV(&quot;Opening in-memory DEX&quot;);
+    pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+    pDexOrJar-&gt;isDex = true;
+    pDexOrJar-&gt;pRawDexFile = pRawDexFile;
+    pDexOrJar-&gt;pDexMemory = pBytes;
+    pDexOrJar-&gt;fileName = strdup(&quot;&lt;memory&gt;&quot;); // Needs to be free()able.
+    addToDexFileTable(pDexOrJar);
+
+    RETURN_PTR(pDexOrJar);
+}
+</code></pre><p>跟入<code>dvmRawDexFileOpenArray()</code>函数，调用了一个<code>dvmPrepareDexInMemory()</code>函数，该函数作用是给<code>pDvmDex</code>指向的结构体赋值，然后处理后的结构体作为一个成员赋值给<code>(*ppRawDexFile)-&gt;pDvmDex</code></p>
+<pre><code>int dvmRawDexFileOpenArray(u1* pBytes, u4 length, RawDexFile** ppRawDexFile)
+{
+    DvmDex* pDvmDex = NULL;
+
+    if (!dvmPrepareDexInMemory(pBytes, length, &amp;pDvmDex)) {
+        ALOGD(&quot;Unable to open raw DEX from array&quot;);
+        return -1;
+    }
+    assert(pDvmDex != NULL);
+
+    *ppRawDexFile = (RawDexFile*) calloc(1, sizeof(RawDexFile));
+    (*ppRawDexFile)-&gt;pDvmDex = pDvmDex;
+
+    return 0;
+}
+</code></pre><p>跟入<code>dvmPrepareDexInMemory()</code>，调用了一个<code>rewriteDex()</code>函数</p>
+<pre><code>bool dvmPrepareDexInMemory(u1* addr, size_t len, DvmDex** ppDvmDex)
+{
+    DexClassLookup* pClassLookup = NULL;
+
+    if (!rewriteDex(addr, len, false, false, &amp;pClassLookup, ppDvmDex)) {
+        return false;
+    }
+
+    (*ppDvmDex)-&gt;pDexFile-&gt;pClassLookup = pClassLookup;
+
+    return true;
+}
+</code></pre><p>跟入<code>rewriteDex()</code>，这里就是关键的地方了，一共有两个关键的函数调用，第一个是<code>dvmDexFileOpenPartial()</code>，第二个是<code>dexCreateClassLookup()</code></p>
+<pre><code>static bool rewriteDex(u1* addr, int len, bool doVerify, bool doOpt,
+    DexClassLookup** ppClassLookup, DvmDex** ppDvmDex)
+{
+    DexClassLookup* pClassLookup = NULL;
+    u8 prepWhen, loadWhen, verifyOptWhen;
+    DvmDex* pDvmDex = NULL;
+    bool result = false;
+    const char* msgStr = &quot;???&quot;;
+
+    if (dexSwapAndVerify(addr, len) != 0)
+        goto bail;
+
+    if (dvmDexFileOpenPartial(addr, len, &amp;pDvmDex) != 0) {
+        ALOGE(&quot;Unable to create DexFile&quot;);
+        goto bail;
+    }
+
+    pClassLookup = dexCreateClassLookup(pDvmDex-&gt;pDexFile);
+    if (pClassLookup == NULL)
+        goto bail;
+    pDvmDex-&gt;pDexFile-&gt;pClassLookup = pClassLookup;
+
+    if (!doVerify &amp;&amp; !doOpt) {
+        result = true;
+        goto bail;
+    }
+
+    prepWhen = dvmGetRelativeTimeUsec();
+
+    if (!loadAllClasses(pDvmDex))
+        goto bail;
+    loadWhen = dvmGetRelativeTimeUsec();
+
+    if (!dvmCreateInlineSubsTable())
+        goto bail;
+
+    verifyAndOptimizeClasses(pDvmDex-&gt;pDexFile, doVerify, doOpt);
+    verifyOptWhen = dvmGetRelativeTimeUsec();
+
+    if (doVerify &amp;&amp; doOpt)
+        msgStr = &quot;verify+opt&quot;;
+    else if (doVerify)
+        msgStr = &quot;verify&quot;;
+    else if (doOpt)
+        msgStr = &quot;opt&quot;;
+    ALOGD(&quot;DexOpt: load %dms, %s %dms, %d bytes&quot;,
+        (int) (loadWhen - prepWhen) / 1000,
+        msgStr,
+        (int) (verifyOptWhen - loadWhen) / 1000,
+        gDvm.pBootLoaderAlloc-&gt;curOffset);
+
+    result = true;
+
+bail:
+    failed;
+
+    return result;
+}
+</code></pre><p>所以我们只需要通过<code>dlopen</code>和<code>dlsym</code>来调用这两个函数，完成结构体的赋值即可，根据源码对照着写就行</p>
+<pre><code>auto libdvm = dlopen(&quot;libdvm.so&quot;, RTLD_NOW);
+auto fndvmDexFileOpenPartial = (int (*)(const void* addr, int len, DvmDex** ppDvmDex)) dlsym(libdvm, &quot;_Z21dvmDexFileOpenPartialPKviPP6DvmDex&quot;);
+auto fndexCreateClassLookup = (DexClassLookup* (*)(DexFile* pDexFile)) dlsym(libdvm, &quot;_Z20dexCreateClassLookupP7DexFile&quot;);
+
+DvmDex* pDvmDex = nullptr;
+if (fndvmDexFileOpenPartial(pMem, len, &amp;pDvmDex) != 0) {
+    return JNI_FALSE;
+}
+
+DexClassLookup* pClassLookup = fndexCreateClassLookup(pDvmDex-&gt;pDexFile);
+if (pClassLookup == nullptr) {
+    return JNI_FALSE;
+}
+pDvmDex-&gt;pDexFile-&gt;pClassLookup = pClassLookup;
+
+RawDexFile* pRawDexFile = (RawDexFile*) calloc(1, sizeof(RawDexFile));
+pRawDexFile-&gt;pDvmDex = pDvmDex;
+pRawDexFile-&gt;cacheFileName = nullptr;
+
+DexOrJar* pDexOrJar = (DexOrJar*) malloc(sizeof(DexOrJar));
+pDexOrJar-&gt;isDex = true;
+pDexOrJar-&gt;pRawDexFile = pRawDexFile;
+pDexOrJar-&gt;pDexMemory = (u1 *) pMem;
+pDexOrJar-&gt;fileName = strdup(&quot;&lt;memory&gt;&quot;); // Needs to be free()able.
+addToDexFileTable(pDexOrJar);
+</code></pre><p>我们观察到最后有一个<code>addToDexFileTable()</code>函数，这个函数是将<code>pDexOrJar</code>指针加入一个全局Dex指针表，不过这个函数是在IDA里并没有搜到，所以我们只能手动实现它</p>
+<pre><code>static void addToDexFileTable(DexOrJar* pDexOrJar) {
+    u4 hash = (u4) pDexOrJar;
+    void* result;
+
+    dvmHashTableLock(gDvm.userDexFiles);
+    result = dvmHashTableLookup(gDvm.userDexFiles, hash, pDexOrJar,
+            hashcmpDexOrJar, true);
+    dvmHashTableUnlock(gDvm.userDexFiles);
+
+    if (result != pDexOrJar) {
+        ALOGE(&quot;Pointer has already been added?&quot;);
+        dvmAbort();
+    }
+
+    pDexOrJar-&gt;okayToFree = true;
+}
+</code></pre><p>有三个方法是需要使用<code>dlopen</code>和<code>dlsym</code>来调用</p>
+<pre><code>auto libdvm = dlopen(&quot;libdvm.so&quot;, RTLD_NOW);
+auto fndvmHashTableLock = (void (*)(HashTable* pHashTable)) dlsym(libdvm, &quot;_Z16dvmHashTableLockP9HashTable&quot;);
+auto fndvmHashTableUnlock = (void (*)(HashTable* pHashTable)) dlsym(libdvm, &quot;_Z18dvmHashTableUnlockP9HashTable&quot;);
+auto fndvmHashTableLookup = (void* (*)(HashTable* pHashTable, u4 itemHash, void* item, HashCompareFunc cmpFunc, bool doAdd)) dlsym(libdvm, &quot;_Z18dvmHashTableLookupP9HashTablejPvPFiPKvS3_Eb&quot;);
+</code></pre><p>好几个参数都是需要单独加进去的</p>
+<pre><code>static int hashcmpDexOrJar(const void* tableVal, const void* newVal)
+{
+    return (int) newVal - (int) tableVal;
+}
+
+struct HashEntry {
+    u4 hashValue;
+    void* data;
+};
+
+typedef void (*HashFreeFunc)(void* ptr);
+typedef int (*HashCompareFunc)(const void* tableItem, const void* looseItem);
+
+struct HashTable {
+    int         tableSize;          /* must be power of 2 */
+    int         numEntries;         /* current #of &quot;live&quot; entries */
+    int         numDeadEntries;     /* current #of tombstone entries */
+    HashEntry*  pEntries;           /* array on heap */
+    HashFreeFunc freeFunc;
+    pthread_mutex_t lock;
+};
+</code></pre><p>最后剩一个<code>gDvm</code>对象，这里的获取方式就比较巧妙了</p>
+<p>我们首先来看定义，这是一个全局变量</p>
+<pre><code>struct DvmGlobals gDvm;
+</code></pre><p>来看<code>DvmGlobals</code>结构体，非常大，其中的<code>gDvm.userDexFiles</code>是一个<code>HashTable*</code>类型的数据</p>
+<pre><code>truct DvmGlobals {
+    char*       bootClassPathStr;
+    char*       classPathStr;
+
+    ......
+
+    HashTable*  userDexFiles;
+
+    ......
+</code></pre><p>然后通过调用<code>dvmInternalNativeShutdown()</code>函数进行获取，为了避免出问题，我们使用Hook的方式，然后获取到数据后就取消Hook</p>
+<pre><code>void dvmInternalNativeShutdown()
+{
+    dvmHashTableFree(gDvm.userDexFiles);
+}
+</code></pre><p>这里可以直接使用GOT Hook的方式，大概的过程就是先找到打开<code>/proc/self/maps</code>，找到<code>libdvm.so</code>的加载内存段，定位好并解析数据，找到GOT表所在内存，进行遍历，找到存储<code>dvmHashTableFree()</code>函数指针的地址，然后找到我们的壳so加载的基址以及替换的函数指针，进行相加得到真正替换后的函数内存地址，写到之前找到的GOT表原函数地址，即可进行GOT表Hook</p>
+<pre><code>Hook::hookMethod(libdvm, &quot;_Z16dvmHashTableFreeP9HashTable&quot;, (void*) newfndvmHashTableFree, (void**)&amp;olddvmHashTableFree);
+fndvmInternalNativeShutdown();
+</code></pre><p>我们可以通过一个简单的字段来控制是否Hook，因为我们Hook一次就行</p>
+<pre><code>static void (*olddvmHashTableFree)(HashTable* pHashTable);
+
+HashTable *userDexFiles = nullptr;
+static void newfndvmHashTableFree(HashTable* pHashTable) {
+    if (JNIInfo::isHook) {
+        userDexFiles = pHashTable;
+        JNIInfo::isHook = false;
+        return;
+    } else {
+        return olddvmHashTableFree(pHashTable);
+    }
+}
+</code></pre><p>最后设置<code>mCookie</code>即可</p>
+<pre><code>jobject jobj_dexFile = env-&gt;AllocObject(JNIInfo::clazz_dalvik_system_DexFile);
+env-&gt;SetIntField(jobj_dexFile, JNIInfo::fieldID_mCookie, static_cast&lt;jint&gt;(reinterpret_cast&lt;uintptr_t&gt;(pDexOrJar)));
+
+if (jobj_dexFile != nullptr) {
+    jobject jobj_classloader = env-&gt;CallObjectMethod(context, JNIInfo::methodID_getClassLoader);
+    std::vector&lt;jobject&gt;jobj_dexFiles;
+    jobj_dexFiles.push_back(jobj_dexFile);
+
+    if (JNIUtils::makeDexElements(env, jobj_classloader, jobj_dexFiles) == JNI_TRUE) {
+        dlclose(libdvm);
+        return JNI_TRUE;
+    } else {
+        return JNI_FALSE;
+    }
+} else {
+    return JNI_FALSE;
+}
+return JNI_FALSE;
+</code></pre><p>跑起来</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>效果还是可以的</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

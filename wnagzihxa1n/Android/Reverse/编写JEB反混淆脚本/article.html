@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>编写JEB反混淆脚本</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-jeb-">编写JEB反混淆脚本</h1>
+<p><strong>Author：wnagzihxa1n<br>Mail：wnagzihxa1n@163.com</strong></p>
+<p>安卓中有种字符串混淆，是把字符串加密，运行时先调用一个解密函数，还原出字符串后再执行原始代码，如下是JEB 1.5的字符串混淆，调用了<code>Hp.yK()</code>去解密</p>
+<pre><code>if(Licensing.isReleaseBuild()) {
+    v0.append(Hp.yK(new byte[]{49, 10, 28, 28, 19, 26, 2, 71}, v4, 30));
+}
+else {
+    v0.append(Hp.yK(new byte[]{-20, 1, 7, 23, 18, 72}, 1, 136));
+}
+</code></pre><p>我们先来解密，可以看到效果还是可以的</p>
+<pre><code>if(Licensing.isReleaseBuild()) {
+    v0.append(&quot;release/&quot;);
+}
+else {
+    v0.append(&quot;debug/&quot;);
+}
+</code></pre><p>接下来分享下如何利用JEB的API编写反混淆脚本</p>
+<p>首先创建一个工程，导入JEB.jar文件，并且以Java库形式导入</p>
+<p>新建一个类<code>JavaDeObfuscator</code>，使用<code>IScript</code>接口，并添加<code>run()</code>函数</p>
+<pre><code>public class JavaDeObfuscator implements IScript {
+
+    @Override
+    public void run(JebInstance jebInstance) {
+
+    }
+}
+</code></pre><p>先获取所有类的签名</p>
+<pre><code>public class JavaDeObfuscator implements IScript {
+
+    private static String decodeMethodSignature = &quot;&quot;;
+    private JebInstance jeb = null;
+
+    @Override
+    public void run(JebInstance jebInstance) {
+        jeb = jebInstance;
+        Dex dex = jeb.getDex();
+        List&lt;String&gt; classSugnatures = dex.getClassSignatures(true);
+        for (String signature : classSugnatures) {
+            jeb.print(signature);
+        }
+    }
+}
+</code></pre><p>随意导入一个APK文件，越简单越好，使用JEB的执行脚本功能，使用JEB版本为1.5</p>
+<pre><code>执行程序 C:\Users\wangz\Desktop\JEB DeObfuscator\src\JavaDeObfuscator.java...
+Signature : Landroid/support/constraint/BuildConfig;
+Signature : Landroid/support/constraint/ConstraintLayout$LayoutParams;
+Signature : Landroid/support/constraint/ConstraintLayout;
+Signature : Landroid/support/constraint/ConstraintSet$1;
+Signature : Landroid/support/constraint/ConstraintSet$Constraint;
+Signature : Landroid/support/constraint/ConstraintSet;
+Signature : Landroid/support/constraint/Guideline;
+Signature : Landroid/support/constraint/R$attr;
+Signature : Landroid/support/constraint/R$id;
+Signature : Landroid/support/constraint/R$styleable;
+Signature : Landroid/support/constraint/R;
+Signature : Landroid/support/constraint/solver/ArrayLinkedVariables;
+Signature : Landroid/support/constraint/solver/ArrayRow;
+Signature : Landroid/support/constraint/solver/Cache;
+Signature : Landroid/support/constraint/solver/Goal;
+Signature : Landroid/support/constraint/solver/LinearSystem;
+Signature : Landroid/support/constraint/solver/Pools$Pool;
+Signature : Landroid/support/constraint/solver/Pools;
+Signature : Landroid/support/constraint/solver/SolverVariable$1;
+Signature : Landroid/support/constraint/solver/SolverVariable$Type;
+Signature : Landroid/support/constraint/solver/SolverVariable;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintAnchor$1;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintAnchor$ConnectionType;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintAnchor$Strength;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintAnchor$Type;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintAnchor;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintHorizontalLayout$ContentAlignment;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintTableLayout$HorizontalSlice;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintTableLayout$VerticalSlice;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintWidget$1;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintWidget$ContentAlignment;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintWidget$DimensionBehaviour;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintWidget;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintWidgetContainer$2;
+Signature : Landroid/support/constraint/solver/widgets/Guideline$1;
+Signature : Landroid/support/constraint/solver/widgets/Optimizer;
+Signature : Landroid/support/constraint/solver/widgets/Rectangle;
+Signature : Landroid/support/constraint/solver/widgets/Snapshot$Connection;
+Signature : Landroid/support/constraint/solver/widgets/Snapshot;
+Signature : Lcom/wnagzihxa1n/sourceapk/BuildConfig;
+Signature : Lcom/wnagzihxa1n/sourceapk/MainActivity;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$attr;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$color;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$drawable;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$id;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$layout;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$mipmap;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$string;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$style;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$styleable;
+Signature : Lcom/wnagzihxa1n/sourceapk/R;
+Signature : Landroid/support/constraint/solver/Pools$SimplePool;
+Signature : Landroid/support/constraint/solver/widgets/Guideline;
+Signature : Landroid/support/constraint/solver/widgets/WidgetContainer;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintWidgetContainer;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintHorizontalLayout;
+Signature : Landroid/support/constraint/solver/widgets/ConstraintTableLayout;
+</code></pre><p>这个输出太多，我们可以过滤下</p>
+<pre><code>执行程序 C:\Users\wangz\Desktop\JEB DeObfuscator\src\JavaDeObfuscator.java...
+Signature : Lcom/wnagzihxa1n/sourceapk/BuildConfig;
+Signature : Lcom/wnagzihxa1n/sourceapk/MainActivity;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$attr;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$color;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$drawable;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$id;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$layout;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$mipmap;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$string;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$style;
+Signature : Lcom/wnagzihxa1n/sourceapk/R$styleable;
+Signature : Lcom/wnagzihxa1n/sourceapk/R;
+</code></pre><p>获取所有使用到的方法的签名</p>
+<pre><code>List&lt;String&gt; methods = dex.getMethodSignatures(true);
+for (String method : methods) {
+    if (method.contains(&quot;wnagzihxa1n&quot;)) {
+        jeb.print(&quot;Signature : &quot; + method);
+    }
+}
+</code></pre><p>跑起来</p>
+<pre><code>执行程序 C:\Users\wangz\Desktop\JEB DeObfuscator\src\JavaDeObfuscator.java...
+Signature : Lcom/wnagzihxa1n/sourceapk/BuildConfig;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/MainActivity;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/MainActivity;-&gt;findViewById(I)Landroid/view/View;
+Signature : Lcom/wnagzihxa1n/sourceapk/MainActivity;-&gt;onCreate(Landroid/os/Bundle;)V
+Signature : Lcom/wnagzihxa1n/sourceapk/MainActivity;-&gt;setContentView(I)V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$attr;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$color;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$drawable;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$id;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$layout;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$mipmap;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$string;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$style;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$styleable;-&gt;&lt;clinit&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R$styleable;-&gt;&lt;init&gt;()V
+Signature : Lcom/wnagzihxa1n/sourceapk/R;-&gt;&lt;init&gt;()V
+</code></pre><p>通过前面两个小例子，我们大概熟悉了如何去跑JEB脚本以及如何开发了</p>
+<p>接下来我们开始遍历所有的方法，由于这个结果非常大，所以就不输出了，虽然这个结果和之前那个获取方法签名结果是一样的，但是我们的主体不一样，我们获取了DexMethod类，可以做非常多的事情</p>
+<pre><code>int methodCount = dex.getMethodCount();
+jeb.print(&quot;methodCount : &quot; + Integer.toString(methodCount));
+for (int i = 0; i &lt; methodCount; i++) {
+    DexMethod dexMethod = dex.getMethod(i);
+    String methodSignature = dexMethod.getSignature(true);
+    jeb.print(methodSignature);
+}
+</code></pre><p>DexMethod的定义如下</p>
+<pre><code>public class DexMethod {
+    private tM m;
+
+    DexMethod(tM tM2) {
+        this.m = tM2;
+    }
+
+    public int getIndex() {
+        return this.m.fZ();
+    }
+
+    public int getClassTypeIndex() {
+        return this.m.YN();
+    }
+
+    public int getPrototypeIndex() {
+        return this.m.hV();
+    }
+
+    public int getNameIndex() {
+        return this.m.Ii();
+    }
+
+    public String getName() {
+        return this.m.uY(true);
+    }
+
+    public String getName(boolean bl2) {
+        return this.m.uY(bl2);
+    }
+
+    public String getSignature(boolean bl2) {
+        return this.m.kV(bl2);
+    }
+}
+</code></pre><p>因为接下来我们要测试获取方法的效果，所以需要写一个APP，多设置几个类，然后写一个解密方法</p>
+<pre><code>public static String decStr(byte[] data) {
+    return new String(data);
+}
+</code></pre><p>很简单的字符串和字节数组的转换，然后我们设置五个字符串，转为字节数组</p>
+<pre><code>public class Demo {
+    public static void main(String[] args) {
+        String a = &quot;1111111111&quot;;
+        String b = &quot;2222222222&quot;;
+        String c = &quot;3333333333&quot;;
+        String d = &quot;4444444444&quot;;
+        String e = &quot;5555555555&quot;;
+        encStr(a);
+        encStr(b);
+        encStr(c);
+        encStr(d);
+        encStr(e);
+    }
+
+    private static void encStr(String data) {
+        byte[] encByte = data.getBytes();
+        System.out.print(&quot;{&quot;);
+        for (byte b : encByte) {
+            int temp = b &amp; 0xFF;
+            String t = Integer.toHexString(temp);
+            if (t.length() == 1) {
+                System.out.print(&quot;0x0&quot; + t);
+            } else {
+                System.out.print(&quot;0x&quot; + t);
+            }
+            System.out.print(&quot;, &quot;);
+        }
+        System.out.println(&quot;}&quot;);
+    }
+}
+</code></pre><p>比如在<code>Activity01</code>中，我们设置一个解密，其它再多写几个，把<code>1111111111</code>改为<code>2222222222</code></p>
+<pre><code>public class Activity01 extends Activity {
+    public static void funcA() {
+        Log.i(&quot;toT0C&quot;, Util.decStr(new byte[]{0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31}));//1111111111
+    }
+}
+</code></pre><p>接下来我们找到所有的调用解密函数的方法，解密函数的签名要是不想自己写可以手动遍历出来，然后过滤下即可</p>
+<pre><code>private static String decodeMethodSignature = &quot;Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;&quot;;
+int methodCount = dex.getMethodCount();
+jeb.print(&quot;methodCount : &quot; + Integer.toString(methodCount));
+for (int i = 0; i &lt; methodCount; i++) {
+    DexMethod dexMethod = dex.getMethod(i);
+    if (!dexMethod.getSignature(true).contains(decodeMethodSignature)) {
+        continue;
+    }
+    int methodIndex = dexMethod.getIndex();
+    String methodSignature = dexMethod.getSignature(true);
+    jeb.print(methodSignature);
+    List&lt;Integer&gt; methodReferences = dex.getMethodReferences(methodIndex);
+    if (methodReferences == null) {
+        continue;
+    }
+    for (Integer refIdx : methodReferences) {
+        if (refIdx == null) {
+            break;
+        }
+        DexMethod refDexMethod = dex.getMethod(refIdx);
+        jeb.print(&quot;#    &quot; + refDexMethod.getSignature(true));
+    }
+}
+</code></pre><p>输出，可以看到一共五个Activity的方法调用到了该解密函数</p>
+<pre><code>执行程序 C:\Users\wangz\Desktop\JEB DeObfuscator\src\JavaDeObfuscator.java...
+methodCount : 17392
+Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity01;-&gt;funcA()V
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity02;-&gt;funcB()V
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity03;-&gt;funcC()V
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity04;-&gt;funcD()V
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity05;-&gt;funcE()V
+</code></pre><p>我们获取到函数节点，然后获取参数进行解密输出</p>
+<pre><code>private void replaceMethod(List&lt;IElement&gt; elements, IElement parentElement) {
+    for (IElement element : elements) {
+        if (element instanceof Call) {
+            Call call = (Call) element;
+            jeb.api.ast.Method method = call.getMethod();
+            if (method.getSignature().equals(decodeMethodSignature)) {
+                jeb.print(&quot;##    &quot; + method.getSignature());
+                List&lt;IExpression&gt; arguments = call.getArguments();
+                NewArray arg = (NewArray) arguments.get(0);
+                List encByte = arg.getInitialValues();
+                if (encByte == null) {
+                    continue;
+                }
+                int arraySize = encByte.size();
+                byte[] encByteArray = new byte[arraySize];
+                for (int i = 0; i &lt; arraySize; i++) {
+                    encByteArray[i] = ((Constant)encByte.get(i)).getByte();
+                }
+                String decStr = null;
+                decStr = descryptStr(encByteArray);
+                if (decStr != null) {
+                    jeb.print(decStr);
+                }
+                continue;
+            }
+        }
+        List&lt;IElement&gt; subElements = element.getSubElements();
+        replaceMethod(subElements, element);
+    }
+}
+</code></pre><p>来调用一下，此时我们不替换节点</p>
+<pre><code>for (Integer refIdx : methodReferences) {
+    if (refIdx == null) {
+        break;
+    }
+    DexMethod refDexMethod = dex.getMethod(refIdx);
+    jeb.print(&quot;#    &quot; + refDexMethod.getSignature(true));
+    jeb.decompileMethod(refDexMethod.getSignature(true));
+    jeb.api.ast.Method decompileMethodTree = jeb.getDecompiledMethodTree(refDexMethod.getSignature(true));
+    List&lt;IElement&gt; sublElements = decompileMethodTree.getSubElements();
+    replaceMethod(sublElements, decompileMethodTree);
+}
+</code></pre><p>输出</p>
+<pre><code>执行程序 C:\Users\wangz\Desktop\JEB DeObfuscator\src\JavaDeObfuscator.java...
+methodCount : 17392
+Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity01;-&gt;funcA()V
+##    Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;
+1111111111
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity02;-&gt;funcB()V
+##    Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;
+2222222222
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity03;-&gt;funcC()V
+##    Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;
+3333333333
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity04;-&gt;funcD()V
+##    Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;
+4444444444
+#    Lcom/wnagzihxa1n/obfuscatordemo/Activity05;-&gt;funcE()V
+##    Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;
+5555555555
+</code></pre><p>看到所有字符串全部解密了之后，我们可以进行节点的替换了，注意看替换的位置</p>
+<pre><code>if (decStr != null) {
+    jeb.print(decStr);
+    parentElement.replaceSubElement(element, cstBuilder.buildString(decStr));
+}
+</code></pre><p>再次跑起来，按F5刷新界面</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>效果还是可以的</p>
+<p>完整的代码</p>
+<pre><code>import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.util.List;
+
+import jeb.api.IScript;
+import jeb.api.JebInstance;
+import jeb.api.ast.*;
+import jeb.api.dex.Dex;
+import jeb.api.dex.DexMethod;
+import jeb.api.ui.JavaView;
+import jeb.api.ui.JebUI;
+import jeb.api.ui.View;
+import sun.reflect.generics.tree.ClassSignature;
+
+public class JavaDeObfuscator implements IScript {
+
+    private static String decodeMethodSignature = &quot;Lcom/wnagzihxa1n/obfuscatordemo/Util;-&gt;decStr([B)Ljava/lang/String;&quot;;
+    private JebInstance jeb = null;
+    private Constant.Builder cstBuilder = null;
+
+    @Override
+    public void run(JebInstance jebInstance) {
+        jeb = jebInstance;
+        cstBuilder = new Constant.Builder(jeb);
+        JebUI jebUI = jeb.getUI();
+        JavaView javaView = (JavaView) jebUI.getView(View.Type.JAVA);
+        Dex dex = jeb.getDex();
+        int methodCount = dex.getMethodCount();
+        jeb.print(&quot;methodCount : &quot; + Integer.toString(methodCount));
+        for (int i = 0; i &lt; methodCount; i++) {
+            DexMethod dexMethod = dex.getMethod(i);
+            if (!dexMethod.getSignature(true).contains(decodeMethodSignature)) {
+                continue;
+            }
+            int methodIndex = dexMethod.getIndex();
+            String methodSignature = dexMethod.getSignature(true);
+            jeb.print(methodSignature);
+            List&lt;Integer&gt; methodReferences = dex.getMethodReferences(methodIndex);
+            if (methodReferences == null) {
+                continue;
+            }
+            for (Integer refIdx : methodReferences) {
+                if (refIdx == null) {
+                    break;
+                }
+                DexMethod refDexMethod = dex.getMethod(refIdx);
+                jeb.print(&quot;#    &quot; + refDexMethod.getSignature(true));
+                jeb.decompileMethod(refDexMethod.getSignature(true));
+                jeb.api.ast.Method decompileMethodTree = jeb.getDecompiledMethodTree(refDexMethod.getSignature(true));
+                List&lt;IElement&gt; sublElements = decompileMethodTree.getSubElements();
+                replaceMethod(sublElements, decompileMethodTree);
+            }
+        }
+        jeb.print(&quot;Finish&quot;);
+    }
+
+    private void replaceMethod(List&lt;IElement&gt; elements, IElement parentElement) {
+        for (IElement element : elements) {
+            if (element instanceof Call) {
+                Call call = (Call) element;
+                jeb.api.ast.Method method = call.getMethod();
+                if (method.getSignature().equals(decodeMethodSignature)) {
+                    jeb.print(&quot;##    &quot; + method.getSignature());
+                    List&lt;IExpression&gt; arguments = call.getArguments();
+                    NewArray arg = (NewArray) arguments.get(0);
+                    List encByte = arg.getInitialValues();
+                    if (encByte == null) {
+                        continue;
+                    }
+                    int arraySize = encByte.size();
+                    byte[] encByteArray = new byte[arraySize];
+                    for (int i = 0; i &lt; arraySize; i++) {
+                        encByteArray[i] = ((Constant)encByte.get(i)).getByte();
+                    }
+                    String decStr = null;
+                    decStr = descryptStr(encByteArray);
+                    if (decStr != null) {
+                        jeb.print(decStr);
+                        parentElement.replaceSubElement(element, cstBuilder.buildString(decStr));
+                    }
+                    continue;
+                }
+            }
+            List&lt;IElement&gt; subElements = element.getSubElements();
+            replaceMethod(subElements, element);
+        }
+    }
+
+    private String descryptStr(byte[] data) {
+        return new String(data);
+    }
+}
+</code></pre><p>需要说明的是，传入解密函数的参数有时候会有多个，所以需要全部获取，玩的开心</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jebi">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/jebi.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

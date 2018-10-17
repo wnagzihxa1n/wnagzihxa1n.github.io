@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>WebView漏洞检测--捉虫猎手</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+<p>
+提示：如何检测出“accessibility”和 “accessibilityTraversal”接口----设置-辅助功能-开启系统或第三方辅助服务<br><br>
+<b><font color=red>如果当前app存在漏洞，将会在页面中输出存在漏洞的接口方便程序员做出修改：</font></b>
+</p>
+<script type="text/javascript">
+function check()
+{
+    for (var obj in window) 
+    {
+        try {
+            if ("getClass" in window[obj]) {
+                try{
+                    window[obj].getClass();
+                    document.write('<span style="color:red">'+obj+'</span>');
+                    document.write('<br />');
+                }catch(e){
+                }   
+            }
+        } catch(e) {
+        }
+    }
+}
+check();
+</script>
+</body>
+</html>

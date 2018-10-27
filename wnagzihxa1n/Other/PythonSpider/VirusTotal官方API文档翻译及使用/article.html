@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VirusTotal官方API文档翻译及使用</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="virustotal-api-">VirusTotal官方API文档翻译及使用</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<h2 id="preparing">Preparing</h2>
+<p>得先注册一个账号，每个账号默认有一个<code>Public Key</code>，可以申请一个<code>Private Key</code>，需要付费，功能也更多</p>
+<h2 id="sending-and-scanning-files">Sending and scanning files</h2>
+<p>文档描述，上传文件并检测，VirusTotal对于已经检测过的文件不会再次检测，如果是未检测过的文件会进行检测</p>
+<pre><code>import requests
+params = {&#39;apikey&#39;: &#39;-YOUR API KEY HERE-&#39;}
+files = {&#39;file&#39;: (&#39;myfile.exe&#39;, open(&#39;myfile.exe&#39;, &#39;rb&#39;))}
+response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/file/scan&#39;, files=files, params=params)
+json_response = response.json()
+</code></pre><p>虽然文档给了返回的JSON数据，这里还是测试一下看看啥情况</p>
+<pre><code>def Sending_and_scanning_files(sending_and_scanning_files):
+    # print sending_and_scanning_files
+    params = {&#39;apikey&#39; : API_KEY}
+    files = {&#39;file&#39; : (sending_and_scanning_files, open(sending_and_scanning_files, &#39;rb&#39;))}
+    response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/file/scan&#39;, files=files, params=params)
+    if response.text != &#39;&#39;:
+        print response.text
+</code></pre><p>运行，确实是和官方文档给的一样</p>
+<pre><code>{
+    &quot;scan_id&quot;: &quot;6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b-1499416492&quot;, 
+    &quot;sha1&quot;: &quot;e08730575f22a3938f76078f11dcef1c117d2750&quot;, 
+    &quot;resource&quot;: &quot;6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b&quot;, 
+    &quot;response_code&quot;: 1, 
+    &quot;sha256&quot;: &quot;6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b&quot;, 
+    &quot;permalink&quot;: &quot;https://www.virustotal.com/file/6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b/analysis/1499416492/&quot;, 
+    &quot;md5&quot;: &quot;ca8a89e37a52e25f96026f808a252325&quot;, 
+    &quot;verbose_msg&quot;: &quot;Scan request successfully queued, come back later for the report&quot;
+}
+</code></pre><p>这里提前用了下面的一个函数，就是利用文件的哈希来搜索数据函数<code>Retrieving_file_scan_reports()</code></p>
+<pre><code>def Sending_and_scanning_files(sending_and_scanning_files):
+    # print sending_and_scanning_files
+    params = {&#39;apikey&#39; : API_KEY}
+    files = {&#39;file&#39; : (sending_and_scanning_files, open(sending_and_scanning_files, &#39;rb&#39;))}
+    response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/file/scan&#39;, files=files, params=params)
+    if response.text != &#39;&#39;:
+        data = json.loads(response.text)
+        Retrieving_file_scan_reports(str(data[&#39;sha256&#39;]))
+    else:
+        print &#39;Check Failed:(&#39;
+</code></pre><p>输出</p>
+<pre><code>PS C:\Users\wangz\Desktop&gt; python .\VT_API.py --sending_and_scanning_files pkg.apk
+#####################File Info##########################################
+Scan_ID       : 6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b-1499416492
+MD5           : ca8a89e37a52e25f96026f808a252325
+SHA1          : e08730575f22a3938f76078f11dcef1c117d2750
+SHA256        : 6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b
+Resource      : 6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b
+Response_Code : 1
+Scan_Date     : 2017-07-07 08:34:52
+Permalink     : https://www.virustotal.com/file/6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b/analysis/1499416492/
+Verbose_Msg   : Scan finished, information embedded
+Positives     : 40
+Total         : 62
+####################Scan Result#########################################
+Bkav : Android.Malware.SDi.9AB5
+TotalDefense : None
+MicroWorld-eScan : Android.Trojan.AutoSMS.PG
+nProtect : None
+CMC : None
+CAT-QuickHeal : Android.SmsThief.CC
+McAfee : Artemis!CA8A89E37A52
+Malwarebytes : None
+VIPRE : None
+TheHacker : None
+BitDefender : Android.Trojan.AutoSMS.PG
+K7GW : Trojan ( 0001140e1 )
+K7AntiVirus : None
+Baidu : Android.Trojan.SmsSpy.bj
+F-Prot : None
+SymantecMobileInsight : Trojan:Smsstealer
+Symantec : Trojan.Gen.2
+ESET-NOD32 : a variant of Android/Spy.SmsSpy.BJ
+TrendMicro-HouseCall : ANDROIDOS_SMSTHIEF.AXMA
+Avast : Android:SmsSpy-NU [Trj]
+ClamAV : None
+Kaspersky : HEUR:Trojan-Spy.AndroidOS.SmForw.iz
+Alibaba : A.H.Int.SucRuri
+NANO-Antivirus : Trojan.Android.SMSSpy.eefjse
+ViRobot : None
+SUPERAntiSpyware : None
+Rising : Spyware.SmForw/Android!8.3E2 (cloud:2IJ8Wi3OjKO)
+Ad-Aware : Android.Trojan.AutoSMS.PG
+Trustlook : None
+Sophos : Andr/SMSSpy-DY
+Comodo : UnclassifiedMalware
+F-Secure : Trojan:Android/Fakeinst.IT
+DrWeb : Android.SmsSpy.651.origin
+Zillya : Trojan.SmsSpy.Android.5771
+TrendMicro : ANDROIDOS_SMSTHIEF.AXMA
+McAfee-GW-Edition : Artemis!Trojan
+Emsisoft : Android.Trojan.AutoSMS.PG (B)
+Cyren : AndroidOS/SMForw.N.gen!Eldorado
+Jiangmin : None
+Webroot : None
+Avira : ANDROID/SMSSpy.AR.Gen
+Fortinet : Android/SmForw.IZ!tr
+Antiy-AVL : Trojan[Spy]/Android.SmsSpy.bj
+Kingsoft : None
+Arcabit : Android.Trojan.AutoSMS.PG
+AegisLab : Troj.Spy.Androidos!c
+ZoneAlarm : HEUR:Trojan-Spy.AndroidOS.SmForw.iz
+Microsoft : None
+AhnLab-V3 : Android-Trojan/SmsSpy.100c7
+ALYac : None
+AVware : None
+MAX : malware (ai score=88)
+VBA32 : None
+WhiteArmor : Malware.HighConfidence
+Zoner : None
+Tencent : SH.!Android.MExtra.Gen.166b4
+Yandex : None
+Ikarus : Trojan.AndroidOS.SmsSpy
+GData : Android.Trojan.AutoSMS.PG
+AVG : Android:SmsSpy-NU [Trj]
+Panda : None
+Qihoo-360 : Trojan.Android.Gen
+########################End#############################################
+</code></pre><h2 id="rescanning-already-submitted-files">Rescanning already submitted files</h2>
+<p>重新检测已提交过的文件，参数用的是文件的哈希，MD5，SHA1，或者SHA256都可以</p>
+<pre><code>import requests
+params = {&#39;apikey&#39;: &#39;-YOUR API KEY HERE-&#39;, &#39;resource&#39;: &#39;7657fcb7d772448a6d8504e4b20168b8&#39;}
+headers = {
+    &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;,
+    &quot;User-Agent&quot; : &quot;gzip,  My Python requests library example client or username&quot;
+}
+response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/file/rescan&#39;, params=params)
+json_response = response.json()
+</code></pre><p>输出返回的JSON数据</p>
+<pre><code>def Rescanning_already_submitted_files(rescanning_already_submitted_files):
+    params = {&#39;apikey&#39; : API_KEY, &#39;resource&#39; : rescanning_already_submitted_files}
+    headers = {
+        &quot;Accept-Encoding&quot; : &quot;gzip, deflate&quot;,
+        &quot;User-Agent&quot; : &quot;gzip,  My Python requests library example client or username&quot;
+    }
+    response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/file/rescan&#39;, params=params)
+    if response.text != &#39;&#39;:
+        print response.text
+</code></pre><p>那么同样我们可以获取<code>sha256</code>的键值，然后调用<code>Retrieving_file_scan_reports()</code>获取检测报告</p>
+<pre><code>{
+    &quot;permalink&quot;: &quot;https://www.virustotal.com/file/6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b/analysis/1499416492/&quot;, 
+    &quot;response_code&quot;: 1, 
+    &quot;sha256&quot;: &quot;6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b&quot;, 
+    &quot;resource&quot;: &quot;ca8a89e37a52e25f96026f808a252325&quot;, 
+    &quot;scan_id&quot;: &quot;6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b-1499416492&quot;
+}
+</code></pre><p>又提前利用到了下面的一个函数，这是一个神奇的函数</p>
+<pre><code>#####################File Info##########################################
+Scan_ID       : 6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b-1499416492
+MD5           : ca8a89e37a52e25f96026f808a252325
+SHA1          : e08730575f22a3938f76078f11dcef1c117d2750
+SHA256        : 6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b
+Resource      : 6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b
+Response_Code : 1
+Scan_Date     : 2017-07-07 08:34:52
+Permalink     : https://www.virustotal.com/file/6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b/analysis/1499416492/
+Verbose_Msg   : Scan finished, information embedded
+Positives     : 40
+Total         : 62
+####################Scan Result#########################################
+Bkav : Android.Malware.SDi.9AB5
+TotalDefense : None
+MicroWorld-eScan : Android.Trojan.AutoSMS.PG
+nProtect : None
+CMC : None
+CAT-QuickHeal : Android.SmsThief.CC
+McAfee : Artemis!CA8A89E37A52
+Malwarebytes : None
+VIPRE : None
+TheHacker : None
+BitDefender : Android.Trojan.AutoSMS.PG
+K7GW : Trojan ( 0001140e1 )
+K7AntiVirus : None
+Baidu : Android.Trojan.SmsSpy.bj
+F-Prot : None
+SymantecMobileInsight : Trojan:Smsstealer
+Symantec : Trojan.Gen.2
+ESET-NOD32 : a variant of Android/Spy.SmsSpy.BJ
+TrendMicro-HouseCall : ANDROIDOS_SMSTHIEF.AXMA
+Avast : Android:SmsSpy-NU [Trj]
+ClamAV : None
+Kaspersky : HEUR:Trojan-Spy.AndroidOS.SmForw.iz
+Alibaba : A.H.Int.SucRuri
+NANO-Antivirus : Trojan.Android.SMSSpy.eefjse
+ViRobot : None
+SUPERAntiSpyware : None
+Rising : Spyware.SmForw/Android!8.3E2 (cloud:2IJ8Wi3OjKO)
+Ad-Aware : Android.Trojan.AutoSMS.PG
+Trustlook : None
+Sophos : Andr/SMSSpy-DY
+Comodo : UnclassifiedMalware
+F-Secure : Trojan:Android/Fakeinst.IT
+DrWeb : Android.SmsSpy.651.origin
+Zillya : Trojan.SmsSpy.Android.5771
+TrendMicro : ANDROIDOS_SMSTHIEF.AXMA
+McAfee-GW-Edition : Artemis!Trojan
+Emsisoft : Android.Trojan.AutoSMS.PG (B)
+Cyren : AndroidOS/SMForw.N.gen!Eldorado
+Jiangmin : None
+Webroot : None
+Avira : ANDROID/SMSSpy.AR.Gen
+Fortinet : Android/SmForw.IZ!tr
+Antiy-AVL : Trojan[Spy]/Android.SmsSpy.bj
+Kingsoft : None
+Arcabit : Android.Trojan.AutoSMS.PG
+AegisLab : Troj.Spy.Androidos!c
+ZoneAlarm : HEUR:Trojan-Spy.AndroidOS.SmForw.iz
+Microsoft : None
+AhnLab-V3 : Android-Trojan/SmsSpy.100c7
+ALYac : None
+AVware : None
+MAX : malware (ai score=88)
+VBA32 : None
+WhiteArmor : Malware.HighConfidence
+Zoner : None
+Tencent : SH.!Android.MExtra.Gen.166b4
+Yandex : None
+Ikarus : Trojan.AndroidOS.SmsSpy
+GData : Android.Trojan.AutoSMS.PG
+AVG : Android:SmsSpy-NU [Trj]
+Panda : None
+Qihoo-360 : Trojan.Android.Gen
+########################End#############################################
+</code></pre><h2 id="retrieving-file-scan-reports">Retrieving file scan reports</h2>
+<p>根据文件哈希搜索已经检测过的文件</p>
+<pre><code>import requests
+params = {&#39;apikey&#39;: &#39;-YOUR API KEY HERE-&#39;, &#39;resource&#39;: &#39;7657fcb7d772448a6d8504e4b20168b8&#39;}
+headers = {
+    &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;,
+    &quot;User-Agent&quot; : &quot;gzip,  My Python requests library example client or username&quot;
+}
+response = requests.get(&#39;https://www.virustotal.com/vtapi/v2/file/report&#39;, params=params, headers=headers)
+json_response = response.json()
+</code></pre><p>这个就是上面说的神奇的函数，按照前面的方法获取JSON返回值</p>
+<pre><code>{
+    &quot;scans&quot;: {
+        &quot;Bkav&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.3.0.9188&quot;, &quot;result&quot;: &quot;W32.ZeustrackerZS.Trojan&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;MicroWorld-eScan&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;12.0.250.0&quot;, &quot;result&quot;: &quot;Gen:Variant.Kazy.8782&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;nProtect&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;2017-07-07.01&quot;, &quot;result&quot;: &quot;Trojan-Spy/W32.ZBot.109056.AR&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;CMC&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.1.0.977&quot;, &quot;result&quot;: &quot;Trojan.Win32.Lebag!O&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;CAT-QuickHeal&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;14.00&quot;, &quot;result&quot;: &quot;Trojan.Ramnit.A&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;ALYac&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.1.9&quot;, &quot;result&quot;: &quot;Gen:Variant.Kazy.8782&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Malwarebytes&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;2.1.1.1115&quot;, &quot;result&quot;: &quot;Spyware.Zbot&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Zillya&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;2.0.0.3328&quot;, &quot;result&quot;: &quot;Trojan.Zbot.Win32.81569&quot;, &quot;update&quot;: &quot;20170705&quot;}, 
+        &quot;SUPERAntiSpyware&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;5.6.0.1032&quot;, &quot;result&quot;: &quot;Trojan.Agent/Gen-FakeSecurity&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;TheHacker&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;6.8.0.5.1699&quot;, &quot;result&quot;: &quot;Trojan/Lebag.agu&quot;, &quot;update&quot;: &quot;20170704&quot;}, 
+        &quot;K7GW&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;10.17.23900&quot;, &quot;result&quot;: &quot;Riskware( 0015e4f11 )&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;K7AntiVirus&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;10.17.23899&quot;, &quot;result&quot;: &quot;Riskware ( 0015e4f11 )&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;Arcabit&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.0.817&quot;, &quot;result&quot;: &quot;Trojan.Kazy.D224E&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Invincea&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;6.3.0.25415&quot;, &quot;result&quot;: &quot;heuristic&quot;, &quot;update&quot;: &quot;20170607&quot;}, 
+        &quot;Baidu&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.0.2&quot;, &quot;result&quot;: &quot;Win32.Worm.Autorun.f&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Cyren&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;5.4.30.7&quot;, &quot;result&quot;: &quot;W32/Ramnit.K.gen!Eldorado&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Symantec&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.4.0.0&quot;, &quot;result&quot;: &quot;W32.Ramnit&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;TotalDefense&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;37.1.62.1&quot;, &quot;result&quot;: &quot;Win32/Ramnit.B!Dropper&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;TrendMicro-HouseCall&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;9.950.0.1006&quot;, &quot;result&quot;: &quot;TSPY_ZBOT.SMHA&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Avast&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;8.0.1489.320&quot;, &quot;result&quot;: &quot;Win32:Kryptik-JOV [Trj]&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;ClamAV&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;0.99.2.0&quot;, &quot;result&quot;: &quot;Win.Trojan.Ramnit-7847&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;GData&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;A:25.13260B:25.9943&quot;, &quot;result&quot;: &quot;Gen:Variant.Kazy.8782&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Kaspersky&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;15.0.1.13&quot;, &quot;result&quot;: &quot;Worm.Win32.Autorun.icp&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;BitDefender&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;7.2&quot;, &quot;result&quot;: &quot;Gen:Variant.Kazy.8782&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;NANO-Antivirus&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.76.17587&quot;, &quot;result&quot;: &quot;Trojan.Win32.DownLoad2.csmmu&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Paloalto&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0&quot;, &quot;result&quot;: &quot;generic.ml&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;AegisLab&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;4.2&quot;, &quot;result&quot;: &quot;Troj.W32.Generic!c&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Tencent&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.0.1&quot;, &quot;result&quot;: &quot;Win32.Virus.Ramnit.Agux&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Ad-Aware&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;3.0.3.1010&quot;, &quot;result&quot;: &quot;Gen:Variant.Kazy.8782&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Emsisoft&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;4.0.1.883&quot;, &quot;result&quot;: &quot;Gen:Variant.Kazy.8782 (B)&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Comodo&quot;: {&quot;detected&quot;: true,&quot;version&quot;: &quot;27411&quot;, &quot;result&quot;: &quot;TrojWare.Win32.Kryptik.KLV&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;F-Secure&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;11.0.19100.45&quot;, &quot;result&quot;: &quot;Gen:Variant.Kazy.8782&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;DrWeb&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;7.0.28.2020&quot;, &quot;result&quot;:&quot;Win32.HLLW.Tazebama.235&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;VIPRE&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;59350&quot;, &quot;result&quot;: &quot;Trojan.Win32.Generic!BT&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;TrendMicro&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;9.862.0.1074&quot;, &quot;result&quot;: &quot;TSPY_ZBOT.SMHA&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;McAfee-GW-Edition&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;v2015&quot;, &quot;result&quot;: &quot;BehavesLike.Win32.PWSZbot.ch&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;Sophos&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;4.98.0&quot;, &quot;result&quot;: &quot;Troj/ZXC-G&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;SentinelOne&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.0.12&quot;, &quot;result&quot;: &quot;static engine - malicious&quot;, &quot;update&quot;: &quot;20170516&quot;}, 
+        &quot;F-Prot&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;4.7.1.166&quot;, &quot;result&quot;: &quot;W32/Ramnit.K.gen!Eldorado&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Jiangmin&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;16.0.100&quot;, &quot;result&quot;: &quot;Trojan/Generic.dkmt&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Webroot&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.0.207&quot;, &quot;result&quot;: &quot;Trojan:Win32/Eyestye.H&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Avira&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;8.3.3.4&quot;, &quot;result&quot;: &quot;TR/Drop.Liks.A&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;Antiy-AVL&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;3.0.0.1&quot;, &quot;result&quot;: &quot;Worm/Win32.Autorun.icp&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Kingsoft&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;2013.8.14.323&quot;, &quot;result&quot;: &quot;Win32.Troj.Undef.(kcloud)&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Endgame&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;0.7.4&quot;, &quot;result&quot;: &quot;malicious (high confidence)&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;ViRobot&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;2014.3.20.0&quot;, &quot;result&quot;: &quot;Trojan.Win32.Agent.109056.CR&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;ZoneAlarm&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0&quot;, &quot;result&quot;: &quot;Worm.Win32.Autorun.icp&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Microsoft&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.1.13903.0&quot;, &quot;result&quot;: &quot;Trojan:Win32/Ramnit&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;AhnLab-V3&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;3.9.1.17914&quot;, &quot;result&quot;: &quot;Trojan/Win32.Zbot.R19508&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;McAfee&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;6.0.6.653&quot;, &quot;result&quot;: &quot;PWS-Zbot.gen.cy&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;AVware&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.5.0.42&quot;, &quot;result&quot;: &quot;Trojan.Win32.Generic!BT&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;MAX&quot;: {&quot;detected&quot;: false, &quot;version&quot;: &quot;2017.6.26.1&quot;, &quot;result&quot;: null, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;VBA32&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;3.12.26.4&quot;, &quot;result&quot;: &quot;Worm.AutoRun&quot;, &quot;update&quot;: &quot;20170705&quot;}, 
+        &quot;Cylance&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;2.3.1.101&quot;, &quot;result&quot;: &quot;Unsafe&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Zoner&quot;:{&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0&quot;, &quot;result&quot;: &quot;Win32.Ramnit.A&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;ESET-NOD32&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;15705&quot;, &quot;result&quot;: &quot;Win32/Ramnit.A&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Rising&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;25.0.0.1&quot;, &quot;result&quot;: &quot;Trojan.Generic (cloud:jvT7loq39sE)&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Yandex&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;5.5.1.3&quot;, &quot;result&quot;: &quot;Trojan.Ramnit!cLbJ7UZPdfE&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;Ikarus&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;0.1.5.2&quot;, &quot;result&quot;: &quot;Virus.Win32.Virtob&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;Fortinet&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;5.4.247.0&quot;, &quot;result&quot;: &quot;W32/Kryptik.KLV!tr&quot;, &quot;update&quot;: &quot;20170629&quot;}, 
+        &quot;AVG&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;8.0.1489.320&quot;, &quot;result&quot;: &quot;Win32:Kryptik-JOV [Trj]&quot;, &quot;update&quot;: &quot;20170707&quot;}, 
+        &quot;Panda&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;4.6.4.2&quot;, &quot;result&quot;: &quot;Trj/Ramnit.F&quot;, &quot;update&quot;: &quot;20170706&quot;}, 
+        &quot;CrowdStrike&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0&quot;, &quot;result&quot;: &quot;malicious_confidence_100% (W)&quot;, &quot;update&quot;: &quot;20170420&quot;}, 
+        &quot;Qihoo-360&quot;: {&quot;detected&quot;: true, &quot;version&quot;: &quot;1.0.0.1120&quot;, &quot;result&quot;: &quot;Win32/Trojan.544&quot;, &quot;update&quot;: &quot;20170707&quot;}
+        }, 
+    &quot;scan_id&quot;: &quot;54bc950d46a0d1aa72048a17c8275743209e6c17bdacfc4cb9601c9ce3ec9a71-1499405943&quot;, 
+    &quot;sha1&quot;: &quot;84c7201f7e59cb416280fd69a2e7f2e349ec8242&quot;, 
+    &quot;resource&quot;: &quot;7657fcb7d772448a6d8504e4b20168b8&quot;, 
+    &quot;response_code&quot;: 1, 
+    &quot;scan_date&quot;: &quot;2017-07-07-05:39:03&quot;, 
+    &quot;permalink&quot;: &quot;https://www.virustotal.com/file/54bc950d46a0d1aa72048a17c8275743209e6c17bdacfc4cb9601c9ce3ec9a71/analysis/1499405943/&quot;, 
+    &quot;verbose_msg&quot;: &quot;Scan finished,information embedded&quot;, 
+    &quot;total&quot;: 64, 
+    &quot;positives&quot;: 63, 
+    &quot;sha256&quot;: &quot;54bc950d46a0d1aa72048a17c8275743209e6c17bdacfc4cb9601c9ce3ec9a71&quot;, 
+    &quot;md5&quot;: &quot;7657fcb7d772448a6d8504e4b20168b8&quot;
+}
+</code></pre><p>稍微整理一下，输出</p>
+<pre><code>def Retrieving_file_scan_reports(retrieving_file_scan_reports):
+    params = {&#39;apikey&#39; : API_KEY, &#39;resource&#39; : retrieving_file_scan_reports}
+    headers = {
+        &quot;Accept-Encoding&quot; : &quot;gzip, deflate&quot;,
+        &quot;User-Agent&quot; : &quot;gzip,  My Python requests library example client or username&quot;
+    }
+    response = requests.get(&#39;https://www.virustotal.com/vtapi/v2/file/report&#39;, params=params, headers=headers)
+    if response.text != &#39;&#39;:
+        data = json.loads(response.text)
+        print &#39;#####################File Info##########################################&#39;
+        print &#39;Scan_ID       : &#39; + data[&#39;scan_id&#39;]
+        print &#39;MD5           : &#39; + data[&#39;md5&#39;]
+        print &#39;SHA1          : &#39; + data[&#39;sha1&#39;]
+        print &#39;SHA256        : &#39; + data[&#39;sha256&#39;]
+        print &#39;Resource      : &#39; + data[&#39;resource&#39;]
+        print &#39;Response_Code : &#39; + str(data[&#39;response_code&#39;])
+        print &#39;Scan_Date     : &#39; + data[&#39;scan_date&#39;]
+        print &#39;Permalink     : &#39; + data[&#39;permalink&#39;]
+        print &#39;Verbose_Msg   : &#39; + data[&#39;verbose_msg&#39;]
+        print &#39;Positives     : &#39; + str(data[&#39;positives&#39;])
+        print &#39;Total         : &#39; + str(data[&#39;total&#39;])
+        print &#39;####################Scan Result#########################################&#39;
+        Keys = data[&#39;scans&#39;].keys()
+        for key in Keys:
+            print str(key) + &#39; : &#39; + str(data[&#39;scans&#39;][key][&#39;result&#39;])
+        print &#39;########################End#############################################&#39;
+    else:
+        print &#39;Check Failed:(&#39;
+</code></pre><p>效果就像前面显示的一样</p>
+<pre><code>#####################File Info##########################################
+Scan_ID       : 54bc950d46a0d1aa72048a17c8275743209e6c17bdacfc4cb9601c9ce3ec9a71-1499405943
+MD5           : 7657fcb7d772448a6d8504e4b20168b8
+SHA1          : 84c7201f7e59cb416280fd69a2e7f2e349ec8242
+SHA256        : 54bc950d46a0d1aa72048a17c8275743209e6c17bdacfc4cb9601c9ce3ec9a71
+Resource      : 7657fcb7d772448a6d8504e4b20168b8
+Response_Code : 1
+Scan_Date     : 2017-07-07 05:39:03
+Permalink     : https://www.virustotal.com/file/54bc950d46a0d1aa72048a17c8275743209e6c17bdacfc4cb9601c9ce3ec9a71/analysis/1499405943/
+Verbose_Msg   : Scan finished, information embedded
+Positives     : 63
+Total         : 64
+####################Scan Result#########################################
+Bkav : W32.ZeustrackerZS.Trojan
+MicroWorld-eScan : Gen:Variant.Kazy.8782
+nProtect : Trojan-Spy/W32.ZBot.109056.AR
+CMC : Trojan.Win32.Lebag!O
+CAT-QuickHeal : Trojan.Ramnit.A
+ALYac : Gen:Variant.Kazy.8782
+Malwarebytes : Spyware.Zbot
+VIPRE : Trojan.Win32.Generic!BT
+TheHacker : Trojan/Lebag.agu
+K7GW : Riskware ( 0015e4f11 )
+K7AntiVirus : Riskware ( 0015e4f11 )
+TrendMicro : TSPY_ZBOT.SMHA
+Baidu : Win32.Worm.Autorun.f
+Cyren : W32/Ramnit.K.gen!Eldorado
+Symantec : W32.Ramnit
+TotalDefense : Win32/Ramnit.B!Dropper
+TrendMicro-HouseCall : TSPY_ZBOT.SMHA
+Avast : Win32:Kryptik-JOV [Trj]
+ClamAV : Win.Trojan.Ramnit-7847
+Kaspersky : Worm.Win32.Autorun.icp
+BitDefender : Gen:Variant.Kazy.8782
+NANO-Antivirus : Trojan.Win32.DownLoad2.csmmu
+ViRobot : Trojan.Win32.Agent.109056.CR
+AegisLab : Troj.W32.Generic!c
+Rising : Trojan.Generic (cloud:jvT7loq39sE)
+Ad-Aware : Gen:Variant.Kazy.8782
+Sophos : Troj/ZXC-G
+Comodo : TrojWare.Win32.Kryptik.KLV
+F-Secure : Gen:Variant.Kazy.8782
+DrWeb : Win32.HLLW.Tazebama.235
+Zillya : Trojan.Zbot.Win32.81569
+Invincea : heuristic
+McAfee-GW-Edition : BehavesLike.Win32.PWSZbot.ch
+Emsisoft : Gen:Variant.Kazy.8782 (B)
+Ikarus : Virus.Win32.Virtob
+F-Prot : W32/Ramnit.K.gen!Eldorado
+Jiangmin : Trojan/Generic.dkmt
+Webroot : Trojan:Win32/Eyestye.H
+Avira : TR/Drop.Liks.A
+Antiy-AVL : Worm/Win32.Autorun.icp
+Kingsoft : Win32.Troj.Undef.(kcloud)
+Microsoft : Trojan:Win32/Ramnit
+Endgame : malicious (high confidence)
+Arcabit : Trojan.Kazy.D224E
+SUPERAntiSpyware : Trojan.Agent/Gen-FakeSecurity
+ZoneAlarm : Worm.Win32.Autorun.icp
+GData : Gen:Variant.Kazy.8782
+AhnLab-V3 : Trojan/Win32.Zbot.R19508
+McAfee : PWS-Zbot.gen.cy
+AVware : Trojan.Win32.Generic!BT
+MAX : None
+VBA32 : Worm.AutoRun
+Cylance : Unsafe
+Panda : Trj/Ramnit.F
+Zoner : Win32.Ramnit.A
+ESET-NOD32 : Win32/Ramnit.A
+Tencent : Win32.Virus.Ramnit.Agux
+Yandex : Trojan.Ramnit!cLbJ7UZPdfE
+SentinelOne : static engine - malicious
+Fortinet : W32/Kryptik.KLV!tr
+AVG : Win32:Kryptik-JOV [Trj]
+Paloalto : generic.ml
+CrowdStrike : malicious_confidence_100% (W)
+Qihoo-360 : Win32/Trojan.544
+########################End#############################################
+</code></pre><h2 id="sending-and-scanning-urls">Sending and scanning URLs</h2>
+<p>扫描URL</p>
+<pre><code>import requests
+params = {&#39;apikey&#39;: &#39;-YOUR API KEY HERE-&#39;, &#39;url&#39;:&#39;http://www.virustotal.com&#39;}
+response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/url/scan&#39;, data=params)
+json_response = response.json()
+</code></pre><p>返回的JSON数据</p>
+<pre><code>{
+    &#39;response_code&#39;: 1,
+    &#39;verbose_msg&#39;: &#39;Scan request successfully queued, come back later for the report&#39;,
+    &#39;scan_id&#39;: &#39;1db0ad7dbcec0676710ea0eaacd35d5e471d3e11944d53bcbd31f0cbd11bce31-1320752364&#39;,
+    &#39;scan_date&#39;: &#39;2015-11-08 11:39:24&#39;,
+    &#39;url&#39;: &#39;http://www.virustotal.com/&#39;,
+    &#39;permalink&#39;: &#39;http://www.virustotal.com/url/1db0ad7dbcec0676710ea0eaacd35d5e471d3e11944d53bcbd31f0cbd11bce31/analysis/1320752364/&#39;
+}
+</code></pre><p>强行使用下面的一个函数，这个函数的参数是URL，那么我们使用上传URL的功能时，会检测并返回包含URL的JSON数据，我们提取出这个URL，再调用根据URL搜索报告的函数，就可以看到报告，其实可以直接使用输入的URL去搜索，但是我们要检测的URL不一定已经被检测过，所以还是需要先上传，再去搜报告，如果确定已经检测过，就可以直接根据URL搜报告</p>
+<pre><code>def Sending_and_scanning_URLs(sending_and_scanning_urls):
+    params = {&#39;apikey&#39; : API_KEY, &#39;url&#39;: sending_and_scanning_urls}
+    response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/url/scan&#39;, data=params)
+    if response.text != &#39;&#39;:
+        data = json.loads(response.text)
+        Retrieving_URL_scan_reports(data[&#39;url&#39;])
+    else:
+        print &#39;Check Failed:(&#39;
+</code></pre><p>输出</p>
+<pre><code>PS C:\Users\wangz\Desktop&gt; python .\VT_API.py --sending_and_scanning_urls http://www.wangzhixian.org
+#####################Site Info##########################################
+Scan_ID       : ca609d247364704a9447b5dfa8b97f10168db100c1401291c6b4c8fefe26a07b-1480758098
+Resource      : http://www.wangzhixian.org
+URL           : http://www.wangzhixian.org/
+Response_Code : 1
+Scan_Date     : 2016-12-03 09:41:38
+Permalink     : https://www.virustotal.com/url/ca609d247364704a9447b5dfa8b97f10168db100c1401291c6b4c8f
+efe26a07b/analysis/1480758098/
+Verbose_Msg   : Scan finished, scan information embedded in this object
+Filescan_ID   : None
+Positives     : 0
+Total         : 68
+####################Scan Result#########################################
+CLEAN MX : clean site
+VX Vault : clean site
+ZDB Zeus : clean site
+Tencent : clean site
+MalwarePatrol : clean site
+Netcraft : unrated site
+PhishLabs : unrated site
+Zerofox : clean site
+K7AntiVirus : clean site
+Quttera : clean site
+AegisLab WebGuard : clean site
+MalwareDomainList : clean site
+ZeusTracker : clean site
+zvelo : clean site
+Google Safebrowsing : clean site
+ParetoLogic : clean site
+Kaspersky : unrated site
+BitDefender : clean site
+Dr.Web : clean site
+Certly : clean site
+G-Data : clean site
+C-SIRT : clean site
+OpenPhish : clean site
+Websense ThreatSeeker : unrated site
+AutoShun : unrated site
+Webutation : clean site
+Trustwave : clean site
+Web Security Guard : clean site
+desenmascara.me : clean site
+ADMINUSLabs : clean site
+Malwarebytes hpHosts : clean site
+Wepawet : clean site
+AlienVault : clean site
+Emsisoft : clean site
+Malc0de Database : clean site
+SpyEyeTracker : clean site
+malwares.com URL checker : clean site
+Phishtank : clean site
+Malwared : clean site
+Avira : clean site
+Baidu-International : clean site
+CyberCrime : clean site
+Antiy-AVL : clean site
+SCUMWARE.org : clean site
+FraudSense : clean site
+Opera : clean site
+Comodo Site Inspector : clean site
+Malekal : clean site
+ESET : clean site
+Sophos : unrated site
+Yandex Safebrowsing : clean site
+SecureBrain : clean site
+Nucleon : clean site
+Malware Domain Blocklist : clean site
+Blueliv : clean site
+ZCloudsec : clean site
+PalevoTracker : clean site
+CRDF : clean site
+ThreatHive : clean site
+FraudScore : clean site
+Rising : clean site
+URLQuery : unrated site
+</code></pre><h2 id="retrieving-url-scan-reports">Retrieving URL scan reports</h2>
+<p>上一个函数中使用到了根据URL搜索报告的接口，这个接口返回的JSON数据如下，和根据文件哈希搜索那个接口返回的数据很类似</p>
+<pre><code>{
+    &quot;scan_id&quot;: &quot;ca609d247364704a9447b5dfa8b97f10168db100c1401291c6b4c8fefe26a07b-1480758098&quot;, 
+    &quot;resource&quot;: &quot;http://www.wangzhixian.org&quot;, 
+    &quot;url&quot;: &quot;http://www.wangzhixian.org/&quot;, 
+    &quot;response_code&quot;: 1, 
+    &quot;scan_date&quot;: &quot;2016-12-03 09:41:38&quot;, 
+    &quot;permalink&quot;: &quot;https://www.virustotal.com/url/ca609d247364704a9447b5dfa8b97f10168db100c1401291c6b4c8fefe26a07b/analysis/1480758098/&quot;, 
+    &quot;verbose_msg&quot;: &quot;Scan finished, scan information embedded in this object&quot;, 
+    &quot;filescan_id&quot;: null, 
+    &quot;positives&quot;: 0, 
+    &quot;total&quot;: 68, 
+    &quot;scans&quot;: {
+        &quot;CLEAN MX&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Rising&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;OpenPhish&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;VX Vault&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;ZDB Zeus&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;AutoShun&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;ZCloudsec&quot;: {&quot;detected&quot;: false, &quot;result&quot;:&quot;clean site&quot;}, 
+        &quot;PhishLabs&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;Zerofox&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;K7AntiVirus&quot;: {&quot;detected&quot;: false, &quot;result&quot;:&quot;clean site&quot;}, 
+        &quot;SecureBrain&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Quttera&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;AegisLab WebGuard&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;MalwareDomainList&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;, &quot;detail&quot;: &quot;http://www.malwaredomainlist.com/mdl.php?search=www.wangzhixian.org&quot;}, 
+        &quot;ZeusTracker&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;, &quot;detail&quot;: &quot;https://zeustracker.abuse.ch/monitor.php?host=www.wangzhixian.org&quot;}, 
+        &quot;zvelo&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Google Safebrowsing&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;FraudScore&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Kaspersky&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;BitDefender&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Wepawet&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Certly&quot;: {&quot;detected&quot;: false, &quot;result&quot;:&quot;clean site&quot;}, 
+        &quot;G-Data&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;C-SIRT&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;CyberCrime&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;cleansite&quot;}, 
+        &quot;Websense ThreatSeeker&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;Malware Patrol&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Webutation&quot;: {&quot;detected&quot;: false,&quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Trustwave&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;WebSecurity Guard&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;desenmascara.me&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;ADMINUSLabs&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Malwarebytes hpHosts&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Dr.Web&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;AlienVault&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Emsisoft&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Malc0de Database&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;, 
+        &quot;detail&quot;: &quot;http://malc0de.com/database/index.php?search=www.wangzhixian.org&quot;}, 
+        &quot;SpyEyeTracker&quot;: {&quot;detected&quot;: false, &quot;result&quot;:&quot;clean site&quot;, &quot;detail&quot;: &quot;https://spyeyetracker.abuse.ch/monitor.php?host=www.wangzhixian.org&quot;}, 
+        &quot;malwares.com URL checker&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Phishtank&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Malwared&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Avira&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;StopBadware&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;Antiy-AVL&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;SCUMWARE.org&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;FraudSense&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Opera&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Comodo Site Inspector&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Malekal&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;ESET&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Sophos&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;Yandex Safebrowsing&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;, &quot;detail&quot;: &quot;http://yandex.com/infected?l10n=en&amp;url=http://www.wangzhixian.org/&quot;}, 
+        &quot;Spam404&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Nucleon&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Malware DomainBlocklist&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Blueliv&quot;: {&quot;detected&quot;: false,&quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Netcraft&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;PalevoTracker&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;CRDF&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;ThreatHive&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;ParetoLogic&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Tencent&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;URLQuery&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;unrated site&quot;}, 
+        &quot;Sucuri SiteCheck&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Fortinet&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;ZeroCERT&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;Baidu-International&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}, 
+        &quot;securolytics&quot;: {&quot;detected&quot;: false, &quot;result&quot;: &quot;clean site&quot;}
+    }
+}
+</code></pre><p>根据前面的输出来写这个函数</p>
+<pre><code>def Retrieving_URL_scan_reports(retrieving_url_scan_reports):
+    headers = {
+        &quot;Accept-Encoding&quot; : &quot;gzip, deflate&quot;,
+        &quot;User-Agent&quot; : &quot;gzip,  My Python requests library example client or username&quot;
+    }
+    params = {&#39;apikey&#39; : API_KEY, &#39;resource&#39; : retrieving_url_scan_reports}
+    response = requests.post(&#39;https://www.virustotal.com/vtapi/v2/url/report&#39;, params=params, headers=headers)
+    if response.text != &#39;&#39;:
+        data = json.loads(response.text)
+        print &#39;#####################Site Info##########################################&#39;
+        print &#39;Scan_ID       : &#39; + data[&#39;scan_id&#39;]
+        print &#39;Resource      : &#39; + data[&#39;resource&#39;]
+        print &#39;URL           : &#39; + data[&#39;url&#39;]
+        print &#39;Response_Code : &#39; + str(data[&#39;response_code&#39;])
+        print &#39;Scan_Date     : &#39; + data[&#39;scan_date&#39;]
+        print &#39;Permalink     : &#39; + data[&#39;permalink&#39;]
+        print &#39;Verbose_Msg   : &#39; + data[&#39;verbose_msg&#39;]
+        print &#39;Filescan_ID   : &#39; + str(data[&#39;filescan_id&#39;])
+        print &#39;Positives     : &#39; + str(data[&#39;positives&#39;])
+        print &#39;Total         : &#39; + str(data[&#39;total&#39;])
+        print &#39;####################Scan Result#########################################&#39;
+        Keys = data[&#39;scans&#39;].keys()
+        for key in Keys:
+            print str(key) + &#39; : &#39; + str(data[&#39;scans&#39;][key][&#39;result&#39;])
+        print &#39;########################End#############################################&#39;
+    else:
+        print &#39;Check Failed:(&#39;
+</code></pre><p>输出跟上面一样</p>
+<h2 id="retrieving-ip-address-reports-includes-passive-dns-">Retrieving IP address reports (includes Passive DNS)</h2>
+<p>根据IP搜索报告，文档上使用的是<code>urllib.urlopen()</code></p>
+<pre><code>&gt;&gt;&gt; import json
+&gt;&gt;&gt; import urllib
+&gt;&gt;&gt; url = &#39;https://www.virustotal.com/vtapi/v2/ip-address/report&#39;
+&gt;&gt;&gt; parameters = {&#39;ip&#39;: &#39;90.156.201.27&#39;, &#39;apikey&#39;: &#39;-- YOUR API KEY --&#39;}
+&gt;&gt;&gt; response = urllib.urlopen(&#39;%s?%s&#39; % (url, urllib.urlencode(parameters))).read()
+&gt;&gt;&gt; response_dict = json.loads(response)
+&gt;&gt;&gt; print response_dict
+{    
+    u&#39;response_code&#39;: 1,
+    u&#39;verbose_msg&#39;: u&#39;IP address found in dataset&#39;,
+    u&#39;resolutions&#39;: [
+            {u&#39;last_resolved&#39;: u&#39;2013-04-08 00:00:00&#39;, u&#39;hostname&#39;: u&#39;027.ru&#39;},
+            {u&#39;last_resolved&#39;: u&#39;2013-04-08 00:00:00&#39;, u&#39;hostname&#39;: u&#39;auto.rema-tiptop.ru&#39;},
+            {u&#39;last_resolved&#39;: u&#39;2013-04-08 00:00:00&#39;, u&#39;hostname&#39;: u&#39;catalog24de.ru&#39;},
+            {u&#39;last_resolved&#39;: u&#39;2013-04-08 00:00:00&#39;, u&#39;hostname&#39;: u&#39;club.velhod.ru&#39;},
+            {u&#39;last_resolved&#39;: u&#39;2013-04-08 00:00:00&#39;, u&#39;hostname&#39;: u&#39;danilova.pro&#39;},
+            ... continues ...
+    ],
+    u&#39;detected_urls&#39;: [
+        {&quot;url&quot;: &quot;http://027.ru/&quot;, &quot;positives&quot;: 2, &quot;total&quot;: 37, &quot;scan_date&quot;: &quot;2013-04-07 07:18:09&quot;},
+        ... continues ...
+    ]
+}
+</code></pre><p>修改一下，使用<code>requests.get()</code>，先输出返回的JSON数据</p>
+<pre><code>def Retrieving_IP_address_reports(retrieving_ip_address_reports):
+    headers = {
+        &quot;Accept-Encoding&quot; : &quot;gzip, deflate&quot;,
+        &quot;User-Agent&quot; : &quot;gzip,  My Python requests library example client or username&quot;
+    }
+    params = {&#39;ip&#39; : retrieving_ip_address_reports, &#39;apikey&#39; : API_KEY}
+    response = requests.get(&#39;https://www.virustotal.com/vtapi/v2/ip-address/report&#39;, params=params)
+    print response.text
+</code></pre><p>然后。。。。。。我真没想到有这么多。。。。。。</p>
+<pre><code>PS C:\Users\wangz\Desktop&gt; python .\VT_API.py --retrieving_ip_address_reports 90.156.201.27
+{
+    &quot;asn&quot;: &quot;25532&quot;, 
+    &quot;undetected_downloaded_samples&quot;: [
+        {&quot;date&quot;: &quot;2017-07-07 07:38:39&quot;, &quot;positives&quot;: 0, &quot;total&quot;: 54, &quot;sha256&quot;: &quot;49e6dc21180c6e596cf37df8e87213c0dcddf5da7ce1d0bfc01cbf566ed84269&quot;}, 
+        {&quot;date&quot;: &quot;2017-06-29 08:06:07&quot;, &quot;positives&quot;: 0, &quot;total&quot;: 0, &quot;sha256&quot;: &quot;54be133578ad1ffad6d2fe46df686244348b48e98ee2dcf30ccbf63c2240fbe2&quot;}, 
+        {&quot;date&quot;: &quot;2017-06-26 11:13:10&quot;, &quot;positives&quot;: 0, &quot;total&quot;: 0, &quot;sha256&quot;: &quot;ef060e96ae4485a59efb62e722550fcad8afde4ea0d9453b462815af481cf55f&quot;}, 
+        {&quot;date&quot;: &quot;2017-06-19 20:55:21&quot;, &quot;positives&quot;: 0, &quot;total&quot;: 57, &quot;sha256&quot;: &quot;e87b1e85a0826a46c81c9eb7d4e42ffde5a23b233e5db9a3598e8ce1dde05739&quot;}, 
+        {&quot;date&quot;: &quot;2017-05-29 11:58:12&quot;, &quot;positives&quot;: 0, &quot;total&quot;: 56, &quot;sha256&quot;: &quot;0b52c5338af355699530a47683420e48c7344e779d3e815ff9943cbfdc153cf2&quot;}, 
+        {&quot;date&quot;: &quot;2017-04-10 17:18:39&quot;, &quot;positives&quot;: 0, &quot;total&quot;: 57, &quot;sha256&quot;: &quot;ba6eda7945ab8d7e57b34cc5a3dd292fa2e4c60a5ced79236ecf1a9e0f0c2d32&quot;}, 
+        {&quot;date&quot;: &quot;2016-06-22 00:03:00&quot;, &quot;positives&quot;: 0, &quot;total&quot;: 57, &quot;sha256&quot;: &quot;e822fe8750307c8a294b72280aabfd8e4d2ca0f3958f860b55b44624e88b558d&quot;}
+    ], 
+    &quot;country&quot;: &quot;RU&quot;, 
+    &quot;response_code&quot;: 1, 
+    &quot;as_owner&quot;: &quot;.masterhost autonomous system&quot;, 
+    &quot;verbose_msg&quot;: &quot;IP address in dataset&quot;, 
+    &quot;resolutions&quot;: [
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;027.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-01-20 00:00:00&quot;, &quot;hostname&quot;: &quot;600volt.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;a-bg.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-11-01 00:00:00&quot;, &quot;hostname&quot;: &quot;a-ctr.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;aarti.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-18 00:00:00&quot;, &quot;hostname&quot;: &quot;abn-etno.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-10-30 00:00:00&quot;, &quot;hostname&quot;: &quot;academyun.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-26 00:00:00&quot;, &quot;hostname&quot;: &quot;advisedon.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-15 00:00:00&quot;, &quot;hostname&quot;: &quot;albione.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-30 00:00:00&quot;, &quot;hostname&quot;: &quot;aligator-design.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;angelinagoncharova.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;anirisfortuna.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-11 00:00:00&quot;, &quot;hostname&quot;: &quot;anzor.tv&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-09-17 00:00:00&quot;, &quot;hostname&quot;: &quot;ariel.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-07-09 00:00:00&quot;, &quot;hostname&quot;: &quot;arielmetal.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-08-14 00:00:00&quot;, &quot;hostname&quot;: &quot;arielmetall.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;arsceramics.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;artdoydu.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-04-12 00:00:00&quot;, &quot;hostname&quot;: &quot;artpatch.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-02-13 00:00:00&quot;, &quot;hostname&quot;: &quot;asperito.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;asteriy-rostov.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;astra-jsc.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-04 00:00:00&quot;, &quot;hostname&quot;: &quot;auto-meh.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;auto.rema-tiptop.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-26 00:00:00&quot;, &quot;hostname&quot;: &quot;avalon-s.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-07-21 00:00:00&quot;, &quot;hostname&quot;: &quot;axesmg.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;b-a-u.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-06 00:00:00&quot;, &quot;hostname&quot;: &quot;babyeleto.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-11-06 00:00:00&quot;, &quot;hostname&quot;: &quot;bc-moscow.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-27 00:00:00&quot;, &quot;hostname&quot;: &quot;blankarchitects.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-09-18 00:00:00&quot;, &quot;hostname&quot;: &quot;blog.online-fashion.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-06-11 00:00:00&quot;, &quot;hostname&quot;: &quot;bms.anw.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-25 00:00:00&quot;, &quot;hostname&quot;: &quot;bonexpo.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-11-11 00:00:00&quot;, &quot;hostname&quot;: &quot;bridgelounge.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-07 00:00:00&quot;, &quot;hostname&quot;: &quot;budo-festival.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;catalog24de.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-12-11 00:00:00&quot;, &quot;hostname&quot;: &quot;cbi-info.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-02-22 00:00:00&quot;, &quot;hostname&quot;: &quot;cherprod.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-11 00:00:00&quot;, &quot;hostname&quot;: &quot;chorion.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-10-08 00:00:00&quot;, &quot;hostname&quot;: &quot;chudo.tomsk.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-05 00:00:00&quot;, &quot;hostname&quot;: &quot;citrolux.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-05-29 00:00:00&quot;, &quot;hostname&quot;: &quot;city-a.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;club.velhod.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-07 00:00:00&quot;, &quot;hostname&quot;: &quot;cook.foodrussian.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;cse.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;danilova.pro&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-05 00:00:00&quot;, &quot;hostname&quot;: &quot;deckplaza.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-04-18 00:00:00&quot;, &quot;hostname&quot;: &quot;dentex.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-01 00:00:00&quot;, &quot;hostname&quot;: &quot;deti57.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-30 00:00:00&quot;, &quot;hostname&quot;: &quot;dibikor.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;dlaturistov.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-04 00:00:00&quot;, &quot;hostname&quot;: &quot;dns.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-03 00:00:00&quot;, &quot;hostname&quot;: &quot;dokadoors.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;dom12km.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-27 00:00:00&quot;, &quot;hostname&quot;: &quot;drazl.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-06 00:00:00&quot;, &quot;hostname&quot;: &quot;duravit-russia.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-07-04 00:00:00&quot;, &quot;hostname&quot;: &quot;e-commerce.cse.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-05 00:00:00&quot;, &quot;hostname&quot;: &quot;easykart.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-11 00:00:00&quot;, &quot;hostname&quot;: &quot;eatmycraft.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;edgeinc.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;edst24.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;eductim.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;elite-skill.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-26 00:00:00&quot;, &quot;hostname&quot;: &quot;elkar.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-02-23 00:00:00&quot;, &quot;hostname&quot;: &quot;elks.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-10-27 00:00:00&quot;, &quot;hostname&quot;: &quot;en.a-ctr.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-24 00:00:00&quot;, &quot;hostname&quot;: &quot;energocabel.biz&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-30 00:00:00&quot;, &quot;hostname&quot;: &quot;energokabel.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-23 00:00:00&quot;, &quot;hostname&quot;: &quot;erc.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-04-27 00:00:00&quot;, &quot;hostname&quot;: &quot;ermakova.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-11 00:00:00&quot;, &quot;hostname&quot;: &quot;essentia-dance.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-25 00:00:00&quot;, &quot;hostname&quot;: &quot;ethology.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-06 00:00:00&quot;, &quot;hostname&quot;:&quot;etp-perm.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-23 00:00:00&quot;, &quot;hostname&quot;: &quot;exhiberexpo.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-14 00:00:00&quot;, &quot;hostname&quot;: &quot;farmacia-rm.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;fightcats.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;fit-art.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-12 00:00:00&quot;, &quot;hostname&quot;: &quot;fizkult-fitness.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-12 00:00:00&quot;, &quot;hostname&quot;: &quot;formika.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-14 00:00:00&quot;, &quot;hostname&quot;: &quot;forum.ethology.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-08-13 00:00:00&quot;, &quot;hostname&quot;: &quot;forum.orenfishing.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2015-02-28 00:00:00&quot;, &quot;hostname&quot;: &quot;fotohd.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-14 00:00:00&quot;, &quot;hostname&quot;: &quot;gefest-online.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;golf-samara.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-30 00:00:00&quot;, &quot;hostname&quot;: &quot;gorod-naryan-mar.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-16 00:00:00&quot;, &quot;hostname&quot;: &quot;gorod-omck.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-14 00:00:00&quot;, &quot;hostname&quot;: &quot;gorod-tomck.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-29 00:00:00&quot;, &quot;hostname&quot;: &quot;gosloto.lottorobot.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;greenzone.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-12 00:00:00&quot;, &quot;hostname&quot;: &quot;gremir.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;grunia.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-12 00:00:00&quot;, &quot;hostname&quot;: &quot;gymn1sam.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-08-13 00:00:00&quot;, &quot;hostname&quot;: &quot;harlequin-m.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-22 00:00:00&quot;, &quot;hostname&quot;: &quot;hccomposite.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-25 00:00:00&quot;, &quot;hostname&quot;: &quot;helpset.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;idealceramic.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-18 00:00:00&quot;, &quot;hostname&quot;: &quot;igro-dom.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-30 00:00:00&quot;, &quot;hostname&quot;: &quot;igtk-college.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;inteffax.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;investproect.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-08-07 00:00:00&quot;, &quot;hostname&quot;: &quot;iqestate.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-28 00:00:00&quot;, &quot;hostname&quot;: &quot;istanbulcymbals.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-06-04 00:00:00&quot;, &quot;hostname&quot;: &quot;ivansurin.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;jsc-ams.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-27 00:00:00&quot;, &quot;hostname&quot;: &quot;juke.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-07-10 00:00:00&quot;, &quot;hostname&quot;: &quot;kadakin.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;kapel.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-26 00:00:00&quot;, &quot;hostname&quot;: &quot;kazanobr.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-25 00:00:00&quot;, &quot;hostname&quot;: &quot;kipor-power.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-12 00:00:00&quot;, &quot;hostname&quot;: &quot;kleen-brus.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-10 00:00:00&quot;, &quot;hostname&quot;: &quot;kolizey-dv.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-02-06 00:00:00&quot;, &quot;hostname&quot;: &quot;komtech-stanki.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-25 00:00:00&quot;, &quot;hostname&quot;: &quot;krasnoznamensk.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-14 00:00:00&quot;, &quot;hostname&quot;: &quot;kros.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;kvnfa.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-02-11 00:00:00&quot;, &quot;hostname&quot;: &quot;l-club-saratov.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;laligafootball.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-22 00:00:00&quot;, &quot;hostname&quot;: &quot;lancomp.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-30 00:00:00&quot;, &quot;hostname&quot;: &quot;lasar-led.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-14 00:00:00&quot;, &quot;hostname&quot;: &quot;lazar-led.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-30 00:00:00&quot;, &quot;hostname&quot;: &quot;legioncheese.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-01 00:00:00&quot;, &quot;hostname&quot;: &quot;lhschool.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;liga-fantasy.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;loveodessa.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-29 00:00:00&quot;, &quot;hostname&quot;: &quot;lteline.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;luckypower.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-01-25 00:00:00&quot;, &quot;hostname&quot;: &quot;m-p-l.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-26 00:00:00&quot;, &quot;hostname&quot;: &quot;maart.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;magkvartir.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;maksfer.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;maria-loenko.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-04 00:00:00&quot;, &quot;hostname&quot;: &quot;masterkovka.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;medtehnica.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-08 00:00:00&quot;, &quot;hostname&quot;: &quot;megapolis-ul.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;mgv-balans.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;miassenergo.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;milanprestige.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-07-15 00:00:00&quot;, &quot;hostname&quot;: &quot;miniat.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-05 00:00:00&quot;, &quot;hostname&quot;: &quot;mirintrade.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;mototerminal.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;murmanmusic.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-14 00:00:00&quot;, &quot;hostname&quot;: &quot;musica4u.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2014-03-10 00:00:00&quot;, &quot;hostname&quot;: &quot;nadrpof.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-05 00:00:00&quot;, &quot;hostname&quot;: &quot;nasos-m.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-07 00:00:00&quot;, &quot;hostname&quot;: &quot;nedvizhimost-byala.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;neuromodulation.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;nicol-pack.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-06-28 00:00:00&quot;, &quot;hostname&quot;: &quot;nissan-taxi.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;npdmsh.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-06-29 00:00:00&quot;, &quot;hostname&quot;: &quot;ohotagolos.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-28 00:00:00&quot;, &quot;hostname&quot;: &quot;oka-hotel.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-17 00:00:00&quot;, &quot;hostname&quot;: &quot;old.krasnoznamensk.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-28 00:00:00&quot;, &quot;hostname&quot;: &quot;orelbanks.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;orenfishing.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-09 00:00:00&quot;, &quot;hostname&quot;: &quot;orlandian.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-01-05 00:00:00&quot;, &quot;hostname&quot;: &quot;orlov.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;osettlers.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-25 00:00:00&quot;, &quot;hostname&quot;: &quot;p3infra.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;pathway.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-11-05 00:00:00&quot;, &quot;hostname&quot;: &quot;petrosian.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;pikpharma.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;piqpharma.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;piqpharma.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;piqpharma.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-08-14 00:00:00&quot;, &quot;hostname&quot;: &quot;planeta-tehno.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-06 00:00:00&quot;, &quot;hostname&quot;: &quot;poltinnik-e.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;poptorg.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;porno-player.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-07-18 00:00:00&quot;, &quot;hostname&quot;: &quot;postec.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-25 00:00:00&quot;, &quot;hostname&quot;: &quot;pressa41.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;pressdizain.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;pro100ski.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-02-17 00:00:00&quot;, &quot;hostname&quot;: &quot;proreklamy.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;prowebstroy.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-07-08 00:00:00&quot;, &quot;hostname&quot;: &quot;psi.s196.edu.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-07 00:00:00&quot;, &quot;hostname&quot;: &quot;psycholog-consultant.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-29 00:00:00&quot;, &quot;hostname&quot;: &quot;ra-ajio.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-26 00:00:00&quot;, &quot;hostname&quot;: &quot;redcafe.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-07 00:00:00&quot;, &quot;hostname&quot;: &quot;redknife.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-08-14 00:00:00&quot;, &quot;hostname&quot;: &quot;rl-c.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-16 00:00:00&quot;, &quot;hostname&quot;: &quot;robotsoft.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-11-29 00:00:00&quot;, &quot;hostname&quot;: &quot;rodinagroup.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-07-21 00:00:00&quot;, &quot;hostname&quot;: &quot;royal-status.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-15 00:00:00&quot;, &quot;hostname&quot;: &quot;rtbf.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-02 00:00:00&quot;, &quot;hostname&quot;: &quot;rus-yago.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;russway.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-11 00:00:00&quot;, &quot;hostname&quot;: &quot;rzhuuu.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-05 00:00:00&quot;, &quot;hostname&quot;: &quot;sadovod-moskva.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-31 00:00:00&quot;, &quot;hostname&quot;: &quot;salesmasters.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-06 00:00:00&quot;, &quot;hostname&quot;: &quot;salsk-on-line.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-03 00:00:00&quot;, &quot;hostname&quot;: &quot;salus-moscow.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2014-02-20 00:00:00&quot;, &quot;hostname&quot;: &quot;sce.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-05 00:00:00&quot;, &quot;hostname&quot;: &quot;selta.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;shop.albione.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-06 00:00:00&quot;, &quot;hostname&quot;: &quot;sibaudio.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-27 00:00:00&quot;, &quot;hostname&quot;: &quot;snapico.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-06 00:00:00&quot;, &quot;hostname&quot;: &quot;spectech24.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-13 00:00:00&quot;, &quot;hostname&quot;: &quot;spektakli-grishkovtsa.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-17 00:00:00&quot;, &quot;hostname&quot;: &quot;sport.pressa41.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-05-24 00:00:00&quot;, &quot;hostname&quot;: &quot;spp-max.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-08-13 00:00:00&quot;, &quot;hostname&quot;: &quot;spz.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-07-01 00:00:00&quot;, &quot;hostname&quot;: &quot;static.bs33.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;stom32plus.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-21 00:00:00&quot;, &quot;hostname&quot;: &quot;stormbv.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-21 00:00:00&quot;, &quot;hostname&quot;: &quot;storminternational.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-07-06 00:00:00&quot;, &quot;hostname&quot;: &quot;stroynov.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-17 00:00:00&quot;, &quot;hostname&quot;: &quot;studionuvo.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;svoi.vzhik.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-06 00:00:00&quot;, &quot;hostname&quot;: &quot;tdelion.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;tehnoparts.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-20 00:00:00&quot;, &quot;hostname&quot;: &quot;tocuweb.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-14 00:00:00&quot;, &quot;hostname&quot;: &quot;top.helpset.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-13 00:00:00&quot;, &quot;hostname&quot;: &quot;trounin.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-07-24 00:00:00&quot;, &quot;hostname&quot;: &quot;tvoydom-news.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-09 00:00:00&quot;, &quot;hostname&quot;: &quot;tvoydom.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-07-20 00:00:00&quot;, &quot;hostname&quot;: &quot;tvoydomnet.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-29 00:00:00&quot;, &quot;hostname&quot;: &quot;u-cc.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-07-06 00:00:00&quot;, &quot;hostname&quot;: &quot;uk-dom.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;unionall.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;updates.diladele.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-07-28 00:00:00&quot;, &quot;hostname&quot;: &quot;vacon.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-16 00:00:00&quot;, &quot;hostname&quot;: &quot;vannaarhimeda.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;vertebrolog.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;victoriassecret.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-21 00:00:00&quot;, &quot;hostname&quot;: &quot;vinilovo.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-10-15 00:00:00&quot;, &quot;hostname&quot;: &quot;vmgap.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-06 00:00:00&quot;, &quot;hostname&quot;: &quot;volosmag.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-18 00:00:00&quot;, &quot;hostname&quot;: &quot;vtcargo.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-15 00:00:00&quot;, &quot;hostname&quot;: &quot;web.albione.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.5port.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-10-27 00:00:00&quot;, &quot;hostname&quot;: &quot;www.a-ctr.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.accords-land.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.agriko.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-12 00:00:00&quot;, &quot;hostname&quot;: &quot;www.albione.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-01-27 00:00:00&quot;, &quot;hostname&quot;: &quot;www.artpatch.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-05-15 00:00:00&quot;, &quot;hostname&quot;: &quot;www.asperito.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.autonissan.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-26 00:00:00&quot;, &quot;hostname&quot;: &quot;www.avalon-s.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-01-22 00:00:00&quot;, &quot;hostname&quot;: &quot;www.axesmg.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-11-06 00:00:00&quot;, &quot;hostname&quot;: &quot;www.bc-moscow.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-08 00:00:00&quot;, &quot;hostname&quot;: &quot;www.bilety-teatr.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-11-07 00:00:00&quot;, &quot;hostname&quot;: &quot;www.blankarchitects.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-07-08 00:00:00&quot;, &quot;hostname&quot;: &quot;www.bms.anw.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2014-12-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.cbi-info.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-14 00:00:00&quot;, &quot;hostname&quot;: &quot;www.chudo.tomsk.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.city-a.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-06-09 00:00:00&quot;, &quot;hostname&quot;:&quot;www.cse.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.ddline.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-11-08 00:00:00&quot;, &quot;hostname&quot;: &quot;www.dentex.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-14 00:00:00&quot;, &quot;hostname&quot;: &quot;www.dizar.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-06 00:00:00&quot;, &quot;hostname&quot;: &quot;www.easykart.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-07 00:00:00&quot;, &quot;hostname&quot;: &quot;www.eleco.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-27 00:00:00&quot;, &quot;hostname&quot;: &quot;www.energokab.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-07 00:00:00&quot;, &quot;hostname&quot;: &quot;www.engineering-tula.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-28 00:00:00&quot;, &quot;hostname&quot;: &quot;www.formika.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-08-13 00:00:00&quot;, &quot;hostname&quot;: &quot;www.forum.orenfishing.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-03 00:00:00&quot;, &quot;hostname&quot;: &quot;www.fotohd.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-01-15 00:00:00&quot;, &quot;hostname&quot;: &quot;www.hccomposite.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-15 00:00:00&quot;, &quot;hostname&quot;: &quot;www.helpset.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-21 00:00:00&quot;, &quot;hostname&quot;: &quot;www.ians.aero&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-30 00:00:00&quot;, &quot;hostname&quot;: &quot;www.idealceramic.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-15 00:00:00&quot;, &quot;hostname&quot;: &quot;www.juke.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-05 00:00:00&quot;, &quot;hostname&quot;: &quot;www.kipor-power.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.klex.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-01-14 00:00:00&quot;, &quot;hostname&quot;: &quot;www.komtech-stanki.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-21 00:00:00&quot;, &quot;hostname&quot;: &quot;www.l-club-saratov.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-18 00:00:00&quot;, &quot;hostname&quot;: &quot;www.lottorobot.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-01-25 00:00:00&quot;, &quot;hostname&quot;: &quot;www.m-p-l.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.magkvartir.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-11 00:00:00&quot;, &quot;hostname&quot;: &quot;www.med-technology.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-30 00:00:00&quot;, &quot;hostname&quot;: &quot;www.mycorso.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-07 00:00:00&quot;, &quot;hostname&quot;: &quot;www.nagrev.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-05 00:00:00&quot;, &quot;hostname&quot;: &quot;www.nar.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.neuromodulation.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-06 00:00:00&quot;, &quot;hostname&quot;: &quot;www.nicorandil.ru&quot;},
+        {&quot;last_resolved&quot;: &quot;2014-03-21 00:00:00&quot;, &quot;hostname&quot;: &quot;www.orenfishing.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-05 00:00:00&quot;, &quot;hostname&quot;: &quot;www.orlov.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.pathway.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-13 00:00:00&quot;, &quot;hostname&quot;: &quot;www.pianoart.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-10 00:00:00&quot;, &quot;hostname&quot;: &quot;www.piqpharma.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-06 00:00:00&quot;, &quot;hostname&quot;: &quot;www.pkp.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-08-19 00:00:00&quot;, &quot;hostname&quot;: &quot;www.postec.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-04-25 00:00:00&quot;, &quot;hostname&quot;: &quot;www.pressa41.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-12-13 00:00:00&quot;, &quot;hostname&quot;: &quot;www.rl-c.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-09 00:00:00&quot;, &quot;hostname&quot;: &quot;www.royal-status.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-28 00:00:00&quot;, &quot;hostname&quot;: &quot;www.rtbf.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-12-05 00:00:00&quot;, &quot;hostname&quot;: &quot;www.selta.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-05-14 00:00:00&quot;, &quot;hostname&quot;: &quot;www.sirtaki-feta.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-02-03 00:00:00&quot;, &quot;hostname&quot;: &quot;www.soda.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-11-12 00:00:00&quot;, &quot;hostname&quot;: &quot;www.storminternational.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-30 00:00:00&quot;, &quot;hostname&quot;: &quot;www.stroynov.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2015-12-18 00:00:00&quot;, &quot;hostname&quot;: &quot;www.studionuvo.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;www.tabakoff.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-17 00:00:00&quot;, &quot;hostname&quot;: &quot;www.teatr-satiry-bilety.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-07-04 00:00:00&quot;, &quot;hostname&quot;: &quot;www.theatre-sovremennik.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-23 00:00:00&quot;, &quot;hostname&quot;: &quot;www.trubarm.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-06 00:00:00&quot;, &quot;hostname&quot;: &quot;www.tsyganok.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-30 00:00:00&quot;, &quot;hostname&quot;: &quot;www.tvoydom-news.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-31 00:00:00&quot;, &quot;hostname&quot;: &quot;www.uk-dom.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-21 00:00:00&quot;, &quot;hostname&quot;: &quot;www.unona-i-avos.su&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-25 00:00:00&quot;, &quot;hostname&quot;: &quot;www.vitashop.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-10-15 00:00:00&quot;, &quot;hostname&quot;: &quot;www.vmgap.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-12-22 00:00:00&quot;, &quot;hostname&quot;: &quot;www.xn--1-gtbrjj1a.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-24 00:00:00&quot;, &quot;hostname&quot;: &quot;www.xn--80aagtf0bcjv.net&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-01-26 00:00:00&quot;, &quot;hostname&quot;: &quot;www.xn--j1ahaaf1b.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;xn----7sbb1biieb8a5h7a.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;hostname&quot;: &quot;xn----7sbba3auekm5a7a5cxb.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;xn----7sbbs7a0acdjf.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-04 00:00:00&quot;, &quot;hostname&quot;: &quot;xn----7sblcfci5blhy.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-02 00:00:00&quot;, &quot;hostname&quot;: &quot;xn--80aaeieaqeug3aeo0a8o.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-12-21 00:00:00&quot;, &quot;hostname&quot;: &quot;xn--80acbihafr4beeb3b.xn--j1ahaaf1b.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-17 00:00:00&quot;, &quot;hostname&quot;: &quot;xn--80ahadapesm3b.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;xn--b1adeqtgm.xn--p1ai&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-17 00:00:00&quot;, &quot;hostname&quot;: &quot;xn--f1arc.xn--80asehdb&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-03-07 00:00:00&quot;, &quot;hostname&quot;: &quot;yagarnaev.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2014-09-17 00:00:00&quot;, &quot;hostname&quot;: &quot;yar-odnt.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-17 00:00:00&quot;, &quot;hostname&quot;: &quot;yourlabrador.com&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-04 00:00:00&quot;, &quot;hostname&quot;: &quot;z-kto.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-06-20 00:00:00&quot;, &quot;hostname&quot;: &quot;zakaz-moda.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;zaoaromatrade.ru&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2017-05-19 00:00:00&quot;, &quot;hostname&quot;: &quot;zerber.su&quot;}
+    ], 
+    &quot;detected_urls&quot;: [
+        {&quot;url&quot;: &quot;http://snapico.ru/&quot;,&quot;positives&quot;: 2, &quot;total&quot;: 65, &quot;scan_date&quot;: &quot;2017-06-27 01:18:50&quot;}, 
+        {&quot;url&quot;: &quot;http://www.med-technology.ru/CIBCOnline%20olbtxn%20Authentication%20SignOn%20cibc&quot;, &quot;positives&quot;: 8, &quot;total&quot;: 66, &quot;scan_date&quot;: &quot;2017-06-19 20:54:42&quot;}, 
+        {&quot;url&quot;: &quot;http://z-kto.ru/&quot;, &quot;positives&quot;: 1, &quot;total&quot;: 66, &quot;scan_date&quot;: &quot;2017-06-05 21:37:36&quot;}, 
+        {&quot;url&quot;: &quot;http://bms.anw.ru/&quot;, &quot;positives&quot;: 1, &quot;total&quot;: 64, &quot;scan_date&quot;: &quot;2017-06-05 21:36:26&quot;}, 
+        {&quot;url&quot;: &quot;http://selta.ru/staple.php&quot;, &quot;positives&quot;: 1, &quot;total&quot;: 64, &quot;scan_date&quot;: &quot;2017-06-05 21:36:07&quot;}, 
+        {&quot;url&quot;: &quot;http://bonexpo.ru/mambots/content/files/&quot;, &quot;positives&quot;: 7, &quot;total&quot;:64, &quot;scan_date&quot;: &quot;2017-05-25 14:44:41&quot;}, 
+        {&quot;url&quot;: &quot;http://masterkovka.ru/&quot;, &quot;positives&quot;: 1, &quot;total&quot;: 65, &quot;scan_date&quot;: &quot;2017-05-04 18:17:20&quot;}, 
+        {&quot;url&quot;:&quot;http://xn----7sblcfci5blhy.xn--p1ai/&quot;, &quot;positives&quot;: 1, &quot;total&quot;: 65, &quot;scan_date&quot;: &quot;2017-05-04 16:49:46&quot;}, 
+        {&quot;url&quot;: &quot;http://shop.albione.ru/&quot;, &quot;positives&quot;: 2, &quot;total&quot;: 52, &quot;scan_date&quot;: &quot;2014-04-06 11:18:17&quot;}, 
+        {&quot;url&quot;: &quot;http://www.orlov.ru/&quot;, &quot;positives&quot;: 3, &quot;total&quot;: 52, &quot;scan_date&quot;: &quot;2014-03-05 09:13:31&quot;}
+    ]
+}
+</code></pre><p>看了半天，勉强看出来最后面的是检测出有问题的域名，中间应该是这个IP对应的域名，考虑了一下，输出检测出有问题的域名即可</p>
+<pre><code>def Retrieving_IP_address_reports(retrieving_ip_address_reports):
+    params = {&#39;ip&#39; : retrieving_ip_address_reports, &#39;apikey&#39; : API_KEY}
+    response = requests.get(&#39;https://www.virustotal.com/vtapi/v2/ip-address/report&#39;, params=params)
+    if response.text != &#39;&#39;:
+        data = json.loads(response.text)
+        print &#39;#####################IP Info############################################&#39;
+        print &#39;asn           :&#39;  + data[&#39;asn&#39;]
+        print &#39;country       : &#39; + data[&#39;country&#39;]
+        print &#39;response_code : &#39; + str(data[&#39;response_code&#39;])
+        print &#39;as_owner      : &#39; + data[&#39;as_owner&#39;]
+        print &#39;verbose_msg   : &#39; + data[&#39;verbose_msg&#39;]
+        print &#39;####################Scan Result#########################################&#39;
+        for detected_url in data[&#39;detected_urls&#39;]:
+            print &#39;URL       : &#39; + detected_url[&#39;url&#39;]
+            print &#39;Positives : &#39; + str(detected_url[&#39;positives&#39;])
+            print &#39;Total     : &#39; + str(detected_url[&#39;total&#39;])
+        print &#39;########################End#############################################&#39;
+    else:
+        print &#39;Check Failed:(&#39;
+</code></pre><p>这个效果还是可以的</p>
+<pre><code>PS C:\Users\wangz\Desktop&gt; python .\VT_API.py --retrieving_ip_address_reports 90.156.201.27
+#####################IP Info############################################
+asn           :25532
+country       : RU
+response_code : 1
+as_owner      : .masterhost autonomous system
+verbose_msg   : IP address in dataset
+####################Scan Result#########################################
+URL       : http://snapico.ru/
+Positives : 2
+Total     : 65
+URL       : http://www.med-technology.ru/CIBCOnline%20olbtxn%20Authentication%20SignOn%20cibc
+Positives : 8
+Total     : 66
+URL       : http://z-kto.ru/
+Positives : 1
+Total     : 66
+URL       : http://bms.anw.ru/
+Positives : 1
+Total     : 64
+URL       : http://selta.ru/staple.php
+Positives : 1
+Total     : 64
+URL       : http://bonexpo.ru/mambots/content/files/
+Positives : 7
+Total     : 64
+URL       : http://masterkovka.ru/
+Positives : 1
+Total     : 65
+URL       : http://xn----7sblcfci5blhy.xn--p1ai/
+Positives : 1
+Total     : 65
+URL       : http://shop.albione.ru/
+Positives : 2
+Total     : 52
+URL       : http://www.orlov.ru/
+Positives : 3
+Total     : 52
+########################End#############################################
+</code></pre><p>后来仔细想了想，这个接口应该是用于查IP对应域名信息的，比如Gayhub Page。。。。。。</p>
+<h2 id="retrieving-domain-reports-includes-passive-dns-">Retrieving domain reports (includes Passive DNS)</h2>
+<p>根据域名搜报告，和根据IP搜报告有点像</p>
+<pre><code>&gt;&gt;&gt; import json
+&gt;&gt;&gt; import urllib
+&gt;&gt;&gt; url = &#39;https://www.virustotal.com/vtapi/v2/domain/report&#39;
+&gt;&gt;&gt; parameters = {&#39;domain&#39;: &#39;027.ru&#39;, &#39;apikey&#39;: &#39;-- YOUR API KEY --&#39;}
+&gt;&gt;&gt; response = urllib.urlopen(&#39;%s?%s&#39; % (url, urllib.urlencode(parameters))).read()
+&gt;&gt;&gt; response_dict = json.loads(response)
+&gt;&gt;&gt; print response_dict
+{
+    &quot;response_code&quot;: 1,
+    &quot;verbose_msg&quot;: &quot;Domain found in dataset&quot;,
+    &quot;resolutions&quot;: [
+        {&quot;last_resolved&quot;: &quot;2013-04-05 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.11&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-04-07 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.14&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-04-08 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.27&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-04-07 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.71&quot;},
+        ... continues ...
+    ],
+    &quot;detected_urls&quot;: [
+        {&quot;url&quot;: &quot;http://027.ru/&quot;, &quot;positives&quot;: 2, &quot;total&quot;: 37, &quot;scan_date&quot;: &quot;2013-04-07 07:18:09&quot;},
+        ... continues ...
+    ]
+}
+</code></pre><p>返回数据</p>
+<pre><code>PS C:\Users\wangz\Desktop&gt; python .\VT_API.py --retrieving_domain_reports 027.ru
+{
+    &quot;BitDefender category&quot;: &quot;parked&quot;, 
+    &quot;domain_siblings&quot;: [], 
+    &quot;undetected_referrer_samples&quot;: [
+        {&quot;positives&quot;: 0, &quot;total&quot;: 53, &quot;sha256&quot;: &quot;b8f5db667431d02291eeec61cf9f0c3d7af00798d0c2d676fde0efb0cedb7741&quot;}
+    ], 
+    &quot;whois&quot;: &quot;domain:        027.RU\nnserver:       ns1.nevsruev.ru.\nnserver:       ns2.nevsruev.ru.\nstate:         REGISTERED, DELEGATED, VERIFIED\nperson:        Private Person\nregistrar:     RU-CENTER-RU\nadmin-contact: https://www.nic.ru/whois\ncreated:       2005-12-08T21:00:00Z\npaid-till:     2017-12-08T21:00:00Z\nfree-date:     2018-01-09\nsource:        TCI&quot;, 
+    &quot;whois_timestamp&quot;: 1497637392.7590301, 
+    &quot;detected_downloaded_samples&quot;: [
+        {&quot;date&quot;: &quot;2013-06-20 18:51:30&quot;, &quot;positives&quot;: 2, &quot;total&quot;: 46, &quot;sha256&quot;: &quot;cd8553d9b24574467f381d13c7e0e1eb1e58d677b9484bd05b9c690377813e54&quot;}
+    ], 
+    &quot;response_code&quot;: 1, 
+    &quot;detected_urls&quot;: [
+        {&quot;url&quot;: &quot;http://027.ru/&quot;, &quot;positives&quot;: 2, &quot;total&quot;: 66, &quot;scan_date&quot;: &quot;2017-06-29 01:34:48&quot;}, 
+        {&quot;url&quot;: &quot;http://027.ru/testing&quot;, &quot;positives&quot;: 1, &quot;total&quot;: 68, &quot;scan_date&quot;: &quot;2016-11-09 21:36:51&quot;}, 
+        {&quot;url&quot;: &quot;http://027.ru/15.jpg&quot;,&quot;positives&quot;: 2, &quot;total&quot;: 67, &quot;scan_date&quot;: &quot;2016-06-04 16:13:29&quot;}, 
+        {&quot;url&quot;: &quot;http://027.ru/1.js&quot;, &quot;positives&quot;: 2, &quot;total&quot;: 67, &quot;scan_date&quot;: &quot;2016-06-02 16:13:25&quot;}, 
+        {&quot;url&quot;: &quot;http://027.ru/adobe/flash_install_v10x1.php&quot;, &quot;positives&quot;: 4, &quot;total&quot;: 67, &quot;scan_date&quot;: &quot;2016-06-01 16:43:52&quot;}, 
+        {&quot;url&quot;: &quot;https://027.ru/&quot;, &quot;positives&quot;: 1, &quot;total&quot;: 66, &quot;scan_date&quot;: &quot;2016-02-08 13:25:40&quot;}, 
+        {&quot;url&quot;: &quot;http://027.ru/index.html&quot;, &quot;positives&quot;: 2, &quot;total&quot;: 62, &quot;scan_date&quot;: &quot;2015-02-18 08:54:52&quot;}
+    ], 
+    &quot;verbose_msg&quot;: &quot;Domain found in dataset&quot;, 
+    &quot;Websense ThreatSeeker category&quot;: &quot;uncategorized&quot;, 
+    &quot;Webutation domain info&quot;: {&quot;Verdict&quot;: &quot;malicious&quot;, &quot;Adult content&quot;: &quot;yes&quot;, &quot;Safety score&quot;: 40}, 
+    &quot;resolutions&quot;: [
+        {&quot;last_resolved&quot;: &quot;2017-02-02 00:00:00&quot;, &quot;ip_address&quot;: &quot;185.53.177.31&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-01-18 00:00:00&quot;, &quot;ip_address&quot;: &quot;62.210.11.121&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-05-03 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.11&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-05-07 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.14&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-09-08 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.25&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-04-01 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.27&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-11-09 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.64&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2013-05-01 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.71&quot;}, 
+        {&quot;last_resolved&quot;: &quot;2016-12-22 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.83&quot;},
+        {&quot;last_resolved&quot;: &quot;2013-06-20 00:00:00&quot;, &quot;ip_address&quot;: &quot;90.156.201.97&quot;}
+    ], 
+    &quot;subdomains&quot;: [&quot;www.027.ru&quot;], 
+    &quot;Dr.Web category&quot;: &quot;known infection source&quot;,
+    &quot;categories&quot;: [&quot;parked&quot;, &quot;uncategorized&quot;]
+}
+</code></pre><p>这个也是有点乱，凑合着写</p>
+<pre><code>def Retrieving_domain_reports(retrieving_domain_reports):
+    params = {&#39;domain&#39; : retrieving_domain_reports, &#39;apikey&#39; : API_KEY}
+    response = requests.get(&#39;https://www.virustotal.com/vtapi/v2/domain/report&#39;, params=params)
+    if response.text != &#39;&#39;:
+        data = json.loads(response.text)
+        print &#39;#####################Domain Info########################################&#39;
+        print &#39;BitDefender category :&#39;  + data[&#39;BitDefender category&#39;]
+        print &#39;whois                : &#39; + data[&#39;whois&#39;]
+        print &#39;whois_timestamp      : &#39; + str(data[&#39;whois_timestamp&#39;])
+        print &#39;verbose_msg          : &#39; + data[&#39;verbose_msg&#39;]
+        print &#39;####################Scan Result#########################################&#39;
+        for detected_url in data[&#39;detected_urls&#39;]:
+            print &#39;URL        : &#39; + detected_url[&#39;url&#39;]
+            print &#39;Positives  : &#39; + str(detected_url[&#39;positives&#39;])
+            print &#39;Total      : &#39; + str(detected_url[&#39;total&#39;])
+        for ip in data[&#39;resolutions&#39;]:
+            print &#39;IP_Address : &#39; + ip[&#39;ip_address&#39;]
+        for subdomain in data[&#39;subdomains&#39;]:
+            print &#39;Subdomain           : &#39; + subdomain
+        print &#39;########################End#############################################&#39;
+    else:
+        print &#39;Check Failed:(&#39;
+</code></pre><p>输出大概张这样</p>
+<pre><code>PS C:\Users\wangz\Desktop&gt; python .\VT_API.py --retrieving_domain_reports 027.ru
+#####################Domain Info########################################
+BitDefender category :parked
+whois                : domain:        027.RU
+nserver:       ns1.nevsruev.ru.
+nserver:       ns2.nevsruev.ru.
+state:         REGISTERED, DELEGATED, VERIFIED
+person:        Private Person
+registrar:     RU-CENTER-RU
+admin-contact: https://www.nic.ru/whois
+created:       2005-12-08T21:00:00Z
+paid-till:     2017-12-08T21:00:00Z
+free-date:     2018-01-09
+source:        TCI
+whois_timestamp      : 1497637392.76
+verbose_msg          : Domain found in dataset
+####################Scan Result#########################################
+URL        : http://027.ru/
+Positives  : 2
+Total      : 66
+URL        : http://027.ru/testing
+Positives  : 1
+Total      : 68
+URL        : http://027.ru/15.jpg
+Positives  : 2
+Total      : 67
+URL        : http://027.ru/1.js
+Positives  : 2
+Total      : 67
+URL        : http://027.ru/adobe/flash_install_v10x1.php
+Positives  : 4
+Total      : 67
+URL        : https://027.ru/
+Positives  : 1
+Total      : 66
+URL        : http://027.ru/index.html
+Positives  : 2
+Total      : 62
+IP_Address : 185.53.177.31
+IP_Address : 62.210.11.121
+IP_Address : 90.156.201.11
+IP_Address : 90.156.201.14
+IP_Address : 90.156.201.25
+IP_Address : 90.156.201.27
+IP_Address : 90.156.201.64
+IP_Address : 90.156.201.71
+IP_Address : 90.156.201.83
+IP_Address : 90.156.201.97
+Subdomain           : www.027.ru
+########################End#############################################
+</code></pre><h2 id="making-comments-on-files-and-urls">Making comments on files and URLs</h2>
+<p>这个就很没必要写了。。。。。。</p>
+<h2 id="final">Final</h2>
+<p>写完后想了想，勉强算是能用，后续会继续更新，不过鉴于并没有什么人需要用到这玩意，我自娱自乐就行了</p>
+<p>最后，其实文档后面也有很多其它语言写的版本</p>
+<h2 id="scripts-to-interact-with-the-public-api">Scripts to interact with the public API</h2>
+<p>This section links several scripts written by VirusTotal Community members to interact with the public API using different programming languages. VirusTotal itself is not responsible for these scripts, they are contributions of the Community and their use is at your own risk. If you would like to see your own implementation listed in this section just get in touch with us.</p>
+<h3 id="autoit">Autoit</h3>
+<p><a href="http://www.autoitscript.com/forum/topic/150819-virustotal-api-20-udf/">VirusTotal public API 2.0 implementation in Autoit</a> thanks to @Danyfirex.</p>
+<h3 id="c-c-">C / C++</h3>
+<p><a href="https://github.com/VirusTotal/c-vtapi">VirusTotal public and private API 2.0 implementation in pure C</a> done by VirusTotal team.</p>
+<h3 id="delphi">Delphi</h3>
+<p><a href="https://github.com/ms301/VirusTotal">VirusTotal public API implementation in Delphi</a> thanks to Maxim Sysoev.</p>
+<h3 id="elixir">Elixir</h3>
+<p><a href="https://github.com/dtykocki/virus_total">VirusTotal API 2.0 implementation in Elixir Lang</a>. Thanks to thanks to Doug </p>
+<h3 id="erlang">Erlang</h3>
+<p><a href="https://github.com/dtykocki/virustotal-erlang">VirusTotal public API implementation in Erlang</a> thanks to dtykocki.</p>
+<h3 id="go">Go</h3>
+<p><a href="https://github.com/williballenthin/govt">VirusTotal public API 2.0 implementation in Go</a> thanks to Willi Ballenthin.<br><a href="https://github.com/dutchcoders/go-virustotal">VirusTotal public API 2.0 implementation in Go</a> by dutchcoders.</p>
+<h3 id="lua">Lua</h3>
+<p><a href="https://github.com/ner0x652/lua-viral">VirusTotal public API 2.0 implementation in Lua</a> by ner0x652.</p>
+<h3 id="java">Java</h3>
+<p><a href="http://www.xlabs.com.br/?p=45">VirusTotal public API 2.0 implementation in Java</a> thanks to Mauricio Correa.<br><a href="http://kdkanishka.github.io/Virustotal-Public-API-V2.0-Client/">VirusTotal public API 2.0 implementation in Java</a> thanks to Kanishka Dilshan.<br><a href="http://virustotal.vighneswarrao.com/">VirusTotal public API 2.0 implementation in Java</a> thanks to VIGHNESWAR RAO BOJJA.</p>
+<h3 id="maltego-transforms">Maltego Transforms</h3>
+<p><a href="https://github.com/jiachongzhi/MaltegoVTPublic">Set of Maltego transforms for VirusTotal&#39;s public API</a> contributed by Michael Yip.<br><a href="https://github.com/Lookingglass/Maltego/blob/master/VTtransforms.py">VirusTotal Maltego transforms</a> thanks to Lookingglass.</p>
+<h3 id="-net">.NET</h3>
+<p><a href="https://github.com/Genbox/VirusTotal.NET">VirusTotal public API version 2.0 implementation in C#.NET</a> thanks to Ian Qvist.<br><a href="https://github.com/omegatechware/VirusTotal.VB.NET/blob/master/VirusTotalScanner.vb">VirusTotal public API version 2.0 implementation in VB.NET</a> thanks to omegatechware).<br><a href="https://github.com/sanganinilay/VirusTotalASPNETPython">Implementation and Integration of VirusTotal&#39;s API in ASP.NET + Python</a>. Thanks to Nilay Sangani</p>
+<h3 id="node-js">Node.js</h3>
+<p><a href="https://www.npmjs.com/package/node-virustotal">An implementation of the Virustotal API for Node.js</a> thanks to Nate Watson.</p>
+<h3 id="perl">Perl</h3>
+<p><a href="http://www.sorbs.net/home/VirusTotal.pm">VirusTotal public API version 2.0 implementation in perl</a> thanks to Michelle Sullivan from SORBS.<br><a href="http://perlgems.blogspot.com.es/2012/05/using-virustotal-api-v20.html">Perl script to submit files and retrieve their results</a> thanks to Christopher Frenz (@cfrenz).<br><a href="https://www.darksh3ll.gr/index.php/48-perl-script-check-sha256-against-virustotal">Perl script to check a sha256 hash against VirusTotal</a> thanks to luckystrike.<br><a href="https://www.darksh3ll.gr/index.php/49-perl-script-check-with-mailscanner-and-generic-wrapeer-sha256-signatures-against-virustotal">perl script to check with MailScanner and generic-wrapeer sha256 signatures against virustotal</a> thanks to luckystrike.</p>
+<h3 id="php">PHP</h3>
+<p><a href="https://github.com/IzzySoft/virustotal">VirusTotal public API version 2.0, with internal PHP curl, and no other dependencies</a>. Thanks to @IzzyOnDroid.<br><a href="https://github.com/jayzeng/virustotal_apiwrapper">VirusTotal public API version 2.0 implementation in PHP</a> thanks to @jayzeng.<br><a href="http://www.ab-weblog.com/en/php-script-for-accessing-virustotal-api-version-2-0/">PHP script for accessing VirusTotal public API Version 2.0</a> thanks to Andreas Breitschopp (@abtools).<br><a href="http://www.thewebhelp.com/php/scripts/virustotal-php-api/">PHP script for scanning files with VirusTotal public API Version 2.0</a> thanks to Adrian (@adrianTNT).</p>
+<h3 id="powershell">Powershell</h3>
+<p><a href="https://psvirustotal.codeplex.com/">VirusTotal public API version 2.0 implementation in Powershell</a> thanks to @DBHeise.</p>
+<h3 id="python">Python</h3>
+<p><a href="https://github.com/Xen0ph0n/VirusTotal_API_Tool/">VirusTotal public API version 2.0 implementation in Python 2.x</a> thanks to Chris Clark and Adam Meyers.<br><a href="https://github.com/Gawen/virustotal">VirusTotal public API version 2.0 implementation in Python 2.x</a> thanks to Gawen Arab.<br><a href="https://github.com/jwalker/Virustotal-Module">VirusTotal public API version 2.0 implementation in Python 2.x</a> thanks to @techno_vikiing.<br><a href="https://github.com/botherder/virustotal/blob/master/vt.py">Single and bulk lookups with VirusTotal public API version 2.0</a> thanks to Claudio Guarnieri.<br><a href="https://github.com/Erethon/vta.py">VirusTotal public API version 2.0 implementation in Python 2.x</a> thanks to @Erethon.<br><a href="https://github.com/doomedraven/VirusTotalApi">Full VirusTotal public and private API version 2.0 implementation in Python 2.x</a> thanks to Andriy Brukhovetskyy.<br><a href="https://github.com/subbyte/virustotal">VirusTotal public API version 2.0 implementation in Python 3.x</a> thanks to Xiaokui Shu.<br><a href="https://github.com/Phillipmartin/virustotal2">VirusTotal public API version 2.0 implementation in Python 2.x</a> thanks to Phillip Martin.<br><a href="https://github.com/Lookingglass/Maltego/blob/master/VTtransforms.py">VirusTotal Maltego transforms</a> thanks to Lookingglass.<br><a href="https://github.com/blacktop/virustotal-api">VirusTotal public and private API version 2.0 implementation in Python 2.x</a> thanks to Blacktop.<br><a href="https://github.com/clairmont32/VT-Domain-Scanner">VirusTotal domain scanner</a> coded by Matthew Clairmont.<br><a href="https://github.com/clairmont32/VirusTotal-IP-Scanner/tree/VirusTotal_IP_Scanner_1.0">VirusTotal IP scanner</a> coded by Matthew Clairmont.<br><a href="https://github.com/nu11p0inter/virustotal">VirusTotal public API version 2.0 implementation in Python</a> coded by Tal Melamed.</p>
+<h3 id="ruby">Ruby</h3>
+<p><a href="https://github.com/arxopia/uirusu">Rubygems command-line tool to interact with VirusTotal public API version 2.0</a> thanks to hammackj.<br><a href="https://github.com/pwelch/virustotal_api">Ruby Gem for VirusTotal API version 2.0</a> thanks to pwelch.</p>
+<h3 id="xproc">XProc</h3>
+<p><a href="https://github.com/transpect/xproc-util/blob/master/virustotal/xpl/virustotal.xpl">XProc script to interact with VirusTotal public API version 2.0</a> thanks to Martin Kraetke.</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

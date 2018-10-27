@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WriteUp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="pwnable-kr-toddler-s-bottle-leg">PWNABLE.KR-Toddler&#39;s Bottle-leg</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<h2 id="problem-description">Problem Description</h2>
+<pre><code>Daddy told me I should study arm.
+But I prefer to study my leg!
+
+Download : http://pwnable.kr/bin/leg.c
+Download : http://pwnable.kr/bin/leg.asm
+
+ssh leg@pwnable.kr -p2222 (pw:guest)
+</code></pre><p>ssh连上去，输出一大堆东西。。。。。。</p>
+<pre><code>wnagzihxain@toT0C:~$ ssh leg@pwnable.kr -p2222
+leg@pwnable.kr&#39;s password: 
+ ____  __    __  ____    ____  ____   _        ___      __  _  ____  
+|    \|  |__|  ||    \  /    ||    \ | |      /  _]    |  |/ ]|    \ 
+|  o  )  |  |  ||  _  ||  o  ||  o  )| |     /  [_     |  &#39; / |  D  )
+|   _/|  |  |  ||  |  ||     ||     || |___ |    _]    |    \ |    / 
+|  |  |  `  &#39;  ||  |  ||  _  ||  O  ||     ||   [_  __ |     \|    \ 
+|  |   \      / |  |  ||  |  ||     ||     ||     ||  ||  .  ||  .  \
+|__|    \_/\_/  |__|__||__|__||_____||_____||_____||__||__|\_||__|\_|
+
+- Site admin : daehee87.kr@gmail.com
+- IRC : irc.netgarage.org:6667 / #pwnable.kr
+- Simply type &quot;irssi&quot; command to join IRC now
+- files under /tmp can be erased anytime. make your directory under /tmp
+- to use peda, issue `source /usr/share/peda/peda.py` in gdb terminal
+Last login: Fri Sep 29 03:09:17 2017 from 31.210.182.178
+pulseaudio: pa_context_connect() failed
+pulseaudio: Reason: Connection refused
+pulseaudio: Failed to initialize PA contextaudio: Could not init `pa&#39; audio driver
+ALSA lib confmisc.c:768:(parse_card) cannot find card &#39;0&#39;
+ALSA lib conf.c:4292:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4292:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1251:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4292:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:4771:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2266:(snd_pcm_open_noupdate) Unknown PCM default
+alsa: Could not initialize DAC
+alsa: Failed to open `default&#39;:
+alsa: Reason: No such file or directory
+ALSA lib confmisc.c:768:(parse_card) cannot find card &#39;0&#39;
+ALSA lib conf.c:4292:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4292:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1251:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4292:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:4771:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2266:(snd_pcm_open_noupdate) Unknown PCM default
+alsa: Could not initialize DAC
+alsa: Failed to open `default&#39;:
+alsa: Reason: No such file or directory
+audio: Failed to create voice `lm4549.out&#39;
+Uncompressing Linux... done, booting the kernel.
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 3.11.4 (acez@pondicherry) (gcc version 4.7.3 (Sourcery CodeBench Lite 2013.05-24) ) #5 Sat Oct 12 00:15:00 EDT 2013
+[    0.000000] CPU: ARM926EJ-S [41069265] revision 5 (ARMv5TEJ), cr=00093177
+[    0.000000] CPU: VIVT data cache, VIVT instruction cache
+[    0.000000] Machine: ARM-Versatile PB
+[    0.000000] Memory policy: ECC disabled, Data cache writeback
+[    0.000000] sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 178956ms
+[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 16256
+[    0.000000] Kernel command line: &#39;root=/dev/ram rw console=ttyAMA0 rdinit=/sbin/init oops=panic panic=1 quiet&#39;
+[    0.000000] PID hash table entries: 256 (order: -2, 1024 bytes)
+[    0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+[    0.000000] Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.000000] Memory: 59760K/65536K available (2522K kernel code, 150K rwdata, 656K rodata, 112K init, 93K bss, 5776K reserved)
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]     vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+[    0.000000]     fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
+[    0.000000]     vmalloc : 0xc4800000 - 0xff000000   ( 936 MB)
+[    0.000000]     lowmem  : 0xc0000000 - 0xc4000000   (  64 MB)
+[    0.000000]     modules : 0xbf000000 - 0xc0000000   (  16 MB)
+[    0.000000]       .text : 0xc0008000 - 0xc0322cc8   (3180 kB)
+[    0.000000]       .init : 0xc0323000 - 0xc033f22c   ( 113 kB)
+[    0.000000]       .data : 0xc0340000 - 0xc0365b20   ( 151 kB)
+[    0.000000]        .bss : 0xc0365b20 - 0xc037d2bc   (  94 kB)
+[    0.000000] NR_IRQS:224
+[    0.000000] VIC @f1140000: id 0x00041190, vendor 0x41
+[    0.000000] FPGA IRQ chip 0 &quot;SIC&quot; @ f1003000, 13 irqs
+[    0.000000] Console: colour dummy device 80x30
+[    0.021310] Calibrating delay loop... 582.45 BogoMIPS (lpj=2912256)
+[    0.197969] pid_max: default: 32768 minimum: 301
+[    0.198881] Mount-cache hash table entries: 512
+[    0.210597] CPU: Testing write buffer coherency: ok
+[    0.216373] Setting up static identity map for 0xc0265c80 - 0xc0265cbc
+[    0.229782] NET: Registered protocol family 16
+[    0.231470] DMA: preallocated 256 KiB pool for atomic coherent allocations
+[    0.238135] Serial: AMBA PL011 UART driver
+[    0.239889] dev:f1: ttyAMA0 at MMIO 0x101f1000 (irq = 44) is a PL011 rev1
+[    0.250546] console [ttyAMA0] enabled
+[    0.251797] dev:f2: ttyAMA1 at MMIO 0x101f2000 (irq = 45) is a PL011 rev1
+[    0.252417] dev:f3: ttyAMA2 at MMIO 0x101f3000 (irq = 46) is a PL011 rev1
+[    0.253038] fpga:09: ttyAMA3 at MMIO 0x10009000 (irq = 70) is a PL011 rev1
+[    0.260924] bio: create slab &lt;bio-0&gt; at 0
+[    0.269007] Switched to clocksource timer3
+[    0.280875] NET: Registered protocol family 2
+[    0.286881] TCP established hash table entries: 512 (order: 0, 4096 bytes)
+[    0.287328] TCP bind hash table entries: 512 (order: -1, 2048 bytes)
+[    0.287943] TCP: Hash tables configured (established 512 bind 512)
+[    0.289060] TCP: reno registered
+[    0.289346] UDP hash table entries: 256 (order: 0, 4096 bytes)
+[    0.289858] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+[    0.291948] NET: Registered protocol family 1
+[    0.295037] RPC: Registered named UNIX socket transport module.
+[    0.295403] RPC: Registered udp transport module.
+[    0.295727] RPC: Registered tcp transport module.
+[    0.296007] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.301556] Trying to unpack rootfs image as initramfs...
+[    0.530138] Freeing initrd memory: 1584K (c2000000 - c218c000)
+[    0.530700] NetWinder Floating Point Emulator V0.97 (double precision)
+[    0.539376] Installing knfsd (copyright (C) 1996 okir@monad.swb.de).
+[    0.540547] msgmni has been set to 119
+[    0.570969] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 254)
+[    0.571619] io scheduler noop registered
+[    0.571901] io scheduler deadline registered
+[    0.572234] io scheduler cfq registered (default)
+[    0.573240] clcd-pl11x dev:20: PL110 rev0 at 0x10120000
+[    0.576254] clcd-pl11x dev:20: Versatile hardware, VGA display
+[    0.614702] Console: switching to colour frame buffer device 80x60
+[    0.634595] brd: module loaded
+[    0.635818] physmap platform flash device: 04000000 at 34000000
+[    0.645805] physmap-flash.0: Found 1 x32 devices at 0x0 in 32-bit bank. Manufacturer ID 0x000000 Chip ID 0x000000
+[    0.646616] Intel/Sharp Extended Query Table at 0x0031
+[    0.647438] Using buffer write method
+[    0.658433] smc91x.c: v1.1, sep 22 2004 by Nicolas Pitre &lt;nico@fluxnic.net&gt;
+[    0.674573] eth0: SMC91C11xFD (rev 1) at c496e000 IRQ 57 [nowait]
+[    0.675135] eth0: Ethernet addr: 52:54:00:12:34:56
+[    0.676590] mousedev: PS/2 mouse device common for all mice
+[    0.681231] TCP: cubic registered
+[    0.681613] NET: Registered protocol family 17
+[    0.682494] NET: Registered protocol family 37
+[    0.682979] VFP support v0.3: implementor 41 architecture 1 part 10 variant 9 rev 0
+[    0.693180] Freeing unused kernel memory: 112K (c0323000 - c033f000)
+[    0.784081] input: AT Raw Set 2 keyboard as /devices/fpga:06/serio0/input/input0
+cttyhack: can&#39;t open &#39;/dev/ttyS0&#39;: No such file or directory
+sh: can&#39;t access tty; job control turned off
+/ $ [    1.391624] input: ImExPS/2 Generic Explorer Mouse as /devices/fpga:07/serio1/input/input1
+
+/ $ whoami
+busy
+/ $ cat flag
+cat: can&#39;t open &#39;flag&#39;: Permission denied
+/ $ ls -l
+total 628
+drwxrwxr-x    2 root     0                0 Nov 10  2014 bin
+drwxrwxr-x    2 root     0                0 Nov 10  2014 boot
+drwxrwxr-x    2 root     0                0 Nov 10  2014 dev
+drwxrwxr-x    3 root     0                0 Nov 10  2014 etc
+-r--------    1 1001     0               38 Nov 10  2014 flag
+---s--x---    1 1001     1000        636419 Nov 10  2014 leg
+lrwxrwxrwx    1 root     0               11 Nov 10  2014 linuxrc -&gt; bin/busybox
+dr-xr-xr-x   33 root     0                0 Jan  1 00:00 proc
+drwxrwxr-x    2 root     0                0 Nov 10  2014 root
+drwxrwxr-x    2 root     0                0 Nov 10  2014 sbin
+drwxrwxr-x    2 root     0                0 Nov 10  2014 sys
+drwxrwxr-x    4 root     0                0 Nov 10  2014 usr
+/ $ ./leg
+Daddy has very strong arm! : as
+I have strong leg :P
+</code></pre><p>这到底是个啥。。。。。。</p>
+<p>于是下载了源码和汇编代码来分析一波</p>
+<p>C语言用了内联汇编，这令人窒息的代码风格</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+int key1(){
+    asm(&quot;mov r3, pc\n&quot;);
+}
+int key2(){
+    asm(
+    &quot;push    {r6}\n&quot;
+    &quot;add    r6, pc, $1\n&quot;
+    &quot;bx    r6\n&quot;
+    &quot;.code   16\n&quot;
+    &quot;mov    r3, pc\n&quot;
+    &quot;add    r3, $0x4\n&quot;
+    &quot;push    {r3}\n&quot;
+    &quot;pop    {pc}\n&quot;
+    &quot;.code    32\n&quot;
+    &quot;pop    {r6}\n&quot;
+    );
+}
+int key3(){
+    asm(&quot;mov r3, lr\n&quot;);
+}
+int main(){
+    int key = 0;
+    printf(&quot;Daddy has very strong arm! : &quot;);
+    scanf(&quot;%d&quot;, &amp;key);
+    if( (key1() + key2() + key3()) == key ){
+        printf(&quot;Congratz!\n&quot;);
+        int fd = open(&quot;flag&quot;, O_RDONLY);
+        char buf[100];
+        int r = read(fd, buf, 100);
+        write(0, buf, r);
+    }
+    else{
+        printf(&quot;I have strong leg :P\n&quot;);
+    }
+    return 0;
+}
+</code></pre><p>还是看汇编比较好，突然发现这是ARM。。。。。。，那么刚才那个好像是QEMU的样子。。。。。。</p>
+<pre><code>int key1() 
+{
+    0x00008cd4 &lt;+0&gt;:    push    {r11}        ; (str r11, [sp, #-4]!) // 栈顶 = R11
+    0x00008cd8 &lt;+4&gt;:    add    r11, sp, #0 // R11 = sp + 0
+    0x00008cdc &lt;+8&gt;:    mov    r3, pc // R3 = PC = 0x00008ce4
+    0x00008ce0 &lt;+12&gt;:    mov    r0, r3 // R0 = R3
+    0x00008ce4 &lt;+16&gt;:    sub    sp, r11, #0 // SP = R11 - 0
+    0x00008ce8 &lt;+20&gt;:    pop    {r11}        ; (ldr r11, [sp], #4) // R11 = 弹出栈顶数据
+    0x00008cec &lt;+24&gt;:    bx    lr
+}
+
+int key2()
+{
+    0x00008cf0 &lt;+0&gt;:    push    {r11}        ; (str r11, [sp, #-4]!)
+    0x00008cf4 &lt;+4&gt;:    add    r11, sp, #0
+    0x00008cf8 &lt;+8&gt;:    push    {r6}        ; (str r6, [sp, #-4]!)
+    0x00008cfc &lt;+12&gt;:    add    r6, pc, #1 // R6 = PC + 1 = 0x00008d04 + 1
+    0x00008d00 &lt;+16&gt;:    bx    r6
+    0x00008d04 &lt;+20&gt;:    mov    r3, pc // 此处切换Thumb指令集 : R3 = 0x00008d08
+    0x00008d06 &lt;+22&gt;:    adds    r3, #4 // R3 = R3 + 4 = 0x00008d08 + 4
+    0x00008d08 &lt;+24&gt;:    push    {r3} // Push R3
+    0x00008d0a &lt;+26&gt;:    pop    {pc} // Pop R3 to PC
+    0x00008d0c &lt;+28&gt;:    pop    {r6}        ; (ldr r6, [sp], #4)
+    0x00008d10 &lt;+32&gt;:    mov    r0, r3 // R0 = R3 = 0x00008d08 + 4
+    0x00008d14 &lt;+36&gt;:    sub    sp, r11, #0
+    0x00008d18 &lt;+40&gt;:    pop    {r11}        ; (ldr r11, [sp], #4)
+    0x00008d1c &lt;+44&gt;:    bx    lr
+}
+
+int key3()
+{
+    0x00008d20 &lt;+0&gt;:    push    {r11}        ; (str r11, [sp, #-4]!)
+    0x00008d24 &lt;+4&gt;:    add    r11, sp, #0
+    0x00008d28 &lt;+8&gt;:    mov    r3, lr // R3 = LR = 0x00008d80
+    0x00008d2c &lt;+12&gt;:    mov    r0, r3 // R0 = R3 = 0x00008d80
+    0x00008d30 &lt;+16&gt;:    sub    sp, r11, #0
+    0x00008d34 &lt;+20&gt;:    pop    {r11}        ; (ldr r11, [sp], #4)
+    0x00008d38 &lt;+24&gt;:    bx    lr
+}
+
+int main()
+{
+    0x00008d3c &lt;+0&gt;:    push    {r4, r11, lr}
+    0x00008d40 &lt;+4&gt;:    add    r11, sp, #8
+    0x00008d44 &lt;+8&gt;:    sub    sp, sp, #12
+    0x00008d48 &lt;+12&gt;:    mov    r3, #0 // R3 = 0
+    0x00008d4c &lt;+16&gt;:    str    r3, [r11, #-16] // [R11 - 16] = R3，初始化变量
+    0x00008d50 &lt;+20&gt;:    ldr    r0, [pc, #104]    ; 0x8dc0 &lt;main+132&gt; // R0 = &quot;Daddy has very strong arm! : &quot;
+    0x00008d54 &lt;+24&gt;:    bl    0xfb6c &lt;printf&gt; // printf(&quot;Daddy has very strong arm! : &quot;);
+    0x00008d58 &lt;+28&gt;:    sub    r3, r11, #16 // R3 = R11 - 16
+    0x00008d5c &lt;+32&gt;:    ldr    r0, [pc, #96]    ; 0x8dc4 &lt;main+136&gt; // R0 = &quot;%d&quot;
+    0x00008d60 &lt;+36&gt;:    mov    r1, r3 // R1 = &amp;key = R11 - 16，将输入存储到变量[R11 - 16]
+    0x00008d64 &lt;+40&gt;:    bl    0xfbd8 &lt;__isoc99_scanf&gt; //scanf(&quot;%d&quot;, &amp;key);
+    0x00008d68 &lt;+44&gt;:    bl    0x8cd4 &lt;key1&gt; // key1();
+    0x00008d6c &lt;+48&gt;:    mov    r4, r0 // R4 = R0 = 0x00008ce4
+    0x00008d70 &lt;+52&gt;:    bl    0x8cf0 &lt;key2&gt; // key2();
+    0x00008d74 &lt;+56&gt;:    mov    r3, r0 // R3 = R0 = 0x00008d08 + 4
+    0x00008d78 &lt;+60&gt;:    add    r4, r4, r3 // R4 = R4 + R3 = 0x00008ce4 + 0x00008d08 + 4
+    0x00008d7c &lt;+64&gt;:    bl    0x8d20 &lt;key3&gt; // key3();
+    0x00008d80 &lt;+68&gt;:    mov    r3, r0 // R3 = R0 = 0x00008d80
+    0x00008d84 &lt;+72&gt;:    add    r2, r4, r3 // R2 = R4 + R3 = 0x00008ce4 + 0x00008d08 + 4 + 0x00008d80
+    0x00008d88 &lt;+76&gt;:    ldr    r3, [r11, #-16] // R3 = input
+    0x00008d8c &lt;+80&gt;:    cmp    r2, r3 // 对比输入的值和计算出来的值 : strcmp(key1() + key2() + key3(), input)
+    0x00008d90 &lt;+84&gt;:    bne    0x8da8 &lt;main+108&gt;
+    0x00008d94 &lt;+88&gt;:    ldr    r0, [pc, #44]    ; 0x8dc8 &lt;main+140&gt;
+    0x00008d98 &lt;+92&gt;:    bl    0x1050c &lt;puts&gt;
+    0x00008d9c &lt;+96&gt;:    ldr    r0, [pc, #40]    ; 0x8dcc &lt;main+144&gt;
+    0x00008da0 &lt;+100&gt;:    bl    0xf89c &lt;system&gt;
+    0x00008da4 &lt;+104&gt;:    b    0x8db0 &lt;main+116&gt;
+    // 失败分支
+    0x00008da8 &lt;+108&gt;:    ldr    r0, [pc, #32]    ; 0x8dd0 &lt;main+148&gt; // R0 = &quot;I have strong leg :P\n&quot;
+    0x00008dac &lt;+112&gt;:    bl    0x1050c &lt;puts&gt; // puts(&quot;I have strong leg :P\n&quot;)
+    // 结束阶段
+    0x00008db0 &lt;+116&gt;:    mov    r3, #0
+    0x00008db4 &lt;+120&gt;:    mov    r0, r3
+    0x00008db8 &lt;+124&gt;:    sub    sp, r11, #8
+    0x00008dbc &lt;+128&gt;:    pop    {r4, r11, pc}
+    0x00008dc0 &lt;+132&gt;:    andeq    r10, r6, r12, lsl #9
+    0x00008dc4 &lt;+136&gt;:    andeq    r10, r6, r12, lsr #9
+    0x00008dc8 &lt;+140&gt;:            ; &lt;UNDEFINED&gt; instruction: 0x0006a4b0
+    0x00008dcc &lt;+144&gt;:            ; &lt;UNDEFINED&gt; instruction: 0x0006a4bc
+    0x00008dd0 &lt;+148&gt;:    andeq    r10, r6, r4, asr #9
+}
+</code></pre><p>所以计算出那个和即可，需要输入十进制数</p>
+<pre><code>&gt;&gt;&gt; hex(0x00008ce4 + 0x00008d08 + 4 + 0x00008d80)
+&#39;0x1a770&#39;
+&gt;&gt;&gt; 0x00008ce4 + 0x00008d08 + 4 + 0x00008d80
+108400
+</code></pre><p>然后。。。。。。</p>
+<pre><code>/ $ ls -l
+total 628
+drwxrwxr-x    2 root     0                0 Nov 10  2014 bin
+drwxrwxr-x    2 root     0                0 Nov 10  2014 boot
+drwxrwxr-x    2 root     0                0 Nov 10  2014 dev
+drwxrwxr-x    3 root     0                0 Nov 10  2014 etc
+-r--------    1 1001     0               38 Nov 10  2014 flag
+---s--x---    1 1001     1000        636419 Nov 10  2014 leg
+lrwxrwxrwx    1 root     0               11 Nov 10  2014 linuxrc -&gt; bin/busybox
+dr-xr-xr-x   33 root     0                0 Jan  1 00:00 proc
+drwxrwxr-x    2 root     0                0 Nov 10  2014 root
+drwxrwxr-x    2 root     0                0 Nov 10  2014 sbin
+drwxrwxr-x    2 root     0                0 Nov 10  2014 sys
+drwxrwxr-x    4 root     0                0 Nov 10  2014 usr
+/ $ ./leg
+Daddy has very strong arm! : 0x1a770
+I have strong leg :P
+/ $ ./leg
+Daddy has very strong arm! : 108400
+Congratz!
+My daddy has a lot of ARMv5te muscle!
+</code></pre><p>Flag</p>
+<pre><code>My daddy has a lot of ARMv5te muscle!
+</code></pre>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

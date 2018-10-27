@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>实现Dex文件运行时自篡改</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-dex-">实现Dex文件运行时自篡改</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<p>感谢李女士友情帮忙从墙外下载Dalvik Opcode文档</p>
+<p>大概就是学习笔记</p>
+<p>一种比较常规的反静态分析的方法，大概可以分为修改数据和修改指令两部分</p>
+<p>第一步就是定位Dex在内存中的位置，所以我们来实现定位到关键数据的过程</p>
+<p>最近Android Studio升级到了3.0，对NDK开发的支持做的还不错，直接在入口添加C++支持即可配置好NDK开发环境</p>
+<p>我们先实现一个<code>JNI_OnLoad</code>，来实现自动执行而不是在Java层调用篡改Dex数据或指令的函数</p>
+<pre><code>extern &quot;C&quot;
+jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
+{
+    LOGE(&quot;Call JNI_OnLoad()&quot;);
+    JNIEnv *env = NULL;
+    jint result = -1;
+    if (vm-&gt;GetEnv((void **) &amp;env, JNI_VERSION_1_6) != JNI_OK) {
+        return result;
+    }
+    myModifyDexInst();
+    return JNI_VERSION_1_6;
+}
+</code></pre><p>先定位Dex映射到内存中的位置，那个循环获取的位置，自己踩到坑的时候就明白为什么了</p>
+<pre><code>static void myModifyDexInst()
+{
+    uint64_t moduleBase = 0;
+    size_t moduleSize = 0;
+    char filename[1024];
+
+    for (int i = 1; i &lt; 3; i++)
+    {
+        sprintf(filename, &quot;/data/dalvik-cache/data@app@com.wnagzihxa1n.demo-%d.apk@classes.dex&quot;, i);
+        getModuleInfo(filename, &amp;moduleBase, &amp;moduleSize);
+        if (moduleBase != 0)
+        {
+            break;
+        }
+    }
+
+    if (moduleBase == 0)
+    {
+        LOGE(&quot;Can&#39;t locate the module %s\n&quot;, filename);
+        return;
+    }
+    LOGE(&quot;moduleBase is : 0x%x, moduleSize is : 0x%x\n&quot;, (unsigned int) moduleBase, (unsigned int) moduleSize);
+
+    return;
+}
+</code></pre><p>通过读取<code>/proc/pid/maps</code>文件进行Dex映射数据的读取，获取映射的区段并计算整个长度</p>
+<pre><code>static void getModuleInfo(const char* moduleName, uint64_t* moduleBase, size_t* moduleSize)
+{
+    FILE* fp_dex = NULL;
+    char filename[1024] = &quot;/proc/self/maps&quot;;
+    char line[1024];
+    char* temp,* baseStart,* baseEnd;
+
+    fp_dex = fopen(filename, &quot;r&quot;);
+    if (fp_dex != NULL)
+    {
+        while (fgets(line, sizeof(line), fp_dex))
+        {
+            if (strstr(line, moduleName))
+            {
+                LOGE(&quot;Current line : %s\n&quot;, line);
+                temp = strtok(line, &quot; &quot;);
+                baseStart = strtok(temp, &quot;-&quot;);
+                baseEnd = strtok(NULL, &quot;-&quot;);
+                LOGE(&quot;baseStart = 0x%s, baseEnd = 0x%s\n&quot;, baseStart, baseEnd);
+                *moduleBase = strtoul(baseStart, NULL, 16);
+                *moduleSize = strtoul(baseEnd, NULL, 16) - strtoul(baseStart, NULL, 16);
+                break;
+            }
+        }
+    }
+    fclose(fp_dex);
+}
+</code></pre><p>然后我们跑起来</p>
+<pre><code>11-14 10:45:25.774 5791-5791/com.wnagzihxa1n.demo E/toT0C: Call JNI_OnLoad()
+11-14 10:45:25.784 5791-5791/com.wnagzihxa1n.demo E/toT0C: Current line : 8d60d000-8d665000 r--p 00000000 fe:20 7115       /data/dalvik-cache/data@app@com.wnagzihxa1n.demo-1.apk@classes.dex
+11-14 10:45:26.294 5791-5791/com.wnagzihxa1n.demo E/toT0C: baseStart = 0x8d60d000, baseEnd = 0x8d665000
+11-14 10:45:26.294 5791-5791/com.wnagzihxa1n.demo E/toT0C: moduleBase is : 0x8d60d000, moduleSize is : 0x58000
+</code></pre><p>在可以定位到ODex数据后，开始定位Dex文件映射到内存中的位置，要先进行数据的判断，通过<code>Magic Number</code></p>
+<pre><code>if (!checkLegalODexFile(moduleBase))
+{
+    LOGE(&quot;Check ODexFile failed\n&quot;);
+    return;
+}
+
+LOGE(&quot;Check ODexFile successed\n&quot;);
+void* optBase = (void*) moduleBase;
+DexHeader* pHeader = (DexHeader*) ((u4)optBase + sizeof(DexOptHeader));
+
+gDexFile.pOptHeader = (DexOptHeader*) optBase;
+gDexFile.pHeader    = (DexHeader*) pHeader;
+gDexFile.baseAddr   = (u1*) ((u4) optBase + sizeof(DexOptHeader));
+gDexFile.pStringIds = (DexStringId*) ((u4) gDexFile.baseAddr + pHeader-&gt;stringIdsOff);
+gDexFile.pTypeIds   = (DexTypeId*) ((u4) gDexFile.baseAddr + pHeader-&gt;typeIdsOff);
+gDexFile.pFieldIds  = (DexFieldId*) ((u4) gDexFile.baseAddr + pHeader-&gt;fieldIdsOff);
+gDexFile.pMethodIds = (DexMethodId*) ((u4) gDexFile.baseAddr + pHeader-&gt;methodIdsOff);
+gDexFile.pProtoIds  = (DexProtoId*) ((u4) gDexFile.baseAddr + pHeader-&gt;protoIdsOff);
+gDexFile.pClassDefs = (DexClassDef*) ((u4) gDexFile.baseAddr + pHeader-&gt;classDefsOff);
+
+char sanitized[sizeof(pHeader-&gt;magic) * 2 + 1];
+asciify(sanitized, pHeader-&gt;magic, sizeof(pHeader-&gt;magic));
+LOGE(&quot;pHeader-&gt;magic = %s\n&quot;, sanitized);
+LOGE(&quot;pHeader-&gt;stringIdsOff = 0x%x\n&quot;, pHeader-&gt;stringIdsOff);
+LOGE(&quot;pHeader-&gt;stringIdsSize = 0x%x\n&quot;, pHeader-&gt;stringIdsSize);
+</code></pre><p>判断是否是合法的ODex文件</p>
+<pre><code>static bool checkLegalODexFile(uint64_t moduleBase)
+{
+    void* optBase = (void*) moduleBase;
+    DexOptHeader* dexOptHeader = (DexOptHeader*) (optBase);
+    DexHeader* dexHeader = (DexHeader*) ((u4)optBase + sizeof(DexOptHeader));
+    if (!strcmp((char*) dexOptHeader-&gt;magic, &quot;dey\n036\0&quot;)
+        &amp;&amp; !strcmp((char*) dexHeader-&gt;magic, &quot;dex\n035\0&quot;))
+    {
+        return true;
+    }
+    return false;
+}
+</code></pre><p>这里我们简单的输出几个值进行对比</p>
+<pre><code>11-14 14:26:22.224 9943-9943/com.wnagzihxa1n.demo E/toT0C: Current line : 8d60d000-8d665000 r--p 00000000 fe:20 7113       /data/dalvik-cache/data@app@com.wnagzihxa1n.demo-2.apk@classes.dex
+11-14 14:26:22.224 9943-9943/com.wnagzihxa1n.demo E/toT0C: baseStart = 0x8d60d000, baseEnd = 0x8d665000
+11-14 14:26:22.234 9943-9943/com.wnagzihxa1n.demo E/toT0C: moduleBase is : 0x8d60d000, moduleSize is : 0x58000
+11-14 14:26:22.234 9943-9943/com.wnagzihxa1n.demo E/toT0C: Check ODexFile successed
+11-14 14:26:22.244 9943-9943/com.wnagzihxa1n.demo E/toT0C: pHeader-&gt;magic = dex\n035\0
+11-14 14:26:22.244 9943-9943/com.wnagzihxa1n.demo E/toT0C: pHeader-&gt;stringIdsOff = 0x70
+11-14 14:26:22.244 9943-9943/com.wnagzihxa1n.demo E/toT0C: pHeader-&gt;stringIdsSize = 0x721
+</code></pre><p>关于输出<code>Magic Number</code>，可以参考<code>DexDump.cpp</code>的源码</p>
+<pre><code>static void asciify(char* out, const unsigned char* data, size_t len)
+{
+    while (len--) {
+        if (*data &lt; 0x20) {
+            switch (*data) {
+                case &#39;\0&#39;:
+                    *out++ = &#39;\\&#39;;
+                    *out++ = &#39;0&#39;;
+                    break;
+                case &#39;\n&#39;:
+                    *out++ = &#39;\\&#39;;
+                    *out++ = &#39;n&#39;;
+                    break;
+                default:
+                    *out++ = &#39;.&#39;;
+                    break;
+            }
+        } else if (*data &gt;= 0x80) {
+            *out++ = &#39;?&#39;;
+        } else {
+            *out++ = *data;
+        }
+        data++;
+    }
+    *out = &#39;\0&#39;;
+}
+</code></pre><p>简单输出字段数据进行对比</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>如果对的上那说明已经成功定位Dex文件映射到内存中的地址了</p>
+<p>然后我们可以根据拿到的地址进行类，方法，指令，以及其余数据的索引操作</p>
+<p>首先我们来写一个方法，比如很简单的<code>a + b</code></p>
+<pre><code>public class MainActivity extends Activity {
+    EditText editText1, editText2;
+    Button button;
+
+    // Used to load the &#39;native-lib&#39; library on application startup.
+    static {
+        System.loadLibrary(&quot;native-lib&quot;);
+    }
+
+    public void getSum(int a, int b) {
+        int add = a + b;
+        int sub = a - b;
+        Toast.makeText(MainActivity.this, &quot;add = &quot; + add + &quot;\nsub = &quot; + sub, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editText1 = (EditText) findViewById(R.id.editText1);
+        editText2 = (EditText) findViewById(R.id.editText2);
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSum(Integer.valueOf(editText1.getText().toString()), Integer.valueOf(editText2.getText().toString()));
+            }
+        });
+    }
+}
+</code></pre><p>简单先测试</p>
+<p><img src="Image/2.png" alt=""></p>
+<p>然后我们使用IDA观察对应的指令，稍微整理了下</p>
+<pre><code>CODE:0001C1D0 0090 0605  add-int v0, a, b
+CODE:0001C1D4 0191 0605  sub-int v1, a, b
+</code></pre><p>同时在运行时读取指令，这个代码比较复杂，有一些函数直接从<code>DexDump.cpp</code>里面拷贝，首先是获取指定类结构数据，其中有三个方法<code>dexGetClassDef</code>，<code>dexGetClassData</code>和<code>dexReadAndVerifyClassData</code>都是Dalvik虚拟机里面自带的，所以直接调用并进行遍历所有类即可，最后返回指定类数据</p>
+<pre><code>static DexClassData* getClassData(DexFile* pDexFile, char* pClassName)
+{
+    size_t classDefCount = pDexFile-&gt;pHeader-&gt;classDefsSize;
+    for (size_t classDefIndex = 0; classDefIndex &lt; classDefCount; classDefIndex++)
+    {
+        const DexClassDef* pClassDef = dexGetClassDef(pDexFile, classDefIndex);
+        const u1* pEncodedData = dexGetClassData(pDexFile, pClassDef);
+        const DexClassData* pClassData = dexReadAndVerifyClassData(&amp;pEncodedData, NULL);
+        char* descriptor = getTypeIdString(pDexFile, pClassDef-&gt;classIdx);
+        if (strcmp(descriptor, pClassName) == 0)
+        {
+            LOGE(&quot;Found Class %s\n&quot;, pClassName);
+            return (DexClassData*) pClassData;
+        }
+    }
+    return NULL;
+}
+</code></pre><p>方法数据的获取，依旧是靠遍历</p>
+<pre><code>static const DexCode* getCode(const DexFile* pDexFile, const DexClassData* pClassData, const char* pMethodName)
+{
+    size_t directMethodSize = pClassData-&gt;header.directMethodsSize;
+    size_t virtualMethodSize = pClassData-&gt;header.virtualMethodsSize;
+
+    for (int directMethodIndex = 0; directMethodIndex &lt; directMethodSize; ++directMethodIndex) 
+    {
+        int idx = pClassData-&gt;directMethods[directMethodIndex].methodIdx;
+        const DexCode* pCode = dexGetCode(pDexFile, &amp;pClassData-&gt;directMethods[directMethodIndex]);
+        if (strcmp(getString(pDexFile, pDexFile-&gt;pMethodIds[idx].nameIdx), pMethodName) == 0)
+        {
+            return pCode;
+        }
+    }
+
+    for (int virtualMethodIndex = 0; virtualMethodIndex &lt; virtualMethodSize; ++virtualMethodIndex) 
+    {
+        int idx = pClassData-&gt;virtualMethods[virtualMethodIndex].methodIdx;
+        const DexCode* pCode = dexGetCode(pDexFile, &amp;pClassData-&gt;virtualMethods[virtualMethodIndex]);
+        if (strcmp(getString(pDexFile, pDexFile-&gt;pMethodIds[idx].nameIdx), pMethodName) == 0)
+        {
+            return pCode;
+        }
+    }
+    return NULL;
+}
+</code></pre><p>调用的时候，简单做一下判断即可</p>
+<pre><code>static const DexCode* getClassMethodCode(const DexFile* pDexFile, const char* pClassName, const char* pMethodName)
+{
+    LOGE(&quot;Finding %s -&gt; %s\n&quot;, pClassName, pMethodName);
+    const DexClassData* pClassData = getClassData(pDexFile, pClassName);
+    if (pClassData == NULL)
+    {
+        return NULL;
+    }
+
+    const DexCode* pCode = getCode(pDexFile, pClassData, pMethodName);
+
+    if (pCode == NULL)
+    {
+        return NULL;
+    }
+
+    dumpDexCode(pCode);
+
+    return pCode;
+}
+</code></pre><p>跑起来，可以看到成功获取到指定方法的指令</p>
+<pre><code>11-17 10:45:41.784 2522-2522/com.wnagzihxa1n.demo E/toT0C: Current line : 8d5b4000-8d60d000 r--p 00000000 fe:20 7113       /data/dalvik-cache/data@app@com.wnagzihxa1n.demo-2.apk@classes.dex
+11-17 10:45:41.784 2522-2522/com.wnagzihxa1n.demo E/toT0C: baseStart = 0x8d5b4000, baseEnd = 0x8d60d000
+11-17 10:45:41.794 2522-2522/com.wnagzihxa1n.demo E/toT0C: moduleBase is : 0x8d5b4000, moduleSize is : 0x59000
+11-17 10:45:41.804 2522-2522/com.wnagzihxa1n.demo E/toT0C: Check ODexFile successed
+11-17 10:45:41.804 2522-2522/com.wnagzihxa1n.demo E/toT0C: Finding Lcom/wnagzihxa1n/demo/MainActivity; -&gt; getSum
+11-17 10:45:41.814 2522-2522/com.wnagzihxa1n.demo E/toT0C: Found Class Lcom/wnagzihxa1n/demo/MainActivity;
+11-17 10:45:41.814 2522-2522/com.wnagzihxa1n.demo E/toT0C:       registers     : 7
+11-17 10:45:41.824 2522-2522/com.wnagzihxa1n.demo E/toT0C:       ins           : 3
+11-17 10:45:41.834 2522-2522/com.wnagzihxa1n.demo E/toT0C:       outs          : 3
+11-17 10:45:41.834 2522-2522/com.wnagzihxa1n.demo E/toT0C:       insns size    : 44 16-bit code units
+11-17 10:45:41.834 2522-2522/com.wnagzihxa1n.demo E/toT0C: 0090 0605 0191 0605 0222 006c 1070 0307 
+11-17 10:45:41.834 2522-2522/com.wnagzihxa1n.demo E/toT0C: 0002 031b 0277 0000 20f8 003b 0032 020c 
+11-17 10:45:41.834 2522-2522/com.wnagzihxa1n.demo E/toT0C: 20f8 0036 0002 020c 031b 0002 0000 20f8 
+11-17 10:45:41.844 2522-2522/com.wnagzihxa1n.demo E/toT0C: 003b 0032 020c 20f8 0036 0012 020c 10f8 
+11-17 10:45:41.854 2522-2522/com.wnagzihxa1n.demo E/toT0C: 0007 0002 020c 1312 3071 02d8 0324 020c 
+11-17 10:45:41.854 2522-2522/com.wnagzihxa1n.demo E/toT0C: 10f8 0019 0002 000e
+</code></pre><p>那么定位到指令，我们就可以通过修改内存可读写的属性进行指令的修改，这里有两个点：第一个是<code>00</code>和<code>01</code>这个表示寄存器编号，第二个是<code>90</code>和<code>91</code>表示opcode，分别表示<code>add-int</code>和<code>sub-int</code>，我们把加和减对调</p>
+<pre><code>if (pCode == NULL)
+{
+    LOGE(&quot;Get Method getSum ins failed\n&quot;);
+    return;
+}
+
+if (mprotect((void*) moduleBase, moduleSize, PROT_READ | PROT_WRITE | PROT_EXEC) == 0)
+{
+    pCode-&gt;insns[0] = 0x0091;
+    pCode-&gt;insns[2] = 0x0190;
+    dumpDexCode(pCode);
+    mprotect((void*) moduleBase, moduleSize, PROT_READ | PROT_EXEC);
+}
+</code></pre><p>然后修改结果如下</p>
+<pre><code>11-19 15:40:54.804 7193-7193/com.wnagzihxa1n.demo E/toT0C: Current line : 8d593000-8d5ec000 r--p 00000000 fe:20 7113       /data/dalvik-cache/data@app@com.wnagzihxa1n.demo-2.apk@classes.dex
+11-19 15:40:54.804 7193-7193/com.wnagzihxa1n.demo E/toT0C: baseStart = 0x8d593000, baseEnd = 0x8d5ec000
+11-19 15:40:54.834 7193-7193/com.wnagzihxa1n.demo E/toT0C: moduleBase is : 0x8d593000, moduleSize is : 0x59000
+11-19 15:40:54.834 7193-7193/com.wnagzihxa1n.demo E/toT0C: Check ODexFile successed
+11-19 15:40:54.904 7193-7193/com.wnagzihxa1n.demo E/toT0C: Finding Lcom/wnagzihxa1n/demo/MainActivity; -&gt; getSum
+11-19 15:40:55.034 7193-7193/com.wnagzihxa1n.demo E/toT0C: Found Class Lcom/wnagzihxa1n/demo/MainActivity;
+11-19 15:40:55.074 7193-7193/com.wnagzihxa1n.demo E/toT0C:       registers     : 7
+11-19 15:40:55.074 7193-7193/com.wnagzihxa1n.demo E/toT0C:       ins           : 3
+11-19 15:40:55.074 7193-7193/com.wnagzihxa1n.demo E/toT0C:       outs          : 3
+11-19 15:40:55.074 7193-7193/com.wnagzihxa1n.demo E/toT0C:       insns size    : 44 16-bit code units
+11-19 15:40:55.074 7193-7193/com.wnagzihxa1n.demo E/toT0C: 0090 0605 0191 0605 0222 006c 1070 0307 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 0002 031b 0277 0000 20f8 003b 0032 020c 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 20f8 0036 0002 020c 031b 0002 0000 20f8 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 003b 0032 020c 20f8 0036 0012 020c 10f8 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 0007 0002 020c 1312 3071 02d8 0324 020c 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 10f8 0019 0002 000e 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C:       registers     : 7
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C:       ins           : 3
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C:       outs          : 3
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C:       insns size    : 44 16-bit code units
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 0091 0605 0190 0605 0222 006c 1070 0307 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 0002 031b 0277 0000 20f8 003b 0032 020c 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 20f8 0036 0002 020c 031b 0002 0000 20f8 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 003b 0032 020c 20f8 0036 0012 020c 10f8 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 0007 0002 020c 1312 3071 02d8 0324 020c 
+11-19 15:40:55.084 7193-7193/com.wnagzihxa1n.demo E/toT0C: 10f8 0019 0002 000e
+</code></pre><p>直观的效果</p>
+<p><img src="Image/3.png" alt=""></p>
+<p>这个点其实可以做很多的文章，比如最简单的就是反静态分析，比如跑起来之后再修改某些指令，或者替换某些指令，再比如可以把所有方法指令全都抽空，然后动态运行的时候全部填充回去，再进一步，可以运行到这个方法的时候把指令填充回去</p>
+<p>挺有意思的</p>
+<h2 id="references">References</h2>
+<ul>
+<li>Dalvik字节码自篡改原理及实现：<a href="https://bbs.pediy.com/thread-211331.htm">https://bbs.pediy.com/thread-211331.htm</a></li><li>Android安全分析挑战：运行时篡改Dalvik字节码：<a href="https://bbs.pediy.com/thread-170381.htm">https://bbs.pediy.com/thread-170381.htm</a></li><li>运行时自篡改dalvik字节码delta.apk原理解析（逆向）：<a href="https://bbs.pediy.com/thread-176732.htm">https://bbs.pediy.com/thread-176732.htm</a></li><li>apk自我保护的一种实现方式——运行时自篡改dalvik指令：<a href="http://blog.csdn.net/freshui/article/details/13620647">http://blog.csdn.net/freshui/article/details/13620647</a></li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

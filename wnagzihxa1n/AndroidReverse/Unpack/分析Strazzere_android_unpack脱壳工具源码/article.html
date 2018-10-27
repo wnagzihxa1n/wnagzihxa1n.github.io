@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>分析Strazzere-android-unpack脱壳工具源码</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-strazzere-android-unpack-">分析Strazzere-android-unpack脱壳工具源码</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<p>这是DEF CON 22关于安卓应用加固脱壳的一个工具，2014年的，所以脱壳思想简单粗暴，并不适合目前的壳</p>
+<ul>
+<li><a href="https://github.com/strazzere/android-unpacker">https://github.com/strazzere/android-unpacker</a></li></ul>
+<p>两年前作者把代码传到了Gayhub，之后又更新了一波</p>
+<p><img src="Image/1.png" alt=""></p>
+<p>需要输入待脱壳应用的包名作为参数</p>
+<pre><code>printf(&quot;[ * ] Android Dalvik Unpacker/Unprotector -  &lt; strazz@gmail.com &gt; \n&quot;);
+if (argc &lt;= 0)
+{
+    printf(&quot; [ ! ] Nothing to unpack, quitting\n&quot;);
+    return 0;
+}
+</code></pre><p>获取当前用户的UID，确保有足够的权限做后续的操作</p>
+<pre><code>if (getuid() != 0)
+{
+    printf(&quot; [ ! ] Not root, quitting\n&quot;);
+    return -1;
+}
+</code></pre><p>通过包名获取待脱壳应用对应的PID</p>
+<pre><code>char *package_name = argv[1];
+printf(&quot; [ + ] Hunting for % s\n&quot;, package_name);
+uint32_t pid = get_process_pid(package_name);
+if (pid &lt;= 0)
+{
+    printf(&quot; [ ! ] Process could not be found ! \n&quot;);
+    return -1;
+}
+printf(&quot; [ + ] % d is service pid\n&quot;, pid);
+</code></pre><p>获取PID</p>
+<pre><code>uint32_t get_process_pid(const char *target_package_name)
+{
+    char self_pid[10];
+    sprintf(self_pid, &quot;%u&quot;, getpid());
+    DIR *proc = NULL;
+    if ((proc = opendir(&quot;/proc&quot;)) == NULL)
+        return -1;
+    struct dirent *directory_entry = NULL;
+    // 循环打开&quot;/proc/$Pid&quot;下的文件夹
+    while ((directory_entry = readdir(proc)) != NULL)
+    {
+        if (directory_entry == NULL)
+            return -1;
+        // 过滤掉系统的应用以及脱壳进程自身
+        if (strcmp(directory_entry-&gt;d_name, &quot;self&quot;) == 0 ||
+                strcmp(directory_entry-&gt;d_name, self_pid) == 0)
+            continue;
+        // 循环读取&quot;/proc/$PID/cmdline&quot;
+        char cmdline[1024];
+        snprintf(cmdline, sizeof(cmdline), &quot;/proc/%s/cmdline&quot;, directory_entry-&gt;d_name);
+        FILE *cmdline_file = NULL;
+        // 如果读取到的数据为空，则直接进入下一次的读取
+        if ((cmdline_file = fopen(cmdline, &quot;r&quot;)) == NULL)
+            continue;
+        char process_name[1024];
+        fscanf(cmdline_file, &quot;%s&quot;, process_name);
+        fclose(cmdline_file);
+        // 如果获取到的包名与待脱壳应用包名一致，返回父文件夹名，父文件夹名为进程PID
+        if (strcmp(process_name, target_package_name) == 0)
+        {
+            closedir(proc);
+            return atoi(directory_entry-&gt;d_name);
+        }
+    }
+    closedir(proc);
+    return -1;
+}
+</code></pre><p>这里通过获取子线程的PID来绕过梆梆的反Ptrace调试</p>
+<pre><code>uint32_t clone_pid = get_clone_pid(pid);
+if (clone_pid &lt;= 0)
+{
+    printf(&quot; [ ! ] A suitable clone process could not be found ! &quot;);
+    return -1;
+}
+printf(&quot;[ + ] % d is clone pid\n&quot;, clone_pid);
+</code></pre><p>梆梆的三进程互相Ptrace，所以循环遍历子线程的PID，获取到最后一个子线程进行Ptrace即可</p>
+<pre><code>uint32_t get_clone_pid(uint32_t service_pid)
+{
+    DIR *service_pid_dir;
+    char service_pid_directory[1024];
+    sprintf(service_pid_directory, &quot;/proc/%d/task/&quot;, service_pid);
+    if ((service_pid_dir = opendir(service_pid_directory)) == NULL)
+        return -1;
+    struct dirent *directory_entry = NULL;
+    struct dirent *last_entry = NULL;
+    while ((directory_entry = readdir(service_pid_dir)) != NULL)
+    {
+        last_entry = directory_entry;
+    }
+    if (last_entry == NULL)
+        return -1;
+    closedir(service_pid_dir);
+    return atoi(last_entry-&gt;d_name);
+}
+</code></pre><p>获取到子线程后进行Ptrace</p>
+<pre><code>int mem_file = attach_get_memory(clone_pid);
+if (mem_file == -1)
+{
+    printf(&quot; [ ! ] An error occurred attaching and finding the memory ! \n&quot;);
+    return -1;
+}
+</code></pre><p>Ptrace该子线程并打开其mem文件</p>
+<pre><code>int attach_get_memory(uint32_t pid)
+{
+    char mem[1024];
+    snprintf(mem, sizeof(mem), &quot;/proc/%d/mem&quot;, pid);
+    // Ptrace该子线程
+    if (0 != ptrace(PTRACE_ATTACH, pid, NULL, NULL))
+        return -1;
+    // 获取该子线程的mem文件fd并返回
+    int mem_file;
+    if (!(mem_file = open(mem, O_RDONLY)))
+        return -1;
+    return mem_file;
+}
+</code></pre><p>通过特征检测壳</p>
+<pre><code>char *extra_filter = determine_filter(clone_pid, mem_file);
+</code></pre><p>打开该进程的&quot;/proc/$PID/maps&quot;文件，然后进行特征的查找</p>
+<pre><code>char *determine_filter(uint32_t clone_pid, int memory_fd)
+{
+    char maps[1024];
+    snprintf(maps, sizeof(maps), &quot;/proc/%d/maps&quot;, clone_pid);
+    printf(&quot; [+] Attempting to detect packer/protector...\n&quot;);
+    FILE *maps_file = NULL;
+    if ((maps_file = fopen(maps, &quot;r&quot;)) == NULL)
+        return NULL;
+    char mem_line[1024];
+    while (fscanf(maps_file, &quot;%[^\n]\n&quot;, mem_line) &gt;= 0)
+    {
+        // Iterate through all markers to find proper filter
+        int i;
+        for (i = 0; i &lt; sizeof(packers) / sizeof(packers[0]); i++)
+        {
+            if (strstr(mem_line, packers[i].marker))
+            {
+                printf(&quot;  [*] Found %s\n&quot;, packers[i].name);
+                return packers[i].filter;
+            }
+        }
+    }
+    printf(&quot;  [*] Nothing special found, assuming Bangcle...\n&quot;);
+    // For now we assume it&#39;s Bangcle if above filters failed
+    return NULL;
+}
+</code></pre><p>使用的壳特征，感觉很是简单粗暴啊，个人觉得还是用so的名称会比较好，毕竟每一家厂商现在的壳so文件都是不同的名字</p>
+<pre><code>typedef struct
+{
+  char *name;
+  char *description;
+  char *filter;
+  char *marker;
+} packer;
+
+static packer packers[] = {
+    // APKProtect
+    {
+        &quot;APKProtect v1-&gt;5&quot;,
+        &quot;APKProtect generialized detection&quot;,
+        // This is actually the filter APKProtect uses itself for finding it&#39;s own odex to modify
+        &quot;.apk@&quot;,
+        &quot;/libAPKProtect&quot;},
+    // 梆梆加固
+    {
+        &quot;Bangcle (??) silly version&quot;,
+        &quot;Something silly used by malware&quot;,
+        &quot;/app_lib/classes.dex&quot;,
+        &quot;/app_lib/&quot;},
+    // 阿里加固
+    {
+        &quot;LIAPP &#39;Egg&#39; (v1-&gt;?)&quot;,
+        &quot;LockIn APP (lockincomp.com)&quot;,
+        &quot;LIAPPEgg.dex&quot;,
+        &quot;/LIAPPEgg&quot;},
+    // 360加固保
+    {
+        &quot;Qihoo &#39;Monster&#39; (v1-&gt;?)&quot;,
+        &quot;Qihoo unknown version, code named &#39;monster&#39;&quot;,
+        &quot;monster.dex&quot;,
+        &quot;/libprotectClass&quot;}
+};
+</code></pre><p>搜索ODex文件的Magic Number</p>
+<pre><code>memory_region memory;
+if (find_magic_memory(clone_pid, mem_file, &amp;memory, extra_filter) &lt;= 0)
+{
+    printf(&quot; [ ! ] Something unexpected happened, new version of packer/protectors?Or it wasn&#39;t packed/protected!\n&quot;);
+    return -1;
+}
+</code></pre><p>找到包含ODex文件Magic Number的内存段</p>
+<pre><code>int find_magic_memory(uint32_t clone_pid, int memory_fd, memory_region *memory, char *extra_filter)
+{
+    int ret = 0;
+    char maps[1024];
+    snprintf(maps, sizeof(maps), &quot;/proc/%d/maps&quot;, clone_pid);
+    FILE *maps_file = NULL;
+    if ((maps_file = fopen(maps, &quot;r&quot;)) == NULL)
+        return -1;
+    char mem_line[1024];
+    while (fscanf(maps_file, &quot;%[^\n]\n&quot;, mem_line) &gt;= 0)
+    {
+        if (extra_filter != NULL &amp;&amp; !strstr(mem_line, extra_filter))
+            continue;
+        if (extra_filter == NULL &amp;&amp; (strstr(mem_line, &quot;/&quot;) || strstr(mem_line, &quot;[&quot;)))
+            continue;
+        char mem_address_start[10];
+        char mem_address_end[10];
+        sscanf(mem_line, &quot;%8[^-]-%8[^ ]&quot;, mem_address_start, mem_address_end);
+        uint32_t mem_start = strtoul(mem_address_start, NULL, 16);
+        // 判断前8字节是否为ODex的Magic Number
+        if (peek_memory(memory_fd, mem_start))
+        {
+            memory-&gt;start = mem_start;
+            memory-&gt;end = strtoul(mem_address_end, NULL, 16);
+            ret = 1;
+        }
+    }
+    fclose(maps_file);
+    return ret;
+}
+</code></pre><p>只判断前8字节，有些不妥</p>
+<pre><code>int peek_memory(int memory_file, uint32_t address)
+{
+    char magic[8];
+    if (8 != pread(memory_file, magic, 8, address))
+        return -1;
+    // We are currently just dumping odex or jar files, letting the packers/protectors do all
+    // the heavy lifting for us
+    if (strcmp(magic, odex_magic) == 0)
+        return 1;
+    return 0;
+}
+</code></pre><p>找到ODex文件在内存中的起始地址后就开始执行脱壳操作</p>
+<pre><code>printf(&quot; [+] Unpacked odex found in memory!\n&quot;);
+// 新建一个脱壳后的ODex文件名
+char *dumped_file_name = malloc(strlen(static_safe_location) + strlen(package_name) + strlen(suffix));
+sprintf(dumped_file_name, &quot;%s%s%s&quot;, static_safe_location, package_name, suffix);
+// 开始脱壳
+if (dump_memory(mem_file, &amp;memory, dumped_file_name) &lt;= 0)
+{
+    printf(&quot; [!] An issue occurred trying to dump the memory to a file!\n&quot;);
+    return -1;
+}
+printf(&quot; [+] Unpacked/protected file dumped to : %s\n&quot;, dumped_file_name);
+close(mem_file);
+// 停止Ptrace
+ptrace(PTRACE_DETACH, clone_pid, NULL, 0);
+return 1;
+</code></pre><p>进行脱壳操作</p>
+<pre><code>int dump_memory(int memory_fd, memory_region *memory, const char *file_name)
+{
+    int ret;
+    // 计算整个ODex文件长度
+    char *buffer = malloc(memory-&gt;end - memory-&gt;start);
+    printf(&quot; [+] Attempting to dump memory region 0x%x to 0x%x\n&quot;, memory-&gt;start, memory-&gt;end);
+    // 读取数据
+    int read = pread(memory_fd, buffer, memory-&gt;end - memory-&gt;start, memory-&gt;start);
+    if ((memory-&gt;end - memory-&gt;start) != read)
+    {
+        printf(&quot; [!] pread seems to have failed!\n&quot;);
+        return -1;
+    }
+    // 将数据写进文件
+    FILE *dump = fopen(file_name, &quot;wb&quot;);
+    if (fwrite(buffer, memory-&gt;end - memory-&gt; start, 1, dump) &lt;= 0)
+    {
+        ret = -1;
+    }
+    else
+    {
+        ret = 1;
+    }
+    free(buffer);
+    fclose(dump);
+    return ret;
+}
+</code></pre><p>本工具，在目前的加固环境下，参考一下代码就好</p>
+<p>针对APKProtect，还有一个隐藏模拟器小脚本，原理就是Hook函数<code>strlen()</code>，判断参数是否是<code>&quot;/system/bin/qemud&quot;</code></p>
+<pre><code>#include &lt;stdlib.h&gt;
+#include &lt;dlfcn.h&gt;
+#include &lt;android/log.h&gt;
+
+#define LOG_TAG &quot;StupidHideQemu&quot;
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define DPRINTF(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+
+static void _libhook_init() __attribute__((constructor));
+static void _libhook_init()
+{
+    LOGD(&quot;[] Hooking!\n&quot;);
+}
+
+size_t strlen(const char *s)
+{
+    static size_t (*func_strlen)(const char *) = NULL;
+    int retval = 0;
+    if (!func_strlen)
+        func_strlen = (size_t(*)(const char *))dlsym(RTLD_NEXT, &quot;strlen&quot;);
+    if (strcmp(s, &quot;/system/bin/qemud&quot;) == 0)
+    {
+        LOGD(&quot;[] Caught apkprotect checking for the qemu&quot;);
+        return 1;
+    }
+    return func_strlen(s);
+}
+</code></pre><p>另外，有大牛根据这个脱壳工具进行了改进，改进了匹配的方法</p>
+<ul>
+<li><a href="https://github.com/DrizzleRisk/drizzleDumper">https://github.com/DrizzleRisk/drizzleDumper</a></li></ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

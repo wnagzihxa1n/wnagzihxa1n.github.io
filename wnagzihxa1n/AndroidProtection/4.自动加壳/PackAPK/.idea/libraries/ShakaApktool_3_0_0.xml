@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="ShakaApktool_3.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ShakaApktool_3.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/ShakaApktool_3.0.0.jar!/" />
+    </SOURCES>
+  </library>
+</component>

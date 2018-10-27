@@ -1,0 +1,11 @@
+PS C:\Users\wangz\Desktop> python .\VT_API.py --sending_and_scanning_files pkg.apk
+{
+	"scan_id": "6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b-1499416492", 
+	"sha1": "e08730575f22a3938f76078f11dcef1c117d2750", 
+	"resource": "6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b", 
+	"response_code": 1, 
+	"sha256": "6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b", 
+	"permalink": "https://www.virustotal.com/file/6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b/analysis/1499416492/", 
+	"md5": "ca8a89e37a52e25f96026f808a252325", 
+	"verbose_msg": "Scan request successfully queued, come back later for the report"
+}

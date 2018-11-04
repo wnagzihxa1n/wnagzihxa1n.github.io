@@ -21,37 +21,147 @@
 			font-family: "微软雅黑";
 			color: white;
 		}
+*,
+*::before,
+*::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body{
+	font: normal 16px/1.5 "Helvetica Nenu", sans-serif;
+	background-color: rgb(250, 167, 209);
+	overflow-x: hidden;
+	padding-bottom: 50px;
+}
+
+.intro {
+  background: #1E90FF;
+  padding: 100px 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+
+/* TIMELINE
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.timeline ul li {
+  list-style-type: none;
+  position: relative;
+  width: 6px;
+  margin: 0 auto;
+  padding-top: 50px;
+  background: #87CEFA;
+}
+
+.timeline ul li::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: inherit;
+}
+.timeline ul li div {
+  position: relative;
+  bottom: 0;
+  width: 400px;
+  padding: 15px;
+  background: #87CEFA;
+}
+
+.timeline ul li div::before {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.timeline ul li:nth-child(odd) div {
+  left: 45px;
+}
+
+.timeline ul li:nth-child(odd) div::before {
+  left: -15px;
+  border-width: 8px 16px 8px 0;
+  border-color: transparent #87CEFA transparent transparent;
+}
+
+.timeline ul li:nth-child(even) div {
+  left: -439px;
+}
+
+.timeline ul li:nth-child(even) div::before {
+  right: -15px;
+  border-width: 8px 0 8px 16px;
+  border-color: transparent transparent transparent #87CEFA;
+}
+a {
+	text-decoration: none;
+	color: black
+}
+a:hover {
+	text-decoration: underline;
+	color: white;
+}
 	</style>
 </head>
+<body>
+<!-- 
 
 <body style="background-color:rgb(250, 167, 209)">
-<!-- 
 	<div style="text-align:center;">
 		<img src="mSource/shentanli-top.jpg" width="90%" height="auto"/>
 		<h3>coming soon...</h3>
 	</div>
 -->
 	<div style="text-align:center">
-		<h4><a href="shentanli/About-shentanli.html" target="_blank"><font face="微软雅黑" color="#1E90FF">WAIT AND HOPE!(--All human wisdom is summed up in these two words.)</a></h4></font>
+		<h4><a href="shentanli/About-shentanli.html" target="_blank"><font face="微软雅黑" color="#1E90FF">
+			<br>WAIT AND HOPE!(--All human wisdom is summed up in these two words.)</a></h4></font><br>
 	</div>
 
-	<div style="text-align:center">
-		<h4><font face="微软雅黑" color="#9400D3">Updating irregularly...</h4></font>
-	</div>
-
+<hr color="#87CEFA">
 	<div style="text-align:center;">
-			<table id="mTable" align="center" style="color:white">
-				<thead>
-					<tr><th width="20%"><font face="微软雅黑" color="#00BFFF">Post Time</font></th>
-					<th align="left"><font face="微软雅黑" color="#00BFFF">About Linux</font></th>
-					<th width="20%"><font face="微软雅黑" color="#00BFFF">Type</font></th></tr>
-				</thead>
-				<tbody id="tBody0"></tbody>
+		<section class="timeline">
+		<ul class="timeline">
+         <li>
+            <div>
+            	<time> 2018.11.04 </time><br>
+				<a href="wnagzihxa1n.html"><font>My Big potato</font></a>	
+            </div>
 
-				
-			</table>
+      	  </li>
+      	  <li>
+            <div>
+            	<time>201*.*.*</time>
 
-		</div>
+            </div>
+        </li>
+      	  <li>
+      	  	<div>
+      	  	</div>
+      	  </li>
+      	  <li>
+      	  	<div>
+      	  	</div>
+      	  </li>
+   		 </ul>
+   		 </section>
+	</div>
 
 </body>
 </html>

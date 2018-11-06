@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Ubuntu 16.04 x64编译V8源码</title>
+<title>Ubuntu_16.04_x64编译V8源码</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -568,7 +568,7 @@ Hook &#39;download_from_google_storage --no_resume &#39;--platform=linux*&#39; -
 <pre><code>https://storage.googleapis.com/chromium-clang-format/5349d1954e17f6ccafb6e6663b0f13cdb2bb33c8
 https://storage.googleapis.com/chromium-gn/1756964fe6b9f0a865accdf577ae46345847de3b
 https://storage.googleapis.com/v8-wasm-spec-tests/90f3b976c7e98ee0e9539975189959dfd78b3480
-</code></pre><p>这其中会有一个很神奇的操作，在下载``的时候，会莫名其妙卡住</p>
+</code></pre><p>这其中会有一个很神奇的操作，在下载其中一个文件<code>binutils.tar.bz2</code>的时候，会莫名其妙卡住</p>
 <pre><code>potat0@v-ubuntu:~/v8/v8$ gclient sync
 Syncing projects: 100% (22/22), done.                                               
 ^CFailed while running &quot;/usr/bin/python v8/third_party/binutils/download.py&quot;
@@ -632,7 +632,7 @@ potat0@v-ubuntu:~/v8/v8$ sudo chmod 777 /home/potat0/v8/v8/buildtools/linux64/cl
 </code></pre><p>生成编译文件</p>
 <pre><code>potat0@v-ubuntu:~/v8/v8$ sudo tools/dev/v8gen.py x64.debug
 </code></pre><p>进行编译，错误真是一个接一个</p>
-<pre><code>out.gn/x64.debug&#39;
+<pre><code>potat0@v-ubuntu:~/v8/v8$ ninja -C out.gn/x64.debug&#39;
 ninja: error: toolchain.ninja:47: loading &#39;obj/bytecode_builtins_list_generator.ninja&#39;: Permission denied
 subninja obj/bytecode_builtins_list_generator.ninja
                                                    ^ near here

@@ -41,7 +41,7 @@
 - 鬼哥: http://blog.csdn.net/guiguzi1110
 	- 我老板
 - Sakuraのblog: http://eternalsakura13.com/
-	- 目前在科恩实习的师傅
+	- 目前在玄武实习的师傅
 	- 什么浏览器都搞，贼强
 
 大牛们贼强，后生也可畏，我只能默默蹲街角卖红薯

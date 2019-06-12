@@ -1,8 +1,0 @@
-PS C:\Users\wangz\Desktop> python .\VT_API.py --rescanning_already_submitted_files ca8a89e37a52e25f96026f808a252325
-{
-	"permalink": "https://www.virustotal.com/file/6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b/analysis/1499416492/", 
-	"response_code": 1, 
-	"sha256": "6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b", 
-	"resource": "ca8a89e37a52e25f96026f808a252325", 
-	"scan_id": "6ab1c1126dce561109dacbd8524a57c824de66fc831fa1823ed6e63cd492b79b-1499416492"
-}

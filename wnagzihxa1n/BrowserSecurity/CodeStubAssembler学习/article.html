@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>1. CodeStubAssembler学习</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="codestubassembler-">CodeStubAssembler学习</h1>
+<p><strong>Author:wnagzihxa1n<br>E-mail:wnagzihxa1n@gmail.com</strong></p>
+<p>跟着V8官方的技术博客学习了一下CodeStubAssembler的语法</p>
+<ul>
+<li><a href="https://v8.dev/docs/csa-builtins">CodeStubAssembler builtins</a></li></ul>
+<p>有中文的翻译</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/54465194">V8 内置函数用CodeStubAssembler写法介绍</a></li></ul>
+<p>我翻译了原文并且跟着原文进行了实践，发现当前的V8版本与文中提供的代码并不能兼容，最后没有完全解决</p>
+<h2 id="builtins">Builtins</h2>
+<p>In V8, builtins can be seen as chunks of code that are executable by the VM at runtime. A common use case is to implement the functions of builtin objects (such as RegExp or Promise), but builtins can also be used to provide other internal functionality (e.g. as part of the IC system).</p>
+<p>在V8里，builtins函数可以看作是运行时在VM里运行的代码块，常见的使用是实现内置对象，比如像<code>RegExp</code>或者<code>Promise</code>，builtins函数也可以用于提供内部其它功能来使用（比如作为IC系统的一部分）</p>
+<p>V8’s builtins can be implemented using a number of different methods (each with different trade-offs):</p>
+<p>V8的builtins函数有多种实现方式</p>
+<ul>
+<li><strong>Platform-dependent assembly language</strong>: can be highly efficient, but need manual ports to all platforms and are difficult to maintain.</li><li><strong>C++</strong>: very similar in style to runtime functions and have access to V8’s powerful runtime functionality, but usually not suited to performance-sensitive areas.</li><li><strong>JavaScript</strong>: concise and readable code, access to fast intrinsics, but frequent usage of slow runtime calls, subject to unpredictable performance through type pollution, and subtle issues around (complicated and non-obvious) JS semantics.</li><li><strong>CodeStubAssembler</strong>: provides efficient low-level functionality that is very close to assembly language while remaining platform-independent and preserving readability.</li></ul>
+<p>我翻译的比较感性</p>
+<ul>
+<li><strong>Platform-dependent assembly language</strong>: 高效，但是需要适配所有平台，并且很难维护</li><li><strong>C++</strong>: 和runtime函数的风格相似，可以访问V8强大的runtime函数，但是不太适合性能敏感的需求</li><li><strong>JavaScript</strong>: 简洁易读的代码，可以访问快速的内联函数，但是频繁的调用这种慢的runtime函数，会受制于不可预见的性能问题</li><li><strong>CodeStubAssembler</strong>: 提供高效的底层函数，非常接近汇编的一种语言，保持平台独立且可读性比较好</li></ul>
+<p>The remaining document focuses on the latter and give a brief tutorial for developing a simple CodeStubAssembler (CSA) builtin exposed to JavaScript.</p>
+<p>剩下的文档讲了一个简单的小例子，解释了如何用CodeStubAssembler写一个builtin函数并且导出给JS使用</p>
+<h2 id="codestubassembler">CodeStubAssembler</h2>
+<p>V8’s CodeStubAssembler is a custom, platform-agnostic assembler that provides low-level primitives as a thin abstraction over assembly, but also offers an extensive library of higher-level functionality.</p>
+<p>V8的CodeStubAssembler不仅提供和平台无关且低级的原语，而且还提供作为高级函数的库扩展</p>
+<pre><code>// Low-level:
+// Loads the pointer-sized data at addr into value.
+Node* addr = /* ... */;
+Node* value = Load(MachineType::IntPtr(), addr);
+
+// And high-level:
+// Performs the JS operation ToString(object).
+// ToString semantics are specified at https://tc39.github.io/ecma262/#sec-tostring.
+Node* object = /* ... */;
+Node* string = ToString(context, object);
+</code></pre><p>CSA builtins run through part of the TurboFan compilation pipeline (including block scheduling and register allocation, but notably not through optimization passes) which then emits the final executable code.</p>
+<h2 id="writing-a-codestubassembler-builtin">Writing a CodeStubAssembler builtin</h2>
+<p>In this section, we will write a simple CSA builtin that takes a single argument, and returns whether it represents the number 42. The builtin is exposed to JS by installing it on the Math object (because we can).</p>
+<p>在这一节，我们将会写一个CSA builtin函数，传入一个参数，然后返回是否是42</p>
+<p>This example demonstrates:</p>
+<ul>
+<li>Creating a CSA builtin with JavaScript linkage, which can be called like a JS function.</li><li>Using CSA to implement simple logic: Smi and heap-number handling, conditionals, and calls to TFS builtins.</li><li>Using CSA Variables.</li><li>Installation of the CSA builtin on the Math object.</li></ul>
+<p>这个函数演示了以下几点：</p>
+<ul>
+<li>创建一个CSA内置函数，可以在JavaScript层来调用</li><li>使用CSA代码来实现简单的逻辑：Smi和heap-number的处理，条件和调用TFS builtin函数</li><li>使用CSA变量</li><li>将自定义的CSA函数绑定到Math对象上（可以通过Math对象来调用）</li></ul>
+<p>In case you’d like to follow along locally, the following code is based off revision 7a8d20a7.</p>
+<h2 id="declaring-mathis42">Declaring MathIs42</h2>
+<p>Builtins are declared in the <code>BUILTIN_LIST_BASE</code> macro in src/builtins/builtins-definitions.h. To create a new CSA builtin with JS linkage and one parameter named X:</p>
+<p>builtin函数在<code>BUILTIN_LIST_BASE</code>宏中进行声明，对应的文件是<code>src/builtins/builtins-definitions.h</code></p>
+<p>我们来创建一个新的可以由JavaScript来调用的builtin函数，该函数有一个参数</p>
+<pre><code>#define BUILTIN_LIST_BASE(CPP, API, TFJ, TFC, TFS, TFH, ASM, DBG)              \
+  // […snip…]
+  TFJ(MathIs42, 1, kX)                                                         \
+  // […snip…]
+</code></pre><p>Note that <code>BUILTIN_LIST_BASE</code> takes several different macros that denote different builtin kinds (see inline documentation for more details). CSA builtins specifically are split into:</p>
+<p>注意，<code>BUILTIN_LIST_BASE</code>使用了几个不同的宏来表示不同的builtin函数类型（更多细节可以看inline文档）</p>
+<p>CSA builtin函数有下面几种类型：</p>
+<ul>
+<li>TFJ: JavaScript linkage.</li><li>TFS: Stub linkage.</li><li>TFC: Stub linkage builtin requiring a custom interface descriptor (e.g. if arguments are untagged or need to be passed in specific registers).</li><li>TFH: Specialized stub linkage builtin used for IC handlers.</li></ul>
+<h2 id="defining-mathis42">Defining MathIs42</h2>
+<p>Builtin definitions are located in <code>src/builtins/builtins-*-gen.cc</code> files, roughly organized by topic. Since we will be writing a Math builtin, we’ll put our definition into <code>src/builtins/builtins-math-gen.cc</code>.</p>
+<p>builtin函数的定义在<code>src/builtins/builtins-*-gen.cc</code>文件，因为我们要写一个数学builtin函数，所以我们会把定义写到<code>src/builtins/builtins-math-gen.cc</code>里</p>
+<pre><code>// TF_BUILTIN is a convenience macro that creates a new subclass of the given
+// assembler behind the scenes.
+TF_BUILTIN(MathIs42, MathBuiltinsAssembler) {
+  // Load the current function context (an implicit argument for every stub)
+  // and the X argument. Note that we can refer to parameters by the names
+  // defined in the builtin declaration.
+  Node* const context = Parameter(Descriptor::kContext);
+  Node* const x = Parameter(Descriptor::kX);
+
+  // At this point, x can be basically anything - a Smi, a HeapNumber,
+  // undefined, or any other arbitrary JS object. Let’s call the ToNumber
+  // builtin to convert x to a number we can use.
+  // CallBuiltin can be used to conveniently call any CSA builtin.
+  Node* const number = CallBuiltin(Builtins::kToNumber, context, x);
+
+  // Create a CSA variable to store the resulting value. The type of the
+  // variable is kTagged since we will only be storing tagged pointers in it.
+  VARIABLE(var_result, MachineRepresentation::kTagged);
+
+  // We need to define a couple of labels which will be used as jump targets.
+  // 如果我们需要跳转到指定的代码段，我们需要先创建label
+  Label if_issmi(this), if_isheapnumber(this), out(this);
+
+  // ToNumber always returns a number. We need to distinguish between Smis
+  // and heap numbers - here, we check whether number is a Smi and conditionally
+  // jump to the corresponding labels.
+  // if-else分值，配合label使用
+  Branch(TaggedIsSmi(number), &amp;if_issmi, &amp;if_isheapnumber);
+
+  // Binding a label begins generating code for it.
+  // 在代码前绑定一个label
+  BIND(&amp;if_issmi);
+  {
+    // SelectBooleanConstant returns the JS true/false values depending on
+    // whether the passed condition is true/false. The result is bound to our
+    // var_result variable, and we then unconditionally jump to the out label.
+    var_result.Bind(SelectBooleanConstant(SmiEqual(number, SmiConstant(42))));
+    Goto(&amp;out);
+  }
+
+  BIND(&amp;if_isheapnumber);
+  {
+    // ToNumber can only return either a Smi or a heap number. Just to make sure
+    // we add an assertion here that verifies number is actually a heap number.
+    CSA_ASSERT(this, IsHeapNumber(number));
+    // Heap numbers wrap a floating point value. We need to explicitly extract
+    // this value, perform a floating point comparison, and again bind
+    // var_result based on the outcome.
+    Node* const value = LoadHeapNumberValue(number);
+    Node* const is_42 = Float64Equal(value, Float64Constant(42));
+    var_result.Bind(SelectBooleanConstant(is_42));
+    Goto(&amp;out);
+  }
+
+  BIND(&amp;out);
+  {
+    Node* const result = var_result.value();
+    CSA_ASSERT(this, IsBoolean(result));
+    Return(result);
+  }
+}
+</code></pre><h2 id="attaching-math-is42">Attaching Math.Is42</h2>
+<p>Builtin objects such as Math are set up mostly in src/bootstrapper.cc (with some setup occurring in .js files). Attaching our new builtin is simple:</p>
+<p>builtin函数需要在<code>src/bootstrapper.cc</code>中进行装载</p>
+<pre><code>// Existing code to set up Math, included here for clarity.
+Handle&lt;JSObject&gt; math = factory-&gt;NewJSObject(cons, TENURED);
+JSObject::AddProperty(global, name, math, DONT_ENUM);
+// […snip…]
+SimpleInstallFunction(math, &quot;is42&quot;, Builtins::kMathIs42, 1, true);
+</code></pre><p>Now that Is42 is attached, it can be called from JS:</p>
+<p>现在<code>Is42</code>已经可以调用了：</p>
+<pre><code>$ out/debug/d8
+d8&gt; Math.is42(42);
+true
+d8&gt; Math.is42(&#39;42.0&#39;);
+true
+d8&gt; Math.is42(true);
+false
+d8&gt; Math.is42({ valueOf: () =&gt; 42 });
+true
+</code></pre><h2 id="defining-and-calling-a-builtin-with-stub-linkage">Defining and calling a builtin with stub linkage</h2>
+<p>CSA builtins can also be created with stub linkage (instead of JS linkage as we used above in <code>MathIs42</code>). Such builtins can be useful to extract commonly-used code into a separate code object that can be used by multiple callers, while the code is only produced once. Let’s extract the code that handles heap numbers into a separate builtin called MathIsHeapNumber42, and call it from <code>MathIs42</code>.</p>
+<p>CSA builtin函数同样可以使用<code>stub linkage</code>类型创建（不是像上面MathIs42那样使用JS来调用）</p>
+<p>这种builtin函数会把代码单独提取到调用者内部，而且只生成一次，我们把处理heap number的代码抽到一个单独的builtin函数中，然后在MathIs42中调用它</p>
+<p>Defining and using TFS stubs is easy; declaration are again placed in <code>src/builtins/builtins-definitions.h</code>:</p>
+<pre><code>#define BUILTIN_LIST_BASE(CPP, API, TFJ, TFC, TFS, TFH, ASM, DBG)              \
+  // […snip…]
+  TFS(MathIsHeapNumber42, kX)                                                  \
+  TFJ(MathIs42, 1, kX)                                                         \
+  // […snip…]
+</code></pre><p>Note that currently, order within <code>BUILTIN_LIST_BASE</code> does matter. Since <code>MathIs42</code> calls <code>MathIsHeapNumber42</code>, the former needs to be listed after the latter (this requirement should be lifted at some point).</p>
+<p>这里的定义需要注意一下：因为函数调用的原因，<code>MathIsHeapNumber42</code>需要放在<code>MathIs42</code>前面进行定义</p>
+<p>The definition is also straightforward. In <code>src/builtins/builtins-math-gen.cc</code>:</p>
+<p>定义非常直截了当，在<code>src/builtins/builtins-math-gen.cc</code>：</p>
+<pre><code>// Defining a TFS builtin works exactly the same way as TFJ builtins.
+TF_BUILTIN(MathIsHeapNumber42, MathBuiltinsAssembler) {
+  Node* const x = Parameter(Descriptor::kX);
+  CSA_ASSERT(this, IsHeapNumber(x));
+  Node* const value = LoadHeapNumberValue(x);
+  Node* const is_42 = Float64Equal(value, Float64Constant(42));
+  Return(SelectBooleanConstant(is_42));
+}
+</code></pre><p>Finally, let’s call our new builtin from MathIs42:</p>
+<p>最后我们来调用这个函数</p>
+<pre><code>TF_BUILTIN(MathIs42, MathBuiltinsAssembler) {
+  // […snip…]
+  BIND(&amp;if_isheapnumber);
+  {
+    // Instead of handling heap numbers inline, we now call into our new TFS stub.
+    var_result.Bind(CallBuiltin(Builtins::kMathIsHeapNumber42, context, number));
+    Goto(&amp;out);
+  }
+  // […snip…]
+}
+</code></pre><p>Why should you care about TFS builtins at all? Why not leave the code inline (or extracted into a helper method for better readability)?</p>
+<p>为什么要关心TFS builtin？</p>
+<p>为什么不使用内联的方式（或者提取到辅助方法中以获得更好的可读性）？</p>
+<p>An important reason is code space: builtins are generated at compile-time and included in the V8 snapshot, thus unconditionally taking up (significant) space in every created isolate. Extracting large chunks of commonly used code to TFS builtins can quickly lead to space savings in the 10s to 100s of KBs.</p>
+<p>一个重要原因是代码空间：builtin函数在编译时生成并包含在V8的快照中，因此会占用每个创建Isolate中的空间，将大量常用代码提取到TFS builtin中可以节省10到100个KB的空间</p>
+<h2 id="testing-stub-linkage-builtins">Testing stub-linkage builtins</h2>
+<p>Even though our new builtin uses a non-standard (at least non-C++) calling convention, it’s possible to write test cases for it. The following code can be added to <code>test/cctest/compiler/test-run-stubs.cc</code> to test the builtin on all platforms:</p>
+<p>即使我们的内置函数使用非标准调用约定，也可以为它编写测试用例，将以下代码添加到<code>test/cctest/compiler/test-run-stubs.cc</code>以测试所有平台上的内置函数：</p>
+<pre><code>TEST(MathIsHeapNumber42) {
+  HandleAndZoneScope scope;
+  Isolate* isolate = scope.main_isolate();
+  Heap* heap = isolate-&gt;heap();
+  Zone* zone = scope.main_zone();
+
+  StubTester tester(isolate, zone, Builtins::kMathIs42);
+  Handle&lt;Object&gt; result1 = tester.Call(Handle&lt;Smi&gt;(Smi::FromInt(0), isolate));
+  CHECK(result1-&gt;BooleanValue());
+}
+</code></pre><p>我跟着实践的时候发现了一些问题，官方所给的代码并不能直接运行，需要进行修改</p>
+<pre><code>第一处：
+SimpleInstallFunction(math, &quot;is42&quot;, Builtins::kMathIs42, 1, true);
+=&gt;
+SimpleInstallFunction(isolate_, math, &quot;is42&quot;, Builtins::kMathIs42, 1, true);
+
+第二处：
+TFJ(MathIs42, 1, kX)
+=&gt;
+TFJ(MathIs42, 1, kReceiver, kX)
+
+第三处一直报错，我改成恒成立了：
+var_result.Bind(SelectBooleanConstant(SmiEqual(number, SmiConstant(42))));
+=&gt;
+var_result.Bind(SelectBooleanConstant(SmiEqual(SmiConstant(42), SmiConstant(42))));
+</code></pre><p>第三处怎么改都不对，一直报错</p>
+<pre><code>/../../src/builtins/builtins-math-gen.cc:277: no viable conversion from &#39;v8::internal::CodeStubAssembler::Node *const&#39; (aka &#39;v8::internal::compiler::Node *const&#39;) to &#39;TNode&lt;v8::internal::Smi&gt;&#39;
+</code></pre>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

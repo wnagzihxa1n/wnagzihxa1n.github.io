@@ -659,11 +659,11 @@ root@hammerhead:/data/local/tmp # chmod 777 capture.pcap
 /data/local/tmp/capture.pcap: 1 file pulled. 0.3 MB/s (1145 bytes in 0.004s)
 </code></pre><p>使用WireShark打开捕获到的数据包，这里我们结合数据包来看下TCP的相关协议及通讯过程</p>
 <p>TCP里有个说法叫作三次握手，用于创建连接，第一次握手 如下，由我们的客户端<code>172.27.35.2</code>发往服务端<code>172.27.35.3</code>，<code>SYN</code>为<code>1</code>表示这是发起连接请求，<code>Seq</code>的值为<code>0</code>，正常情况下这个值是一个随机值，但是这里WireShark为了方便分析，以相对偏移来显示，所以是<code>0</code></p>
-<p><img src="resources/5F8973D389C837243FCB1197651653C0.jpg" alt="IMAGE"></p>
+<p><img src="resources/5F8973D389C837243FCB1197651653C0.jpg" alt=""></p>
 <p>服务器收到连接请求，进行第二次握手，注意<code>Seq</code>也是<code>0</code>，但是这里的<code>0</code>和上面那个包的<code>0</code>不是一个意思，这个表示服务端产生的随机值的偏移，然后<code>ACK</code>被设置为<code>1</code>，计算方式是客户端发过来的包里的<code>Seq</code>字段加一，表示接下来希望收到客戶端哪个序列号的包</p>
-<p><img src="resources/668C2AE8C68E6D152AF2519B5FB6FD4C.jpg" alt="IMAGE"></p>
+<p><img src="resources/668C2AE8C68E6D152AF2519B5FB6FD4C.jpg" alt=""></p>
 <p>客户端收到服务端的返回包，进行第三次握手，告诉服务端我这里已经收到消息，准备开始进行数据传输，<code>Seq</code>为<code>1</code>表示客户端当前发包的序列号，<code>Ack</code>为<code>1</code>表示希望收到对方的包序列号</p>
-<p><img src="resources/A51C3A38054BB6AD90310DAB4C81E9C1.jpg" alt="IMAGE"></p>
+<p><img src="resources/A51C3A38054BB6AD90310DAB4C81E9C1.jpg" alt=""></p>
 <p>三次握手到这里结束，以上的部分由下面这句代码来完成</p>
 <pre><code>socket = new Socket(address, port);
 </code></pre><p>接下来我们进行数据发送</p>
@@ -671,11 +671,11 @@ root@hammerhead:/data/local/tmp # chmod 777 capture.pcap
 os.write(msg.getBytes());
 os.flush();
 </code></pre><p>这里我传输了一句<code>Here is wnagzihxa1n.</code>，可以看到<code>Data</code>字段里包含了这句话</p>
-<p><img src="resources/04B4B6CABC5901AB457C040A10F5DE4D.jpg" alt="IMAGE"></p>
+<p><img src="resources/04B4B6CABC5901AB457C040A10F5DE4D.jpg" alt=""></p>
 <p>当我们发送完数据后，使用方法<code>shutdownOutput()</code>或<code>shutdownInput()</code>是结束单向连接，比如我这里使用了<code>shutdownOutput()</code>，就是结束了客户端往服务端的输出流，服务端的输出流不受影响，但是此时Socket并没有关闭连接，是处于连接状态的，如果使用的是<code>outputStream.close()</code>，那就是直接关闭Socket连接了，所以对这部分不熟悉的同学可以注意下</p>
 <pre><code>socket.shutdownOutput();
 </code></pre><p><code>FIN</code>字段为<code>1</code>，表示断开，此时客户端主动断开，会开始四次挥手</p>
-<p><img src="resources/7293A6CD67A57F6F061579222358A855.jpg" alt="IMAGE"></p>
+<p><img src="resources/7293A6CD67A57F6F061579222358A855.jpg" alt=""></p>
 <p>后面服务器开始往客户端发数据，客户端等待接收数据代码如下</p>
 <pre><code>InputStream is = socket.getInputStream();
 reader = new InputStreamReader(is);
@@ -686,17 +686,17 @@ while ((s = bufReader.readLine()) != null) {
     sb.append(s);
 }
 </code></pre><p>既然服务端收到了客户端的包，那么肯定是要发一个<code>ACK</code>确认回去的，上面客户端发的包数据长度是<code>20</code>，所以<code>Seq</code>变成了<code>21</code></p>
-<p><img src="resources/174E50A9E07E8FDF1833531C874DB83F.jpg" alt="IMAGE"></p>
+<p><img src="resources/174E50A9E07E8FDF1833531C874DB83F.jpg" alt=""></p>
 <p>然后响应用户发的<code>FIN</code>包，这个标志和<code>SYN</code>一样</p>
-<p><img src="resources/C65EE3B2422DEDCB44B5B9E48047310B.jpg" alt="IMAGE"></p>
+<p><img src="resources/C65EE3B2422DEDCB44B5B9E48047310B.jpg" alt=""></p>
 <p>发完<code>ACK</code>包后，开始发送服务端往客户端的数据</p>
-<p><img src="resources/259F02DBFBB8C156A4BB7BD774280692.jpg" alt="IMAGE"></p>
+<p><img src="resources/259F02DBFBB8C156A4BB7BD774280692.jpg" alt=""></p>
 <p>发完包后，客户端收到数据，给服务端发一个<code>ACK</code>，因为上一个包数据长度是<code>73</code>，所以<code>Seq</code>是<code>74</code></p>
-<p><img src="resources/BED2454753A92CC52C5B82C749DDC7AB.jpg" alt="IMAGE"></p>
+<p><img src="resources/BED2454753A92CC52C5B82C749DDC7AB.jpg" alt=""></p>
 <p>最后服务端发出关闭输出流的包</p>
-<p><img src="resources/767A8F9285EBD772473CE23D4B174E47.jpg" alt="IMAGE"></p>
+<p><img src="resources/767A8F9285EBD772473CE23D4B174E47.jpg" alt=""></p>
 <p>整个挥手由客户端发出最后一个<code>ACK</code>结束</p>
-<p><img src="resources/45E75A43E16626F78E955B822CD95415.jpg" alt="IMAGE"></p>
+<p><img src="resources/45E75A43E16626F78E955B822CD95415.jpg" alt=""></p>
 <p>上面就是一个精简版的APP与服务器进行Socket通信的大致过程，从上述的代码我们可以看到几个可以勾住的点：</p>
 <ol>
 <li>创建Socket连接</li><li>往外发数据，OutputStream.write()</li></ol>

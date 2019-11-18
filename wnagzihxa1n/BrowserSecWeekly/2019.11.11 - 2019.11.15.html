@@ -1,239 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>浏览器安全周报   2019.11.11 - 2019.11.15</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <!-- common.css -->
-      <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: -apple-system, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;height: auto;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 90%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
-      <!-- ace-static.css -->
-      <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter > .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
-      <style>.ace-solarized-light .ace_gutter {background: #fbf1d3;color: #333}.ace-solarized-light .ace_print-margin {width: 1px;background: #e8e8e8}.ace-solarized-light {background-color: #FDF6E3;color: #586E75}.ace-solarized-light .ace_cursor {color: #000000}.ace-solarized-light .ace_marker-layer .ace_selection {background: rgba(7, 54, 67, 0.09)}.ace-solarized-light.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #FDF6E3;}.ace-solarized-light .ace_marker-layer .ace_step {background: rgb(255, 255, 0)}.ace-solarized-light .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgba(147, 161, 161, 0.50)}.ace-solarized-light .ace_marker-layer .ace_active-line {background: #EEE8D5}.ace-solarized-light .ace_gutter-active-line {background-color : #EDE5C1}.ace-solarized-light .ace_marker-layer .ace_selected-word {border: 1px solid #073642}.ace-solarized-light .ace_invisible {color: rgba(147, 161, 161, 0.50)}.ace-solarized-light .ace_keyword,.ace-solarized-light .ace_meta,.ace-solarized-light .ace_support.ace_class,.ace-solarized-light .ace_support.ace_type {color: #859900}.ace-solarized-light .ace_constant.ace_character,.ace-solarized-light .ace_constant.ace_other {color: #CB4B16}.ace-solarized-light .ace_constant.ace_language {color: #B58900}.ace-solarized-light .ace_constant.ace_numeric {color: #D33682}.ace-solarized-light .ace_fold {background-color: #268BD2;border-color: #586E75}.ace-solarized-light .ace_entity.ace_name.ace_function,.ace-solarized-light .ace_entity.ace_name.ace_tag,.ace-solarized-light .ace_support.ace_function,.ace-solarized-light .ace_variable,.ace-solarized-light .ace_variable.ace_language {color: #268BD2}.ace-solarized-light .ace_storage {color: #073642}.ace-solarized-light .ace_string {color: #2AA198}.ace-solarized-light .ace_string.ace_regexp {color: #D30102}.ace-solarized-light .ace_comment,.ace-solarized-light .ace_entity.ace_other.ace_attribute-name {color: #93A1A1}.ace-solarized-light .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNgYGBgYHjy8NJ/AAjgA5fzQUmBAAAAAElFTkSuQmCC) right repeat-y}</style>
-      <!-- export.css -->
-      <style>
-        body{margin:0 auto;max-width:800px;line-height:1.4}
-        #nav{margin:5px 0 10px;font-size:15px}
-        #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
-        #contentarea{font-size:15px;margin:16px 0}
-        .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
-        .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
-        .latex-cell{white-space:pre-wrap;}
-      </style>
-      <!-- User CSS -->
-      <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
-    </head>
-    <body>
-      
-      <div id="titlearea">
-        <h2>浏览器安全周报 | 2019.11.11 - 2019.11.15</h2>
-      </div>
-      <div id="contentarea"><div class="cell markdown-cell"><p><strong>Author:wnagzihxa1n<br>
-<a href="mailto:E-Mail:wnagzihxa1n@gmail.com">E-Mail:wnagzihxa1n@gmail.com</a></strong></p>
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-2019-11-11-2019-11-15">浏览器安全周报   2019.11.11 - 2019.11.15</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
 <p>组里又走一大佬，算下来从我去年四月份入职以来已经走了四个了</p>
 <p>祝师傅们前程似锦！</p>
 <p>上周提到谷歌紧急修复的一个在野利用的洞（1019226），补丁如下，及时修复吧</p>
 <ul>
-<li><a href="https://chromium.googlesource.com/chromium/src/+/6a2e670a243b815cf043f8da4d26ecb9a64d307b%5E%21/#F0">https://chromium.googlesource.com/chromium/src/+/6a2e670a243b815cf043f8da4d26ecb9a64d307b^!/#F0</a></li>
-</ul>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>diff --git a/third_party/blink/renderer/modules/webaudio/convolver_node.cc b/third_party/blink/renderer/modules/webaudio/convolver_node.cc
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>index c67a0ba..ce19fe6 100644
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>--- a/third_party/blink/renderer/modules/webaudio/convolver_node.cc
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+++ b/third_party/blink/renderer/modules/webaudio/convolver_node.cc
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>@@ -103,6 +103,8 @@
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>   DCHECK(IsMainThread());
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> 
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>   if (!buffer) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+    BaseAudioContext::GraphAutoLocker context_locker(Context());
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+    MutexLocker locker(process_lock_);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span> reverb_.reset();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span> shared_buffer_ = nullptr;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span> return;
-</div></div></div></pre>
-<p>iOS越狱大杀器，目前还处于early beta阶段，可能会失败，多尝试几次，不完美越狱，重启后需要重新越狱</p>
+<li><a href="https://chromium.googlesource.com/chromium/src/+/6a2e670a243b815cf043f8da4d26ecb9a64d307b%5E%21/#F0">https://chromium.googlesource.com/chromium/src/+/6a2e670a243b815cf043f8da4d26ecb9a64d307b%5E%21/#F0</a></li></ul>
+<pre><code>diff --git a/third_party/blink/renderer/modules/webaudio/convolver_node.cc b/third_party/blink/renderer/modules/webaudio/convolver_node.cc
+index c67a0ba..ce19fe6 100644
+--- a/third_party/blink/renderer/modules/webaudio/convolver_node.cc
++++ b/third_party/blink/renderer/modules/webaudio/convolver_node.cc
+@@ -103,6 +103,8 @@
+   DCHECK(IsMainThread());
+
+   if (!buffer) {
++    BaseAudioContext::GraphAutoLocker context_locker(Context());
++    MutexLocker locker(process_lock_);
+     reverb_.reset();
+     shared_buffer_ = nullptr;
+     return;
+</code></pre><p>iOS越狱大杀器，目前还处于early beta阶段，可能会失败，多尝试几次，不完美越狱，重启后需要重新越狱</p>
 <ul>
-<li><a href="https://checkra.in/">https://checkra.in/</a></li>
-</ul>
+<li><a href="https://checkra.in/">https://checkra.in/</a></li></ul>
 <p>Lucas讲了一个相关的议题，分享了这个工具背后的BootROM漏洞的分析和利用</p>
 <ul>
-<li><a href="http://iokit.racing/oneweirdtrick.pdf">http://iokit.racing/oneweirdtrick.pdf</a></li>
-</ul>
+<li><a href="http://iokit.racing/oneweirdtrick.pdf">http://iokit.racing/oneweirdtrick.pdf</a></li></ul>
 <p>上周的安全周报最后面我放了Flanker_hqd的一篇漏洞分析文章链接，不知道大家看了没有，没看也没事，我这周分析了一下，这里简单讲下漏洞细节</p>
 <p>首先三星有一个叫SamsungSMT这么个应用，具体是干啥的我不是很清楚</p>
 <p>它有一个导出组件<code>com.samsung.SMT.SamsungTTSService</code>，其<code>onCreate</code>方法里动态注册了一个BroadcastReceiver，我们知道这默认是导出的</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public void onCreate() {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    LangPackMgr.get().a(this.getApplicationContext());  // <span class="ace_cjk" style="width:NaNpx">入</span><span class="ace_cjk" style="width:NaNpx">口</span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    super.onCreate();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public void a(Context context) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if(this.context == null) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    ...
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    IntentFilter intentFilter = new IntentFilter();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    intentFilter.addAction("com.samsung.SMT.ACTION_INSTALL_FINISHED");
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    this.context.registerReceiver(this.LangPackMgr$2, intentFilter);  // <span class="ace_cjk" style="width:NaNpx">注</span><span class="ace_cjk" style="width:NaNpx">册</span><span class="ace_cjk" style="width:NaNpx">一</span><span class="ace_cjk" style="width:NaNpx">个</span><span class="ace_cjk" style="width:NaNpx">广</span><span class="ace_cjk" style="width:NaNpx">播</span><span class="ace_cjk" style="width:NaNpx">接</span><span class="ace_cjk" style="width:NaNpx">收</span><span class="ace_cjk" style="width:NaNpx">器</span><span class="ace_cjk" style="width:NaNpx">：</span>"com.samsung.SMT.ACTION_INSTALL_FINISHED"
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    ...
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div></div></div></pre>
-<p>注册的<code>LangPackMgr$2</code>会将传入的Intent内两个数据作为参数构造一个<code>LangPackMgr$UpdateEngineInfo</code>对象，然后加到一个队列里，经过一系列判断，开始更新</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>BroadcastReceiver LangPackMgr$2;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public LangPackMgr() {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    this.LangPackMgr$2 = new LangPackMgr$2(this);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public void onReceive(Context context, Intent intent) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int v7 = -1;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if(intent.getAction().equals("com.samsung.SMT.ACTION_INSTALL_FINISHED")) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    ArrayList arrayList = intent.getCharSequenceArrayListExtra("BROADCAST_CURRENT_LANGUAGE_INFO");
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    Class_l v1 = new Class_l(arrayList.toArray(new String[arrayList.size()]));
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    v1.a(intent.getStringExtra("BROADCAST_CURRENT_LANGUAGE_VERSION"));
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    v1.setArrayList(intent.getCharSequenceArrayListExtra("BROADCAST_DB_FILELIST"));
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    v1.a(true);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    int Extra_SMT_ENGINE_VERSION = intent.getIntExtra("SMT_ENGINE_VERSION", v7);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    String Extra_SMT_ENGINE_PATH = intent.getStringExtra("SMT_ENGINE_PATH");
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if(Extra_SMT_ENGINE_VERSION &gt; SmtTTS.get().getEngineVersion() &amp;&amp; (r.isFileExist(Extra_SMT_ENGINE_PATH))) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if(j.a(Extra_SMT_ENGINE_PATH)) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    LangPackMgr.getUpdateEngineQueue(this.a).add(new LangPackMgr$UpdateEngineInfo(Extra_SMT_ENGINE_VERSION, Extra_SMT_ENGINE_PATH));
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    LOG.b(q.b, "LangPackMgr - Add candidate engine [%d][%s]", new Object[]{Integer.valueOf(Extra_SMT_ENGINE_VERSION), Extra_SMT_ENGINE_PATH});
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    ...
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    LangPackMgr.doUpdateEngine(this.a);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div></div></div></pre>
-<p>使用多线程来执行，但是在线程里我们看到一个<code>reloadEngine()</code>方法</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static void doUpdateEngine(LangPackMgr langPackMgr) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    langPackMgr.updateEngine();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>private void updateEngine() {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if(this.mThreadUpdateEngine == null || !this.mThreadUpdateEngine.isAlive()) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    this.mThreadUpdateEngine = new LangPackMgr$EngineUpdateThread(this, null);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    this.mThreadUpdateEngine.start();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public void run() {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if(v1 != null &amp;&amp; ((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_VERSION &gt; SmtTTS.get().getEngineVersion()) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    l.a().b(((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_PATH);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if(SmtTTS.get().reloadEngine()) {   &lt;== <span class="ace_cjk" style="width:NaNpx">注</span><span class="ace_cjk" style="width:NaNpx">意</span><span class="ace_cjk" style="width:NaNpx">看</span><span class="ace_cjk" style="width:NaNpx">这</span><span class="ace_cjk" style="width:NaNpx">里</span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    LOG.c("Restart engine...");
-</div></div></div></pre>
-<p>跟入可以看到直接使用<code>System.load()</code>加载了<code>v0_2</code>指向的路径，那么<code>l.a().k()</code>返回的是什么呢？</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public boolean reloadEngine() {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    boolean v0_3;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    boolean v3;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    this.e();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    try {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    String v0_2 = l.a().k();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if(r.isFileExist(v0_2)) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    System.load(v0_2);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    else {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    goto label_71;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div></div></div></pre>
-<p>我们看<code>reloadEngine()</code>上两句代码，这里说的是如果版本号高于本地数据，就进入<code>if</code>逻辑处理，可以看到，最后将Intent内<code>"SMT_ENGINE_PATH"</code>的数据写到本地SP文件的<code>"SMT_INSTALLED_ENGINE_PATH"</code>字段</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>if(v1 != null &amp;&amp; ((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_VERSION &gt; SmtTTS.get().getEngineVersion()) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    l.a().b(((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_PATH);    &lt;== 1
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public void b(String param_SMT_ENGINE_PATH) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if(param_SMT_ENGINE_PATH != null) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    l.SMT_LATEST_INSTALLED_ENGINE_PATH = param_SMT_ENGINE_PATH;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    this.a("SMT_LATEST_INSTALLED_ENGINE_PATH", param_SMT_ENGINE_PATH);  &lt;== 2
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    else {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    LOG.d("Try to set SMT_INSTALLED_ENGINE_PATH with null");
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public void a(String SMT_INSTALLED_ENGINE_PATH, String param_SMT_ENGINE_PATH) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    this.a(n.a, SMT_INSTALLED_ENGINE_PATH, param_SMT_ENGINE_PATH);  &lt;== 3
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public void a(n arg2, String SMT_INSTALLED_ENGINE_PATH, String param_SMT_ENGINE_PATH) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    SharedPreferences sp = this.c(arg2);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if(sp != null) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    SharedPreferences$Editor sp$editor = sp.edit();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    sp$editor.putString(SMT_INSTALLED_ENGINE_PATH, param_SMT_ENGINE_PATH);  &lt;== 4
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    sp$editor.commit();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div></div></div></pre>
-<p>再来看<code>l.a().k()</code>，可以看到返回值就是<code>"SMT_ENGINE_PATH"</code>指向的数据，这个数据我们可控，修改Intent即可</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public String k() {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if(r.isFileExist(l.SMT_LATEST_INSTALLED_ENGINE_PATH)) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    try {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if(j.a(l.SMT_LATEST_INSTALLED_ENGINE_PATH)) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    String v0_1 = l.SMT_LATEST_INSTALLED_ENGINE_PATH;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return v0_1;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    LOG.a("Invalid INSTALLED_ENGINE_PATH = " + l.SMT_LATEST_INSTALLED_ENGINE_PATH);
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    catch(Exception v0) {
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    v0.printStackTrace();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    this.j();
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return null;
-</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
-</div></div></div></pre>
-<p>这个漏洞核心的部分大概就是上面这些，其它包括主动触发，利用等在内的详细分析文章还在写（我怎么感觉每次都是详细的文章还在写:))，这是一个双下巴的胖子的微笑）</p>
+<pre><code>public void onCreate() {
+    ...
+    LangPackMgr.get().a(this.getApplicationContext());  // 入口
+    ...
+    super.onCreate();
+}
+
+public void a(Context context) {
+    if(this.context == null) {
+        ...
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(&quot;com.samsung.SMT.ACTION_INSTALL_FINISHED&quot;);
+        this.context.registerReceiver(this.LangPackMgr$2, intentFilter);  // 注册一个广播接收器：&quot;com.samsung.SMT.ACTION_INSTALL_FINISHED&quot;
+        ...
+    }
+}
+</code></pre><p>注册的<code>LangPackMgr$2</code>会将传入的Intent内两个数据作为参数构造一个<code>LangPackMgr$UpdateEngineInfo</code>对象，然后加到一个队列里，经过一系列判断，开始更新</p>
+<pre><code>BroadcastReceiver LangPackMgr$2;
+
+public LangPackMgr() {
+    ...
+    this.LangPackMgr$2 = new LangPackMgr$2(this);
+}
+
+public void onReceive(Context context, Intent intent) {
+    int v7 = -1;
+    if(intent.getAction().equals(&quot;com.samsung.SMT.ACTION_INSTALL_FINISHED&quot;)) {
+        ArrayList arrayList = intent.getCharSequenceArrayListExtra(&quot;BROADCAST_CURRENT_LANGUAGE_INFO&quot;);
+        Class_l v1 = new Class_l(arrayList.toArray(new String[arrayList.size()]));
+        v1.a(intent.getStringExtra(&quot;BROADCAST_CURRENT_LANGUAGE_VERSION&quot;));
+        v1.setArrayList(intent.getCharSequenceArrayListExtra(&quot;BROADCAST_DB_FILELIST&quot;));
+        v1.a(true);
+        int Extra_SMT_ENGINE_VERSION = intent.getIntExtra(&quot;SMT_ENGINE_VERSION&quot;, v7);
+        String Extra_SMT_ENGINE_PATH = intent.getStringExtra(&quot;SMT_ENGINE_PATH&quot;);
+        if(Extra_SMT_ENGINE_VERSION &gt; SmtTTS.get().getEngineVersion() &amp;&amp; (r.isFileExist(Extra_SMT_ENGINE_PATH))) {
+            if(j.a(Extra_SMT_ENGINE_PATH)) {
+                LangPackMgr.getUpdateEngineQueue(this.a).add(new LangPackMgr$UpdateEngineInfo(Extra_SMT_ENGINE_VERSION, Extra_SMT_ENGINE_PATH));
+                LOG.b(q.b, &quot;LangPackMgr - Add candidate engine [%d][%s]&quot;, new Object[]{Integer.valueOf(Extra_SMT_ENGINE_VERSION), Extra_SMT_ENGINE_PATH});
+            }
+        ...
+        LangPackMgr.doUpdateEngine(this.a);
+    }
+}
+</code></pre><p>使用多线程来执行，但是在线程里我们看到一个<code>reloadEngine()</code>方法</p>
+<pre><code>static void doUpdateEngine(LangPackMgr langPackMgr) {
+    langPackMgr.updateEngine();
+}
+
+private void updateEngine() {
+    if(this.mThreadUpdateEngine == null || !this.mThreadUpdateEngine.isAlive()) {
+        this.mThreadUpdateEngine = new LangPackMgr$EngineUpdateThread(this, null);
+        this.mThreadUpdateEngine.start();
+    }
+}
+
+public void run() {
+    ...
+        if(v1 != null &amp;&amp; ((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_VERSION &gt; SmtTTS.get().getEngineVersion()) {
+            l.a().b(((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_PATH);
+            if(SmtTTS.get().reloadEngine()) {   &lt;== 注意看这里
+                LOG.c(&quot;Restart engine...&quot;);
+</code></pre><p>跟入可以看到直接使用<code>System.load()</code>加载了<code>v0_2</code>指向的路径，那么<code>l.a().k()</code>返回的是什么呢？</p>
+<pre><code>public boolean reloadEngine() {
+    boolean v0_3;
+    boolean v3;
+    this.e();
+    try {
+        String v0_2 = l.a().k();
+        if(r.isFileExist(v0_2)) {
+            System.load(v0_2);
+        }
+        else {
+            goto label_71;
+        }
+    }
+</code></pre><p>我们看<code>reloadEngine()</code>上两句代码，这里说的是如果版本号高于本地数据，就进入<code>if</code>逻辑处理，可以看到，最后将Intent内<code>&quot;SMT_ENGINE_PATH&quot;</code>的数据写到本地SP文件的<code>&quot;SMT_INSTALLED_ENGINE_PATH&quot;</code>字段</p>
+<pre><code>if(v1 != null &amp;&amp; ((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_VERSION &gt; SmtTTS.get().getEngineVersion()) {
+    l.a().b(((LangPackMgr$UpdateEngineInfo)v1).SMT_ENGINE_PATH);    &lt;== 1
+
+public void b(String param_SMT_ENGINE_PATH) {
+    if(param_SMT_ENGINE_PATH != null) {
+        l.SMT_LATEST_INSTALLED_ENGINE_PATH = param_SMT_ENGINE_PATH;
+        this.a(&quot;SMT_LATEST_INSTALLED_ENGINE_PATH&quot;, param_SMT_ENGINE_PATH);  &lt;== 2
+    }
+    else {
+        LOG.d(&quot;Try to set SMT_INSTALLED_ENGINE_PATH with null&quot;);
+    }
+}
+
+public void a(String SMT_INSTALLED_ENGINE_PATH, String param_SMT_ENGINE_PATH) {
+    this.a(n.a, SMT_INSTALLED_ENGINE_PATH, param_SMT_ENGINE_PATH);  &lt;== 3
+}
+
+public void a(n arg2, String SMT_INSTALLED_ENGINE_PATH, String param_SMT_ENGINE_PATH) {
+    SharedPreferences sp = this.c(arg2);
+    if(sp != null) {
+        SharedPreferences$Editor sp$editor = sp.edit();
+        sp$editor.putString(SMT_INSTALLED_ENGINE_PATH, param_SMT_ENGINE_PATH);  &lt;== 4
+        sp$editor.commit();
+    }
+}
+</code></pre><p>再来看<code>l.a().k()</code>，可以看到返回值就是<code>&quot;SMT_ENGINE_PATH&quot;</code>指向的数据，这个数据我们可控，修改Intent即可</p>
+<pre><code>public String k() {
+    if(r.isFileExist(l.SMT_LATEST_INSTALLED_ENGINE_PATH)) {
+        try {
+            if(j.a(l.SMT_LATEST_INSTALLED_ENGINE_PATH)) {
+                String v0_1 = l.SMT_LATEST_INSTALLED_ENGINE_PATH;
+                return v0_1;
+            }
+
+            LOG.a(&quot;Invalid INSTALLED_ENGINE_PATH = &quot; + l.SMT_LATEST_INSTALLED_ENGINE_PATH);
+        }
+        catch(Exception v0) {
+            v0.printStackTrace();
+        }
+    }
+
+    this.j();
+    return null;
+}
+</code></pre><p>这个漏洞核心的部分大概就是上面这些，其它包括主动触发，利用等在内的详细分析文章还在写（我怎么感觉每次都是详细的文章还在写:))，这是一个双下巴的胖子的微笑）</p>
 <p>我觉得我搞安全不是一个死磕的人，更加的偏向思考以及<code>投机</code>，从去年开始的时间我都在想关于逻辑层的漏洞挖掘方式，我跟李神探聊过我思考的一些方法和思路</p>
 <p>举个例子，比如我们要挖掘一个导出组件接收Intent，然后获取了其中的数据作为参数不做任何检查直接调用<code>startActivity()</code>这样的一个漏洞，去年我的想法是使用控制流，李神探和我说可以使用污点分析，但是这些最开始的想法超出了我的能力范围，那段时间还有很多其它的事情要做，工作的业务，以及浏览器安全的学习，所以这部分的工作一直处于思考如何使用更优雅的方式去实现的阶段</p>
 <p>后来我想到了一种方法，可以构造一个数据库，反向搜索调用，比如我们想看<code>startActivity()</code>都有哪些路径可以调用到，那么我们从这个节点开始，往上找，比如<code>a</code>函数调用了<code>startActivity()</code>，那么我们看<code>a</code>函数都被哪些函数调用到了，然后搜索下去，就是个广搜嘛，最后我们搜到<code>onReceiver</code>，<code>onCreate</code>等这些入口函数的时候，就可以判断当前组件是否导出，若是广播接收器，可以判断是静态注册的还是动态注册等，这就属于细节方面了，然后我们将所有路径使用某种方式表达出来，手动去确认调用路径是否可行即可</p>
 <p>我还思考了一种更加进阶的方式，自定义漏洞链，什么意思呢？</p>
 <p>我再举个例子，比如现在有一个App，通过HTTP（不一定是HTTP，HTTPS也可以）下载了一个压缩包，然后解压缩这个文件，那么在这个过程中，可能会出现使用HTTP导致被劫持的问题，如果使用HTTPS，会有压缩文件存储路径不安全导致文件被替换，路径穿越等，问题是各种各样的，我们可以通过钩子等方式记录下所有的功能点，触发了哪个功能点，就做标记，比如我现在有这么一条自定义的漏洞链，如果发现应用在使用HTTP下载压缩包，就可以给第一个节点做标记，每击中一个，就标记一个，当然，需要连贯性，不能中断，不能解压缩本地应用私有文件夹内的一个压缩包也给算到这条链上，那肯定是不行的</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>HTTP<span class="ace_cjk" style="width:NaNpx">下</span><span class="ace_cjk" style="width:NaNpx">载</span> -&gt; <span class="ace_cjk" style="width:NaNpx">解</span><span class="ace_cjk" style="width:NaNpx">压</span><span class="ace_cjk" style="width:NaNpx">缩</span> -&gt; getName()
-</div></div></div></pre>
-<p>其它的漏洞链可多了，大家可以自己思考</p>
+<pre><code>HTTP下载 -&gt; 解压缩 -&gt; getName()
+</code></pre><p>其它的漏洞链可多了，大家可以自己思考</p>
 <p>可惜的是，以上我说的绝大部分工作，被MWR的大佬们做完了，大佬们早早地就想到了我说的这些东西，接下来我好好研究下这个工具，好东西啊这是！</p>
 <ul>
-<li><a href="https://github.com/FSecureLABS/Jandroid">https://github.com/FSecureLABS/Jandroid</a></li>
-<li><a href="https://labs.f-secure.com/blog/automating-pwn2own-with-jandroid/">https://labs.f-secure.com/blog/automating-pwn2own-with-jandroid/</a></li>
-</ul>
+<li><a href="https://github.com/FSecureLABS/Jandroid">https://github.com/FSecureLABS/Jandroid</a></li><li><a href="https://labs.f-secure.com/blog/automating-pwn2own-with-jandroid/">https://labs.f-secure.com/blog/automating-pwn2own-with-jandroid/</a></li></ul>
 <p>泉哥写了篇文章简单介绍了下这个工具</p>
 <ul>
-<li><a href="https://riusksk.me/2019/11/02/Jandroid%EF%BC%9A%E5%8D%8A%E8%87%AA%E5%8A%A8%E5%8C%96Android%E5%BA%94%E7%94%A8%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">https://riusksk.me/2019/11/02/Jandroid：半自动化Android应用逻辑漏洞挖掘/</a></li>
-</ul>
+<li><a href="https://riusksk.me/2019/11/02/Jandroid%EF%BC%9A%E5%8D%8A%E8%87%AA%E5%8A%A8%E5%8C%96Android%E5%BA%94%E7%94%A8%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">https://riusksk.me/2019/11/02/Jandroid%EF%BC%9A%E5%8D%8A%E8%87%AA%E5%8A%A8%E5%8C%96Android%E5%BA%94%E7%94%A8%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/</a></li></ul>
 <p>说真的，这种思路真的是逻辑洞大杀器，反正都已经聊到这里了，我再说一个我接下来要做的一个工具，不是什么牛逼的工具，就是一个辅助，讲讲思路，首先通过上述的方式获取一个利用链</p>
-<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>A.onCreate() -&gt; B.b(getIntent) -&gt; C.c(intent.getXXX("xxx")) -&gt; startActivity()
-</div></div></div></pre>
-<p>那么我们去分析的时候还是需要使用反编译工具顺着这条路径去分析的，其中复杂程度其实也挺麻烦的，如果我们能够自动化的把所有需要的代码用图的形式打印出来，生成一张我们需要的流程图，辅助我们分析，就会好很多，也可以节省很多时间，不知道这个思路我描述清楚了没有</p>
-<p><img src="resources/7AA66D027BBBA664E24402DCD873FA93.jpg" alt="IMAGE" width="1796" height="665"></p>
+<pre><code>A.onCreate() -&gt; B.b(getIntent) -&gt; C.c(intent.getXXX(&quot;xxx&quot;)) -&gt; startActivity()
+</code></pre><p>那么我们去分析的时候还是需要使用反编译工具顺着这条路径去分析的，其中复杂程度其实也挺麻烦的，如果我们能够自动化的把所有需要的代码用图的形式打印出来，生成一张我们需要的流程图，辅助我们分析，就会好很多，也可以节省很多时间，不知道这个思路我描述清楚了没有</p>
+<p><img src="resources/7AA66D027BBBA664E24402DCD873FA93.jpg" alt="IMAGE"></p>
 <p>跟搞内核，系统漏洞的大佬们比不了，这玩意还是比较简单，大佬们不要嘲笑</p>
 <p>最后是私藏的几个准备跟着学习的漏洞，玄武大法好，学学学！</p>
 <p>iOS iMessage NSSharedKeyDictionary 解码越界读漏洞</p>
 <ul>
-<li><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1918">https://bugs.chromium.org/p/project-zero/issues/detail?id=1918</a></li>
-</ul>
+<li><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1918">https://bugs.chromium.org/p/project-zero/issues/detail?id=1918</a></li></ul>
 <p>Adobe Acrobat Reader DC JBIG2Globals stream 解析指针未初始化漏洞</p>
 <ul>
-<li><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1926">https://bugs.chromium.org/p/project-zero/issues/detail?id=1926</a></li>
-</ul>
+<li><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1926">https://bugs.chromium.org/p/project-zero/issues/detail?id=1926</a></li></ul>
 <p>微软研究员关于内存安全的一个演讲《Quest Memory Safety》</p>
 <ul>
-<li><a href="https://github.com/microsoft/MSRC-Security-Research/tree/master/presentations/2019_09_Ekoparty">https://github.com/microsoft/MSRC-Security-Research/tree/master/presentations/2019_09_Ekoparty</a></li>
-</ul>
+<li><a href="https://github.com/microsoft/MSRC-Security-Research/tree/master/presentations/2019_09_Ekoparty">https://github.com/microsoft/MSRC-Security-Research/tree/master/presentations/2019_09_Ekoparty</a></li></ul>
 <p>Windows win32k xxxCreateWindowEx 内核信息泄露漏洞（CVE-2019-1071）的分析</p>
 <ul>
-<li><a href="https://www.ragestorm.net/blogs/?p=458">https://www.ragestorm.net/blogs/?p=458</a></li>
-</ul>
+<li><a href="https://www.ragestorm.net/blogs/?p=458">https://www.ragestorm.net/blogs/?p=458</a></li></ul>
 <p>15年BlackHat关于华为海思TrustZone的攻击，不知道李神探知道后会不会害怕:))</p>
 <ul>
-<li><a href="https://www.blackhat.com/docs/us-15/materials/us-15-Shen-Attacking-Your-Trusted-Core-Exploiting-Trustzone-On-Android-wp.pdf">https://www.blackhat.com/docs/us-15/materials/us-15-Shen-Attacking-Your-Trusted-Core-Exploiting-Trustzone-On-Android-wp.pdf</a></li>
-</ul>
+<li><a href="https://www.blackhat.com/docs/us-15/materials/us-15-Shen-Attacking-Your-Trusted-Core-Exploiting-Trustzone-On-Android-wp.pdf">https://www.blackhat.com/docs/us-15/materials/us-15-Shen-Attacking-Your-Trusted-Core-Exploiting-Trustzone-On-Android-wp.pdf</a></li></ul>
 <p>听说华为20亿重奖反制裁团队，我一瞬间酸成柠檬精了</p>
-</div></div>
-      <script></script>
-    </body>
-    </html>
-  
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

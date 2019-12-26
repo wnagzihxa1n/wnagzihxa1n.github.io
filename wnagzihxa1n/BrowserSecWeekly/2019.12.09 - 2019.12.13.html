@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>浏览器安全周报   2019.12.09 - 2019.12.13</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-2019-12-09-2019-12-13">浏览器安全周报 2019.12.09 - 2019.12.13</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<p>这几天我一直在看大佬们的分析文章，在读到一篇文章的时候，我想通了一些事情，不掌握一个引擎的设计和基本思想，又如何融汇贯通呢？以OpCode为单位进行优化，以Block为单位进行优化，以Function为单位进行优化，不掌握编译器的基本思想，直接读源码去学习引擎怕是事倍功半，连这些概念都听不到</p>
+<p><img src="resources/30BA7D7D696600B833CA3AE52F0E9C0C.jpg" alt="IMAGE"></p>
+<p>我之前搞脱壳，一开始啥都不懂，跟着别人的分析文章调试，别人给个样本，告诉我在<code>dvmDexFileOpenPartial</code>函数下断点，一代壳轻松脱掉，有的壳弱一点，二代壳也可以脱掉，但是如果壳升级了呢？从一开始的解密Dex文件进行动态加载变成了类抽取，函数抽取呢？这时候需要什么能力才能自己研究出新的脱壳方法？</p>
+<p>不懂脱壳的还是只会在<code>dvmDexFileOpenPartial</code>函数下断点，脱出来的必然是空Dex，因为函数指令没有恢复，肯定是脱不出来的，后来我系统的分析了APP的安装过程源码，如何加载Dex，Dalvik和ART如何执行Method，整套源码其实不多，所以可以直接上手阅读，在读完之后，我就对虚拟机执行Opcode的整个流程有了一个清晰的认识，我也知道为什么要在<code>dvmDexFileOpenPartial</code>函数下断点，以及还有哪里可以下断点</p>
+<p>回到刚才说过的一个问题，如果从单纯的Dex加载变成类抽取，函数抽取该如何脱壳？</p>
+<p>在掌握了虚拟机执行流程之后，这个问题便轻松解决，因为加载Dex前我们进行一次主动加载，就可以拿到所有的真实数据，因为壳只是保护作用，当系统要加载这个类里的某个方法或者函数，必然是要主动恢复真实指令的，那些提出脱壳点的大佬肯定都是把安卓虚拟机源码研究的滚瓜烂熟才能找到脱壳的方法，尤其是后期的指令替换等加固方式，需要在一个整体的角度进行思考，而不是单纯的下个断点就可以解决的，这里就不过多深入讨论了</p>
+<p>所以我觉得我现在就处于盲目跟着别人学习漏洞分析的情况，我不知道为什么要定位到大佬说的函数，不知道如何进入这个函数，哪个阶段进来的，JIT优化的入口在哪里，我知道JIT优化要先生成IR，但是它是如何生成的呢？数据流分析是什么？在哪里实现？大佬们文章里提到的kill机制是什么？为什么要有kill机制，这个机制都用在了哪里？</p>
+<p>以上这一连串的问题就是我最近学习浏览器时候思考的，当然还有更多的问题没有写出来，其实这些问题有很多在我掌握了编译原理，掌握一个引擎的设计之后就很轻松解决了</p>
+<p>下面这些在之前一篇安全周报里提过一次，但是后来因为学习漏洞逐渐就跑偏了，现在再回过头来想想，确实如此</p>
+<p>RednaxelaFX写的文章/回答的导航帖</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/25042028">https://zhuanlan.zhihu.com/p/25042028</a></li></ul>
+<p>新手上路学习JavaScript引擎实现——路线图</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/20505562">https://zhuanlan.zhihu.com/p/20505562</a></li></ul>
+<p>各JavaScript引擎的简介，及相关资料/博客收集帖</p>
+<ul>
+<li><a href="https://hllvm-group.iteye.com/group/topic/37596">https://hllvm-group.iteye.com/group/topic/37596</a></li></ul>
+<p>学习编程语言与编译优化的一个书单</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/20130808">https://zhuanlan.zhihu.com/p/20130808</a></li></ul>
+<p>有哪些常用 JIT 算法？</p>
+<ul>
+<li><a href="https://www.zhihu.com/question/54748092/answer/141903877">https://www.zhihu.com/question/54748092/answer/141903877</a></li></ul>
+<p>以上说的都是我个人想法，不接受任何反驳，你拿了千万Bounty也好，你是谷歌名人堂也罢，大家的目的不一样，对我而言，我要对JS引擎实现有一个整体的认识，把知识学的扎实最重要</p>
+<p>本周一些浏览器资料</p>
+<p>大佬开始搞WebKit了？</p>
+<ul>
+<li><a href="https://i.blackhat.com/eu-19/Thursday/eu-19-Wang-Thinking-Outside-The-JIT-Compiler-Understanding-And-Bypassing-StructureID-Randomization-With-Generic-And-Old-School-Methods.pdf">https://i.blackhat.com/eu-19/Thursday/eu-19-Wang-Thinking-Outside-The-JIT-Compiler-Understanding-And-Bypassing-StructureID-Randomization-With-Generic-And-Old-School-Methods.pdf</a></li></ul>
+<p>Firefox CVE-2019-11708 &amp; CVE-2019-9810 Exploit</p>
+<ul>
+<li><a href="https://github.com/0vercl0k/CVE-2019-11708">https://github.com/0vercl0k/CVE-2019-11708</a></li></ul>
+<p>前几天盘古发了一篇文章，学习了一波</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/UBZv0pd7Nr-o-NMxjV53RQ">https://mp.weixin.qq.com/s/UBZv0pd7Nr-o-NMxjV53RQ</a></li></ul>
+<p>我发现自己现在看东西都看的很仔细，可能是因为学习浏览器的后遗症，最早学习开发的时候，教程一大把，看啥都很快的看过去了，有些不懂的知识点跳过也就忘了，后来学习浏览器的时候，发现资料真的少，就只能一个词一个词的仔细看，我有时候跟大佬们聊天也是，我问大佬一个知识点或者一个漏洞，大佬给我哇啦哇啦讲一堆，然后我就把大佬给我讲的仔细的记录下来，尽可能的学习透彻，虽然笨但是感觉还是学到了很多东西的</p>
+<p>比如这篇文章里的第二段，<code>ASLR</code>和<code>DEP/W^X</code>我之前学习过，也掌握的还行，所以没有太多关注，<code>ROP/JOP/Data-only attack</code>我只知道<code>ROP</code>，后面提到的论文我也没看过，既然有这么一篇论文，其它同类型的研究论文也应该找出来仔细读读，再后面的<code>控制流完整性技术</code>等等，我发现我现在真的是珍惜这种大佬们的经验分享，能学到特别多的东西</p>
+<pre><code>2000年代后期，地址空间随机化(ASLR)和数据执行保护(DEP/W^X)成为两项通用的基础性漏洞利用缓解机制。不幸的是，利用漏洞实现内存信息泄漏绕过ASLR进而基于ROP/JOP/Data-only attack等攻击技巧实现任意代码执行成为攻击者的标配 (更多内存漏洞攻防技术信息，参考《SoK: Eternal War in Memory》，https://people.eecs.berkeley.edu/~dawnsong/papers/Oakland13-SoK-CR.pdf）。面对大量绕过ASLR和(DEP/W^X)的漏洞利用样本，学术界再次掀起了针对细颗粒度ASLR和Anti-ROP的研究高潮。最终，在诸多潜在技术解决方案中，（粗颗粒度的）控制流完整性技术赢得了市场 (不同CFI机制实现细节和对比，参考 《Control-Flow Integrity: Precision, Security, and Performance》https://nebelwelt.net/publications/files/17CSUR.pdf)。为此，英特尔芯片中新增了CET特性（Control-flow Enforcement Technology），支持粗颗粒度前向跳转地址验证和基于Shadow Stack Register的返回地址验证，ARM V8.3标准中增加了PAC（Pointer Authentication Code）特性，支持对数据或者代码指针完整性的验证；LLVM、GCC、VisualStudio等主流编译器中支持开启CFI特性的编译选项；Windows、Android、iOS等操作系统都已经在用户态和内核态实现不同粒度的CFI机制。
+</code></pre><p>最近感觉状态不太好，年底想稍微休息下，看点简单的东西，就先不学习浏览器相关的漏洞了</p>
+<p>打算回归下老本行，看看Frida的一些好玩的利用，看看大佬们写的逆向文章，再看看编译原理的优化部分，到元旦之后再开始计划下2020年想做的事情</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

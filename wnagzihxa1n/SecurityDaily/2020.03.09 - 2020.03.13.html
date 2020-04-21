@@ -1,0 +1,67 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- common.css -->
+      <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: -apple-system, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;height: auto;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 90%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+      <!-- ace-static.css -->
+      <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter > .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+      <style>.ace-tomorrow-night-eighties .ace_gutter {background: #272727;color: #CCC}.ace-tomorrow-night-eighties .ace_print-margin {width: 1px;background: #272727}.ace-tomorrow-night-eighties {background-color: #2D2D2D;color: #CCCCCC}.ace-tomorrow-night-eighties .ace_constant.ace_other,.ace-tomorrow-night-eighties .ace_cursor {color: #CCCCCC}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selection {background: #515151}.ace-tomorrow-night-eighties.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #2D2D2D;}.ace-tomorrow-night-eighties .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #6A6A6A}.ace-tomorrow-night-bright .ace_stack {background: rgb(66, 90, 44)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_active-line {background: #393939}.ace-tomorrow-night-eighties .ace_gutter-active-line {background-color: #393939}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selected-word {border: 1px solid #515151}.ace-tomorrow-night-eighties .ace_invisible {color: #6A6A6A}.ace-tomorrow-night-eighties .ace_keyword,.ace-tomorrow-night-eighties .ace_meta,.ace-tomorrow-night-eighties .ace_storage,.ace-tomorrow-night-eighties .ace_storage.ace_type,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #CC99CC}.ace-tomorrow-night-eighties .ace_keyword.ace_operator {color: #66CCCC}.ace-tomorrow-night-eighties .ace_constant.ace_character,.ace-tomorrow-night-eighties .ace_constant.ace_language,.ace-tomorrow-night-eighties .ace_constant.ace_numeric,.ace-tomorrow-night-eighties .ace_keyword.ace_other.ace_unit,.ace-tomorrow-night-eighties .ace_support.ace_constant,.ace-tomorrow-night-eighties .ace_variable.ace_parameter {color: #F99157}.ace-tomorrow-night-eighties .ace_invalid {color: #CDCDCD;background-color: #F2777A}.ace-tomorrow-night-eighties .ace_invalid.ace_deprecated {color: #CDCDCD;background-color: #CC99CC}.ace-tomorrow-night-eighties .ace_fold {background-color: #6699CC;border-color: #CCCCCC}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_function,.ace-tomorrow-night-eighties .ace_support.ace_function,.ace-tomorrow-night-eighties .ace_variable {color: #6699CC}.ace-tomorrow-night-eighties .ace_support.ace_class,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #FFCC66}.ace-tomorrow-night-eighties .ace_heading,.ace-tomorrow-night-eighties .ace_markup.ace_heading,.ace-tomorrow-night-eighties .ace_string {color: #99CC99}.ace-tomorrow-night-eighties .ace_comment {color: #999999}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_tag,.ace-tomorrow-night-eighties .ace_entity.ace_other.ace_attribute-name,.ace-tomorrow-night-eighties .ace_meta.ace_tag,.ace-tomorrow-night-eighties .ace_variable {color: #F2777A}.ace-tomorrow-night-eighties .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ09NrYAgMjP4PAAtGAwchHMyAAAAAAElFTkSuQmCC) right repeat-y}</style>
+      <!-- export.css -->
+      <style>
+        body{margin:0 auto;max-width:800px;line-height:1.4}
+        #nav{margin:5px 0 10px;font-size:15px}
+        #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+        #contentarea{font-size:15px;margin:16px 0}
+        .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+        .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+        .latex-cell{white-space:pre-wrap;}
+      </style>
+      <!-- User CSS -->
+      <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+    </head>
+    <body>
+      
+      <div id="titlearea">
+        <h2>大土豆安全笔记 | 2020.03.09 - 2020.03.13</h2>
+      </div>
+      <div id="contentarea"><div class="cell markdown-cell"><h2>断更可耻</h2>
+<p>距离上次发安全周报已经过去了整整两个月</p>
+<p>上班肯定还是要上班的，只是多了许多可以自由思考未来的时间，比如如何完善自己的知识体系？今年要学习哪些知识点？提高哪些能力？设置若干挑战？在现有的资源下通过新学习的知识去迭代一个技术等级？或者是通过设立一个技术等级目标来制定学习方向？</p>
+<p>这些都不是说说的，长久以来我都欠缺企业级的开发能力，所以现在有空就会看字节，阿里这些厂商的安卓开发面试题，主要是想看看大厂的技术栈，确实学到了很多有趣的知识</p>
+<p>二进制方面我开始关注逆向的原理，现在的逆向硬刚可不行了，不懂得更深层次的技术，容易抓瞎</p>
+<p>基友们都知道我现在做的是安卓应用安全审计，但是我用过的工具并不多，常见也就是JEB，IDA，接下里要将安卓安全的知识面扩展的全面一些，业界的工具都要用一遍，好的思路借鉴学习，有工具的读源码，没有工具的参考思路实现一波</p>
+<ul>
+<li><a href="https://github.com/ashishb/android-security-awesome">https://github.com/ashishb/android-security-awesome</a></li>
+</ul>
+<p>许久之前提过的Jandroid，我借鉴了思路，在业余时间用Java重写了一遍，代码也不多其实，而且添加了很多新思路在里面，因为添加了很多其它功能，所以还没有完全写完，至于什么时候开源就另外再说了</p>
+<ul>
+<li><a href="https://github.com/FSecureLABS/Jandroid">https://github.com/FSecureLABS/Jandroid</a></li>
+</ul>
+<p>说真的Neo4j盘起来真是优雅</p>
+<p>下一版我会添加更专业一些的静态代码分析模块，去做更精确的漏洞分析辅助功能，一直以来都有相关开源的项目，而且社区很早就开始了相关的研究，比如Soot，Heros，FlowDroid</p>
+<ul>
+<li><a href="https://github.com/Sable/soot">https://github.com/Sable/soot</a></li>
+<li><a href="https://github.com/Sable/heros">https://github.com/Sable/heros</a></li>
+<li><a href="https://github.com/secure-software-engineering/FlowDroid">https://github.com/secure-software-engineering/FlowDroid</a></li>
+</ul>
+<p>Flanker基于FlowDroid进行了二次开发，实现了一些安卓应用的常见漏洞扫描，我个人还是很喜欢这个项目的</p>
+<ul>
+<li><a href="https://github.com/flankerhqd/JAADAS">https://github.com/flankerhqd/JAADAS</a></li>
+</ul>
+<p>虽然这些是好多年前的工具，但是其设计思想，背后的原理都很值得我去仔细学习研究，知其然，也知其所以然，方可不断进步</p>
+<p>前几天看泉哥发的一篇文章，讲的是如何读Paper，说来惭愧，我读Paper属于比较笨的那种，我一般只看Abstract，如果发现跟安卓有关以及排版看着很顺眼，我就会直接打印出来，数字这一波免费打印的福利还是可以的，在纸上写写画画确实比在电脑上要有趣的多，就是时间一长容易占地方，泉哥那篇文章里还提到了一篇《How to Read a Paper》，还挺有趣</p>
+<ul>
+<li><a href="http://blizzard.cs.uwaterloo.ca/keshav/home/Papers/data/07/paper-reading.pdf">http://blizzard.cs.uwaterloo.ca/keshav/home/Papers/data/07/paper-reading.pdf</a></li>
+</ul>
+<p>我一直以来都有在安全周报里提我看的一些Paper，有些Paper确实不错，今年除了跟进学习新鲜的Paper之外，还会把往年移动安全相关的Paper翻出来读一读，也是扩展思路，顺便跟大佬们交交朋友</p>
+<p>曾经我由于词汇量不够，读Paper特别慢，我就想了一个方法，用Python解析了Paper里的单词，过滤掉符号等字符，提取出单词，再过滤掉常用的，通过接口去有道做翻译查询，生成一个列表，打印Paper的时候顺手就打印出来，先过一遍单词，然后再看Paper，这样既可以学习单词，读Paper的体验也提升了不少</p>
+<p>最后附一个大佬的博客截图，看的我有点脸红，我实在是太菜了</p>
+<p><img src="resources/2233B675E9F567F47C568D055D54C4C8.jpg" alt="IMAGE" width="910" height="656"></p>
+</div></div>
+      <script></script>
+    </body>
+    </html>
+  

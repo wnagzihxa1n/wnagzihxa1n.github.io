@@ -1,0 +1,187 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- common.css -->
+      <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: -apple-system, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;height: auto;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 90%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+      <!-- ace-static.css -->
+      <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter > .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+      <style>.ace-solarized-light .ace_gutter {background: #fbf1d3;color: #333}.ace-solarized-light .ace_print-margin {width: 1px;background: #e8e8e8}.ace-solarized-light {background-color: #FDF6E3;color: #586E75}.ace-solarized-light .ace_cursor {color: #000000}.ace-solarized-light .ace_marker-layer .ace_selection {background: rgba(7, 54, 67, 0.09)}.ace-solarized-light.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #FDF6E3;}.ace-solarized-light .ace_marker-layer .ace_step {background: rgb(255, 255, 0)}.ace-solarized-light .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgba(147, 161, 161, 0.50)}.ace-solarized-light .ace_marker-layer .ace_active-line {background: #EEE8D5}.ace-solarized-light .ace_gutter-active-line {background-color : #EDE5C1}.ace-solarized-light .ace_marker-layer .ace_selected-word {border: 1px solid #073642}.ace-solarized-light .ace_invisible {color: rgba(147, 161, 161, 0.50)}.ace-solarized-light .ace_keyword,.ace-solarized-light .ace_meta,.ace-solarized-light .ace_support.ace_class,.ace-solarized-light .ace_support.ace_type {color: #859900}.ace-solarized-light .ace_constant.ace_character,.ace-solarized-light .ace_constant.ace_other {color: #CB4B16}.ace-solarized-light .ace_constant.ace_language {color: #B58900}.ace-solarized-light .ace_constant.ace_numeric {color: #D33682}.ace-solarized-light .ace_fold {background-color: #268BD2;border-color: #586E75}.ace-solarized-light .ace_entity.ace_name.ace_function,.ace-solarized-light .ace_entity.ace_name.ace_tag,.ace-solarized-light .ace_support.ace_function,.ace-solarized-light .ace_variable,.ace-solarized-light .ace_variable.ace_language {color: #268BD2}.ace-solarized-light .ace_storage {color: #073642}.ace-solarized-light .ace_string {color: #2AA198}.ace-solarized-light .ace_string.ace_regexp {color: #D30102}.ace-solarized-light .ace_comment,.ace-solarized-light .ace_entity.ace_other.ace_attribute-name {color: #93A1A1}.ace-solarized-light .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNgYGBgYHjy8NJ/AAjgA5fzQUmBAAAAAElFTkSuQmCC) right repeat-y}</style>
+      <!-- export.css -->
+      <style>
+        body{margin:0 auto;max-width:800px;line-height:1.4}
+        #nav{margin:5px 0 10px;font-size:15px}
+        #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+        #contentarea{font-size:15px;margin:16px 0}
+        .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+        .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+        .latex-cell{white-space:pre-wrap;}
+      </style>
+      <!-- User CSS -->
+      <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+    </head>
+    <body>
+      
+      <div id="titlearea">
+        <h2>浏览器安全周报 | 2019.10.21 - 2019.10.25</h2>
+      </div>
+      <div id="contentarea"><div class="cell markdown-cell"><p><strong>Author:wnagzihza1n<br>
+<a href="mailto:E-Mail:wnagzihxa1n@gmail.com">E-Mail:wnagzihxa1n@gmail.com</a></strong></p>
+<p>有段时间没有更新浏览器了</p>
+<p>JS Fuzz，有点意思，我还没有看源码</p>
+<ul>
+<li><a href="https://github.com/fuzzitdev/jsfuzz">https://github.com/fuzzitdev/jsfuzz</a></li>
+</ul>
+<p>最近分析了CRBUG-944971，对应的CVE编号是CVE-2019-13698，正则模块的漏洞</p>
+<ul>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=944971">https://bugs.chromium.org/p/chromium/issues/detail?id=944971</a></li>
+</ul>
+<p>触发漏洞的原理很简单，根据报告者的Exp去找漏洞的触发路径很有意思</p>
+<p>首先正则的Replace函数认为传入的是未经修改的对象，也就是说没有被重新定义过的正则对象，它会调用<code>ToString()</code>，这是一个可以在上层进行定义的函数</p>
+<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>V8_WARN_UNUSED_RESULT MaybeHandle&lt;String&gt; RegExpReplace(Isolate* isolate, Handle&lt;JSRegExp&gt; regexp, Handle&lt;String&gt; string, Handle&lt;Object&gt; replace_obj) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // Functional fast-paths are dispatched directly by replace builtin.
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    DCHECK(RegExpUtils::IsUnmodifiedRegExp(isolate, regexp));
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    DCHECK(!replace_obj-&gt;IsCallable());
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    Factory* factory = isolate-&gt;factory();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    const int flags = regexp-&gt;GetFlags();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    const bool global = (flags &amp; JSRegExp::kGlobal) != 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    const bool sticky = (flags &amp; JSRegExp::kSticky) != 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    Handle&lt;String&gt; replace;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ASSIGN_RETURN_ON_EXCEPTION(isolate, replace, Object::ToString(isolate, replace_obj), String); &lt;== 1
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    replace = String::Flatten(isolate, replace);
+</div></div></div></pre>
+<p>官方给的回归测试文件可以看到就是在<code>toString()</code>里进行操作</p>
+<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>let re = /x/y;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>let cnt = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>let str = re[Symbol.replace]("x", {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    toString: () =&gt; {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    cnt++;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (cnt == 2) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    re.lastIndex = {valueOf: () =&gt; {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    re.x = 42;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    }};
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    return 'y$';
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>});
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>assertEquals("y$", str);
+</div></div></div></pre>
+<p>具体这个漏洞的利用细节我会单独写一篇文章分析，周报里简单讲讲，首先我们使用下面的代码测试一个特性</p>
+<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>var pattern = new RegExp("AA","g");
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>%DebugPrint(pattern);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>pattern.__defineGetter__('x', ()=&gt;2);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>%DebugPrint(pattern);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>pattern.__defineGetter__('x', ()=&gt;2);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>%DebugPrint(pattern);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>while(true);
+</div></div></div></pre>
+<p><code>%DebugPrint</code>是V8调试版本下一个用于打印对象的接口，输出的数据我简化一下，第二次<code>__defineGetter__</code>执行完后，可以看到<code>lastIndex</code>被移动到<code>properties</code>存储，同时对象长度减少8字节</p>
+<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>DebugPrint: 0x1fb102d4dcc1: [JSRegExp]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - map: 0x1d23bf341359 &lt;Map(HOLEY_ELEMENTS)&gt; [FastProperties]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - properties: 0x1878b9400c71 &lt;FixedArray[0]&gt; {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    #lastIndex: 0 (data field 0)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x1d23bf341359: [Map]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - type: JS_REGEXP_TYPE
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - instance size: 56
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>------------------------------------------------------------
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>DebugPrint: 0x1fb102d4dcc1: [JSRegExp]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - map: 0x1d23bf34a9f9 &lt;Map(HOLEY_ELEMENTS)&gt; [FastProperties]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - properties: 0x1878b9400c71 &lt;FixedArray[0]&gt; {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    #lastIndex: 0 (data field 0)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    #x: 0x2d807e95f4c1 &lt;AccessorPair&gt; (const accessor descriptor)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x1d23bf34a9f9: [Map]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - type: JS_REGEXP_TYPE
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - instance size: 56
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>------------------------------------------------------------
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>DebugPrint: 0x1fb102d4dcc1: [JSRegExp]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - map: 0x1d23bf34aa49 &lt;Map(HOLEY_ELEMENTS)&gt; [DictionaryProperties]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - properties: 0x1fb102d4f631 &lt;NameDictionary[29]&gt; {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>   #lastIndex: 0 (data, dict_index: 1, attrs: [W__])
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>   #x: 0x2d807e95f4d9 &lt;AccessorPair&gt; (accessor, dict_index: 2, attrs: [WEC])
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x1d23bf34aa49: [Map]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - type: JS_REGEXP_TYPE
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - instance size: 48
+</div></div></div></pre>
+<p>记住上面的这点，我们来看内存角度</p>
+<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>var pattern = new RegExp("AA","g");
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>gdb-peda$ x/20gx 0x99f7870dcd8
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x99f7870dcd8:  0x000030b004981359  0x00003df557b80c71
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x99f7870dce8:  0x00003df557b80c71  0x0000099f7870f561
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x99f7870dcf8:  0x000000a31509f099  0x0000000100000000
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x99f7870dd08:  0x0000000000000000  0x00003df557b808a1
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_cjk" style="width:NaNpx">以</span><span class="ace_cjk" style="width:NaNpx">下</span><span class="ace_cjk" style="width:NaNpx">因</span><span class="ace_cjk" style="width:NaNpx">为</span><span class="ace_cjk" style="width:NaNpx">重</span><span class="ace_cjk" style="width:NaNpx">新</span><span class="ace_cjk" style="width:NaNpx">运</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">导</span><span class="ace_cjk" style="width:NaNpx">致</span><span class="ace_cjk" style="width:NaNpx">内</span><span class="ace_cjk" style="width:NaNpx">存</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span><span class="ace_cjk" style="width:NaNpx">变</span><span class="ace_cjk" style="width:NaNpx">化</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">问</span><span class="ace_cjk" style="width:NaNpx">题</span><span class="ace_cjk" style="width:NaNpx">不</span><span class="ace_cjk" style="width:NaNpx">大</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">两</span><span class="ace_cjk" style="width:NaNpx">次</span><span class="ace_cjk" style="width:NaNpx">执</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">过</span><span class="ace_cjk" style="width:NaNpx">后</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">以</span><span class="ace_cjk" style="width:NaNpx">看</span><span class="ace_cjk" style="width:NaNpx">到</span><span class="ace_cjk" style="width:NaNpx">核</span><span class="ace_cjk" style="width:NaNpx">心</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">方</span><span class="ace_cjk" style="width:NaNpx">出</span><span class="ace_cjk" style="width:NaNpx">现</span><span class="ace_cjk" style="width:NaNpx">了</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">注</span><span class="ace_cjk" style="width:NaNpx">意</span><span class="ace_cjk" style="width:NaNpx">箭</span><span class="ace_cjk" style="width:NaNpx">头</span><span class="ace_cjk" style="width:NaNpx">指</span><span class="ace_cjk" style="width:NaNpx">向</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">方</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">原</span><span class="ace_cjk" style="width:NaNpx">先</span><span class="ace_cjk" style="width:NaNpx">是</span>`0`<span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">现</span><span class="ace_cjk" style="width:NaNpx">在</span><span class="ace_cjk" style="width:NaNpx">变</span><span class="ace_cjk" style="width:NaNpx">成</span><span class="ace_cjk" style="width:NaNpx">了</span><span class="ace_cjk" style="width:NaNpx">一</span><span class="ace_cjk" style="width:NaNpx">个</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>pattern.__defineGetter__('x', ()=&gt;2);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>pattern.__defineGetter__('x', ()=&gt;2);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>gdb-peda$ x/20gx 0x30e12f60dce0
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dce0: 0x0000365cc160aa49  0x000030e12f60f651
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dcf0: 0x00003cb956540c71  0x000030e12f60f569
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd00: 0x00000d083935f099  0x0000000100000000
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd10: 0x00003cb956540321 &lt;==  0x00003cb9565408a1
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd20: 0x0000018300000000  0x0000000100000000
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd30: 0x0000000000000000  0x0000008000000000
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd40: 0x00003cb9565404d1  0x00003cb9565404d1
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd50: 0x00003cb9565404d1  0x00003cb9565404d1
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd60: 0x00003cb9565404d1  0x00003cb9565404d1
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x30e12f60dd70: 0x00003cb9565404d1  0x00003cb9565404d1
+</div></div></div></pre>
+<p>我们通过<code>job</code>命令查看，它是一个对象的Map，也就是说，这里是一个新的对象内存空间</p>
+<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>gdb-peda$ job 0x00003cb956540321
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>0x3cb956540321: [Map]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - type: FILLER_TYPE
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - instance size: 8
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - elements kind: HOLEY_ELEMENTS
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - unused property fields: 0
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - enum length: invalid
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - stable_map
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - back pointer: 0x3cb9565404d1 &lt;undefined&gt;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - prototype_validity cell: 0
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - instance descriptors (own) #0: 0x3cb956540259 &lt;DescriptorArray[0]&gt;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - layout descriptor: (nil)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - prototype: 0x3cb9565401d9 &lt;null&gt;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - constructor: 0x3cb9565401d9 &lt;null&gt;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - dependent code: 0x3cb9565402c1 &lt;Other heap object (WEAK_FIXED_ARRAY_TYPE)&gt;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> - construction counter: 0
+</div></div></div></pre>
+<p>这个特性有什么用呢？</p>
+<p>我们再回到<code>Replace</code>函数里，它竟然可以直接设置这个<code>lastIndex</code>位，也就是说，在<code>Replace</code>里处理的时候，可以通过<code>toString()</code>修改掉这个值，而修改的时候，原先的<code>lastIndex</code>已经变成了另一个对象的<code>Map</code>，这就造成了一个越界写操作，<code>sticky</code>对应的<code>y</code>，比如<code>"AA/y"</code></p>
+<pre><div class="ace-solarized-light"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>if (match_indices_obj-&gt;IsNull(isolate)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (sticky) regexp-&gt;set_last_index(Smi::kZero, SKIP_WRITE_BARRIER);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    return string;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>auto match_indices = Handle&lt;RegExpMatchInfo&gt;::cast(match_indices_obj);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>const int start_index = match_indices-&gt;Capture(0);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>const int end_index = match_indices-&gt;Capture(1);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>if (sticky) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    regexp-&gt;set_last_index(Smi::FromInt(end_index), SKIP_WRITE_BARRIER);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p>参加了今年的数字校招面试工作，一共是四批，第一批是内推，剩下三批是大流程，内推的好处就是万一挂了可以参加大流程，完全不会有影响，但是大流程只能参加一次</p>
+<p>整个部门的候选人简历一眼刷下来几乎全是硕士学历，本科生屈指可数，全公司的比例情况我不清楚，没有看到表格</p>
+<p>感慨还好毕业的早，不然今年可能真的找不到工作了</p>
+<p>记得17年的春招，我在寝室里参加了数字的春招视频面试，大早上有个人打电话给我问我能不能参加面试，然后我就早早地在那里准备了，然后时间一到就有面试官Call我，一早上三面聊得很快，一面工程师，二面leader，三面HR</p>
+<p>另外，今年的秋招差不多结束了，春招的时候大家投简历请踊跃一点，不要太羞涩了，有坑，缺人！需要内推360的后台联系我啊！！！！！！</p>
+</div></div>
+      <script></script>
+    </body>
+    </html>
+  

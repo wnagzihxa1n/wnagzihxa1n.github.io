@@ -1,0 +1,148 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- common.css -->
+      <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: -apple-system, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;height: auto;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 90%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+      <!-- ace-static.css -->
+      <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter > .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+      <style>.ace-tomorrow-night-eighties .ace_gutter {background: #272727;color: #CCC}.ace-tomorrow-night-eighties .ace_print-margin {width: 1px;background: #272727}.ace-tomorrow-night-eighties {background-color: #2D2D2D;color: #CCCCCC}.ace-tomorrow-night-eighties .ace_constant.ace_other,.ace-tomorrow-night-eighties .ace_cursor {color: #CCCCCC}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selection {background: #515151}.ace-tomorrow-night-eighties.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #2D2D2D;}.ace-tomorrow-night-eighties .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #6A6A6A}.ace-tomorrow-night-bright .ace_stack {background: rgb(66, 90, 44)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_active-line {background: #393939}.ace-tomorrow-night-eighties .ace_gutter-active-line {background-color: #393939}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selected-word {border: 1px solid #515151}.ace-tomorrow-night-eighties .ace_invisible {color: #6A6A6A}.ace-tomorrow-night-eighties .ace_keyword,.ace-tomorrow-night-eighties .ace_meta,.ace-tomorrow-night-eighties .ace_storage,.ace-tomorrow-night-eighties .ace_storage.ace_type,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #CC99CC}.ace-tomorrow-night-eighties .ace_keyword.ace_operator {color: #66CCCC}.ace-tomorrow-night-eighties .ace_constant.ace_character,.ace-tomorrow-night-eighties .ace_constant.ace_language,.ace-tomorrow-night-eighties .ace_constant.ace_numeric,.ace-tomorrow-night-eighties .ace_keyword.ace_other.ace_unit,.ace-tomorrow-night-eighties .ace_support.ace_constant,.ace-tomorrow-night-eighties .ace_variable.ace_parameter {color: #F99157}.ace-tomorrow-night-eighties .ace_invalid {color: #CDCDCD;background-color: #F2777A}.ace-tomorrow-night-eighties .ace_invalid.ace_deprecated {color: #CDCDCD;background-color: #CC99CC}.ace-tomorrow-night-eighties .ace_fold {background-color: #6699CC;border-color: #CCCCCC}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_function,.ace-tomorrow-night-eighties .ace_support.ace_function,.ace-tomorrow-night-eighties .ace_variable {color: #6699CC}.ace-tomorrow-night-eighties .ace_support.ace_class,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #FFCC66}.ace-tomorrow-night-eighties .ace_heading,.ace-tomorrow-night-eighties .ace_markup.ace_heading,.ace-tomorrow-night-eighties .ace_string {color: #99CC99}.ace-tomorrow-night-eighties .ace_comment {color: #999999}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_tag,.ace-tomorrow-night-eighties .ace_entity.ace_other.ace_attribute-name,.ace-tomorrow-night-eighties .ace_meta.ace_tag,.ace-tomorrow-night-eighties .ace_variable {color: #F2777A}.ace-tomorrow-night-eighties .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ09NrYAgMjP4PAAtGAwchHMyAAAAAAElFTkSuQmCC) right repeat-y}</style>
+      <!-- export.css -->
+      <style>
+        body{margin:0 auto;max-width:800px;line-height:1.4}
+        #nav{margin:5px 0 10px;font-size:15px}
+        #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+        #contentarea{font-size:15px;margin:16px 0}
+        .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+        .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+        .latex-cell{white-space:pre-wrap;}
+      </style>
+      <!-- User CSS -->
+      <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+    </head>
+    <body>
+      
+      <div id="titlearea">
+        <h2>大土豆安全笔记 | 2020.03.25</h2>
+      </div>
+      <div id="contentarea"><div class="cell markdown-cell"><p><img src="resources/64AC4E2B9BF84B48964B47B77FE6F5F3.jpg" alt="neringa-sidlauskaite-XncszFVfqhE-unsplash.jpg" width="5184" height="3456"></p>
+<p><strong>我最喜欢的就是拒绝服务了</strong></p>
+<p>Android开发学着学着发现了一些奇奇怪怪的技术，我得回去再看看Java的技术，依旧是B站上面的教程，六百集，不过不是全部看一遍，怪我之前学的不扎实，关注了一些Java编程的公众号，学到了很多安全之外的技术，比如优化好几百万的数据表查询，其中用到的思想确实很开阔眼界，也有一些框架使用，之后开发一些自动化项目都是可以用得上的</p>
+<p>说到自动化，我最近在整理SO自动化的资料，这部分的基础知识其实不多，但是做好了基础的分析之后，在这个基础上去做很多其它事情，就很有意思了，比如漏洞挖掘，协议分析等</p>
+<p>胖友，听说过拒绝服务吗？</p>
+<p>CVE-2017-0780，Android Message的拒绝服务</p>
+<ul>
+<li><a href="https://android.googlesource.com/platform/packages/apps/Messaging/+/06cbd7f26ba58399f296d85fd155442c7f2ac837%5E%21/#F0">https://android.googlesource.com/platform/packages/apps/Messaging/+/06cbd7f26ba58399f296d85fd155442c7f2ac837^!/#F0</a></li>
+</ul>
+<p>补丁捕获了创建<code>FrameSequenceDrawable</code>对象时可能抛出的异常</p>
+<p>从补丁位置处开始分析</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>@Override
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public Drawable getDrawable(Resources resources) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return new FrameSequenceDrawable(mFrameSequence);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p>对象<code>FrameSequenceDrawable</code>定义如下</p>
+<ul>
+<li><a href="http://androidxref.com/7.1.1_r6/xref/frameworks/ex/framesequence/src/android/support/rastermill/FrameSequenceDrawable.java">http://androidxref.com/7.1.1_r6/xref/frameworks/ex/framesequence/src/android/support/rastermill/FrameSequenceDrawable.java</a></li>
+</ul>
+<p>它有两个构造方法，第一个不用管，我们看第二个，它会调用方法<code>acquireAndValidateBitmap()</code></p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public FrameSequenceDrawable(FrameSequence frameSequence) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    this(frameSequence, sAllocatingBitmapProvider);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>public FrameSequenceDrawable(FrameSequence frameSequence, BitmapProvider bitmapProvider) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (frameSequence == null || bitmapProvider == null) throw new IllegalArgumentException();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mFrameSequence = frameSequence;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mFrameSequenceState = frameSequence.createState();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    final int width = frameSequence.getWidth();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    final int height = frameSequence.getHeight();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mBitmapProvider = bitmapProvider;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mFrontBitmap = acquireAndValidateBitmap(bitmapProvider, width, height); // &lt;--
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mBackBitmap = acquireAndValidateBitmap(bitmapProvider, width, height); // &lt;--
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mSrcRect = new Rect(0, 0, width, height);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mPaint = new Paint();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mPaint.setFilterBitmap(true);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mFrontBitmapShader
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    = new BitmapShader(mFrontBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mBackBitmapShader
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    = new BitmapShader(mBackBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mLastSwap = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mNextFrameToDecode = -1;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    mFrameSequenceState.getFrame(0, mFrontBitmap, -1);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    initializeDecodingThread();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p>方法<code>acquireBitmap()</code>可能返回空，而方法<code>acquireAndValidateBitmap()</code>没有做异常捕获，后面直接调用空对象操作，会造成拒绝服务</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>private static Bitmap acquireAndValidateBitmap(BitmapProvider bitmapProvider,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    int minWidth, int minHeight) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    Bitmap bitmap = bitmapProvider.acquireBitmap(minWidth, minHeight);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (bitmap.getWidth() &lt; minWidth
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    || bitmap.getHeight() &lt; minHeight
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    || bitmap.getConfig() != Bitmap.Config.ARGB_8888) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    throw new IllegalArgumentException("Invalid bitmap provided");
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return bitmap;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p>方法<code>acquireBitmap()</code>最后会调用到方法<code>nativeCreate()</code>，是一个Native函数</p>
+<p>函数注册</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static const JNINativeMethod gBitmapMethods[] = {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    {   "nativeCreate",             "([IIIIIIZ)Landroid/graphics/Bitmap;",
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    (void*)Bitmap_creator },
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>};
+</div></div></div></pre>
+<p>有兴趣的同学可以完整的跟一下</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static jobject Bitmap_creator(JNIEnv* env, jobject, jintArray jColors,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>  jint offset, jint stride, jint width, jint height,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>  jint configHandle, jboolean isMutable) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    SkColorType colorType = GraphicsJNI::legacyBitmapConfigToColorType(configHandle);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (NULL != jColors) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    size_t n = env-&gt;GetArrayLength(jColors);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (n &lt; SkAbs32(stride) * (size_t)height) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    doThrowAIOOBE(env);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return NULL;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // ARGB_4444 is a deprecated format, convert automatically to 8888
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (colorType == kARGB_4444_SkColorType) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    colorType = kN32_SkColorType;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    SkBitmap bitmap;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    bitmap.setInfo(SkImageInfo::Make(width, height, colorType, kPremul_SkAlphaType));
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    Bitmap* nativeBitmap = GraphicsJNI::allocateJavaPixelRef(env, &amp;bitmap, NULL);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (!nativeBitmap) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    return NULL;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (jColors != NULL) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    GraphicsJNI::SetPixels(env, jColors, offset, stride,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    0, 0, width, height, bitmap);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return GraphicsJNI::createBitmap(env, nativeBitmap,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    getPremulBitmapCreateFlags(isMutable));
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p><strong>想法：话说这种漏洞完全可以自动化啊，不是Fuzz，通过搜索含有抛出异常的函数，往回找调用栈，看是不是所有抛出的异常都被捕获了</strong></p>
+<p>我今天发现一个神器，用来搜索API文档贼好用，叫Dash，设置个快捷键，指哪打哪</p>
+<p><img src="resources/35C4A6132172B4571B5EC96F157EF334.jpg" alt="IMAGE" width="1377" height="886"></p>
+<p>最近春招了差不多开始进行了吧，建议各位同学在面试结束的时候，问一下面试官，办公区安不安静，要是办公区有那种leader一天到晚在工位打电话对需求指点江山，你会烦到掀桌:)</p>
+<p>来我岛玩啊，我建房子了</p>
+</div></div>
+      <script></script>
+    </body>
+    </html>
+  

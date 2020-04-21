@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>浏览器安全周报   2019.12.16 - 2019.12.20</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1 id="-2019-12-16-2019-12-20">浏览器安全周报 2019.12.16 - 2019.12.20</h1>
+<p><strong>Author:wnagzihxa1n<br>E-Mail:wnagzihxa1n@gmail.com</strong></p>
+<p>Frida是个好东西，我觉得还挺好用的</p>
+<p>上周用小米MIX2刷测试机，官方线刷救砖包，Android 9，Magisk，EdXposed，挺费劲儿的，写钩子调试感觉也不是很稳定，效果没有在我之前的4.4和6上面调试的感觉好</p>
+<p>最近一直都在划水，也没看什么技术文章，年底怠惰了</p>
+<p>科恩这篇文章对我来说难度有点太大了，虽然这个领域很有意思，但是想看懂还需要找个大佬给仔细讲讲，于是我去找了一个大佬学习了一波，emmmmmmmmm，想靠大佬讲讲就能弄懂还是不现实，好在大佬给讲了个大概，我先摸索看看，我觉得研究二进制函数相似性有很多可以玩的</p>
+<p>科恩 - AAAI-20论文解读：基于图神经网络的二进制代码分析</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/mTynxUBNBeiYcAhx4PNJrA">https://mp.weixin.qq.com/s/mTynxUBNBeiYcAhx4PNJrA</a></li><li><a href="https://keenlab.tencent.com/en/whitepapers/Ordermatters.pdf">https://keenlab.tencent.com/en/whitepapers/Ordermatters.pdf</a></li></ul>
+<p>逻辑漏洞是我接下来想要花精力研究的一个方向，也相当考验自己对整个功能模块的整体掌握，这篇文章讲的是利用Firefox的逻辑漏洞CVE-2019-9812来逃逸沙箱，作者称它是2019 Pwn2Own上Firefox沙箱逃逸漏洞CVE-2019-9811的变体</p>
+<p>CVE-2019-9812 - SYNCING OUT OF THE FIREFOX SANDBOX</p>
+<ul>
+<li><a href="https://www.zerodayinitiative.com/blog/2019/12/15/syncing-out-of-the-firefox-sandbox">https://www.zerodayinitiative.com/blog/2019/12/15/syncing-out-of-the-firefox-sandbox</a></li></ul>
+<p>2019 BotConf公开了部分slides，有的议题可以学习下思路</p>
+<ul>
+<li><a href="https://www.botconf.eu/botconf-2019/schedule/">https://www.botconf.eu/botconf-2019/schedule/</a></li></ul>
+<p>因为我以前做过Android APT相关的防御，所以看了几个感兴趣的，质量的话我觉得还行吧</p>
+<ul>
+<li><a href="https://github.com/fkie-cad/DeStroid/blob/master/DeStroid_bonus_slides.pdf">https://github.com/fkie-cad/DeStroid/blob/master/DeStroid_bonus_slides.pdf</a></li><li><a href="https://maxkersten.nl/wp-content/uploads/2019/12/StaticAndroidMalwareAnalysisWorkshop-Botconf2019.pdf">https://maxkersten.nl/wp-content/uploads/2019/12/StaticAndroidMalwareAnalysisWorkshop-Botconf2019.pdf</a></li><li>botconf.eu/wp-content/uploads/2019/12/B2019-Bilstein-Plohmann-YaraSignator.pdf</li></ul>
+<p>尤其是《DeStroid - Fighting String Encryption in Android Malware》，看的我也想去投几个会议刷刷脸，得排排计划了</p>
+<p>这三篇slides我会找时间写一写对应的解读文章，对安卓自动化的病毒检测分析相关技术感兴趣的同学可以期待一下，这是我的专业领域，不会跳票</p>
+<p>真的已经在写了:))</p>
+<p><img src="resources/3B69FDBDEC6CFC548BEBCDA44BC78EFE.jpg" alt="IMAGE"></p>
+<p>2019 BlackHat关于4G攻击场景的slides，对于我一个外行来说学习下还不错，虽然有一些名词没见过，但是搜一搜，多看看相关的文章也就可以弄懂了，突然感觉对于专业的二进制选手来说逆向嵌入式设备也不难，找篇文章讲讲嵌入式设备领域安全的现状，举一两个芯片固件攻击面以及利用的例子就差不多可以开始玩，似乎又回到了传统二进制攻防领域</p>
+<ul>
+<li><a href="https://i.blackhat.com/USA-19/Wednesday/us-19-Shupeng-All-The-4G-Modules-Could-Be-Hacked.pdf">https://i.blackhat.com/USA-19/Wednesday/us-19-Shupeng-All-The-4G-Modules-Could-Be-Hacked.pdf</a></li></ul>
+<p>还有一个5G攻击，我本科学的是硬件专业，看到这些芯片设备，提到的技术名词还是比较熟悉的，算是有一定的基础，所以看起来没那么费劲</p>
+<ul>
+<li><a href="https://i.blackhat.com/USA-19/Wednesday/us-19-Shaik-New-Vulnerabilities-In-5G-Networks.pdf">https://i.blackhat.com/USA-19/Wednesday/us-19-Shaik-New-Vulnerabilities-In-5G-Networks.pdf</a></li><li><a href="https://i.blackhat.com/USA-19/Wednesday/us-19-Shaik-New-Vulnerabilities-In-5G-Networks-wp.pdf">https://i.blackhat.com/USA-19/Wednesday/us-19-Shaik-New-Vulnerabilities-In-5G-Networks-wp.pdf</a></li></ul>
+<p>关于修改数据包来攻击IM应用的思路我之前想过一些，其实想去测试这部分处理逻辑的方式还是挺多的，因为最后还是要组包发出去，那么一个个数据在进行加密组包前的明文可以有机会进行修改，这个很容易做到，我相信这部分是一个很好的产出点，作者用的是解密数据包的方式</p>
+<p>BreakingApp – WhatsApp Crash &amp; Data Loss Bug</p>
+<ul>
+<li><a href="https://research.checkpoint.com/2019/breakingapp-whatsapp-crash-data-loss-bug/">https://research.checkpoint.com/2019/breakingapp-whatsapp-crash-data-loss-bug/</a></li></ul>
+<p>其中关于解密WhatsApp消息的这部分在今年的BlackHat上有一个相关的议题，讲的也是比较详细的，我顺带看了一下视频，这哥们说话的时候总感觉发音咕噜咕噜的</p>
+<ul>
+<li><a href="https://i.blackhat.com/USA-19/Wednesday/us-19-Zaikin-Reverse-Engineering-WhatsApp-Encryption-For-Chat-Manipulation-And-More.pdf">https://i.blackhat.com/USA-19/Wednesday/us-19-Zaikin-Reverse-Engineering-WhatsApp-Encryption-For-Chat-Manipulation-And-More.pdf</a></li><li><a href="https://www.youtube.com/watch?v=N0Ne623fKWc&amp;list=PLH15HpR5qRsWrfkjwFSI256x1u2Zy49VI&amp;index=65">https://www.youtube.com/watch?v=N0Ne623fKWc&amp;list=PLH15HpR5qRsWrfkjwFSI256x1u2Zy49VI&amp;index=65</a></li></ul>
+<p>是时候再次贴出这张神图了，WhatsApp的Zero Click RCE&amp;LPE值1500000$，妈耶！</p>
+<p><img src="resources/3418C5CE377DB8CA9612D9B967C42DE8.jpg" alt="IMAGE"></p>
+<p>学习了编译原理里面的block相关的概念，这些原来完全不懂的概念现在一点一点的清晰，是件好事</p>
+<p>编译原理相关的知识点我知道大佬们都会，这里就简单的贴几张PPT</p>
+<p>流图的基本规则</p>
+<p><img src="resources/DC3AA7643E8345D8BE72D25BAADE7911.jpg" alt="IMAGE"></p>
+<p>一段循环的代码</p>
+<p><img src="resources/AD90521F7D62DD4D755A4167F7B9E0B4.jpg" alt="IMAGE"></p>
+<p>通过规则绘制的流图如下，那么每个块就是一个Block</p>
+<p><img src="resources/85A4766EF8A4C4CAED77DE1B5ABB437D.jpg" alt="IMAGE"></p>
+<p>后面还有一些优化的理论介绍，感觉挺好</p>
+<p><img src="resources/72DFBEA8EB00E8A724BA31CE55015D44.jpg" alt="IMAGE"></p>
+<p>常用的优化方法</p>
+<p><img src="resources/A89FEF9F4C51C3A34FA44CB320AD6B6C.jpg" alt="IMAGE"></p>
+<p>CVE-2019-13686 - Issue 1000002: Security: OfflinePageAutoFetcher UAF 2，目前还没看懂，可以用于沙箱逃逸，给了20000$</p>
+<ul>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1000002">https://bugs.chromium.org/p/chromium/issues/detail?id=1000002</a></li></ul>
+<p>最后关注了一下安全领域的一些学术会议，加入学习的计划中，李神探给讲了讲一些靠谱的会议，我打算先找最近三年的Paper读一读，之前也读过一些，虽然读的仔细但是并没有系统的进行学习，想先统计某个我感兴趣领域的Paper，了解下学术界对这个领域都研究到什么程度，工业界我还是比较熟悉的，每年的BlackHat很能体现了</p>
+<p>2019 USENIX Security，挑了一些Paper学习下</p>
+<ul>
+<li><a href="https://www.usenix.org/conference/usenixsecurity19/technical-sessions">https://www.usenix.org/conference/usenixsecurity19/technical-sessions</a></li></ul>
+<p>我就是想法太多，然而不会写代码实现想法，哇啦哇啦又讲了一堆，马上要圣诞节咯！！！:))</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

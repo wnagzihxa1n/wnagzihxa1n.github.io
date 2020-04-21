@@ -1,0 +1,81 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- common.css -->
+      <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: -apple-system, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;height: auto;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 90%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+      <!-- ace-static.css -->
+      <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter > .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+      <style>.ace-tomorrow-night-eighties .ace_gutter {background: #272727;color: #CCC}.ace-tomorrow-night-eighties .ace_print-margin {width: 1px;background: #272727}.ace-tomorrow-night-eighties {background-color: #2D2D2D;color: #CCCCCC}.ace-tomorrow-night-eighties .ace_constant.ace_other,.ace-tomorrow-night-eighties .ace_cursor {color: #CCCCCC}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selection {background: #515151}.ace-tomorrow-night-eighties.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #2D2D2D;}.ace-tomorrow-night-eighties .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #6A6A6A}.ace-tomorrow-night-bright .ace_stack {background: rgb(66, 90, 44)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_active-line {background: #393939}.ace-tomorrow-night-eighties .ace_gutter-active-line {background-color: #393939}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selected-word {border: 1px solid #515151}.ace-tomorrow-night-eighties .ace_invisible {color: #6A6A6A}.ace-tomorrow-night-eighties .ace_keyword,.ace-tomorrow-night-eighties .ace_meta,.ace-tomorrow-night-eighties .ace_storage,.ace-tomorrow-night-eighties .ace_storage.ace_type,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #CC99CC}.ace-tomorrow-night-eighties .ace_keyword.ace_operator {color: #66CCCC}.ace-tomorrow-night-eighties .ace_constant.ace_character,.ace-tomorrow-night-eighties .ace_constant.ace_language,.ace-tomorrow-night-eighties .ace_constant.ace_numeric,.ace-tomorrow-night-eighties .ace_keyword.ace_other.ace_unit,.ace-tomorrow-night-eighties .ace_support.ace_constant,.ace-tomorrow-night-eighties .ace_variable.ace_parameter {color: #F99157}.ace-tomorrow-night-eighties .ace_invalid {color: #CDCDCD;background-color: #F2777A}.ace-tomorrow-night-eighties .ace_invalid.ace_deprecated {color: #CDCDCD;background-color: #CC99CC}.ace-tomorrow-night-eighties .ace_fold {background-color: #6699CC;border-color: #CCCCCC}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_function,.ace-tomorrow-night-eighties .ace_support.ace_function,.ace-tomorrow-night-eighties .ace_variable {color: #6699CC}.ace-tomorrow-night-eighties .ace_support.ace_class,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #FFCC66}.ace-tomorrow-night-eighties .ace_heading,.ace-tomorrow-night-eighties .ace_markup.ace_heading,.ace-tomorrow-night-eighties .ace_string {color: #99CC99}.ace-tomorrow-night-eighties .ace_comment {color: #999999}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_tag,.ace-tomorrow-night-eighties .ace_entity.ace_other.ace_attribute-name,.ace-tomorrow-night-eighties .ace_meta.ace_tag,.ace-tomorrow-night-eighties .ace_variable {color: #F2777A}.ace-tomorrow-night-eighties .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ09NrYAgMjP4PAAtGAwchHMyAAAAAAElFTkSuQmCC) right repeat-y}</style>
+      <!-- export.css -->
+      <style>
+        body{margin:0 auto;max-width:800px;line-height:1.4}
+        #nav{margin:5px 0 10px;font-size:15px}
+        #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+        #contentarea{font-size:15px;margin:16px 0}
+        .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+        .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+        .latex-cell{white-space:pre-wrap;}
+      </style>
+      <!-- User CSS -->
+      <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+    </head>
+    <body>
+      
+      <div id="titlearea">
+        <h2>大土豆安全笔记 | 2020.03.20</h2>
+      </div>
+      <div id="contentarea"><div class="cell markdown-cell"><p><img src="resources/F65D0FBDF5FF0971C3A63A4B060DA88B.jpg" alt="sebastian-herrmann-jzTQVxCyKYs-unsplash.jpg" width="5184" height="3456"></p>
+<p><strong>没啥营养的一篇笔记</strong></p>
+<p>首先感谢一下各位师傅，我都已经水成这样了还没取关我这个一亩三分地菜栏</p>
+<p>虽然我技术比较菜，顶多算个刚入门的小白，但是我有技术追求，属于有"技术自信"的那一类人，师傅们一起学习啊</p>
+<p>昨晚折腾了一下树莓派4B搭建家庭影院，用的是KODI，也没有研究多深入，现在是可以使用了，以后家里装修的时候，我要单独弄一间小房间，上面挂个牌子：逗猫阁，里面配置各种我定制的设备，装有履带的瓦力机器人，大土豆智能家居助手，树莓派定制的家庭影院......，想想就......伤心，要是有钱买好的产品谁搞这么麻烦:(</p>
+<p>大概讲一下流程，有兴趣的同学可以自己研究细节，其中我省略了部分系统配置操作</p>
+<p>从官网下载Raspbian系统，因为我们不需要界面，只需要命令行即可，下载LITE版本</p>
+<ul>
+<li><a href="http://raspberrypi.org/downloads/raspbian/">raspberrypi.org/downloads/raspbian/</a></li>
+</ul>
+<p>刷入镜像，完成后首先是配置系统WiFi连接，这一步先不着急插卡启动，刷完系统后拔出卡片再次插入读卡器，在根目录添加一个配置文件<code>wpa_supplicant.conf</code></p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>country=CN
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>update_config=1
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>network={
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ssid="WiFi SSID"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    psk="password"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    priority=5
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p>插卡，上电，安装KODI</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>$ sudo apt update
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>$ sudo apt install kodi
+</div></div></div></pre>
+<p>启动KODI</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>$ sudo service kodi start
+</div></div></div></pre>
+<p>配置完之后，可以修改系统语言，如果HDMI输出没声音，可以在<code>raspi-config</code>里进行强行HDMI输出声音，数据源有两种模式，一种是NAS，一种是外接硬盘，NAS我感觉速度不是很够，我暂时是用的外接硬盘，在<code>/etc/fstab</code>里添加自动挂载即可开机自动挂载硬盘</p>
+<p>还有一些插件，脚本可以安装，我还没有研究到这一层次，等我体验一段时间，可以写一篇文章仔细讲讲，有兴趣的同学可以参考</p>
+<p>遥控器的话，我目前打算用红外线模式，还有一个是蓝牙，不过我目前只搜到了红外线的方案，蓝牙的方案还没搜到，但是根据我薄弱的硬件知识，蓝牙肯定是可行的，只是我想要一个酷炫一点的遥控器，不想每次还要拿出手机匹配一下蓝牙，那真的太弱了，直接买现成的电视机，流畅的体验难道不香吗？</p>
+<p>《Getting Started in Android Apps Pen-testing (Part-1)》：安卓应用漏洞挖掘教程，这一篇主要是讲环境搭建，这种文章中文版本的一大把，关注一下看看后续有没有好玩的思路，我个人建议真机运行，有一些应用只编译了ARM指令的SO，很多基于X86的模拟器是运行不了这种APP的，而且有价值研究的APP，怎么会不检测模拟器呢？胖友，用真机，少踩坑</p>
+<ul>
+<li><a href="https://blog.securitybreached.org/2020/03/17/getting-started-in-android-apps-pentesting/">https://blog.securitybreached.org/2020/03/17/getting-started-in-android-apps-pentesting/</a></li>
+</ul>
+<p>《Stantinko’s new cryptominer features unique obfuscation techniques》：一个挖矿病毒的字符串混淆</p>
+<ul>
+<li><a href="https://www.welivesecurity.com/2020/03/19/stantinko-new-cryptominer-unique-obfuscation-techniques/">https://www.welivesecurity.com/2020/03/19/stantinko-new-cryptominer-unique-obfuscation-techniques/</a></li>
+</ul>
+<p>眼熟不？搞过OLLVM的看到这个都不在怕的，手持IDA脚本，扛上angr走一波符号执行，妥妥的</p>
+<p><img src="resources/CF37B9040AF58AF090C06BE4641907D9.jpg" alt="IMAGE" width="992" height="421"></p>
+<p>我唯一的担心就是，上这种混淆万一不稳定崩溃了，岂不是很尴尬</p>
+<p>《Evasions: Generic OS queries》：若干虚拟机环境检测技术，多学学，把没掌握的思路补上，以后万一有业务需求，不至于临时学手忙脚乱的</p>
+<ul>
+<li><a href="https://evasions.checkpoint.com/techniques/generic-os-queries.html">https://evasions.checkpoint.com/techniques/generic-os-queries.html</a></li>
+</ul>
+<p><img src="resources/C7B0687584754AD2E449656635C4E6BF.jpg" alt="IMAGE" width="638" height="390"></p>
+<p>也有件好事，击中了3.655，另一个即将击中7000，今天回了波血，周末牛蛙煲有着落了</p>
+</div></div>
+      <script></script>
+    </body>
+    </html>
+  

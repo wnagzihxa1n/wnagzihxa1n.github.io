@@ -1,0 +1,419 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- common.css -->
+      <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: -apple-system, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;height: auto;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 90%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+      <!-- ace-static.css -->
+      <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter > .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+      <style>.ace-tomorrow-night-eighties .ace_gutter {background: #272727;color: #CCC}.ace-tomorrow-night-eighties .ace_print-margin {width: 1px;background: #272727}.ace-tomorrow-night-eighties {background-color: #2D2D2D;color: #CCCCCC}.ace-tomorrow-night-eighties .ace_constant.ace_other,.ace-tomorrow-night-eighties .ace_cursor {color: #CCCCCC}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selection {background: #515151}.ace-tomorrow-night-eighties.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #2D2D2D;}.ace-tomorrow-night-eighties .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #6A6A6A}.ace-tomorrow-night-bright .ace_stack {background: rgb(66, 90, 44)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_active-line {background: #393939}.ace-tomorrow-night-eighties .ace_gutter-active-line {background-color: #393939}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selected-word {border: 1px solid #515151}.ace-tomorrow-night-eighties .ace_invisible {color: #6A6A6A}.ace-tomorrow-night-eighties .ace_keyword,.ace-tomorrow-night-eighties .ace_meta,.ace-tomorrow-night-eighties .ace_storage,.ace-tomorrow-night-eighties .ace_storage.ace_type,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #CC99CC}.ace-tomorrow-night-eighties .ace_keyword.ace_operator {color: #66CCCC}.ace-tomorrow-night-eighties .ace_constant.ace_character,.ace-tomorrow-night-eighties .ace_constant.ace_language,.ace-tomorrow-night-eighties .ace_constant.ace_numeric,.ace-tomorrow-night-eighties .ace_keyword.ace_other.ace_unit,.ace-tomorrow-night-eighties .ace_support.ace_constant,.ace-tomorrow-night-eighties .ace_variable.ace_parameter {color: #F99157}.ace-tomorrow-night-eighties .ace_invalid {color: #CDCDCD;background-color: #F2777A}.ace-tomorrow-night-eighties .ace_invalid.ace_deprecated {color: #CDCDCD;background-color: #CC99CC}.ace-tomorrow-night-eighties .ace_fold {background-color: #6699CC;border-color: #CCCCCC}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_function,.ace-tomorrow-night-eighties .ace_support.ace_function,.ace-tomorrow-night-eighties .ace_variable {color: #6699CC}.ace-tomorrow-night-eighties .ace_support.ace_class,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #FFCC66}.ace-tomorrow-night-eighties .ace_heading,.ace-tomorrow-night-eighties .ace_markup.ace_heading,.ace-tomorrow-night-eighties .ace_string {color: #99CC99}.ace-tomorrow-night-eighties .ace_comment {color: #999999}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_tag,.ace-tomorrow-night-eighties .ace_entity.ace_other.ace_attribute-name,.ace-tomorrow-night-eighties .ace_meta.ace_tag,.ace-tomorrow-night-eighties .ace_variable {color: #F2777A}.ace-tomorrow-night-eighties .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ09NrYAgMjP4PAAtGAwchHMyAAAAAAElFTkSuQmCC) right repeat-y}</style>
+      <!-- export.css -->
+      <style>
+        body{margin:0 auto;max-width:800px;line-height:1.4}
+        #nav{margin:5px 0 10px;font-size:15px}
+        #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+        #contentarea{font-size:15px;margin:16px 0}
+        .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+        .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+        .latex-cell{white-space:pre-wrap;}
+      </style>
+      <!-- User CSS -->
+      <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+    </head>
+    <body>
+      
+      <div id="titlearea">
+        <h2>大土豆安全笔记 | 2020.04.14</h2>
+      </div>
+      <div id="contentarea"><div class="cell markdown-cell"><p><img src="resources/FFC89BD55EAC7E84041F68D7C2FFEDEA.jpg" alt="red-zeppelin-Z_Jdq_xKwb8-unsplash.jpg" width="3968" height="2976"></p>
+<p><strong>我从助理工程师升初级文档工程师了，撒花~</strong></p>
+<p>发现一个好项目，可能之前我看过但是没仔细学习，最近可以算是真正开始认真分析了</p>
+<ul>
+<li><a href="https://github.com/jiayy/android_vuln_poc-exp">https://github.com/jiayy/android_vuln_poc-exp</a></li>
+</ul>
+<p>冰刃实验室写的《高通加解密引擎提权漏洞解析》，写的相当好，又学习到了很多</p>
+<ul>
+<li><a href="https://www.iceswordlab.com/2017/08/07/qualcomm-crypto-engine-vulnerabilities-exploits/">https://www.iceswordlab.com/2017/08/07/qualcomm-crypto-engine-vulnerabilities-exploits/</a></li>
+</ul>
+<p>我这里分析的是其中的CVE-2016-6738，高通加解密驱动模块内核任意地址写漏洞，补丁如下</p>
+<ul>
+<li><a href="https://source.codeaurora.org/quic/la//kernel/msm-3.18/commit/?id=0a2528569b035a2ca8ebe9a4612dbbaaaffa5b2e">https://source.codeaurora.org/quic/la//kernel/msm-3.18/commit/?id=0a2528569b035a2ca8ebe9a4612dbbaaaffa5b2e</a></li>
+</ul>
+<p>注册的驱动结构体</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static struct platform_driver qcedev_plat_driver = {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .probe = qcedev_probe,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .remove = qcedev_remove,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .suspend = qcedev_suspend,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .resume = qcedev_resume,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .driver = {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    .name = "qce",
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    .owner = THIS_MODULE,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    .of_match_table = qcedev_match,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    },
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>};
+</div></div></div></pre>
+<p>所以我们打开驱动的代码如下</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>int fd = open("/dev/qce", O_RDONLY);
+</div></div></div></pre>
+<p>根据文档描述，我们可以通过IOCTL进行调用</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>The following IOCTLS are available to the user space application(s)-
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>  Cipher IOCTLs:
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>  --------------
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    QCEDEV_IOCTL_ENC_REQ is for encrypting data.
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    QCEDEV_IOCTL_DEC_REQ is for decrypting data.
+</div></div></div></pre>
+<p>该驱动对应的<code>file_operations</code></p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static int qcedev_open(struct inode *inode, struct file *file);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static int qcedev_release(struct inode *inode, struct file *file);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static const struct file_operations qcedev_fops = {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .owner = THIS_MODULE,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .unlocked_ioctl = qcedev_ioctl,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>#ifdef CONFIG_COMPAT
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .compat_ioctl = compat_qcedev_ioctl,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>#endif
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .open = qcedev_open,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    .release = qcedev_release,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>};
+</div></div></div></pre>
+<p>找到函数<code>qcedev_ioctl()</code>对应的实现</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>long qcedev_ioctl(struct file *file, unsigned cmd, unsigned long arg)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>{
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int err = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct qcedev_handle *handle;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct qcedev_control *podev;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct qcedev_async_req qcedev_areq;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct qcedev_stat *pstat;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    switch (cmd) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">通</span><span class="ace_cjk" style="width:NaNpx">过</span> IOCTL <span class="ace_cjk" style="width:NaNpx">进</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">加</span><span class="ace_cjk" style="width:NaNpx">解</span><span class="ace_cjk" style="width:NaNpx">密</span><span class="ace_cjk" style="width:NaNpx">功</span><span class="ace_cjk" style="width:NaNpx">能</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">请</span><span class="ace_cjk" style="width:NaNpx">求</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    case QCEDEV_IOCTL_ENC_REQ:
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    case QCEDEV_IOCTL_DEC_REQ:
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>        // <span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">态</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span><span class="ace_cjk" style="width:NaNpx">检</span><span class="ace_cjk" style="width:NaNpx">查</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (!access_ok(VERIFY_WRITE, (void __user *)arg, sizeof(struct qcedev_cipher_op_req)))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    // <span class="ace_cjk" style="width:NaNpx">通</span><span class="ace_cjk" style="width:NaNpx">过</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span><span class="ace_cjk" style="width:NaNpx">检</span><span class="ace_cjk" style="width:NaNpx">查</span><span class="ace_cjk" style="width:NaNpx">后</span><span class="ace_cjk" style="width:NaNpx">进</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">拷</span><span class="ace_cjk" style="width:NaNpx">贝</span><span class="ace_cjk" style="width:NaNpx">操</span><span class="ace_cjk" style="width:NaNpx">作</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    // <span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">控</span><span class="ace_cjk" style="width:NaNpx">：</span>qcedev_areq-&gt;cipher_op_req
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (__copy_from_user(&amp;qcedev_areq.cipher_op_req, (void __user *)arg, sizeof(struct qcedev_cipher_op_req)))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    qcedev_areq.op_type = QCEDEV_CRYPTO_OPER_CIPHER;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    // <span class="ace_cjk" style="width:NaNpx">参</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">检</span><span class="ace_cjk" style="width:NaNpx">查</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">非</span><span class="ace_cjk" style="width:NaNpx">常</span><span class="ace_cjk" style="width:NaNpx">多</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">判</span><span class="ace_cjk" style="width:NaNpx">断</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (qcedev_check_cipher_params(&amp;qcedev_areq.cipher_op_req, podev))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EINVAL;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    // <span class="ace_cjk" style="width:NaNpx">执</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">加</span><span class="ace_cjk" style="width:NaNpx">解</span><span class="ace_cjk" style="width:NaNpx">密</span><span class="ace_cjk" style="width:NaNpx">逻</span><span class="ace_cjk" style="width:NaNpx">辑</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    err = qcedev_vbuf_ablk_cipher(&amp;qcedev_areq, handle);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (err)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return err;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    // <span class="ace_cjk" style="width:NaNpx">加</span><span class="ace_cjk" style="width:NaNpx">解</span><span class="ace_cjk" style="width:NaNpx">密</span><span class="ace_cjk" style="width:NaNpx">成</span><span class="ace_cjk" style="width:NaNpx">功</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">将</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span><span class="ace_cjk" style="width:NaNpx">写</span><span class="ace_cjk" style="width:NaNpx">入</span><span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">态</span><span class="ace_cjk" style="width:NaNpx">空</span><span class="ace_cjk" style="width:NaNpx">间</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (__copy_to_user((void __user *)arg, &amp;qcedev_areq.cipher_op_req, sizeof(struct qcedev_cipher_op_req)))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    break;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    default:
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    return -ENOTTY;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return err;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>EXPORT_SYMBOL(qcedev_ioctl);
+</div></div></div></pre>
+<p>结构体<code>qcedev_cipher_op_req</code>的实现</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>struct  qcedev_cipher_op_req {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t             use_pmem;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    union {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    struct qcedev_pmem_info pmem;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    struct qcedev_vbuf_info vbuf;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    };
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t            entries;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t            data_len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t             in_place_op;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t             enckey[QCEDEV_MAX_KEY_SIZE];
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t            encklen;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t             iv[QCEDEV_MAX_IV_SIZE];
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t            ivlen;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t            byteoffset;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    enum qcedev_cipher_alg_enum alg;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    enum qcedev_cipher_mode_enum    mode;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    enum qcedev_oper_enum       op;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>};
+</div></div></div></pre>
+<p>问题出在函数<code>qcedev_vbuf_ablk_cipher()</code></p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq, struct qcedev_handle *handle)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>{
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int err = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int di = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int i = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int j = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int k = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t byteoffset = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int num_entries = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t total = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t *k_buf_src = NULL;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t *k_align_src = NULL;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t max_data_xfer;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct qcedev_cipher_op_req *saved_req;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct  qcedev_cipher_op_req *creq = &amp;areq-&gt;cipher_op_req;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    /* Verify Source Address's */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">进</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">态</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span><span class="ace_cjk" style="width:NaNpx">检</span><span class="ace_cjk" style="width:NaNpx">查</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">变</span><span class="ace_cjk" style="width:NaNpx">量</span> vbuf <span class="ace_cjk" style="width:NaNpx">表</span><span class="ace_cjk" style="width:NaNpx">示</span><span class="ace_cjk" style="width:NaNpx">待</span><span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">理</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">控</span><span class="ace_cjk" style="width:NaNpx">：</span>areq-&gt;cipher_op_req.entries
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    for (i = 0; i &lt; areq-&gt;cipher_op_req.entries; i++)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (!access_ok(VERIFY_READ, (void __user *)areq-&gt;cipher_op_req.vbuf.src[i].vaddr, areq-&gt;cipher_op_req.vbuf.src[i].len))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    /* Verify Destination Address's */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">进</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">态</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span><span class="ace_cjk" style="width:NaNpx">检</span><span class="ace_cjk" style="width:NaNpx">查</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">有</span><span class="ace_cjk" style="width:NaNpx">趣</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">是</span><span class="ace_cjk" style="width:NaNpx">：</span><span class="ace_cjk" style="width:NaNpx">如</span><span class="ace_cjk" style="width:NaNpx">果</span> creq-&gt;in_place_op <span class="ace_cjk" style="width:NaNpx">为</span>1<span class="ace_cjk" style="width:NaNpx">就</span><span class="ace_cjk" style="width:NaNpx">不</span><span class="ace_cjk" style="width:NaNpx">进</span><span class="ace_cjk" style="width:NaNpx">入</span>if<span class="ace_cjk" style="width:NaNpx">检</span><span class="ace_cjk" style="width:NaNpx">查</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">更</span><span class="ace_cjk" style="width:NaNpx">有</span><span class="ace_cjk" style="width:NaNpx">趣</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">是</span><span class="ace_cjk" style="width:NaNpx">：</span>creq-&gt;in_place_op <span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">控</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">也</span><span class="ace_cjk" style="width:NaNpx">就</span><span class="ace_cjk" style="width:NaNpx">是</span><span class="ace_cjk" style="width:NaNpx">说</span><span class="ace_cjk" style="width:NaNpx">：</span><span class="ace_cjk" style="width:NaNpx">我</span><span class="ace_cjk" style="width:NaNpx">们</span><span class="ace_cjk" style="width:NaNpx">这</span><span class="ace_cjk" style="width:NaNpx">里</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">以</span><span class="ace_cjk" style="width:NaNpx">绕</span><span class="ace_cjk" style="width:NaNpx">过</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span><span class="ace_cjk" style="width:NaNpx">检</span><span class="ace_cjk" style="width:NaNpx">查</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (creq-&gt;in_place_op != 1) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>        // #define QCEDEV_MAX_BUFFERS      16
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    for (i = 0, total = 0; i &lt; QCEDEV_MAX_BUFFERS; i++) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if ((areq-&gt;cipher_op_req.vbuf.dst[i].vaddr != 0) &amp;&amp; (total &lt; creq-&gt;data_len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if (!access_ok(VERIFY_WRITE, (void __user *)creq-&gt;vbuf.dst[i].vaddr, creq-&gt;vbuf.dst[i].len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    pr_err("%s:DST WR_VERIFY err %d=0x%lx\n", __func__, i, (uintptr_t)creq-&gt;vbuf.dst[i].vaddr);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    total += creq-&gt;vbuf.dst[i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    } else  {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    for (i = 0, total = 0; i &lt; creq-&gt;entries; i++) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if (total &lt; creq-&gt;data_len) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if (!access_ok(VERIFY_WRITE, (void __user *)creq-&gt;vbuf.src[i].vaddr, creq-&gt;vbuf.src[i].len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    pr_err("%s:SRC WR_VERIFY err %d=0x%lx\n", __func__, i, (uintptr_t)creq-&gt;vbuf.src[i].vaddr);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    total += creq-&gt;vbuf.src[i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    total = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">控</span><span class="ace_cjk" style="width:NaNpx">：</span>areq-&gt;cipher_op_req.mode
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">控</span><span class="ace_cjk" style="width:NaNpx">：</span>areq-&gt;cipher_op_req.byteoffset
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (areq-&gt;cipher_op_req.mode == QCEDEV_AES_MODE_CTR)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    byteoffset = areq-&gt;cipher_op_req.byteoffset;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // #define QCE_MAX_OPER_DATA        0xFF00
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // #define CACHE_LINE_SIZE 32
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // #define GFP_KERNEL   (__GFP_WAIT | __GFP_IO | __GFP_FS)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">分</span><span class="ace_cjk" style="width:NaNpx">配</span><span class="ace_cjk" style="width:NaNpx">堆</span><span class="ace_cjk" style="width:NaNpx">空</span><span class="ace_cjk" style="width:NaNpx">间</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    k_buf_src = kmalloc(QCE_MAX_OPER_DATA + CACHE_LINE_SIZE * 2, GFP_KERNEL);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (k_buf_src == NULL) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    pr_err("%s: Can't Allocate memory: k_buf_src 0x%lx\n", __func__, (uintptr_t)k_buf_src);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    return -ENOMEM;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">内</span><span class="ace_cjk" style="width:NaNpx">存</span><span class="ace_cjk" style="width:NaNpx">对</span><span class="ace_cjk" style="width:NaNpx">齐</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    k_align_src = (uint8_t *)ALIGN(((uintptr_t)k_buf_src), CACHE_LINE_SIZE);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    max_data_xfer = QCE_MAX_OPER_DATA - byteoffset;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (areq-&gt;cipher_op_req.data_len &gt; max_data_xfer) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    } else
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    err = qcedev_vbuf_ablk_cipher_max_xfer(areq, &amp;di, handle, k_align_src);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p>函数<code>qcedev_vbuf_ablk_cipher_max_xfer()</code>会把申请的堆内存指针传入处理</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>static int qcedev_vbuf_ablk_cipher_max_xfer(struct qcedev_async_req *areq,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    int *di, struct qcedev_handle *handle,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    uint8_t *k_align_src)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>{
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int err = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int i = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    int dst_i = *di;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct scatterlist sg_src;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint32_t byteoffset = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t *user_src = NULL;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    uint8_t *k_align_dst = k_align_src;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct  qcedev_cipher_op_req *creq = &amp;areq-&gt;cipher_op_req;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">用</span><span class="ace_cjk" style="width:NaNpx">户</span><span class="ace_cjk" style="width:NaNpx">可</span><span class="ace_cjk" style="width:NaNpx">控</span><span class="ace_cjk" style="width:NaNpx">：</span>areq-&gt;cipher_op_req.mode
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (areq-&gt;cipher_op_req.mode == QCEDEV_AES_MODE_CTR)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    byteoffset = areq-&gt;cipher_op_req.byteoffset;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">拷</span><span class="ace_cjk" style="width:NaNpx">贝</span><span class="ace_cjk" style="width:NaNpx">第</span><span class="ace_cjk" style="width:NaNpx">一</span><span class="ace_cjk" style="width:NaNpx">份</span><span class="ace_cjk" style="width:NaNpx">待</span><span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">理</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    user_src = (void __user *)areq-&gt;cipher_op_req.vbuf.src[0].vaddr;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (user_src &amp;&amp; __copy_from_user((k_align_src + byteoffset), (void __user *)user_src, areq-&gt;cipher_op_req.vbuf.src[0].len))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">移</span><span class="ace_cjk" style="width:NaNpx">动</span><span class="ace_cjk" style="width:NaNpx">指</span><span class="ace_cjk" style="width:NaNpx">针</span><span class="ace_cjk" style="width:NaNpx">指</span><span class="ace_cjk" style="width:NaNpx">向</span><span class="ace_cjk" style="width:NaNpx">新</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">写</span><span class="ace_cjk" style="width:NaNpx">入</span><span class="ace_cjk" style="width:NaNpx">偏</span><span class="ace_cjk" style="width:NaNpx">移</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    k_align_src += byteoffset + areq-&gt;cipher_op_req.vbuf.src[0].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">开</span><span class="ace_cjk" style="width:NaNpx">始</span><span class="ace_cjk" style="width:NaNpx">循</span><span class="ace_cjk" style="width:NaNpx">环</span><span class="ace_cjk" style="width:NaNpx">后</span><span class="ace_cjk" style="width:NaNpx">面</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">待</span><span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">理</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    for (i = 1; i &lt; areq-&gt;cipher_op_req.entries; i++) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    user_src = (void __user *)areq-&gt;cipher_op_req.vbuf.src[i].vaddr;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (user_src &amp;&amp; __copy_from_user(k_align_src, (void __user *)user_src, areq-&gt;cipher_op_req.vbuf.src[i].len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    k_align_src += areq-&gt;cipher_op_req.vbuf.src[i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    /* restore src beginning */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">循</span><span class="ace_cjk" style="width:NaNpx">环</span><span class="ace_cjk" style="width:NaNpx">拷</span><span class="ace_cjk" style="width:NaNpx">贝</span><span class="ace_cjk" style="width:NaNpx">待</span><span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">理</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span><span class="ace_cjk" style="width:NaNpx">完</span><span class="ace_cjk" style="width:NaNpx">毕</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">恢</span><span class="ace_cjk" style="width:NaNpx">复</span><span class="ace_cjk" style="width:NaNpx">堆</span><span class="ace_cjk" style="width:NaNpx">空</span><span class="ace_cjk" style="width:NaNpx">间</span><span class="ace_cjk" style="width:NaNpx">起</span><span class="ace_cjk" style="width:NaNpx">始</span><span class="ace_cjk" style="width:NaNpx">地</span><span class="ace_cjk" style="width:NaNpx">址</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    k_align_src = k_align_dst;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    areq-&gt;cipher_op_req.data_len += byteoffset;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    areq-&gt;cipher_req.creq.src = (struct scatterlist *) &amp;sg_src;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    areq-&gt;cipher_req.creq.dst = (struct scatterlist *) &amp;sg_src;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    /* In place encryption/decryption */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    sg_set_buf(areq-&gt;cipher_req.creq.src, k_align_dst, areq-&gt;cipher_op_req.data_len);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    sg_mark_end(areq-&gt;cipher_req.creq.src);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    areq-&gt;cipher_req.creq.nbytes = areq-&gt;cipher_op_req.data_len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    areq-&gt;cipher_req.creq.info = areq-&gt;cipher_op_req.iv;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    areq-&gt;cipher_op_req.entries = 1;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">执</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">加</span><span class="ace_cjk" style="width:NaNpx">解</span><span class="ace_cjk" style="width:NaNpx">密</span><span class="ace_cjk" style="width:NaNpx">操</span><span class="ace_cjk" style="width:NaNpx">作</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">理</span><span class="ace_cjk" style="width:NaNpx">完</span><span class="ace_cjk" style="width:NaNpx">成</span><span class="ace_cjk" style="width:NaNpx">后</span> k_align_dst <span class="ace_cjk" style="width:NaNpx">指</span><span class="ace_cjk" style="width:NaNpx">向</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">就</span><span class="ace_cjk" style="width:NaNpx">是</span><span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">理</span><span class="ace_cjk" style="width:NaNpx">完</span><span class="ace_cjk" style="width:NaNpx">毕</span><span class="ace_cjk" style="width:NaNpx">后</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    err = submit_req(areq, handle);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    /* copy data to destination buffer*/
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    creq-&gt;data_len -= byteoffset;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    // <span class="ace_cjk" style="width:NaNpx">重</span><span class="ace_cjk" style="width:NaNpx">点</span><span class="ace_cjk" style="width:NaNpx">关</span><span class="ace_cjk" style="width:NaNpx">注</span><span class="ace_cjk" style="width:NaNpx">对</span> creq-&gt;vbuf.dst <span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">理</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">逻</span><span class="ace_cjk" style="width:NaNpx">辑</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    while (creq-&gt;data_len &gt; 0) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    if (creq-&gt;vbuf.dst[dst_i].len &lt;= creq-&gt;data_len) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>        // <span class="ace_cjk" style="width:NaNpx">当</span><span class="ace_cjk" style="width:NaNpx">还</span><span class="ace_cjk" style="width:NaNpx">有</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">时</span><span class="ace_cjk" style="width:NaNpx">候</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">就</span><span class="ace_cjk" style="width:NaNpx">进</span><span class="ace_cjk" style="width:NaNpx">行</span><span class="ace_cjk" style="width:NaNpx">拷</span><span class="ace_cjk" style="width:NaNpx">贝</span><span class="ace_cjk" style="width:NaNpx">，</span><span class="ace_cjk" style="width:NaNpx">拷</span><span class="ace_cjk" style="width:NaNpx">贝</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">值</span><span class="ace_cjk" style="width:NaNpx">是</span><span class="ace_cjk" style="width:NaNpx">经</span><span class="ace_cjk" style="width:NaNpx">过</span><span class="ace_cjk" style="width:NaNpx">加</span><span class="ace_cjk" style="width:NaNpx">解</span><span class="ace_cjk" style="width:NaNpx">密</span><span class="ace_cjk" style="width:NaNpx">后</span><span class="ace_cjk" style="width:NaNpx">的</span><span class="ace_cjk" style="width:NaNpx">数</span><span class="ace_cjk" style="width:NaNpx">据</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if (err == 0 &amp;&amp; __copy_to_user((void __user *)creq-&gt;vbuf.dst[dst_i].vaddr, (k_align_dst + byteoffset), creq-&gt;vbuf.dst[dst_i].len))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    k_align_dst += creq-&gt;vbuf.dst[dst_i].len + byteoffset;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    creq-&gt;data_len -= creq-&gt;vbuf.dst[dst_i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    dst_i++;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    } else {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    if (err == 0 &amp;&amp; __copy_to_user((void __user *)creq-&gt;vbuf.dst[dst_i].vaddr, (k_align_dst + byteoffset), creq-&gt;data_len))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    k_align_dst += creq-&gt;data_len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    creq-&gt;vbuf.dst[dst_i].len -= creq-&gt;data_len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    creq-&gt;vbuf.dst[dst_i].vaddr += creq-&gt;data_len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    creq-&gt;data_len = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    *di = dst_i;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return err;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>};
+</div></div></div></pre>
+<p>根据定义，<code>__copy_to_user()</code>直接就是拷贝，并没有对地址进行检查操作</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>#define __copy_from_user(to,from,n) (memcpy(to, (void __force *)from, n), 0)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>#define __copy_to_user(to,from,n)   (memcpy((void __force *)to, from, n), 0)
+</div></div></div></pre>
+<p>所以这里存在一处内核空间任意地址写的漏洞</p>
+<p>补丁直接去掉了对<code>creq-&gt;in_place_op != 1</code>的判断，这样就老老实实的两个地址都检查一遍</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>diff --git a/drivers/crypto/msm/qcedev.c b/drivers/crypto/msm/qcedev.c
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>index e63f061..1402d3d 100644
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>--- a/drivers/crypto/msm/qcedev.c
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+++ b/drivers/crypto/msm/qcedev.c
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>@@ -1234,44 +1234,6 @@ static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct qcedev_cipher_op_req *saved_req;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    struct  qcedev_cipher_op_req *creq = &amp;areq-&gt;cipher_op_req;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> 
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-   /* Verify Source Address's */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-   for (i = 0; i &lt; areq-&gt;cipher_op_req.entries; i++)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-       if (!access_ok(VERIFY_READ,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-           (void __user *)areq-&gt;cipher_op_req.vbuf.src[i].vaddr,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                   areq-&gt;cipher_op_req.vbuf.src[i].len))
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-           return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-   /* Verify Destination Address's */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-   if (creq-&gt;in_place_op != 1) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-       for (i = 0, total = 0; i &lt; QCEDEV_MAX_BUFFERS; i++) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-           if ((areq-&gt;cipher_op_req.vbuf.dst[i].vaddr != 0) &amp;&amp;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                       (total &lt; creq-&gt;data_len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-               if (!access_ok(VERIFY_WRITE,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                   (void __user *)creq-&gt;vbuf.dst[i].vaddr,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                       creq-&gt;vbuf.dst[i].len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                   pr_err("%s:DST WR_VERIFY err %d=0x%lx\n",
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                       __func__, i, (uintptr_t)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                       creq-&gt;vbuf.dst[i].vaddr);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                   return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-               }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-               total += creq-&gt;vbuf.dst[i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-           }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-       }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-   } else  {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-       for (i = 0, total = 0; i &lt; creq-&gt;entries; i++) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-           if (total &lt; creq-&gt;data_len) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-               if (!access_ok(VERIFY_WRITE,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                   (void __user *)creq-&gt;vbuf.src[i].vaddr,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                       creq-&gt;vbuf.src[i].len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                   pr_err("%s:SRC WR_VERIFY err %d=0x%lx\n",
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                       __func__, i, (uintptr_t)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                       creq-&gt;vbuf.src[i].vaddr);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-                   return -EFAULT;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-               }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-               total += creq-&gt;vbuf.src[i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-           }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-       }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>-   }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    total = 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> 
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    if (areq-&gt;cipher_op_req.mode == QCEDEV_AES_MODE_CTR)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>@@ -1569,6 +1531,36 @@ static int qcedev_check_cipher_params(struct qcedev_cipher_op_req *req,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>            __func__, total, req-&gt;data_len);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>        goto error;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+   /* Verify Source Address's */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+   for (i = 0, total = 0; i &lt; req-&gt;entries; i++) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+       if (total &lt; req-&gt;data_len) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+           if (!access_ok(VERIFY_READ,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+               (void __user *)req-&gt;vbuf.src[i].vaddr,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                   req-&gt;vbuf.src[i].len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                   pr_err("%s:SRC RD_VERIFY err %d=0x%lx\n",
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                       __func__, i, (uintptr_t)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                           req-&gt;vbuf.src[i].vaddr);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                   goto error;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+           }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+           total += req-&gt;vbuf.src[i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+       }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+   }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+   /* Verify Destination Address's */
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+   for (i = 0, total = 0; i &lt; QCEDEV_MAX_BUFFERS; i++) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+       if ((req-&gt;vbuf.dst[i].vaddr != 0) &amp;&amp;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+           (total &lt; req-&gt;data_len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+           if (!access_ok(VERIFY_WRITE,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+               (void __user *)req-&gt;vbuf.dst[i].vaddr,
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                   req-&gt;vbuf.dst[i].len)) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                   pr_err("%s:DST WR_VERIFY err %d=0x%lx\n",
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                       __func__, i, (uintptr_t)
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                           req-&gt;vbuf.dst[i].vaddr);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+                   goto error;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+           }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+           total += req-&gt;vbuf.dst[i].len;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+       }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>+   }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return 0;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span> error:
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    return -EINVAL;
+</div></div></div></pre>
+<p>稍微改了改计划，接下来大概每周写一个漏洞分析，其它时间多读书，多看师傅们写的文章，把知识点补上，然后学习一下Web相关的知识，纯本地安全没前途，还是要多搞搞逻辑漏洞和Web漏洞</p>
+<p>So漏洞我有点想法，下个月实现一下</p>
+</div></div>
+      <script></script>
+    </body>
+    </html>
+  

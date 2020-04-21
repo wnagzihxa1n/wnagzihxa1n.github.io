@@ -1,0 +1,210 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- common.css -->
+      <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: -apple-system, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;height: auto;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 90%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+      <!-- ace-static.css -->
+      <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter > .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+      <style>.ace-tomorrow-night-eighties .ace_gutter {background: #272727;color: #CCC}.ace-tomorrow-night-eighties .ace_print-margin {width: 1px;background: #272727}.ace-tomorrow-night-eighties {background-color: #2D2D2D;color: #CCCCCC}.ace-tomorrow-night-eighties .ace_constant.ace_other,.ace-tomorrow-night-eighties .ace_cursor {color: #CCCCCC}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selection {background: #515151}.ace-tomorrow-night-eighties.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #2D2D2D;}.ace-tomorrow-night-eighties .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #6A6A6A}.ace-tomorrow-night-bright .ace_stack {background: rgb(66, 90, 44)}.ace-tomorrow-night-eighties .ace_marker-layer .ace_active-line {background: #393939}.ace-tomorrow-night-eighties .ace_gutter-active-line {background-color: #393939}.ace-tomorrow-night-eighties .ace_marker-layer .ace_selected-word {border: 1px solid #515151}.ace-tomorrow-night-eighties .ace_invisible {color: #6A6A6A}.ace-tomorrow-night-eighties .ace_keyword,.ace-tomorrow-night-eighties .ace_meta,.ace-tomorrow-night-eighties .ace_storage,.ace-tomorrow-night-eighties .ace_storage.ace_type,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #CC99CC}.ace-tomorrow-night-eighties .ace_keyword.ace_operator {color: #66CCCC}.ace-tomorrow-night-eighties .ace_constant.ace_character,.ace-tomorrow-night-eighties .ace_constant.ace_language,.ace-tomorrow-night-eighties .ace_constant.ace_numeric,.ace-tomorrow-night-eighties .ace_keyword.ace_other.ace_unit,.ace-tomorrow-night-eighties .ace_support.ace_constant,.ace-tomorrow-night-eighties .ace_variable.ace_parameter {color: #F99157}.ace-tomorrow-night-eighties .ace_invalid {color: #CDCDCD;background-color: #F2777A}.ace-tomorrow-night-eighties .ace_invalid.ace_deprecated {color: #CDCDCD;background-color: #CC99CC}.ace-tomorrow-night-eighties .ace_fold {background-color: #6699CC;border-color: #CCCCCC}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_function,.ace-tomorrow-night-eighties .ace_support.ace_function,.ace-tomorrow-night-eighties .ace_variable {color: #6699CC}.ace-tomorrow-night-eighties .ace_support.ace_class,.ace-tomorrow-night-eighties .ace_support.ace_type {color: #FFCC66}.ace-tomorrow-night-eighties .ace_heading,.ace-tomorrow-night-eighties .ace_markup.ace_heading,.ace-tomorrow-night-eighties .ace_string {color: #99CC99}.ace-tomorrow-night-eighties .ace_comment {color: #999999}.ace-tomorrow-night-eighties .ace_entity.ace_name.ace_tag,.ace-tomorrow-night-eighties .ace_entity.ace_other.ace_attribute-name,.ace-tomorrow-night-eighties .ace_meta.ace_tag,.ace-tomorrow-night-eighties .ace_variable {color: #F2777A}.ace-tomorrow-night-eighties .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ09NrYAgMjP4PAAtGAwchHMyAAAAAAElFTkSuQmCC) right repeat-y}</style>
+      <!-- export.css -->
+      <style>
+        body{margin:0 auto;max-width:800px;line-height:1.4}
+        #nav{margin:5px 0 10px;font-size:15px}
+        #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+        #contentarea{font-size:15px;margin:16px 0}
+        .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+        .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+        .latex-cell{white-space:pre-wrap;}
+      </style>
+      <!-- User CSS -->
+      <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+    </head>
+    <body>
+      
+      <div id="titlearea">
+        <h2>大土豆安全笔记 | 2020.04.20</h2>
+      </div>
+      <div id="contentarea"><div class="cell markdown-cell"><p><img src="resources/9DB9244B02DD3F5986C6B95F6AB9B6F0.jpg" alt="kaleidico-7lryofJ0H9s-unsplash.jpg" width="5425" height="3617"></p>
+<p><strong>TALK IS CHEAP, SHOW ME THE GRAPH</strong></p>
+<p>这篇文章会涉及一些基础的图论名词，但都简单易懂，且只聊思路，并不涉及太多的代码，请放心阅读</p>
+<p>周末做了两件事</p>
+<ol>
+<li>优化了Neo4j的搜索逻辑</li>
+<li>在李神探的指导下，很快跑通了FlowDroid</li>
+</ol>
+<p>先讲讲Neo4j的搜索，用AndroGuard生成函数调用图，这个图是以<code>node</code>和<code>edge</code>的形式存储在GML文件里，表示形式如下</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    id 143
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    label "Lcom/wnagzihxa1n/myapplication/MainActivity;-&gt;onCreate(Landroid/os/Bundle;)V [access_flags=protected] @ 0x10a98"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    external False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    entrypoint True
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    id 144
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    label "Lcom/wnagzihxa1n/myapplication/MainActivity;-&gt;startActivity(Landroid/content/Intent;)V"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    external True
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    entrypoint True
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>edge [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    source 143
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    target 144
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div></div></div></pre>
+<p>这就表示了从节点<code>143</code>到节点<code>144</code>有一条边，这些节点和边的定义构成了一个有向图</p>
+<p>我们只需要解析GML文件，将节点和边导入Neo4j数据库，再进行路径搜索即可</p>
+<p>效果还是很好的</p>
+<p><img src="resources/FE523B0E24B64601FB9FC22FDE156A99.jpg" alt="IMAGE" width="1663" height="374"></p>
+<p>为什么我一开始说的是优化搜索逻辑呢？</p>
+<p>因为这些工作其实早就做完了，并不是周末做的，上面的搜索相当耗时，单位都是小时来计算，我看看弄一台服务器来跑</p>
+<p>在图够准确的情况下，我将两个小时的搜索压缩到了一分钟以内</p>
+<p><strong>优化一</strong></p>
+<p>首先我们将GML重写，将所有节点解析成一行，然后申请内存，此处用C语言写，将数据存储在内存里，用结构体存储节点，并且我们只需要<code>id</code>和<code>label</code>两个结构体成员</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 0 label "Landroidx/activity/R$attr;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe4e4" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 1 label "Ljava/lang/Object;-&gt;&lt;init&gt;()V" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 2 label "Landroidx/activity/R$color;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe4fc" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 3 label "Landroidx/activity/R$dimen;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe514" ]
+</div></div></div></pre>
+<p>将所有节点写入内存，这里小几十万个节点写入堆完全没问题的</p>
+<p>但是这里的写，并不是随便申请堆空间吭哧吭哧就往里面写，而是利用偏移存储</p>
+<p>我们在进行GML重写的时候大概计算一下所有<code>label</code>字段拼接的长度，有了这一长度数据，我们就可以在堆空间申请的时候有一个大概的参考</p>
+<p>申请<code>label</code>堆空间之后，我们申请所有<code>Node</code>结构体的堆空间，都申请好之后，开始写入数据</p>
+<p>这里我们将结构体的概念去除，完全靠偏移，从<code>Node</code>结构体的堆首地址开始往下写，使用一个额外的读指针指向<code>label</code>堆空间</p>
+<p>第一个Node：写入第一个节点的<code>id</code>，第二个字段是<code>label</code>堆空间的首地址，写完<code>label</code>堆空间将指针挪动，并且记录堆地址起点</p>
+<p>第二个Node：写入第二个节点的<code>id</code>，第二个字段直接赋值为上面记录的新堆地址起点，重复上面的挪动过程</p>
+<p>后面的节点按照上面的操作记录即可</p>
+<p>此时我们分割<code>Node</code>结构体的堆空间，长度按照大家的运行平台计算，但是每个结构体所占用的长度肯定是固定的</p>
+<p>比如我这里需要获取<code>id</code>为1000的结构体，那么从<code>Node</code>结构体堆空间起始地址开始，算上一千个结构体长度，就是我们需要的节点，对其进行取值即可，这是我用来存储的方式</p>
+<p><strong>优化二</strong></p>
+<p>实践过的同学都会发现一个问题，就是冗余的节点和边实在是太多了，又用不到，徒增性能开销</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 0 label "Landroidx/activity/R$attr;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe4e4" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 1 label "Ljava/lang/Object;-&gt;&lt;init&gt;()V" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 2 label "Landroidx/activity/R$color;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe4fc" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 3 label "Landroidx/activity/R$dimen;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe514" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 4 label "Landroidx/activity/R$drawable;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe52c" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 5 label "Landroidx/activity/R$id;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe544" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 6 label "Landroidx/activity/R$integer;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe55c" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 7 label "Landroidx/activity/R$layout;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe574" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 8 label "Landroidx/activity/R$string;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe58c" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 9 label "Landroidx/activity/R$style;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe6d0" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 10 label "Landroidx/activity/R$styleable;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe6b8" ]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [ id 11 label "Landroidx/activity/R;-&gt;&lt;init&gt;()V [access_flags=private constructor] @ 0xe6e8" ]
+</div></div></div></pre>
+<p>既然重写，那就重写的更彻底一些，我决定缩点，这里的缩点并非图论里的缩点，但是思想类似</p>
+<p>我这里的缩点有两步</p>
+<ol>
+<li>将入度和出度都为0的节点优化掉</li>
+<li>将<code>系统库内调用</code>的节点优化掉</li>
+</ol>
+<p>第一个缩点很好理解，有向图的节点入度和出度都为0表示没有边，没有边的节点表示没有调用，直接删除</p>
+<p>第二个缩点我们以代码来看，节点<code>7093</code>指向了节点<code>7010</code>，系统库内的调用对我们来说是没有意义的，所以我们可以进行动态标记，先将所有的边遍历一遍，把系统库内函数为<code>source</code>的边，全部删除</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    id 7093
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    label "Landroid/support/v4/provider/TreeDocumentFile;-&gt;createDirectory(Ljava/lang/String;)Landroid/support/v4/provider/DocumentFile; [access_flags=public] @ 0x1ca25c"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    external False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    entrypoint False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>  
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    id 7010
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    label "Landroid/support/v4/provider/TreeDocumentFile;-&gt;&lt;init&gt;(Landroid/support/v4/provider/DocumentFile; Landroid/content/Context; Landroid/net/Uri;)V [access_flags=constructor] @ 0x1ca1f4"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    external False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    entrypoint False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>  
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>edge [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    source 7093
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    target 7010
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div></div></div></pre>
+<p>这里是否有例外呢？我还不能肯定，还请师傅们指点</p>
+<p>补充有向图的三个概念</p>
+<p>强连通：有向图G存在节点A和节点B，节点A有一条路径可以到达节点B，节点B有一条路径可以到达节点A，就叫作两个节点强连通</p>
+<p>强连通图：有向图G中任意两个节点都强连通，就叫作强连通图</p>
+<p>强连通分量：有向图G中有一个子图，这个子图满足任意两个节点强连通，就叫作强连通分量</p>
+<p>有向图的缩点是指求出有向图G所有强连通分量之后，将每一个强连通分量以一个节点的形式来表示，重构有向图G的过程</p>
+<p>思路我已经抛出来了，大家可以思考下是否能通过图论里的缩点思想，来实现路径搜索优化呢？</p>
+<p><strong>优化三</strong></p>
+<p>此时我们就可以开始构建图了，这个优化我先不说，而我用了什么方法，我相信聪明的读者看到我上面的存储方式，就已经猜到了:)</p>
+<p>上面为什么我说"图够准确"呢？</p>
+<p>因为安卓平台的应用存在大量的回调操作，比如控件<code>Button</code>的点击事件，而<code>AndroGuard</code>默认并未生成绑定监听相关的<code>edge</code>，这就造成了可能的误报和漏报</p>
+<p>来看一个通过按钮点击跳转Activity的例子</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>protected void onCreate(Bundle bundle) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    super.onCreate(bundle);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    v0_3.setOnClickListener(new bc(this));  // <span class="ace_cjk" style="width:NaNpx">此</span><span class="ace_cjk" style="width:NaNpx">处</span><span class="ace_cjk" style="width:NaNpx">绑</span><span class="ace_cjk" style="width:NaNpx">定</span><span class="ace_cjk" style="width:NaNpx">点</span><span class="ace_cjk" style="width:NaNpx">击</span><span class="ace_cjk" style="width:NaNpx">事</span><span class="ace_cjk" style="width:NaNpx">件</span><span class="ace_cjk" style="width:NaNpx">回</span><span class="ace_cjk" style="width:NaNpx">调</span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    ...
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>final class bc implements View$OnClickListener {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    bc(SelectVideoActivity argActivity) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    this.activity = argActivity;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    super();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    public final void onClick(View view) {
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    Intent intent = new Intent();
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    intent.setClass(this.activity, SearchPagerActivity.class);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    this.activity.startActivity(intent);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span><span class="ace_indent-guide">    </span>    MTAReport.reportUserEvent("video_jce_circle_search_btn", new String[0]);
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    }
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>}
+</div></div></div></pre>
+<p>对应的GML文件相关数据如下，可以看到有<code>onClick()</code>指向<code>startActivity()</code>的边，但是却没有指向回调函数的边</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    id 107682
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    label "Lcom/tencent/qqlive/ona/circle/activity/SelectVideoActivity;-&gt;onCreate(Landroid/os/Bundle;)V [access_flags=protected] @ 0x6047ac"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    external False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    entrypoint True
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    id 107914
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    label "Lcom/tencent/qqlive/ona/circle/activity/bc;-&gt;onClick(Landroid/view/View;)V [access_flags=public final] @ 0x607c5c"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    external False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    entrypoint False
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>node [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    id 107697
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    label "Lcom/tencent/qqlive/ona/circle/activity/SelectVideoActivity;-&gt;startActivity(Landroid/content/Intent;)V"
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    external True
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    entrypoint True
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>edge [
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    source 107914
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>    target 107697
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>]
+</div></div></div></pre>
+<p>对于这种问题，我决定自己优化<code>AndroGuard</code>的生成结果</p>
+<p>上面这个例子对应的Smali代码如下，JEB和APKTool的结果略有出入，但不影响分析，可以看到调用关系还是很清晰的</p>
+<p><img src="resources/19A07B80C6DC715C12AB9A4B7D05698D.jpg" alt="IMAGE" width="1920" height="1080"></p>
+<p>我们最后处理的时候以APKTool反编译的Smali代码为准，我们不用关心这个点击事件回调绑定的哪个控件，只要存在，就把这条边记录下来</p>
+<pre><div class="ace-tomorrow-night-eighties"><div class="ace_static_highlight ace_show_gutter" style="counter-reset:ace_line 0"><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>.line 1167
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>new-instance v1, Lcom/tencent/qqlive/ona/circle/activity/bc;
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>invoke-direct {v1, p0}, Lcom/tencent/qqlive/ona/circle/activity/bc;-&gt;&lt;init&gt;(Lcom/tencent/qqlive/ona/circle/activity/SelectVideoActivity;)V
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>
+</div><div class="ace_line"><span class="ace_gutter ace_gutter-cell" unselectable="on"></span>invoke-virtual {v0, v1}, Landroid/view/View;-&gt;setOnClickListener(Landroid/view/View$OnClickListener;)V
+</div></div></div></pre>
+<p>路漫漫其修远兮，这是一项体力活</p>
+<p>FlowDroid的工作说起来可就优雅多了</p>
+<p>从官方的仓库获取代码，配置两个环境变量，然后<code>mvn install</code>就行了，虽然会有若干错误，还是比较容易解决的</p>
+<p>中间最关键的一步就是切换到<code>master</code>分支，要解决的错误少多了</p>
+<p>接下来我就投入精力到与FlowDroid运行效率作斗争的工作中</p>
+<p>就如同李神探所说，如果能够在已有FlowDroid框架上进行优化到一分钟，都可以发Paper了</p>
+<p>所以说当别人提出一些想法的时候，不要着急否定，你怎么知道我一口吃不成个大胖子呢？</p>
+<p>有时候不多认识些优秀的同龄人，都不知道自己原来这么弱</p>
+</div></div>
+      <script></script>
+    </body>
+    </html>
+  

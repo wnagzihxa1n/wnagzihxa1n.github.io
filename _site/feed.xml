@@ -17554,7 +17554,7 @@ int main()
 &lt;p&gt;这是在告诉我们加密方式&lt;/p&gt;
 
 &lt;p&gt;接下去这一步就看个人了，搞过openssl的同学肯定记得这个，虽然到现在我也不知道到底&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;help&lt;/code&gt;是哪个命令&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@tot0c /home/wnagzihxain]# openssl -h
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@wnagzihxa1n /home/wnagzihxain]# openssl -h
 openssl:Error: '-h' is an invalid command.
 
 Standard commands
@@ -17595,7 +17595,7 @@ seed-ofb
 &lt;p&gt;所以看到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aes-128-cbc&lt;/code&gt;我的第一想法就是openssl&lt;/p&gt;
 
 &lt;p&gt;我们把最后面的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aes-128-cbc&lt;/code&gt;删掉，使用openssl解密&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@tot0c /home/wnagzihxain]# openssl aes-128-cbc -d -k &quot;Misc@inf0#fjhx11&quot; -nosalt -in encDexBody -out decDexBody
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@wnagzihxa1n /home/wnagzihxain]# openssl aes-128-cbc -d -k &quot;Misc@inf0#fjhx11&quot; -nosalt -in encDexBody -out decDexBody
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;解密后的数据就很漂亮了&lt;/p&gt;
@@ -17889,24 +17889,24 @@ method_ids size = (0x00026DC8 - 0x00015DB8) / 8  = 0x00002202
                 <description>&lt;p&gt;2015XCTF福州站的第一道Mobile题，同时也是RCTF的题目，100分&lt;/p&gt;
 
 &lt;p&gt;第一个坑，先判断这是个啥玩意，file没看出来，但是应该是有的&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wnagzihxain@toT0C:~$ file 2e204fe0ec33b1689f1c47bd60a9770c
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wnagzihxain@wnagzihxa1n:~$ file 2e204fe0ec33b1689f1c47bd60a9770c
 2e204fe0ec33b1689f1c47bd60a9770c: data
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;后来查看16进制格式，才发现这是个Android Backup文件&lt;/p&gt;
 
 &lt;p&gt;能搜到搞这玩意的文章确实是不多，这里根据外国网友提供的方法，我们来一发&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wnagzihxain@toT0C:~$ dd if=2e204fe0ec33b1689f1c47bd60a9770c.ab bs=1 skip=24 of=compressed
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wnagzihxain@wnagzihxa1n:~$ dd if=2e204fe0ec33b1689f1c47bd60a9770c.ab bs=1 skip=24 of=compressed
 记录了8977280+0 的读入
 记录了8977280+0 的写出
 8977280 bytes (9.0 MB, 8.6 MiB) copied, 96.922 s, 92.6 kB/s
-wnagzihxain@toT0C:~$ printf &quot;\x1f\x8b\x08\x00\x00\x00\x00\x00&quot; | cat - compressed | gunzip -c &amp;gt; decompressed.tar
+wnagzihxain@wnagzihxa1n:~$ printf &quot;\x1f\x8b\x08\x00\x00\x00\x00\x00&quot; | cat - compressed | gunzip -c &amp;gt; decompressed.tar
 gzip: stdin: unexpected end of file
-wnagzihxain@toT0C:~$ tar xf decompressed.tar 
+wnagzihxain@wnagzihxa1n:~$ tar xf decompressed.tar 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;解压生成一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apps&lt;/code&gt;文件夹，查看一下文件树，发现有一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BOOKS.db&lt;/code&gt;，这一定是个关键文件&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wnagzihxain@toT0C:~$ tree apps
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wnagzihxain@wnagzihxa1n:~$ tree apps
 apps
 ├── com.example.mybackup
 │   ├── a
@@ -18297,7 +18297,7 @@ public class MainActivity extends AppCompatActivity {
                     builder.append(signature.toCharsString());
                 }
                 String signature = builder.toString();
-                Log.i(&quot;toT0C&quot;, signature);
+                Log.i(&quot;wnagzihxa1n&quot;, signature);
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
@@ -18307,7 +18307,7 @@ public class MainActivity extends AppCompatActivity {
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;输出&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;04-01 23:35:12.497 5939-5939/com.wnagzihxain.myapplication I/toT0C: 308203473082022fa00302010202043920b637300d06092a864886f70d01010b05003054310b300906035504061302434e310b300906035504081302434e310b3009060355040713025348310d300b060355040a1304534a5455310d300b060355040b1304306f7073310d300b0603550403130430637466301e170d3135303330363035323930315a170d3430303232383035323930315a3054310b300906035504061302434e310b300906035504081302434e310b3009060355040713025348310d300b060355040a1304534a5455310d300b060355040b1304306f7073310d300b060355040313043063746630820122300d06092a864886f70d01010105000382010f003082010a0282010100dd03fbab4ce3ba02230cf7a6a756309c8a45ae25384fef3d4a293c1b298082aee969e689128bef54bd763bb5f1a20218d824ac934d86a97d4a17bff345e146bbe3d506246bb86766745da46d16bad78e692db746528dbbf365c15b8e529132631e2cc3970910fb58caa3d082ab419f61d9c80379b6b7b40b1458173871efcaf2e7f69ffc29521cbefc641461de8a799c88d359f0bed6c1fcda939c954fe117ae45888829b6a8ae12d566709b434f2f8ae0c13bd3fbd9a4492c1a09201521b8e8a299adc4b6e8a1adeb7a11a7aef4a9ae13806b11acc4da0d6c420450e073927f6d094e91b5a18e74beec3083f8ff95ce8fcb091a411db1e4d64a6733d4942c590203010001a321301f301d0603551d0e04160414c5f5c9198b5ccc546570fd243a268f50277d7e0d300d06092a864886f70d01010b05000382010100c77bcd399b74e42c2b97171a264492e8bbd47ba3871057d1bc902c5f207aa2609d80992d3702f3ed70f888faf0ea90421e57bf53ec7852af8c31e073788e7a0fc45f421d687a367361ae0643ee81acc8e47e2fda7b14cf633eb78bac43bd95c97519466c6f8c0e0f23a105b871958ae4c6e54997ea2034185a7eb46369657e4f4b1594ef8c9ead2fb74b85d60fcabe7764c57169c89b5d8da43103d619bb8002e9917751afe8572217f8e7f13f3f308659bd8bc8f95a23f351c62c617d9748e27789807022508daf4bfa1605b58986c4d67f254f3fd4dcad2d31059d304b304d6643e2d44a9265427b72d93e83b3fc4f5a803cb586764fa3e28863eaf29961c9
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;04-01 23:35:12.497 5939-5939/com.wnagzihxain.myapplication I/wnagzihxa1n: 308203473082022fa00302010202043920b637300d06092a864886f70d01010b05003054310b300906035504061302434e310b300906035504081302434e310b3009060355040713025348310d300b060355040a1304534a5455310d300b060355040b1304306f7073310d300b0603550403130430637466301e170d3135303330363035323930315a170d3430303232383035323930315a3054310b300906035504061302434e310b300906035504081302434e310b3009060355040713025348310d300b060355040a1304534a5455310d300b060355040b1304306f7073310d300b060355040313043063746630820122300d06092a864886f70d01010105000382010f003082010a0282010100dd03fbab4ce3ba02230cf7a6a756309c8a45ae25384fef3d4a293c1b298082aee969e689128bef54bd763bb5f1a20218d824ac934d86a97d4a17bff345e146bbe3d506246bb86766745da46d16bad78e692db746528dbbf365c15b8e529132631e2cc3970910fb58caa3d082ab419f61d9c80379b6b7b40b1458173871efcaf2e7f69ffc29521cbefc641461de8a799c88d359f0bed6c1fcda939c954fe117ae45888829b6a8ae12d566709b434f2f8ae0c13bd3fbd9a4492c1a09201521b8e8a299adc4b6e8a1adeb7a11a7aef4a9ae13806b11acc4da0d6c420450e073927f6d094e91b5a18e74beec3083f8ff95ce8fcb091a411db1e4d64a6733d4942c590203010001a321301f301d0603551d0e04160414c5f5c9198b5ccc546570fd243a268f50277d7e0d300d06092a864886f70d01010b05000382010100c77bcd399b74e42c2b97171a264492e8bbd47ba3871057d1bc902c5f207aa2609d80992d3702f3ed70f888faf0ea90421e57bf53ec7852af8c31e073788e7a0fc45f421d687a367361ae0643ee81acc8e47e2fda7b14cf633eb78bac43bd95c97519466c6f8c0e0f23a105b871958ae4c6e54997ea2034185a7eb46369657e4f4b1594ef8c9ead2fb74b85d60fcabe7764c57169c89b5d8da43103d619bb8002e9917751afe8572217f8e7f13f3f308659bd8bc8f95a23f351c62c617d9748e27789807022508daf4bfa1605b58986c4d67f254f3fd4dcad2d31059d304b304d6643e2d44a9265427b72d93e83b3fc4f5a803cb586764fa3e28863eaf29961c9
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;算一下&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hashCode()&lt;/code&gt;&lt;/p&gt;
@@ -19209,7 +19209,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        Toast.makeText(this, stringFromJNI2(1616384), Toast.LENGTH_LONG).show();
-        Log.i(&quot;toT0C&quot;, stringFromJNI2(1616384));
+        Log.i(&quot;wnagzihxa1n&quot;, stringFromJNI2(1616384));
     }
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -19226,7 +19226,7 @@ public class MainActivity extends AppCompatActivity {
 &lt;p&gt;&lt;img src=&quot;/assets/resources/3567CF4DB2E2E02DCE02F53EF01075ED.png&quot; alt=&quot;4.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;跑起来，输出Flag&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;03-28 09:02:21.066 25084-25084/com.wnagzihxain.demo I/toT0C: Y0vAr3TimerMa3te7
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;03-28 09:02:21.066 25084-25084/com.wnagzihxain.demo I/wnagzihxa1n: Y0vAr3TimerMa3te7
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;毕竟才50分，还要分析so那简直太折腾，还是走捷径比较好，要是想锻炼so分析能力的同学可以去折腾一下&lt;/p&gt;

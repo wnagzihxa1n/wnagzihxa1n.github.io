@@ -126,11 +126,11 @@ public class SecondActivity extends Activity {
 
 运行，字符串和下面的数字均从MyApplication获取
 
-![IMAGE](/assets/resources/28D8B97C90CDEACB4F3C9C6C66E07D0E.jpg =962x540)
+![IMAGE](/assets/resources/28D8B97C90CDEACB4F3C9C6C66E07D0E.jpg)
 
 点击按钮，修改数字并跳转
 
-![IMAGE](/assets/resources/35F2639106F8D9011E1381792B676A5A.jpg =961x541)
+![IMAGE](/assets/resources/35F2639106F8D9011E1381792B676A5A.jpg)
 
 调试着要是没啥问题，就编译签名，命名为SourceAPK.apk
 
@@ -182,8 +182,8 @@ public void onCreate() {
 
 再把SourceAPK.apk重命名为`a`放到`assets`，跑起来
 
-![IMAGE](/assets/resources/0DF15BB6FDECA6FD0793EF853F2F2EF9.jpg =962x542)
+![IMAGE](/assets/resources/0DF15BB6FDECA6FD0793EF853F2F2EF9.jpg)
 
-![IMAGE](/assets/resources/305D778C544BE669A1C3FBBBFCBB511A.jpg =962x543)
+![IMAGE](/assets/resources/305D778C544BE669A1C3FBBBFCBB511A.jpg)
 
 点击按钮也能正常获取数据，跳转页面没啥大问题

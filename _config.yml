@@ -1,0 +1,73 @@
+title: 大土豆的菜栏
+author: wnagzihxa1n
+email: wnagzihxa1n@gmail.com
+description: > # this means to ignore newlines until "show_exerpts:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+show_excerpts: false # set to true to show excerpts on the homepage
+
+# Minima date format
+# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
+sass:
+  sass_dir: _sass
+plainwhite:
+  name: wnagzihxa1n
+  tagline: iOS/Android Security
+  date_format: "%b %-d, %Y"
+  sitemap: true # set to true to generate sitemap.xml content
+
+  # generate social links in footer
+  social_links:
+    twitter: wnagzihxa1n
+    github:  wnagzihxa1n
+    linkedIn: in/zhixian-wang-612908174/
+    rss: rss
+    # dribbble: jekyll
+    # flickr:   jekyll
+    # instagram: jekyll
+    # pinterest: jekyll
+    # youtube: jekyll
+    # facebook: jekyll
+
+    # Mastodon instances
+    # mastodon:
+    # - username: jekyll
+    #   instance: example.com
+    # - username: jekyll2
+    #   instance: example.com
+
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+header_pages:
+  about.md
+
+header:
+  pages:
+    - name: Home
+      slug: index
+    - name: Security Daily
+      slug: security_daily
+    - name: iOS
+      slug: ios_security
+    - name: Android
+      slug: android_security
+    - name: CTF
+      slug: android_ctf
+    - name: Browser
+      slug: browser_security
+    - name: Friends
+      slug: friends
+    - name: About
+      slug: about
+
+# Build settings
+theme: plainwhite
+
+plugins:
+  - jekyll-seo-tag
+  # - jekyll-feed
+
+name: wnagzihxa1n
+description: 大土豆的菜栏
+url: https://wnagzihxa1n.vip

@@ -1,0 +1,3 @@
+---
+layout: security_daily
+---

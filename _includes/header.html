@@ -1,0 +1,20 @@
+<style>
+    ul.header_ul li.header_li{ float:left; margin-left:20px; list-style-type:none;}
+    li a.header_li_a {display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;}
+</style>
+
+<ul class="header_ul">
+    {% for page in site.header.pages %}
+        {% if page.slug and page.slug != "" and page.slug != nil %}
+            {% assign page_link = page.slug %}
+        {% else %}
+            {% assign page_link = "/" | append: page.name | downcase %}
+        {% endif %}
+        {% assign page_link = page_link | absolute_url %}
+        <li class="header_li"><a class="header_li_a" href="{{ page_link }}">{{ page.name }}</a></li>
+    {% endfor %}
+</ul>
+<br>
+
+
+  

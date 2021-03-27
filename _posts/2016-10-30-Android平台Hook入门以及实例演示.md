@@ -51,7 +51,7 @@ http://forum.xda-developers.com/showthread.php?t=3034811
 
 安装完后，单击打开安装，至于这个安装干了什么后面详细讲
 
-![IMAGE](/assets/resources/C36DE11933E64B7516B6D7FCC94AC77F.jpg =1378x781)
+![IMAGE](/assets/resources/C36DE11933E64B7516B6D7FCC94AC77F.jpg)
 
 安装完后该重启就重启，想折腾Xposed，重启这事省不了
 
@@ -165,7 +165,7 @@ provided files('lib/XposedBridgeApi-54.jar')
 
 如下
 
-![IMAGE](/assets/resources/2A755797DAAC01CA6E8C5D10191A107B.jpg =1920x1050)
+![IMAGE](/assets/resources/2A755797DAAC01CA6E8C5D10191A107B.jpg)
 
 创建一个类，我这里命名为XposedMain，命名随意，喜欢就好
 
@@ -174,7 +174,7 @@ provided files('lib/XposedBridgeApi-54.jar')
 com.wnagzihxain.xposeddemo.XposedMain
 ```
 
-![IMAGE](/assets/resources/0D865A49E1B6930228D1451EC3345C02.jpg =1920x1049)
+![IMAGE](/assets/resources/0D865A49E1B6930228D1451EC3345C02.jpg)
 
 然后修改AndroidManifest.xml文件
 
@@ -191,7 +191,7 @@ com.wnagzihxain.xposeddemo.XposedMain
 2. 这个是该模块的描述，比如"微信抢红包插件"，不是模块名字
 3. Xposed最低版本，这个在Xposed installer的界面可以看到安装的版本是多少
 
-![IMAGE](/assets/resources/0985D5F72FB015A4176C69131CC9604E.jpg =1920x1051)
+![IMAGE](/assets/resources/0985D5F72FB015A4176C69131CC9604E.jpg)
 
 开始写代码，首先我们添加一个接口
 ```
@@ -412,7 +412,7 @@ connected to 127.0.0.1:62001
 
 可以看到Android Device Monitor已经打印出了很多的日志，我输入了123456，看到下面输出了Hook代码里相应的日志
 
-![IMAGE](/assets/resources/62952787D3B5F397101E028A706B9709.jpg =1920x1051)
+![IMAGE](/assets/resources/62952787D3B5F397101E028A706B9709.jpg)
 
 执行流程也是比较清楚
 ```
@@ -425,6 +425,6 @@ connected to 127.0.0.1:62001
 
 然后我们来看效果
 
-![IMAGE](/assets/resources/7B6D0D57790B260A0F5DB4A259325F45.jpg =1380x779)
+![IMAGE](/assets/resources/7B6D0D57790B260A0F5DB4A259325F45.jpg)
 
 可以看到我们Hook后设置返回值为true，现在从Toast的情况来看，确实是进入了校验正确的分支

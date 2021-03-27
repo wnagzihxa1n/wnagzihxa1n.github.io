@@ -2,7 +2,7 @@
 layout: post
 title:  "保护技术开发03 - 添加Application"
 date:   2017-09-03 18:00:00 +520
-categories: Android
+categories: Android_Security
 ---
 
 一般情况下，一个正常的APP都会有一个Application类，少有APP没有这个，那么我们加壳的时候就要处理这个Application

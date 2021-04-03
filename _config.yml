@@ -46,16 +46,12 @@ header:
   pages:
     - name: Home
       slug: index
-    - name: Security Daily
-      slug: security_daily
     - name: iOS
       slug: ios_security
     - name: Android
       slug: android_security
     - name: CTF
       slug: android_ctf
-    - name: Browser
-      slug: browser_security
     - name: Friends
       slug: friends
     - name: About

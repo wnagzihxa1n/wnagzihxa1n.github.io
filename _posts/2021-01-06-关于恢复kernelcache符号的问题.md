@@ -16,7 +16,7 @@ categories: iOS_Security
 
 接着又说通过joker工具结合XNU源码可以确定几个有差异的函数是下面这几个，我对照着做的时候发现这里并不像作者说的这么简单
 
-![image-20210131150554244](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150554244.png)
+![IMAGE](/assets/resources/A9F53F19FD670F4C3AD8251524D2C530.jpg)
 
 我按照时间线的形式来记录我在遇到这个问题时是如何思考与解决的
 
@@ -28,19 +28,19 @@ categories: iOS_Security
 
 当我在macOS平台用IDA 7.0反编译`kc_12.4.8`的时候，我发现了符号的问题，真的是一丁点都没有，`kc_12.4.9`也是如此
 
-![image-20210131150624263](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150624263.png)
+![IMAGE](/assets/resources/818B257C3623005A900414EEDF117795.jpg)
 
 使用bindiff进行比对，发现比对结果与作者有所差别，这里猜测是因为我使用的是IDA 7.0，对应的bindiff是5导致的，IDA 7.5可以使用bindiff 6
 
-![image-20210131150642325](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150642325.png)
+![IMAGE](/assets/resources/4608A421D1609EDEEF1D9C3022F62E19.jpg)
 
 进入到作者所说的函数，添加的是`sub_FFFFFFF00766D6C0`
 
-![image-20210131150657988](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150657988.png)
+![IMAGE](/assets/resources/42583622F99A86EF006307C7F9497B2A.jpg)
 
 在IDA里找到这个函数，想不明白作者是如何通过这种代码判断出来这是一个`bzero()`函数的
 
-![image-20210131150712081](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150712081.png)
+![IMAGE](/assets/resources/970BD44DC36180D060AE1E0973F99C36.jpg)
 
 随着疑惑越来越多，第一反应当然是谷歌搜索，看看有没有前辈们的经验可以借鉴学习的
 
@@ -105,7 +105,7 @@ categories: iOS_Security
 
 首先来讲Lumina，这是从IDA 7.2开始引进的一个实验性功能，它的作用就是动态从Lumina服务器获取函数的数据，比如我正在分析一个静态编译的固件，然后使用Lumina，它可以将函数的哈希发送到Lumina服务器匹配再返回对应的数据，相当于一个动态的FLIRT
 
-![image-20210131150732265](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150732265.png)
+![IMAGE](/assets/resources/66E60D9E1103886EC1D7FF76BD688C7F.jpg)
 
 因为众所周知的原因，Windows的IDA目前有最新的7.5，macOS只有7.0，而Lumina是从IDA 7.2开始引进的，所以我们切换到Windows的IDA 7.5
 
@@ -123,7 +123,7 @@ LUMINA_PORT = 1234
 
 我这里尝试了一下，恢复了一小部分符号，距离舒舒服服的分析还是有差距
 
-![image-20210131150747923](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150747923.png)
+![IMAGE](/assets/resources/8EAD4EC52ADFF25BBFF0B3837BFD25DC.jpg)
 
 另一个是师傅和我说的一个拥有调试符号的kernelcache
 - https://twitter.com/tihmstar/status/1295814618242318337
@@ -151,7 +151,7 @@ Symbolicated 150904 symbols and 47 functions
 
 首先我们需要对比出补丁版本修改后的函数，为了结果更加准确，这里使用Windows平台的IDA 7.5，有差异的函数也是八个
 
-![image-20210131150803613](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150803613.png)
+![IMAGE](/assets/resources/ED95A4F7F3FD3104DFD19F4D7471451D.jpg)
 
 对diff结果做一个记录，方便后面搜索
 
@@ -168,15 +168,15 @@ Symbolicated 150904 symbols and 47 functions
 
 我们再对`kc_12.4.8`和`kc_symbols`进行比对
 
-![image-20210131150820049](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150820049.png)
+![IMAGE](/assets/resources/6216CAE16DB126007416D88247E56207.jpg)
 
 有识别效果好的
 
-![image-20210131150832475](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150832475.png)
+![IMAGE](/assets/resources/415C8AE972DB646847F03FB633E0B405.jpg)
 
 也有识别效果可能有错的
 
-![image-20210131150845563](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150845563.png)
+![IMAGE](/assets/resources/7AB2EF189CEF056D165D9EFD841905EA.jpg)
 
 八个差异函数对比结果记录如下
 
@@ -207,7 +207,7 @@ Symbolicated 150904 symbols and 47 functions
 
 反编译三个没有匹配到符号的函数，发现函数`sub_FFFFFFF0076BE438`存在字符串
 
-![image-20210131150900953](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150900953.png)
+![IMAGE](/assets/resources/81AD7D3A5DD05B8CDBF12A836F581D18.jpg)
 
 通过源码找到一个函数
 ```
@@ -254,7 +254,7 @@ drwxr-xr-x@ 10 wnagzihxa1n  staff         320 Jan  9  2007 Firmware
 
 选择解压缩后的最大的那个dmg文件
 
-![image-20210131150919771](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150919771.png)
+![IMAGE](/assets/resources/E1726F02E2921E266932F079F718BFF2.jpg)
 
 解压缩的key从下面这个网站搜索
 - https://www.theiphonewiki.com/wiki/Firmware/iPhone/12.x
@@ -274,7 +274,7 @@ drwxr-xr-x@ 10 wnagzihxa1n  staff         320 Jan  9  2007 Firmware
 
 如图修改`dyld-519.2.2/launch-cache/dsc_extractor.cpp`，将`0`改为`1`
 
-![image-20210131150938852](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150938852.png)
+![IMAGE](/assets/resources/5608E9C5F846666164208AE901D7ED1A.jpg)
 
 使用clang编译
 ```
@@ -290,7 +290,7 @@ drwxr-xr-x@ 10 wnagzihxa1n  staff         320 Jan  9  2007 Firmware
 
 实在是没辙了，我决定问这篇文章的作者，一番搜索找到了作者的推特，我猜这种文章一般作者都会转发一下，果不其然，我就留言描述了我的问题，作者回复的也很迅速，大概意思就是没啥特别的好办法，从调用关系，字符串，或者有符号的kernelcache上手慢慢找
 
-![image-20210131150947251](/Users/wnagzihxa1n/Library/Application Support/typora-user-images/image-20210131150947251.png)
+![IMAGE](/assets/resources/90F84BB2499D6F6AED7138A0BA61A7FD.jpg)
 
 我最后跟brightiupzl师傅请教了一下这个问题，大概意思就是：我这个diff没有符号固件来找漏洞的操作，对于新手来说难度有点大
 

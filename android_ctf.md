@@ -1,3 +1,0 @@
----
-layout: android_ctf
----

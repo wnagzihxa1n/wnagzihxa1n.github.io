@@ -50,8 +50,6 @@ header:
       slug: ios_security
     - name: Android
       slug: android_security
-    - name: Friends
-      slug: friends
     - name: About
       slug: about
 

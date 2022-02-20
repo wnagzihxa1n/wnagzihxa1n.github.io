@@ -57,7 +57,7 @@ header:
 theme: plainwhite
 
 plugins:
-  - jekyll-seo-tag
+  # - jekyll-seo-tag
   # - jekyll-feed
 
 name: wnagzihxa1n

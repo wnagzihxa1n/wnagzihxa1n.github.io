@@ -54,7 +54,7 @@ header:
       slug: about
 
 # Build settings
-theme: plainwhite
+theme: plainwhite-jekyll
 
 plugins:
   # - jekyll-seo-tag

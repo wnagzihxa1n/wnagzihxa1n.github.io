@@ -1,3 +1,0 @@
----
-layout: ios_security
----

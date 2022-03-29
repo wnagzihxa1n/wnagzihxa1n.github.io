@@ -1,3 +1,0 @@
----
-layout: browser_security
----

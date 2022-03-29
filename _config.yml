@@ -1,65 +1,21 @@
-title: wnagzihxa1n's blog
-author: wnagzihxa1n
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+title: wnagzihxa1n's Blog
 email: wnagzihxa1n@gmail.com
-description: > # this means to ignore newlines until "show_exerpts:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-show_excerpts: false # set to true to show excerpts on the homepage
 
-# Minima date format
-# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
-sass:
-  sass_dir: _sass
-plainwhite:
-  name: wnagzihxa1n
-  tagline: iOS/Android Security
-  date_format: "%b %-d, %Y"
-  sitemap: true # set to true to generate sitemap.xml content
+#write html inside the double quotes to display in jumbotron
+description: "<br>Welcome to wnagzihxa1n's Blog"
 
-  # generate social links in footer
-  social_links:
-    twitter: wnagzihxa1n
-    github:  wnagzihxa1n
-    linkedIn: in/zhixian-wang-612908174/
-    rss: rss
-    # dribbble: jekyll
-    # flickr:   jekyll
-    # instagram: jekyll
-    # pinterest: jekyll
-    # youtube: jekyll
-    # facebook: jekyll
-
-    # Mastodon instances
-    # mastodon:
-    # - username: jekyll
-    #   instance: example.com
-    # - username: jekyll2
-    #   instance: example.com
-
-# If you want to link only specific pages in your header, uncomment
-# this and add the path to the pages in order as they should show up
-header_pages:
-  about.md
-
-header:
-  pages:
-    - name: Home
-      slug: index
-    - name: iOS
-      slug: ios_security
-    - name: Android
-      slug: android_security
-    - name: About
-      slug: about
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://wnagzihxa1n.vip" # the base hostname & protocol for your site
+twitter_username: wnagzihxa1n
+github_username:  wnagzihxa1n
 
 # Build settings
-theme: plainwhite-jekyll
-
-plugins:
-  # - jekyll-seo-tag
-  # - jekyll-feed
-
-name: wnagzihxa1n
-description: wnagzihxa1n's blog
-url: https://wnagzihxa1n.vip
+markdown: kramdown

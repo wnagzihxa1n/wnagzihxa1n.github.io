@@ -1,8 +1,13 @@
 ---
 layout: default
 ---
-<div class="post-container">
-    <div class="post">
-        {{ content }}
-    </div>
+<div class="jumbotron">
+<div class="container">
+  <h1 class="post-title-main" itemprop="name headline">{{ page.title }}</h1>
+<center>  <h4 class="post-title-main" itemprop="name headline">{{ page.tagline}}</h4></center>
+</div>
+</div>
+
+<div class="container page-stuff">
+  {{ content }}
 </div>

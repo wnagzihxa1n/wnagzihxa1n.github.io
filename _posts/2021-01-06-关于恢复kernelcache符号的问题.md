@@ -210,7 +210,7 @@ Symbolicated 150904 symbols and 47 functions
 ![IMAGE](/assets/resources/81AD7D3A5DD05B8CDBF12A836F581D18.jpg)
 
 通过源码找到一个函数
-```
+```C++
 default:
 	panic("ipc_kobject_server: strange destination rights");
 }

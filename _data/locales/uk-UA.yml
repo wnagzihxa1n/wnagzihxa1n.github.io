@@ -37,8 +37,10 @@ copyright:
   # Displayed in the footer
   brief: Деякі права захищено.
   verbose: >-
+    Публікації на сайті захищено ліцензією Creative Commons Attribution 4.0 International (CC BY 4.0),
+    якщо інше не вказано в тексті.
 
-meta: 
+meta: Powered by :PLATFORM with :THEME theme.
 
 not_found:
   statment: Вибачте, це посилання вказує на ресурс, що не існує.

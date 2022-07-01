@@ -1,4 +1,3 @@
----
 # The layout text of site
 
 # ----- Commons label -----
@@ -37,9 +36,8 @@ copyright:
 
   # Displayed in the footer
   brief: Một số quyền được bảo lưu.
-  verbose:
-    "Trừ khi có ghi chú khác, các bài viết đăng trên trang này được cấp phép bởi tác giả theo giấy phép \
-    Creative Commons Attribution 4.0 International (CC BY 4.0)."
+  verbose: >-
+    Trừ khi có ghi chú khác, các bài viết đăng trên trang này được cấp phép bởi tác giả theo giấy phép Creative Commons Attribution 4.0 International (CC BY 4.0).
 meta: Trang web này được tạo bởi :PLATFORM với chủ đề :THEME.
 
 not_found:

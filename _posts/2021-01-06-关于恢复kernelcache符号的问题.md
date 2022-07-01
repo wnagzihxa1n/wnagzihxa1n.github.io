@@ -3,6 +3,7 @@ layout: post
 title:  "关于恢复kernelcache符号的问题"
 date:   2021-01-06 18:00:00 +520
 categories: iOS_Security
+tags: [Reverse]
 ---
 
 **PDF版本请点击[此处](/assets/pdf/%E5%85%B3%E4%BA%8E%E6%81%A2%E5%A4%8Dkernelcache%E7%AC%A6%E5%8F%B7%E7%9A%84%E9%97%AE%E9%A2%98.pdf)下载**
@@ -48,12 +49,12 @@ categories: iOS_Security
 - http://newosxbook.com/tools/jtool.html
 
 使用`--analyze`生成符号文件
-```
-➜  jtool2 ./jtool2 --analyze kernelcache.release.iphone7
+```shell
+$ jtool2 ./jtool2 --analyze kernelcache.release.iphone7
 ```
 
 生成的符号文件格式有如下七种类型，可能有更多，我这里只关注到这几个，其中又以`_func_xxxxxxxxxxxxxxxx`最多，数量还是太少
-```
+```shell
 0xfffffff00767b9c8|_func_fffffff00767b9c8|
 0xfffffff00767b9f4|_func_fffffff00767b9f4|
 
@@ -113,7 +114,7 @@ categories: iOS_Security
 - https://github.com/naim94a/lumen
 
 修改`{IDA_HOME}\cfg\ida.cfg`
-```
+```shell
 LUMINA_HOST = "lumen.abda.nl";
 LUMINA_PORT = 1234
 ```
@@ -132,15 +133,15 @@ LUMINA_PORT = 1234
 - https://updates.cdn-apple.com/2020SummerSeed/fullrestores/001-32635/423F68EA-D37F-11EA-BB8E-D1AE39EBB63D/iPhone11,8,iPhone12,1_14.0_18A5342e_Restore.ipsw
 
 按照上面的步骤解压缩ipsw固件获得一个`kernelcache.research.iphone12b`，对其进行解析
-```
-➜  jtool2 ./jtool2 -dec kernelcache.research.iphone12b
+```shell
+$ jtool2 ./jtool2 -dec kernelcache.research.iphone12b
 ```
 
 解析完成后会生成文件`/tmp/kernel`，拷贝重命名为`kernelcache.research.iphone12b.bin`
 
 尝试分析提取符号，发现有15万+的符号，惊喜！以下将其记为`kc_symbols`
-```
-➜  jtool2 ./jtool2 --analyze kernelcache.research.iphone12b.bin
+```shell
+$ jtool2 ./jtool2 --analyze kernelcache.research.iphone12b.bin
 ...
 opened companion file ./kernelcache.research.iphone12b.bin.ARM64.CCA1C472-EE81-32F2-8AB8-2ADD55281591
 Dumping symbol cache to file
@@ -236,8 +237,8 @@ default:
 前面所有的步骤我们都是将ipsw固件解压缩之后，直接获取解压缩根目录下的`kernel.release.iphonexxx`文件进行处理
 
 这篇文章里的方式是使用解压缩的其它文件来获取系统符号，以12.4.8的固件为例，解压后有下面这些文件
-```
-➜  iPhone_4.7_12.4.8_16G201_Restore ls -al
+```shell
+$ iPhone_4.7_12.4.8_16G201_Restore ls -al
 drwxr-xr-x@ 19 wnagzihxa1n  staff         608 Jan  5 15:26 .
 drwxr-xr-x  10 wnagzihxa1n  staff         320 Jan  5 15:39 ..
 -rw-r--r--@  1 wnagzihxa1n  staff  2874835794 Jan  9  2007 038-60223-004.dmg
@@ -262,7 +263,7 @@ drwxr-xr-x@ 10 wnagzihxa1n  staff         320 Jan  9  2007 Firmware
 由于iOS 10之后不再加密，所以这里其实可以直接双击`038-60223-004.dmg`挂载读取文件，emmmmmm
 
 在如下目录找到一个`dyld_shared_cache_arm64`文件
-```
+```shell
 /System/Library/Caches/com.apple.dyld/
 ```
 
@@ -277,13 +278,13 @@ drwxr-xr-x@ 10 wnagzihxa1n  staff         320 Jan  9  2007 Firmware
 ![IMAGE](/assets/resources/5608E9C5F846666164208AE901D7ED1A.jpg)
 
 使用clang编译
-```
-➜  launch-cache clang++ -o dsc_extractor ./dsc_extractor.cpp dsc_iterator.cpp
+```shell
+$ launch-cache clang++ -o dsc_extractor ./dsc_extractor.cpp dsc_iterator.cpp
 ```
 
 使用编译的`dsc_extractor`提取`dyld_shared_cache_arm64`的符号
-```
-➜  iPhone_4.7_12.4.8_16G201_Restore ./dsc_extractor dyld_shared_cache_arm64 dyld_shared_cache_arm64_symbol
+```shell
+$ iPhone_4.7_12.4.8_16G201_Restore ./dsc_extractor dyld_shared_cache_arm64 dyld_shared_cache_arm64_symbol
 ```
 
 然后我拿到了一堆动态库，喵喵喵，不是说好的提取符号吗？？？

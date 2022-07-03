@@ -66,7 +66,7 @@ adb shell am start-service // 通过ADB命令启动Service
 ```
 
 获取四个Intent字段后，调用`checkPasswordBeforeSwitch()`，`mTargetUserId`就是上文提到的`11`
-```Java
+```java
 public int onStartCommand(Intent intent, int arg7, int arg8) {
     this.mDelayTime = intent.getLongExtra("com.miui.xspace.preference_delay_time", 300);
     this.mFromType = intent.getStringExtra("com.miui.xspace.preference_from_type");
@@ -83,7 +83,7 @@ public int onStartCommand(Intent intent, int arg7, int arg8) {
 ```
 
 `needCloseSdcardFs()`返回的固定值`0`，所以第一个`if`块不会进入，第二个`if`块有两个判断条件，`!mIsNeedcheckPassword`和`!isSecure()`，只需要满足其中一个就可以进入`if`块，而Poc中设置的`"params_check_password"`字段为`False`，所以这个`if`块就是我们关注的重点
-```Java
+```java
 private void checkPasswordBeforeSwitch(int mTargetUserId) {
     Intent intent;
     
@@ -122,7 +122,7 @@ private void checkPasswordBeforeSwitch(int mTargetUserId) {
 ```
 
 这个`if`块的第一句代码就是调用`switchUser()`，一共有三个判断
-```Java
+```java
 public int switchUser(int mTargetUserId) {
     if(DeviceUtil.isPhoneCalling(this.mContext)) {
         Log.d("SpaceManagerWrapper", "Can\'t switch user to " + mTargetUserId + " when calling.");
@@ -148,7 +148,7 @@ public int switchUser(int mTargetUserId) {
 ```
 
 第一个判断，如果当前有电话打进来或者正在接电话，不进行Space切换
-```Java
+```java
 CALL_STATE_STATE_IDLE = 0;
 CALL_STATE_STATE_RUNNING = 1;
 CALL_STATE_STATE_OFFHOOK = 2;
@@ -165,7 +165,7 @@ public static boolean isPhoneCalling(Context context) {
 ```
 
 第二个判断和第三个判断，有一点点棘手，因为它调用到了Framework代码，小米在这一层多了相当多的定制
-```Java
+```java
 import android.provider.MiuiSettings$Secure;
 import android.provider.MiuiSettings$System;
 
@@ -189,7 +189,7 @@ JEB分析一波，可以直接找到两个方法，正常情况下这两个方�
 ![IMAGE](/assets/resources/6D15B242DBB968006CBF5027ACFA08A1.jpg)
 
 最后就是切换Space啦
-```Java
+```java
 if(this.mSpaceManager.switchUser(mTargetUserId)) {
     return 0;
 }

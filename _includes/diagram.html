@@ -1,0 +1,20 @@
+<script src="/assets/js/raphael-min.js"></script>
+<script src="/assets/js/underscore-min.js"></script>
+<script src="/assets/js/jquery-3.1.1.min.js"></script>
+<script src="/assets/js/sequence-diagram-min.js"></script>
+<script src="/assets/js/flowchart-latest.js"></script>
+
+
+<script>
+$(".language-seq").sequenceDiagram({theme: 'simple'});
+$(".language-seq > svg").unwrap().unwrap(); // 把外层的<pre><code>给去掉
+
+$(".language-sequence").sequenceDiagram({theme: 'simple'});
+$(".language-sequence > svg").unwrap().unwrap(); // 把外层的<pre><code>给去掉
+
+$(".language-flow").flowChart();
+$(".language-flow > svg").unwrap().unwrap(); // 把外层的<pre><code>给去掉
+
+$(".language-flowchart").flowChart();
+$(".language-flowchart > svg").unwrap().unwrap(); // 把外层的<pre><code>给去掉
+</script>

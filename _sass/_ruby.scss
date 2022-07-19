@@ -1,0 +1,33 @@
+/*
+** http://stackoverflow.com/questions/38680695/adjust-the-vertical-positioning-of-ruby-text
+*/
+ruby {
+  ruby-position: over;
+  ruby-align: center;
+  display: inline-flex;
+  flex-direction: column-reverse;
+}
+
+rb, rt {
+  display: inline;
+  line-height: 1;
+  text-align: center;
+}
+
+rt {
+  font-size: 80%;
+  margin-bottom: -0.2em;
+}
+
+rb {
+  font-weight: bold;
+}
+
+/* ruby notation */
+ruby rb a {
+            color: $text-color;
+}
+
+ruby rb a:visited {
+            color: $text-color;
+}

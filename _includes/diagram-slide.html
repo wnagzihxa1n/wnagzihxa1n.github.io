@@ -1,0 +1,97 @@
+<script src="/assets/js/jquery-3.1.1.min.js"></script>
+<script src="/assets/js/raphael-min.js"></script>
+<script src="/assets/js/underscore-min.js"></script>
+<script src="/assets/js/sequence-diagram-min.js"></script>
+<script src="/assets/js/flowchart-latest.js"></script>
+
+
+<script>
+// 生成CSS Patch: .flowchart-diagram, .sequence-diagram
+// 自动根据前景色和背景色选颜色
+var word_color=$('p').css("color"); // 找一下颜色 TODO: 这有个BUG: 如果通篇没有一个文字的话，颜色就选不上了
+$('head').append('<style> .sequence-diagram > svg { fill: ' + word_color + '; } .sequence-diagram > svg rect { stroke: ' + word_color + '; fill: none; } .sequence-diagram > svg line { stroke: ' + word_color + '; fill: none; } .sequence-diagram > svg path{ stroke: ' + word_color + '; fill: ' + word_color + '; }   .sequence-diagram > svg text{ fill: ' + word_color + '; } </style>'); // 添加css
+$('head').append('<style> .flowchart-diagram > svg { fill: ' + word_color + '; } .flowchart-diagram > svg rect { stroke: ' + word_color + '; fill: none; } .flowchart-diagram > svg line { stroke: ' + word_color + '; fill: none; } .flowchart-diagram > svg path{ stroke: ' + word_color + '; fill: none; }   .flowchart-diagram > svg text{ fill: ' + word_color + '; } </style>'); // 添加css
+
+
+// DONE: 让每一个sequence都能被处理上。
+// DONE: 加一个是否动画的开关
+
+// 在页面第一次载入的时候，监听一下事件，首次绘制
+//Reveal.addEventListener('ready', function( event ) { diagramPresentSlide(); });
+if ($("section[class='present']").find(".language-sequence, .language-seq, .language-flowchart, .language-flow").length > 0) { 
+	diagramPresentSlide(); 
+	Reveal.layout();
+}
+
+Reveal.addEventListener('slidechanged', function( event ) { // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+    if ($(event.currentSlide).find(".language-sequence, .language-seq, .language-flowchart, .language-flow").length > 0) {
+	diagramPresentSlide();
+	Reveal.layout(); //重新Layout一下，否则生成的图有点偏下
+    }
+});
+
+//  sequence 是有动画的版本
+//  seq 无动画
+function diagramPresentSlide(){
+	initAnimatedSequenceDiagram("section[class='present'] .language-sequence");
+	initSequenceDiagram("section[class='present'] .language-seq");
+
+	// -----------以下为flowchart---------------
+	$("section[class='present'] .language-flow, section[class='present'] .language-flowchart").flowChart();
+	$("section[class='present'] .language-flow > svg, section[class='present'] .language-flowchart > svg ").unwrap().unwrap().wrap("<div class=\"flowchart-diagram\"></div>"); // 把外层的<pre><code>给去掉
+}
+
+function initSequenceDiagram(_selector) {
+	$(_selector).sequenceDiagram({theme: 'simple'});
+	$(_selector + " > svg").unwrap().unwrap().wrap("<div class=\"sequence-diagram\"></div>");
+
+	$(".sequence-diagram > svg > rect[fill=\"#ffffff\"]").remove(); // 不知道为啥有个大框框, js-sequence-sequence-diagram
+	$(".sequence-diagram > svg > rect").css('fill',$("body").css("background-color"));
+
+	//$('.sequence-diagram > svg > text').css("font-family","\"Open Sans\",sans-serif"); //设置字体
+}
+
+function initAnimatedSequenceDiagram(_selector) { // 参考自 https://gist.github.com/jzaeske/e2de8b14142818f8d8f5e74e8b6ae2b0
+
+	initSequenceDiagram(_selector);
+
+	selector="section[class='present'] .sequence-diagram";
+
+	$(selector + " svg").each(function() {
+		var each_svg = $(this);
+
+		var paths = each_svg.find("path[marker-end]");
+		// 竖着的Path--(text-path)--(rect--text)--(rect--text)--(text--path)--
+		paths.first().prevUntil(selector + " path", "rect, text").each(function() {
+		//第一条线之前的方框(可能存在)
+			$(this).attr('class', 'fragment');
+			$(this).attr('data-fragment-index', 0);
+
+			$(this).next("path").attr('class', 'fragment');
+			$(this).next("path").attr('data-fragment-index', 0);
+		});
+
+
+		var i = 1;
+		paths.first().nextAll("path, rect").each(function() {
+		//第一条线之后
+			var element = $(this);
+			if ( element.is("path") ) {
+				element.prev("text").attr('class', 'fragment');
+				element.prev("text").attr('data-fragment-index', i);
+				element.attr('class', 'fragment');
+				element.attr('data-fragment-index', i);
+				i++;
+			} else if ( element.is("rect") ) {
+				element.next("text").attr('class', 'fragment');
+				element.next("text").attr('data-fragment-index', i);
+				element.attr('class', 'fragment');
+				element.attr('data-fragment-index', i);
+				i++;
+			}
+		});
+	});
+
+}
+	
+</script>

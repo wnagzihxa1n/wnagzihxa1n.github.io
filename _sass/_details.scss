@@ -1,0 +1,31 @@
+/**
+ * details & summary
+ * scateu: 2016-12-01
+ */
+details {
+  border-radius: 3px;
+  background: #EEE;
+  margin: 1em 0;
+}
+
+summary {
+  border: 1px solid $grey-color-light;
+  background: #F5F5F5;
+  color: $text-color;
+  border-radius: 3px;
+  padding: 5px 10px;
+  outline: none;
+}
+
+/* Style the summary when details box is open */
+details[open] summary {
+  background: #333;
+  color: #FFF;
+}
+
+summary:hover {
+  background: #333;
+  color: #FFF;
+  cursor: pointer;
+}
+

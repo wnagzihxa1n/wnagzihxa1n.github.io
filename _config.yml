@@ -1,7 +1,7 @@
 # Site settings
 title: wnagzihxa1n's Blog
 email: wnagzihxa1n@gmail.com
-description: > # this means to ignore newlines until "baseurl:"
+description: ""
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://wnagzihxa1n.vip" # the base hostname & protocol for your site
 twitter_username: wnagzihxa1n
@@ -17,6 +17,6 @@ kramdown:
         input: GFM
         hard_wrap: true
         syntax_highlighter_opts:
-                disable: true
+                disable: false
 # _pages
 include: ['_pages']

@@ -1,22 +1,160 @@
-# Site settings
-title: wnagzihxa1n's Blog
-email: wnagzihxa1n@gmail.com
-description: ""
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "https://wnagzihxa1n.vip" # the base hostname & protocol for your site
-twitter_username: wnagzihxa1n
-github_username:  wnagzihxa1n
-flickr_url: ""
-disqus_shortname: wnagzihxa1n
+# 侧边栏菜单
+menu:
+  主页: /
+  归档: /archives
+  分类: /categories
+  标签: /tags
+  友链: /friends
+  关于我: /2019/about
 
-imageurl: ""
+subtitle:
+  enable: true # 是否开启动效
+  text: 面朝大海，春暖花开 # 显示的文字
+  text2: 愿你一生努力，一生被爱 # 滚动播放，如果不需要可以留空
+  text3: 想要的都拥有，得不到的都释怀 # 最多支持三段文字
+  startDelay: 0 # 延迟时间
+  typeSpeed: 200 # 打字速度
+  loop: true # 是否循环
+  backSpeed: 100 # 回退速度
+  showCursor: true # 是否显示光标
 
-# Build settings
-markdown: kramdown
-kramdown:
-        input: GFM
-        hard_wrap: true
-        syntax_highlighter_opts:
-                disable: false
-# _pages
-include: ['_pages']
+# 网站图标和侧边栏logo
+favicon: /favicon.ico
+logo: /images/ayer-side.svg
+
+# 封面配置
+# enable-是否启用封面；path-封面背景图；logo-封面logo
+cover:
+  enable: true
+  path: /images/cover1.jpg # /source/images目录下附送多张美图，可更换
+  logo: false #/images/ayer.svg，如果不要直接设置成false
+
+# 页面顶部进度条
+progressBar: true
+
+# 告示板模块
+broadcast:
+  enable: true # true开启，false关闭
+  type: 2 # 1：自定义输入，2：一言api(https://hitokoto.cn/)
+  text: 一个安静优雅的hexo主题，快速且响应式。 # type为1时有效
+
+# 文章配置
+# 文章太长，截断按钮文字(在需要截断的行增加此标记：<!--more-->)
+excerpt_link: 阅读更多...
+# 如果你嫌每篇文章手动加more标记比较麻烦，又不想在首页全文显示，可以把excerpt_all设置成true，这样首页只会显示文章归档
+excerpt_all: false
+
+# 是否开启代码复制按钮
+copy_btn: true
+# 是否开启文章分享按钮
+share_enable: true
+# 国内的社交平台(If you are not in China, maybe you prefer to set:false)
+share_china: true
+# 文章分享文字
+share_text: 分享
+
+# 分页文字
+nav_text:
+  page_prev: 上一页
+  page_next: 下一页
+  post_prev: 上一篇
+  post_next: 下一篇
+
+# 文章页是否显示目录
+toc: true
+
+# 文章中的图片是否支持点击放大
+image_viewer: true
+
+# https://github.com/willin/hexo-wordcount
+# 是否开启字数统计(关闭请设置enable为false)
+# 也可以单独在md文件里Front-matter设置`no_word_count: true`属性，来自定义关闭字数统计
+word_count:
+  enable: true
+  # 只在文章详情显示(不在首页显示)
+  only_article_visit: true
+
+# 版权声明
+# 版权声明type设定：0-关闭版权声明； 1-文章对应的md文件里有copyright: true属性，才有版权声明； 2-所有文章均有版权声明
+copyright_type: 2
+
+# 是否启用搜索
+# 需要安装hexo-generator-searchdb(https://github.com/theme-next/hexo-generator-searchdb)
+search: true
+
+# RSS订阅(先安装hexo-generator-feed插件，再去博客根目录config进行配置)
+# 不想显示可以直接留空
+rss: /atom.xml
+
+# 是否启用黑夜模式开关
+darkmode: true
+
+# 动态背景效果: 0-关闭，1-动态线条(跟随鼠标)
+canvas_bg: 0
+
+# 自定义鼠标样式，直接替换/images/mouse.cur文件
+mouse:
+  enable: false
+  path: /images/mouse.cur
+
+# 鼠标点击效果：0-关闭，1-爱心，2-爆炸烟花，3-粒子烟花
+click_effect: 0
+
+# 页面宽度自定义（不建议修改，可能造成布局混乱），article_width文章宽度，sidebar_width侧边栏宽度
+layout:
+  article_width: 80rem
+  sidebar_width: 8rem
+
+# GitHub Ribbons-封面右上角的forkme，换样式直接在source/images目录下替换forkme图片
+github:
+  # (关闭请设置为false)
+  enable: true
+  url: https://github.com/Shen-Yu/hexo-theme-ayer
+
+# 访问量统计(不蒜子)
+busuanzi:
+  enable: true
+
+# Mathjax数学公式
+mathjax: false
+
+# Katex数学公式(allpost设置为false时只有头部设置math:true的文章才开启)
+# 需要更换hexo渲染器，npm un hexo-renderer-marked -S && npm i hexo-renderer-markdown-it-katex -S
+katex:
+  enable: false # true
+  allpost: true
+  copy_tex: false
+
+# mermaid流程图 三个选项缺一不可(https://mermaid-js.github.io/mermaid/)
+mermaid:
+  enable: false
+  cdn: https://cdn.staticfile.org/mermaid/8.14.0/mermaid.min.js
+  theme: forest
+
+# 评论：1、Valine(推荐)；2、Gitalk；3、Twikoo; 4.MiniValine
+
+# 1、Valine[一款快速、简洁且高效的无后端评论系统](https://github.com/xCss/Valine)
+# 启用Valine必须先创建leancloud应用， 获取 id|key 填入即可
+leancloud:
+  enable: false
+  app_id: #
+  app_key: #
+# Valine配置
+valine:
+  enable: false # 是否启用
+  avatar: monsterid # 头像样式(https://valine.js.org/avatar.html)
+  placeholder: 给我的文章加点评论吧~ # placeholder
+
+# 2、Gitalk(https://github.com/gitalk/gitalk)
+gitalk:
+  enable: false # true
+  clientID: # GitHub Application Client ID
+  clientSecret: # Client Secret
+  repo: # Repository name
+  owner: # GitHub ID
+  admin: # GitHub ID
+
+# 3、Twikoo(https://github.com/imaegoo/twikoo)
+twikoo:
+  enable: true
+  envId: #

@@ -1,0 +1,36 @@
+{
+  "name": "hexo-theme-ayer",
+  "version": "1.9.6",
+  "description": "a clean and elegant theme for hexo.",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
+    "postinstall": "node ./move_config.js",
+    "test": "stylint source-src/css/style.styl -c .stylintrc"
+  },
+  "source": "source-src/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shen-Yu/hexo-theme-ayer.git"
+  },
+  "keywords": [
+    "hexo",
+    "theme",
+    "blog",
+    "ayer"
+  ],
+  "author": "Shen-Yu <shenyu@hotmail.com>",
+  "license": "SATA",
+  "bugs": {
+    "url": "https://github.com/Shen-Yu/hexo-theme-ayer/issues",
+    "email": "shenyu@hotmail.com"
+  },
+  "homepage": "https://shen-yu.gitee.io/",
+  "devDependencies": {
+    "autoprefixer": "^9.8.6",
+    "rollup": "^2.50.2",
+    "rollup-plugin-styles": "^3.14.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "stylint": "^2.0.0"
+  }
+}

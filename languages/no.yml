@@ -1,0 +1,38 @@
+categories: Kategorier
+search: Søk
+tags: Tags
+tagcloud: Tag Cloud
+tweets: Tweets
+prev: Forrige
+next: Neste
+comment: Kommentarer
+archive_a: Arkiv
+archive_b: "Arkiv: %s"
+page: Side %d
+recent_posts: Siste innlegg
+newer: Newer
+older: Older
+share: Share
+powered_by: Powered by %s
+theme: Theme - %s
+rss_feed: RSS Feed
+category: Category
+tag: Tag
+site_visitors: Visitors
+page_views: Views
+friends: Venner
+
+post:
+  word_count: Ordtelling
+  read_time: Lesetid
+  minutes: min
+  reward: Donere
+  sticky: Sticky
+  copyright_title: Opphavsrett
+  copyright_content: Opphavsrett eies av forfatteren. For kommersielle opptrykk, vennligst kontakt forfatteren for godkjenning. For ikke-kommersiell uttrykk, vennligst oppgi kilden.
+
+lock:
+  lock_info: Please enter password
+  lock_error: Incorrect password, please try again
+  confirm_text: Ok
+  cancel_text: Cancel

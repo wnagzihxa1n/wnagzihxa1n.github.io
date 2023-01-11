@@ -1,0 +1,38 @@
+categories: Categorias
+search: Buscar
+tags: Tags
+tagcloud: Nuvem de Tags
+tweets: Tweets
+prev: Anterior
+next: Próximo
+comment: Comentários
+archive_a: Arquivos
+archive_b: "Arquivos: %s"
+page: Página %d
+recent_posts: Postagens Recentes
+newer: Mais Recente
+older: Mais Antigo
+share: Compartilhar
+powered_by: Powered by %s
+theme: Theme - %s
+rss_feed: Feed RSS
+category: Categoria
+tag: Tag
+site_visitors: Visitors
+page_views: Views
+friends: Amigos
+
+post:
+  word_count: Word count
+  read_time: Reading time
+  minutes: min
+  reward: Donate
+  sticky: Sticky
+  copyright_title: direito autoral
+  copyright_content: Os direitos autorais são de propriedade do autor. Para reimpressões comerciais, entre em contato com o autor para obter autorização. Para reimpressões não comerciais, indique a fonte.
+
+lock:
+  lock_info: Please enter password
+  lock_error: Incorrect password, please try again
+  confirm_text: Ok
+  cancel_text: Cancel

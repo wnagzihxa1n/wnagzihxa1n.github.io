@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<% if (config.language){ %>
+<html lang="<%= config.language %>">
+  <% } else { %>
+  <html lang="en">
+    <% }%>
+
+    <head>
+      <meta charset="utf-8" />
+      <% var title = page.title; if (is_archive()) { title = __('archive_a'); if
+      (is_month()) { title += ': ' + page.year + '/' + page.month; } else if
+      (is_year()) { title += ': ' + page.year; } } else if (is_category()) {
+      title = page.category; } else if (is_tag()) { title = __('tag') + ': ' +
+      page.tag; } %> <% if (page.keywords){ %>
+      <meta
+        name="keywords"
+        content="<%= page.keywords %>,<%= config.keywords %>"
+      />
+      <% } else if (config.keywords){ %>
+      <meta name="keywords" content="<%= config.keywords %>" />
+      <% } %> <% if (page.description){ %>
+      <meta name="description" content="<%= page.description %>" />
+      <% } else if (config.description){ %>
+      <meta name="description" content="<%= config.description %>" />
+      <% } %>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title><% if (title){ %><%= title %> | <% } %> <%= config.title %></title>
+      <% if (theme.favicon){ %>
+      <link rel="shortcut icon" href="<%- theme.favicon %>" />
+      <% } %> <%- css('dist/main') %>
+      <%- css('css/fonts/remixicon') %>
+      <%- css('css/custom') %> <% if (theme.progressBar){ %>
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+      <% } %> <%- partial('google-analytics') %> <%- partial('baidu-analytics')
+      %>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      <% if (theme.mermaid.enable) { %>
+      <script src="<%= theme.mermaid.cdn %>"></script>
+      <% } %>
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    </head>
+  </html>
+</html>

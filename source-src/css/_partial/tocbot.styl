@@ -1,0 +1,76 @@
+
+.tocbot
+  padding 20px
+  position absolute
+  right -28rem
+  top 14rem
+  font-size 80%
+  opacity .95
+  max-width 255px
+  border-radius 8px
+  >.toc-list
+    position relative
+    overflow-x hidden
+    overflow-y scroll
+    max-height 70vh 
+    
+  >.toc-list::-webkit-scrollbar
+    width 4px
+    
+  >.toc-list::-webkit-scrollbar-thumb
+    border-radius 10px
+    -webkit-box-shadow inset 0 0 5px rgba(0,0,0,0.2)
+    background rgba(0,0,0,0.2)
+      
+  >.toc-list::-webkit-scrollbar-track
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2)
+    border-radius: 0
+    background: rgba(0,0,0,0.1)
+      
+
+
+.toc-list
+  list-unstyled()
+  padding-left 1rem
+
+
+a.toc-link
+  height 100%
+  color sea-dark
+  text-decoration none
+  font-size 115%
+
+
+.is-collapsible
+  max-height 1000px
+  overflow hidden
+  transition all 300ms ease-in-out
+
+
+.is-collapsed
+  max-height 0
+
+
+.is-position-fixed
+  position fixed !important
+  top 0
+  right 6rem
+  background-color #fff
+  z-index 996
+
+// Left line before pseudo element.
+.toc-link::before
+  background-color water
+  content ' '
+  display inline-block
+  height inherit
+  left 0
+  margin-top -1px
+  position absolute
+  width 2px
+
+.is-active-link::before
+  background-color sea-blue
+
+.is-active-link
+  font-weight 700

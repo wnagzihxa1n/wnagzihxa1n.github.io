@@ -1,0 +1,38 @@
+categories: Catégories
+search: Rechercher
+tags: Mot-clés
+tagcloud: Nuage de mot-clés
+tweets: Tweets
+prev: Précédent
+next: Suivant
+comment: Commentaires
+archive_a: Archives
+archive_b: "Archives: %s"
+page: Page %d
+recent_posts: Articles récents
+newer: Récent
+older: Ancien
+share: Partager
+powered_by: Powered by %s
+theme: Theme - %s
+rss_feed: Flux RSS
+category: Catégorie
+tag: Mot-clé
+site_visitors: Visitors
+page_views: Views
+friends: Mes amis
+
+post:
+  word_count: Nombre de mots
+  read_time: Temps de lecture
+  minutes: min
+  reward: Récompense
+  sticky: Haut
+  copyright_title: Avis de copyright
+  copyright_content: Le droit d'auteur appartient à l'auteur. Pour les réimpressions commerciales, veuillez contacter l'auteur pour autorisation. Pour les réimpressions non commerciales, veuillez indiquer la source.
+
+lock:
+  lock_info: Please enter password
+  lock_error: Incorrect password, please try again
+  confirm_text: Ok
+  cancel_text: Cancel

@@ -1,0 +1,38 @@
+categories: Kategorien
+search: Suche
+tags: Tags
+tagcloud: Tag Cloud
+tweets: Tweets
+prev: zurück
+next: weiter
+comment: Kommentare
+archive_a: Archiv
+archive_b: "Archive: %s"
+page: Seite %d
+recent_posts: letzter Beitrag
+newer: Neuer
+older: Älter
+share: Teilen
+powered_by: Powered by %s
+theme: Theme - %s
+rss_feed: RSS Feed
+category: Kategorie
+tag: Tag
+site_visitors: Visitors
+page_views: Views
+friends: Freunde
+
+post:
+  word_count: Wortzahl
+  read_time: Lesezeit
+  minutes: Minuten
+  reward: Belohnung
+  sticky: Oben
+  copyright_title: Copyright-Hinweis
+  copyright_content: Sofern nicht anders angegeben, liegt das Urheberrecht aller Artikel in diesem Blog beim Autor. Nachdruck bitte Quelle angeben!
+
+lock:
+  lock_info: Please enter password
+  lock_error: Incorrect password, please try again
+  confirm_text: Ok
+  cancel_text: Cancel

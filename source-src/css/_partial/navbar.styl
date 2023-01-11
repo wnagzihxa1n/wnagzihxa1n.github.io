@@ -1,0 +1,40 @@
+.navbar
+  position relative
+  padding-top 3rem
+  text-align center
+  .nav
+    list-unstyled()
+    .nav-item-link
+      display block
+      padding 1rem
+      color #bbb
+      text-decoration none
+      cursor pointer
+      &:hover
+        opacity .8
+        background-color body-color
+    &.nav-main
+      height 60vh
+      overflow-y scroll
+      scrollbar-width none
+      -ms-overflow-style none
+      &::-webkit-scrollbar
+        width 0px
+        height 0px
+      .nav-item-link
+        i
+          font-size 1rem
+          display block
+          line-height 1
+.navbar-bottom
+  position absolute
+  bottom 0
+  width 100%
+  font-size 2rem
+.logo
+  text-align center
+  margin-bottom 2rem
+  img
+    width logo-size
+
+  

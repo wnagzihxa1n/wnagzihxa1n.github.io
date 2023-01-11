@@ -1,0 +1,59 @@
+<% if (theme.cover.enable) { %>
+<section class="cover">
+    <% if (theme.github.enable && theme.github.url){ %>
+      <%# "GitHub Ribbons" %>
+      <a class="forkMe" href="<%=theme.github.url%>"
+        target="_blank"><img width="149" height="149" src="<%- url_for('images/forkme.png') %>"
+          class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    <% } %>
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="<%- theme.cover.path %>" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="<%- url_for() %>"><%= config.title %></a></h1>
+      <div id="subtitle-box">
+        <% if (theme.subtitle.enable) { %>
+        <span id="subtitle"></span>
+        <% }else{ %>
+          <span id="subtitle"><%= theme.subtitle.text %></span>
+        <% } %>
+      </div>
+      <div>
+        <% if (theme.cover.logo) { %>
+        <img
+          src="<%- theme.cover.logo %>"
+          class="cover-logo"
+          alt="<%= config.title %>"
+        />
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+  </div>
+</section>
+<% } %>
+
+<% if (theme.subtitle.enable){ %>
+<script src="https://cdn.staticfile.org/typed.js/2.0.12/typed.min.js"></script>
+<% } %>
+
+<!-- Subtitle -->
+<% if (theme.subtitle.enable){ %>
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['<%= theme.subtitle.text %>', '<%= theme.subtitle.text2 %>', '<%= theme.subtitle.text3 %>'],
+        startDelay: <%= theme.subtitle.startDelay %>,
+        typeSpeed: <%= theme.subtitle.typeSpeed %>,
+        loop: <%= theme.subtitle.loop %>,
+        backSpeed: <%= theme.subtitle.backSpeed %>,
+        showCursor: <%= theme.subtitle.showCursor %>
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  <% } %>

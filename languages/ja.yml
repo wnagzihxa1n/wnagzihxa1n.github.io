@@ -1,0 +1,38 @@
+categories: カテゴリ
+search: 検索
+tags: タグ
+tagcloud: タグクラウド
+tweets: ツイート
+prev: 戻る
+next: 次へ
+comment: コメント
+archive_a: アーカイブ
+archive_b: "アーカイブ: %s"
+page: ページ %d
+recent_posts: 最近の投稿
+newer: 次の記事
+older: 前の記事
+share: 共有
+powered_by: Powered by %s
+theme: Theme - %s
+rss_feed: RSSフィード
+category: カテゴリ
+tag: タグ
+site_visitors: Visitors
+page_views: Views
+friends: 友達
+
+post:
+  word_count: 単語数
+  read_time: 読書の時間
+  minutes: 分
+  reward: 報酬
+  sticky: 上へ
+  copyright_title: 著作権表示
+  copyright_content: 著作権は著者が所有しています。商業版の複製については、承認について著者に連絡してください。非商業版の複製については、出典を明記してください。
+
+lock:
+  lock_info: Please enter password
+  lock_error: Incorrect password, please try again
+  confirm_text: Ok
+  cancel_text: Cancel

@@ -1,0 +1,38 @@
+categories: Categorieën
+search: Zoeken
+tags: Labels
+tagcloud: Tag Cloud
+tweets: Tweets
+prev: Vorige
+next: Volgende
+comment: Commentaren
+archive_a: Archieven
+archive_b: "Archieven: %s"
+page: Pagina %d
+recent_posts: Recente berichten
+newer: Nieuwer
+older: Ouder
+share: Delen
+powered_by: Powered by %s
+theme: Theme - %s
+rss_feed: RSS Feed
+category: Categorie
+tag: Label
+site_visitors: Visitors
+page_views: Views
+friends: Vrienden
+
+post:
+  word_count: Aantal woorden in artikel
+  read_time: Leestijd
+  minutes: min
+  reward: Doneer
+  sticky: Sticky
+  copyright_title: Copyright melding
+  copyright_content: Copyright is eigendom van de auteur. Neem voor commerciële herdrukken contact op met de auteur voor autorisatie. Geef de bron aan voor niet-commerciële herdrukken.
+
+lock:
+  lock_info: Please enter password
+  lock_error: Incorrect password, please try again
+  confirm_text: Ok
+  cancel_text: Cancel

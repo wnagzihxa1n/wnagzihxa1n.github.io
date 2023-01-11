@@ -1,0 +1,53 @@
+<footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        <% if (theme.since && !isNaN(theme.since) && theme.since < date(new Date(), 'YYYY')) { %><%- theme.since%>-<% } %><%= date(new Date(), 'YYYY') %>
+        <i class="ri-heart-fill heart_icon"></i> <%= config.author || config.title %>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <% if (theme.pageFooter){ %>
+        <% var hexoLink = '<a href="https://hexo.io" target="_blank">Hexo</a>'; %>
+        <% var themeLink = '<a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>'; %>
+        <%- __('powered_by', hexoLink) %>
+        <span class="division">|</span>
+        <%- __('theme', themeLink) %>
+        <% } %>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <% if (theme.busuanzi && theme.busuanzi.enable){ %>
+        <%# "不蒜子统计" %>
+        <%- partial('post/busuanzi') %>
+        <% } %>
+      </li>
+    </ul>
+    <ul>
+      <% if (theme.icp&&theme.icp.enable){ %>
+        <li>
+          <a href="<%= theme.icp.url %>" target="_black" rel="nofollow"><%= theme.icp.text %></a>
+        </li>
+        <% } %>
+    </ul>
+    <ul>
+      <% if (theme.gongan&&theme.gongan.enable){ %>
+      <li>
+          <img src="<%= theme.gongan.img %>"></img>
+          <a href="<%= theme.gongan.url %>" target="_black" rel="nofollow"><%= theme.gongan.text %></a>
+      </li>
+        <% } %>
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        <% if (theme.cnzz&&theme.cnzz.enable){ %>
+        <script type="text/javascript" src='<%= theme.cnzz.url%>'></script>
+        <% } %>
+      </li>
+    </ul>
+  </div>
+</footer>

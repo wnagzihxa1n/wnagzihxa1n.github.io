@@ -161,7 +161,7 @@ utterances:
   repo: owner/githubrepo
   issue_term: pathname
   label: Comment
-  theme: github-dark
+  theme: cactus
 
 # Fill in your Google Analytics tracking ID to enable Google Analytics.
 google_analytics:

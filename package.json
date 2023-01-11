@@ -1,36 +1,47 @@
 {
-  "name": "hexo-theme-ayer",
-  "version": "1.9.6",
-  "description": "a clean and elegant theme for hexo.",
+  "name": "hexo-theme-cactus",
+  "version": "3.0.0",
+  "description": "A responsive, clean and simple theme for Hexo.",
+  "main": "index.js",
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
-    "postinstall": "node ./move_config.js",
-    "test": "stylint source-src/css/style.styl -c .stylintrc"
+    "lint": "gulp lint --silent",
+    "test": "gulp validate --silent",
+    "clean": "stylus-supremacy format source/css/**/*.styl --options .stylintrc -r"
   },
-  "source": "source-src/main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shen-Yu/hexo-theme-ayer.git"
+    "url": "git+https://github.com/probberechts/cactus-dark.git"
   },
   "keywords": [
-    "hexo",
-    "theme",
-    "blog",
-    "ayer"
+    "Hexo",
+    "Theme",
+    "Cactus"
   ],
-  "author": "Shen-Yu <shenyu@hotmail.com>",
-  "license": "SATA",
+  "author": "Pieter Robberechts",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Shen-Yu/hexo-theme-ayer/issues",
-    "email": "shenyu@hotmail.com"
+    "url": "https://github.com/probberechts/cactus-dark/issues"
   },
-  "homepage": "https://shen-yu.gitee.io/",
+  "homepage": "https://github.com/probberechts/cactus-dark#readme",
   "devDependencies": {
-    "autoprefixer": "^9.8.6",
-    "rollup": "^2.50.2",
-    "rollup-plugin-styles": "^3.14.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "stylint": "^2.0.0"
+    "del": "*",
+    "gulp": "^4.0.0",
+    "gulp-decompress": "*",
+    "gulp-download-stream": "*",
+    "gulp-jshint": "*",
+    "gulp-stylint": "*",
+    "js-yaml": "*",
+    "jshint": "^2.9.6",
+    "jshint-stylish": "*",
+    "stylelint-formatter-pretty": "^3.1.0",
+    "stylint": "*",
+    "stylus-supremacy": "^2.12.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "*",
+    "clipboard": "^2.0.4",
+    "jquery": "^3.3.1",
+    "justifiedGallery": "^3.6.5",
+    "vazir-font": "*"
   }
 }

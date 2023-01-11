@@ -1,41 +1,21 @@
+<!DOCTYPE html>
+<html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
 <%- partial('_partial/head') %>
-
-<body>
-  <div id="app">
-    <% if (theme.click_effect===2){ %>
-      <canvas class="fireworks"></canvas>
-      <style>
-        .fireworks {
-          position: fixed;
-          left: 0;
-          top: 0;
-          z-index: 99999;
-          pointer-events: none;
-        }
-      </style>
-      <% } %>
-      <% if (theme.click_effect===3){ %>
-      <canvas width="1777" height="841"
-        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
-      <% } %>
-    <main class="content on">
-      <%- body %>
-      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>    
-    </main>
-    <div class="float_btns">
-      <%- partial('_partial/float-btns') %>
-    </div>
-    <aside class="sidebar on">
-      <%- partial('_partial/sidebar') %>
-    </aside>
-    <%- partial('_partial/modal') %>
-    <%- partial('_partial/after-footer') %>
-
-    <% if (theme.music&&theme.music.enable){ %>
-    <%- partial('_partial/music') %>
+<body class="max-width mx-auto px3 <%- theme.direction -%>">
+    <% if (is_post()) { %>
+      <%- partial('_partial/post/actions_desktop') %>
     <% } %>
-    <%- partial('_partial/lock') %>
-  </div>
+    <div class="content index py4">
+        <% if (!is_post()) { %>
+          <%- partial('_partial/header') %>
+        <% } %>
+        <%- body %>
+        <% if (is_post()) { %>
+          <%- partial('_partial/post/actions_mobile') %>
+        <% } %>
+        <%- partial('_partial/footer') %>
+    </div>
+    <%- partial('_partial/styles') %>
+    <%- partial('_partial/scripts') %>
 </body>
-
 </html>

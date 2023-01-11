@@ -1,160 +1,201 @@
-# 侧边栏菜单
-menu:
-  主页: /
-  归档: /archives
-  分类: /categories
-  标签: /tags
-  友链: /friends
-  关于我: /2019/about
+##############################################################################
+# Content
+##############################################################################
 
-subtitle:
-  enable: true # 是否开启动效
-  text: 面朝大海，春暖花开 # 显示的文字
-  text2: 愿你一生努力，一生被爱 # 滚动播放，如果不需要可以留空
-  text3: 想要的都拥有，得不到的都释怀 # 最多支持三段文字
-  startDelay: 0 # 延迟时间
-  typeSpeed: 200 # 打字速度
-  loop: true # 是否循环
-  backSpeed: 100 # 回退速度
-  showCursor: true # 是否显示光标
+# Link to a page that gives an overview of all your projects.
+# This can be an external link (e.g., to you GitHub profile) or to another
+# page within your website.
+projects_url: http://github.com/probberechts
 
-# 网站图标和侧边栏logo
-favicon: /favicon.ico
-logo: /images/ayer-side.svg
+# Set the page direction to RTL or LTR. default is LTR. (if you set it 'rtl', the 'vazir' font will be loaded.)
+direction: ltr
+# Configure the navigation menu.
+# A pair 'Key: url' will result in a link to 'url' with the name 'Key' in the
+# navigation menu. Optionally, you can add translations for the 'Key' in
+# languages/*.yml
+nav:
+  home: /
+  about: /about/
+  articles: /archives/
+  projects: http://github.com/probberechts
 
-# 封面配置
-# enable-是否启用封面；path-封面背景图；logo-封面logo
-cover:
+
+# Links to your social media accounts.
+# The keys should correspond to Fontawesome icon names
+# (see https://fontawesome.com/icons?d=gallery&s=brands);
+# only 'mail' is an exception.
+social_links:
+  github: http://github.com/probberechts/cactus-dark
+  twitter: /
+  facebook: /
+  linkedin: /
+  mail: mailto:name@email.com
+
+# Customize the overview with displaying a tagcloud on the index page.
+# Options: https://hexo.io/docs/helpers.html#tagcloud
+tags_overview: false
+
+# Customize the overview with the most recent blog posts on the index page.
+# Options:
+#   - show_all_posts: whether to show all available posts.
+#   - post_count: whether to show only the x most recent posts.
+#   - sort_updated: sort posts by last modification date instead of creation date.
+posts_overview:
+  show_all_posts: false
+  post_count: 5
+  sort_updated: false
+
+# Customize the archive view.
+# Options:
+#   - sort_updated: sort posts by last modification date instead of creation date.
+# Note: this does not work together with pagination, since the pagination
+# plugin will sort pages by date of creation.
+archive:
+  sort_updated: false
+
+# Customize the article view.
+# Options:
+#   - show_updated: show the last modification date.
+post:
+  show_updated: false
+
+# Customize the copyright years
+# Note: if start_year/end_year not provided, will use current year.
+copyright:
+  start_year: 2016
+  end_year:
+
+# Customize the 404 page
+# Options:
+#   - enabled: whether to enable the 404 page (404.html).
+error_404:
+  enabled: true
+  title: "404 Page Not Found"
+  description: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
+
+
+##############################################################################
+# Look and Feel
+##############################################################################
+
+# Customize the logo (i.e., the cactus) in the header.
+# Options:
+#   - enabled: whether to show (true) or hide (false) the logo.
+#   - width: width of the logo in pixel units
+#   - height: height of the logo in pixel units
+#   - url: where the logo can be found
+#   - gravatar: whether to use your Gravatar as the logo
+#   - grayout: whether to enable a hover effect on the logo
+logo:
+  enabled: true
+  width: 50
+  height: 50
+  url: /images/logo.png
+  gravatar: false
+  grayout: true
+
+# Customize the favicons.
+# Cactus supports a limited set of the three most important icons:
+#   - desktop: The classic favion.ico file.
+#   - android: A 192x192 PNG file.
+#   - apple:  A 180x180 PNG file.
+# These can be generated with http://realfavicongenerator.net/
+# Options:
+#   - url: where the icon can be found
+#   - gravatar: whether to create a favicon from your Gravatar
+favicon:
+  desktop:
+    url: /images/favicon.ico
+    gravatar: false
+  android:
+    url: /images/favicon-192x192.png
+    gravatar: false
+  apple:
+    url: /images/apple-touch-icon.png
+    gravatar: false
+
+# The color scheme that should be used to highlight codeblocks.
+# See source/css/_highlight for a list of all available color schemes.
+# highlight: rainbow
+
+# Set the color scheme.
+# Available color schemes are 'dark', 'light', 'classic' and 'white'.
+# Alternatively, add your own custom color scheme to source/css/_colors.
+colorscheme: dark
+
+# Maximal width of the page in rem units.
+page_width: 48
+
+
+##############################################################################
+# Miscellaneous
+##############################################################################
+
+# Enable or disable the RSS feed.
+rss: false
+
+# Turn your web pages into graph objects (see http://ogp.me).
+open_graph:
+  fb_app_id:
+  fb_admins:
+  twitter_id:
+  google_plus:
+
+
+##############################################################################
+# Plugins
+##############################################################################
+
+# Enable MathJax support for Latex
+mathjax:
+  enabled: false
+  
+# Fill in your Disqus Comments Shortname to enable Disqus comments.
+disqus:
+  enabled: false
+  shortname: cactus-1
+
+# Fill in your Utterances data to enable Utterances comments
+utterances:
+  enabled: false
+  repo: owner/githubrepo
+  issue_term: pathname
+  label: Comment
+  theme: github-dark
+
+# Fill in your Google Analytics tracking ID to enable Google Analytics.
+google_analytics:
+  enabled: false
+  id: UA-86660611-1
+
+# Fill in your Baidu Analytics tracking ID to enable Baidu Analytics.
+baidu_analytics:
+  enabled: false
+  id: 2e6da3c375c8a87f5b664cea6d4cb29c
+
+# Fill in your Cloudflare Analytics tracking ID to enable Cloudflare Analytics.
+cloudflare_analytics:
+  enabled: false
+  id: 0dabb6e21848405483a237e6a7b6ed04
+
+# Fill in your Umami Analytics tracking ID to enable Umami Analytics.
+umami_analytics:
+  enabled: false
+  id: e77e68be-f6e4-4br3-9365-2b76b57cd571
+  host: https://analytics.domain.com
+
+# Fill in you Gravatar email or hash if you want to use your gravatar as the
+# logo and/or favicons of you website.
+# To generate hash: `$ echo -n "name@email.com" | md5`.
+gravatar:
+  email: name@email.com
+  hash: d41d8cd98f00b204e9800998ecf8427e
+
+# loads libraries and styles from CDN instead or relying on local files
+cdn:
   enable: true
-  path: /images/cover1.jpg # /source/images目录下附送多张美图，可更换
-  logo: false #/images/ayer.svg，如果不要直接设置成false
-
-# 页面顶部进度条
-progressBar: true
-
-# 告示板模块
-broadcast:
-  enable: true # true开启，false关闭
-  type: 2 # 1：自定义输入，2：一言api(https://hitokoto.cn/)
-  text: 一个安静优雅的hexo主题，快速且响应式。 # type为1时有效
-
-# 文章配置
-# 文章太长，截断按钮文字(在需要截断的行增加此标记：<!--more-->)
-excerpt_link: 阅读更多...
-# 如果你嫌每篇文章手动加more标记比较麻烦，又不想在首页全文显示，可以把excerpt_all设置成true，这样首页只会显示文章归档
-excerpt_all: false
-
-# 是否开启代码复制按钮
-copy_btn: true
-# 是否开启文章分享按钮
-share_enable: true
-# 国内的社交平台(If you are not in China, maybe you prefer to set:false)
-share_china: true
-# 文章分享文字
-share_text: 分享
-
-# 分页文字
-nav_text:
-  page_prev: 上一页
-  page_next: 下一页
-  post_prev: 上一篇
-  post_next: 下一篇
-
-# 文章页是否显示目录
-toc: true
-
-# 文章中的图片是否支持点击放大
-image_viewer: true
-
-# https://github.com/willin/hexo-wordcount
-# 是否开启字数统计(关闭请设置enable为false)
-# 也可以单独在md文件里Front-matter设置`no_word_count: true`属性，来自定义关闭字数统计
-word_count:
-  enable: true
-  # 只在文章详情显示(不在首页显示)
-  only_article_visit: true
-
-# 版权声明
-# 版权声明type设定：0-关闭版权声明； 1-文章对应的md文件里有copyright: true属性，才有版权声明； 2-所有文章均有版权声明
-copyright_type: 2
-
-# 是否启用搜索
-# 需要安装hexo-generator-searchdb(https://github.com/theme-next/hexo-generator-searchdb)
-search: true
-
-# RSS订阅(先安装hexo-generator-feed插件，再去博客根目录config进行配置)
-# 不想显示可以直接留空
-rss: /atom.xml
-
-# 是否启用黑夜模式开关
-darkmode: true
-
-# 动态背景效果: 0-关闭，1-动态线条(跟随鼠标)
-canvas_bg: 0
-
-# 自定义鼠标样式，直接替换/images/mouse.cur文件
-mouse:
-  enable: false
-  path: /images/mouse.cur
-
-# 鼠标点击效果：0-关闭，1-爱心，2-爆炸烟花，3-粒子烟花
-click_effect: 0
-
-# 页面宽度自定义（不建议修改，可能造成布局混乱），article_width文章宽度，sidebar_width侧边栏宽度
-layout:
-  article_width: 80rem
-  sidebar_width: 8rem
-
-# GitHub Ribbons-封面右上角的forkme，换样式直接在source/images目录下替换forkme图片
-github:
-  # (关闭请设置为false)
-  enable: true
-  url: https://github.com/Shen-Yu/hexo-theme-ayer
-
-# 访问量统计(不蒜子)
-busuanzi:
-  enable: true
-
-# Mathjax数学公式
-mathjax: false
-
-# Katex数学公式(allpost设置为false时只有头部设置math:true的文章才开启)
-# 需要更换hexo渲染器，npm un hexo-renderer-marked -S && npm i hexo-renderer-markdown-it-katex -S
-katex:
-  enable: false # true
-  allpost: true
-  copy_tex: false
-
-# mermaid流程图 三个选项缺一不可(https://mermaid-js.github.io/mermaid/)
-mermaid:
-  enable: false
-  cdn: https://cdn.staticfile.org/mermaid/8.14.0/mermaid.min.js
-  theme: forest
-
-# 评论：1、Valine(推荐)；2、Gitalk；3、Twikoo; 4.MiniValine
-
-# 1、Valine[一款快速、简洁且高效的无后端评论系统](https://github.com/xCss/Valine)
-# 启用Valine必须先创建leancloud应用， 获取 id|key 填入即可
-leancloud:
-  enable: false
-  app_id: #
-  app_key: #
-# Valine配置
-valine:
-  enable: false # 是否启用
-  avatar: monsterid # 头像样式(https://valine.js.org/avatar.html)
-  placeholder: 给我的文章加点评论吧~ # placeholder
-
-# 2、Gitalk(https://github.com/gitalk/gitalk)
-gitalk:
-  enable: false # true
-  clientID: # GitHub Application Client ID
-  clientSecret: # Client Secret
-  repo: # Repository name
-  owner: # GitHub ID
-  admin: # GitHub ID
-
-# 3、Twikoo(https://github.com/imaegoo/twikoo)
-twikoo:
-  enable: true
-  envId: #
+  jquery: https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
+  clipboard: https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js
+  font_awesome: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css
+  justified_gallery_css: https://cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.8.1/css/justifiedGallery.min.css
+  justified_gallery_js: https://cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js

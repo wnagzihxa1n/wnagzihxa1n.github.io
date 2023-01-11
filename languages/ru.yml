@@ -1,38 +1,38 @@
-categories: Категории
-search: Поиск
-tags: Метки
-tagcloud: Облако меток
-tweets: Твиты
-prev: Назад
-next: Вперед
-comment: Комментарии
-archive_a: Архив
-archive_b: "Архив: %s"
-page: Страница %d
-recent_posts: Недавние записи
-newer: Следующий
-older: Предыдущий
-share: Поделиться
-powered_by: Powered by %s
-theme: Theme - %s
-rss_feed: RSS-каналы
-category: Категория
-tag: Метка
-site_visitors: Visitors
-page_views: Views
-friends: друзья
+nav:
+  home: Главная
+  about: Обо мне
+  articles: Блог
+  projects: Проекты
+  search: Искать
+
+footer:
+  copyright: ' '
+
+index:
+  find_me_on: 'Свяжитесь со мной:'
+  enum_comma: ','
+  enum_and: и
+  articles: Блог
+  projects: Проекты
 
 post:
-  word_count: Количество слов
-  read_time: Время чтения
-  minutes: минут
-  reward: вознаграждение
-  sticky: липкий
-  copyright_title: Авторские права
-  copyright_content: Авторские права принадлежат автору. Для коммерческих перепечаток, пожалуйста, свяжитесь с автором для авторизации. Для некоммерческих перепечаток, пожалуйста, укажите источник.
+  desktop:
+    previous: Предыдущая запись
+    next: Следующая запись
+    back_to_top: В начало
+    share: Поделиться
+  mobile:
+    menu: Меню
+    toc: Оглавление
+    back_to_top: В начало
+    share: Поделиться
 
-lock:
-  lock_info: Please enter password
-  lock_error: Incorrect password, please try again
-  confirm_text: Ok
-  cancel_text: Cancel
+search:
+  search: Искать...
+  no_results: Ничего не найдено.
+
+pagination:
+  page: Страница %d из %d
+
+comments:
+  no_js: Включите JavaScript, чтобы читать комментарии.

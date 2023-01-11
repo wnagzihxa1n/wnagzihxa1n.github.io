@@ -1,38 +1,63 @@
-categories: Thể loại
-search: Tìm Kiếm
-tags: thẻ
-tagcloud: thẻ đám mây
-tweets: Tweets
-prev: trước
-next: kế tiếp
-comment: bình luận
-archive_a: Archives
-archive_b: "Archives: %s"
-page: Page %d
-recent_posts: Bài viết gần đây
-newer: mới hơn
-older: lớn hơn
-share: chia sẻ
-powered_by: Powered by %s
-theme: Theme - %s
-rss_feed: RSS Feed
-category: Thể loại
-tag: thẻ
-site_visitors: Visitors
-page_views: Views
-friends: Bạn
+nav:
+  home: Trang chủ
+  about: Giới thiệu
+  articles: Bài viết
+  tag: Thẻ
+  category: Thể loại
+  projects: Dự án
+  search: Tìm kiếm
+
+footer:
+  copyright: Bản quyền
+
+index:
+  find_me_on: Tìm tôi trên
+  enum_comma: ','
+  enum_and: and
+  articles: Bài viết
+  projects: Dự án
+  topics: Chủ đề
+  most_recent: Gần đây nhất
 
 post:
-  word_count: Đếm từ
-  read_time: Thời gian đọc
-  minutes: min
-  reward: tặng
-  sticky: dính
-  copyright_title: Bản quyền
-  copyright_content: Bản quyền thuộc sở hữu của tác giả. Đối với tái bản thương mại, xin vui lòng liên hệ với tác giả cho phép. Đối với tái bản phi thương mại, xin vui lòng cho biết nguồn.
+  desktop:
+    previous: Bài trước
+    next: Bài tiếp theo
+    back_to_top: Về đầu trang
+    share: Chia sẻ bài viết
+  mobile:
+    menu: Menu
+    toc: TOC
+    back_to_top: Về đầu trang
+    share: Chia sẻ
 
-lock:
-  lock_info: Please enter password
-  lock_error: Incorrect password, please try again
-  confirm_text: Ok
-  cancel_text: Cancel
+search:
+  search: Tìm kiếm...
+  no_results: Không tìm thấy kết quả.
+
+tag_cloud:
+  zero: Không có thẻ
+
+pagination:
+  page: Trang% d của% d
+
+counter:
+  tag_cloud:
+    zero: Không có thẻ
+    one: ""
+    other: ""
+    
+categories:
+  zero: không có danh mục 
+  one: ""
+  other: ""
+
+archive_posts:
+  zero: Không có bài viết.
+  one: ""
+  other: ""
+
+comments:
+  no_js: Vui lòng kích hoạt JavaScript để xem các bình luận.
+
+

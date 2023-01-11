@@ -1,47 +1,29 @@
 {
-  "name": "hexo-theme-cactus",
-  "version": "3.0.0",
-  "description": "A responsive, clean and simple theme for Hexo.",
-  "main": "index.js",
-  "scripts": {
-    "lint": "gulp lint --silent",
-    "test": "gulp validate --silent",
-    "clean": "stylus-supremacy format source/css/**/*.styl --options .stylintrc -r"
-  },
+  "name": "jekyll-theme-chirpy",
+  "version": "5.4.0",
+  "description": "A minimal, responsive, and powerful Jekyll theme for presenting professional writing.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/probberechts/cactus-dark.git"
+    "url": "git+https://github.com/cotes2020/jekyll-theme-chirpy.git"
   },
-  "keywords": [
-    "Hexo",
-    "Theme",
-    "Cactus"
-  ],
-  "author": "Pieter Robberechts",
+  "author": "Cotes Chung",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/probberechts/cactus-dark/issues"
+    "url": "https://github.com/cotes2020/jekyll-theme-chirpy/issues"
   },
-  "homepage": "https://github.com/probberechts/cactus-dark#readme",
+  "homepage": "https://github.com/cotes2020/jekyll-theme-chirpy#readme",
+  "scripts": {
+    "test": "npx stylelint _sass/**/*.scss",
+    "fixlint": "npx stylelint _sass/**/*.scss --fix"
+  },
   "devDependencies": {
-    "del": "*",
-    "gulp": "^4.0.0",
-    "gulp-decompress": "*",
-    "gulp-download-stream": "*",
-    "gulp-jshint": "*",
-    "gulp-stylint": "*",
-    "js-yaml": "*",
-    "jshint": "^2.9.6",
-    "jshint-stylish": "*",
-    "stylelint-formatter-pretty": "^3.1.0",
-    "stylint": "*",
-    "stylus-supremacy": "^2.12.2"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "*",
-    "clipboard": "^2.0.4",
-    "jquery": "^3.3.1",
-    "justifiedGallery": "^3.6.5",
-    "vazir-font": "*"
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-insert": "^0.5.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "stylelint": "^14.14.0",
+    "stylelint-config-standard-scss": "^5.0.0",
+    "uglify-js": "^3.14.3"
   }
 }

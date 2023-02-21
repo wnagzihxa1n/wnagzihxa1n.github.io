@@ -1,6 +1,6 @@
 .pagination {
   border-top: .5px solid $grey-2;
-  font-family: $serif-secondary;
+  font-family: $sans-serif;
   padding-top: 2rem;
   position: relative;
   text-align: center;
@@ -22,6 +22,14 @@
     }
   }
 
+  .right-container {
+    text-align: right;
+  }
+
+  .left-container {
+    text-align: left;
+  }
+
   .arrow {
     @include transition(all .3s ease-out);
     color: $default-color;
@@ -40,5 +48,14 @@
 
   .right {
     right: 0;
+  }
+
+  .flex-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .fa-angle-left, .fa-angle-right {
+    vertical-align: text-bottom;
   }
 }

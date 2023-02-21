@@ -1,12 +1,11 @@
 ---
 layout: post
 title: "Example Content"
-author: "Chester"
-tags: Example
-excerpt_separator: <!--more-->
+author: "Inela"
+tags: ["jekyll", "docs", "example", "content"]
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt ornare nibh, non elementum augue tempus eget. Pellentesque tempus scelerisque iaculis.<!--more--> Nullam interdum ultricies nibh quis sollicitudin. Donec ornare fermentum facilisis. Ut at sem ac sem imperdiet varius a eget tortor. Nam eu augue eget orci semper maximus in eget augue. Mauris ornare, nisl ut suscipit consectetur, mi quam interdum tellus, at rutrum quam eros ultrices mi.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt ornare nibh, non elementum augue tempus eget. Pellentesque tempus scelerisque iaculis. Nullam interdum ultricies nibh quis sollicitudin. Donec ornare fermentum facilisis. Ut at sem ac sem imperdiet varius a eget tortor. Nam eu augue eget orci semper maximus in eget augue. Mauris ornare, nisl ut suscipit consectetur, mi quam interdum tellus, at rutrum quam eros ultrices mi.
 
 # Headers
 {% highlight markdown %}
@@ -34,7 +33,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt orna
 - <sup>Superscript</sup>
 - <sub>Subscript</sub>
 - Abbreviation: <abbr title="HyperText Markup Language">HTML</abbr>
-- Citation: <cite>&mdash; Chester How</cite>
+- Citation: <cite>&mdash; Inela</cite>
 {% endhighlight %}
 
 - **Bold**
@@ -44,7 +43,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt orna
 - <sup>Superscript</sup>
 - <sub>Subscript</sub>
 - Abbreviation: <abbr title="HyperText Markup Language">HTML</abbr>
-- Citation: <cite>&mdash; Chester How</cite>
+- Citation: <cite>&mdash; Inela</cite>
 
 # Lists
 {% highlight markdown %}
@@ -65,12 +64,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt orna
 * Unordered list item 2
 * Unordered list item 3
 
-# Links
+# Links #todo link na repo
 {% highlight markdown %}
-Check out tale on [GitHub](https://github.com/chesterhow/tale).
+Check out rain on [GitHub](#todo dodati link na github).
 {% endhighlight %}
 
-Check out tale on [GitHub](https://github.com/chesterhow/tale).
+Check out rain on [GitHub](#todo dodati link na github).
 
 # Images
 {% highlight markdown %}
@@ -100,7 +99,7 @@ s = "Python syntax highlighting"
 print s
 {% endhighlight %}
 
-Adding `linenos` to the highlight tag enables line numbers.
+Adding `linenos` to the Pygments tag enables line numbers.
 
 {% highlight js  linenos %}
 // Sample javascript code

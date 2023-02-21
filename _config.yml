@@ -1,13 +1,13 @@
 # Site settings
-title:          Rain
-description:    "Rain is a simple and clean Jekyll theme with focus on content."
-url:            https://github.com/inelaah/rain
+title:          wnagzihxa1n's Blog
+description:    ""
+url:            https://wnagzihxa1n.vip
 
 # Author
 author:
-  name:         Inela Avdic Hukic
-  email:        inelaah@gmail.com
-  url:          https://inelaah.com
+  name:         Wang Zhixian(@wnagzihxa1n)
+  email:        wnagzihxa1n@gmail.com
+  url:          https://wnagzihxa1n.vip
 
 # Build settings
 markdown:       kramdown
@@ -34,7 +34,5 @@ related_posts_section:
 
 # Links to social media
 social:
-  email: inelaah@gmail.com
-  github: https://github.com/inelaah
-  twitter: https://twitter.com
-  linkedin: https://ba.linkedin.com/in/inela-avdic-hukic-322354131
+  email: wnagzihxa1n@gmail.com
+  github: https://github.com/wnagzihxa1n

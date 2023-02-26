@@ -6,6 +6,7 @@ categories: Android_Security
 ---
 
 ## 0x00 前言
+
 在DexClassLoader和PathClassLoader（一）中，我用了几个小例子介绍了一下DexClassLoader的用法，并给出了完整的代码，有兴趣的同学可以跟着玩一下，也可以根据代码进行扩展
 
 在介绍完使用方法后，简单的介绍了下整个加载流程，篇幅问题只是将大概的过程给梳理了一下，留了许多问题，虽然这些问题都没有明说，DexFile结构，DvmDex结构，DexOrJar结构...
@@ -13,14 +14,19 @@ categories: Android_Security
 那么这一篇开始，就会详细的讲解这其中的各种结构体，各种关键点
 
 ## 0x01 从DexClassLoader的构造函数说起
+
 我们从DexClassLoader的构造函数说起，这里是整个加载过程的入口，也是出口
-```
+
+```java
 public DexClassLoader(String dexPath, String optimizedDirectory,
         String libraryPath, ClassLoader parent) {
     super(dexPath, new File(optimizedDirectory), libraryPath, parent);
 }
+```
+
 DexClassLoader继承BaseClassLoader，BaseClassLoader的构造函数
 
+```java
 public BaseDexClassLoader(String dexPath, File optimizedDirectory,
         String libraryPath, ClassLoader parent) {
     super(parent);
@@ -29,7 +35,8 @@ public BaseDexClassLoader(String dexPath, File optimizedDirectory,
 ```
 
 DexPathList的构造函数
-```
+
+```java
 public DexPathList(ClassLoader definingContext, String dexPath,
         String libraryPath, File optimizedDirectory) {
 
@@ -76,13 +83,15 @@ public DexPathList(ClassLoader definingContext, String dexPath,
 ```
 
 关键的一个函数调用
-```
+
+```java
 this.dexElements = makeDexElements(splitDexPath(dexPath), optimizedDirectory,
                                            suppressedExceptions);
 ```
 
 首先看dexElements的定义，这是一个Dex文件的集合
-```
+
+```java
 /**
  * List of dex/resource (class path) elements.
  * Should be called pathElements, but the Facebook app uses reflection
@@ -92,7 +101,8 @@ private final Element[] dexElements;
 ```
 
 Element类有一个关键的变量dexFile
-```
+
+```java
 /**
  * Element of the dex/resource file path
  */
@@ -116,7 +126,8 @@ Element类有一个关键的变量dexFile
 ```
 
 再看`makeDexElements()`方法
-```
+
+```java
 private static Element[] makeDexElements(ArrayList<File> files, File optimizedDirectory,
                                          ArrayList<IOException> suppressedExceptions) {
     //定义一个Element ArrayList用于存储返回数据
@@ -167,7 +178,8 @@ private static Element[] makeDexElements(ArrayList<File> files, File optimizedDi
 ```
 
 `loadDexFile()`返回DexFile类型的数据
-```
+
+```java
 private static DexFile loadDexFile(File file, File optimizedDirectory)
         throws IOException {
     //判断是否指定ODex的存储路径
@@ -186,7 +198,8 @@ private static DexFile loadDexFile(File file, File optimizedDirectory)
 ```
 
 处理ODex文件的存储路径后缀，如果有.dex就不处理，如果没有就加上
-```
+
+```java
 private static String optimizedPathFor(File path,
         File optimizedDirectory) {
     String fileName = path.getName();
@@ -208,7 +221,8 @@ private static String optimizedPathFor(File path,
 ```
 
 `loadDex()`方法，注意和未指定ODex文件存储路径的区别，那个只有一个参数，这里有三个参数
-```
+
+```java
 static public DexFile loadDex(String sourcePathName, String outputPathName,
     int flags) throws IOException {
     //new一个DexFile对象然后返回
@@ -217,7 +231,8 @@ static public DexFile loadDex(String sourcePathName, String outputPathName,
 ```
 
 查看对应的构造函数
-```
+
+```java
 private DexFile(String sourceName, String outputName, int flags) throws IOException {
     //判断指定的ODex存储路径是否是应用自身的私有文件夹
     //如果不是自身的私有文件夹，会报异常
@@ -243,12 +258,14 @@ private DexFile(String sourceName, String outputName, int flags) throws IOExcept
 ```
 
 `mCookie`的定义，一个私有整型变量
-```
+
+```java
 private int mCookie;
 ```
 
 `openDexFile()`方法的前两个参数是待加载的Dex文件路径以及ODex文件的存储路径，前两个参数都是获取一个合法的绝对路径，第三个参数目测暂时没什么用
-```
+
+```java
 private static int openDexFile(String sourceName, String outputName,
     int flags) throws IOException {
     return openDexFileNative(new File(sourceName).getCanonicalPath(),
@@ -258,13 +275,15 @@ private static int openDexFile(String sourceName, String outputName,
 ```
 
 间接调用的是一个native函数
-```
+
+```java
 native private static int openDexFileNative(String sourceName, String outputName,
     int flags) throws IOException;
 ```
 
 native层中的对应关系
-```
+
+```c++
 const DalvikNativeMethod dvm_dalvik_system_DexFile[] = {
     { "openDexFileNative",  "(Ljava/lang/String;Ljava/lang/String;I)I",
         Dalvik_dalvik_system_DexFile_openDexFileNative },
@@ -283,7 +302,8 @@ const DalvikNativeMethod dvm_dalvik_system_DexFile[] = {
 ```
 
 根据第一个Item找到对应的native函数，这里也是正是开始解析Dex文件的函数
-```
+
+```c++
 static void Dalvik_dalvik_system_DexFile_openDexFileNative(const u4* args,
     JValue* pResult)
 {
@@ -377,6 +397,7 @@ static void Dalvik_dalvik_system_DexFile_openDexFileNative(const u4* args,
 ```
 
 返回的这个`pDexOrJar`指针，我们往上翻，期间会将`pDexOrJar`的值赋值给`mCookie`，然后会返回Java的DexFile类实例对象，这个实例对象会赋值给`makeDexElements()`方法中的dex变量，也就是Element类的DexFile类型变量dexFile
+
 - native private static int openDexFileNative(String sourceName, String outputName, int flags) throws IOException;
 - private static int openDexFile(String sourceName, String outputName, int flags) throws IOException;
 - private DexFile(String sourceName, String outputName, int flags) throws IOException;
@@ -387,16 +408,19 @@ static void Dalvik_dalvik_system_DexFile_openDexFileNative(const u4* args,
 - private static Element[] makeDexElements(ArrayList<File> files, File optimizedDirectory, ArrayList<IOException> suppressedExceptions)
 
 从这个方法开始，出现了多个结构体
+
 - JarFile
 - RawDexFile
 - DexOrJar
 
 这三个是直接就以迅雷不及掩耳盗铃之势出现的，其实还有两个很神奇的结构体，必须放最前面强势安利
+
 - DexFile
 - DvmDex
 
 首先是DexFile，这个不是Java层的DexFile，这个结构如果详细解析的话蛮复杂的，脱壳的时候得此结构指针者得Dex文件啊，虽然现在可能不能这么说了
-```
+
+```c++
 /*
  * Structure representing a DEX file.
  *
@@ -438,7 +462,8 @@ struct DexFile {
 ```
 
 DvmDex的第一个成员就是`DexFile*`指针类型变量`pDexFile`，至关重要！！！！！！
-```
+
+```c++
 /*
  * Some additional VM data structures that are associated with the DEX file.
  */
@@ -479,7 +504,8 @@ struct DvmDex {
 介绍完这俩结构体，接下来才轮到刚才那仨
 
 依次来分析一下，首先是`RawDexFile`，很是简单，就一个`pDvmDex`关键点
-```
+
+```c++
 /*
  * Structure representing a "raw" DEX file, in its unswapped unoptimized
  * state.
@@ -491,7 +517,8 @@ struct RawDexFile {
 ```
 
 然后是`JarFile`，和上面的差不多，多了个`ZipArchive`
-```
+
+```c++
 /*
  * This represents an open, scanned Jar file.  (It's actually for any Zip
  * archive that happens to hold a Dex file.)
@@ -505,7 +532,8 @@ struct JarFile {
 ```
 
 这个重要了，`DexOrJar`是作为返回的数据，看起来成员就多了些
-```
+
+```c++
 /*
  * Internal struct for managing DexFile.
  */
@@ -520,13 +548,15 @@ struct DexOrJar {
 ```
 
 接下来，我们来整理一下中间调用到的几个函数
+
 - hasDexExtension(sourceName);
 - dvmRawDexFileOpen(sourceName, outputName, &pRawDexFile, false);
 - dvmJarFileOpen(sourceName, outputName, &pJarFile, false);
 - addToDexFileTable(pDexOrJar);
 
 `hasDexExtension()`方法用于判断是否是Dex文件
-```
+
+```c++
 static bool hasDexExtension(const char* name) {
     size_t len = strlen(name);
 
@@ -539,7 +569,8 @@ static bool hasDexExtension(const char* name) {
 `dvmRawDexFileOpen()`方法用于打开Dex以及一系列优化操作，这个才是真正的重点
 
 一共四个参数，注意第三个，第三个原本就是一个指针，现在取指针的指针，是一个二级指针
-```
+
+```c++
 sourceName
 outputName
 &pRawDexFile
@@ -675,6 +706,7 @@ bail:
 ```
 
 中间一些很重要的方法
+
 - verifyMagicAndGetAdler32(dexFd, &adler32)
 - getModTimeAndSize(dexFd, &modTime, &fileSize)
 - dexOptGenerateCacheFileName(fileName, NULL)
@@ -684,7 +716,8 @@ bail:
 - dvmDexFileOpenFromFd(optFd, &pDvmDex)
 
 `verifyMagicAndGetAdler32()`方法会校验前12个字节的数据，Magic Number和checksum
-```
+
+```c++
 static int verifyMagicAndGetAdler32(int fd, u4 *adler32)
 {
     //读取前12个字节，前八字节时Magic Number，后四个是checksum
@@ -717,7 +750,8 @@ static int verifyMagicAndGetAdler32(int fd, u4 *adler32)
 ```
 
 其中`dexHasValidMagic()`的参数转为DexHeader*类型
-```
+
+```c++
 bool dexHasValidMagic(const DexHeader* pHeader)
 {
     //获取前八字节
@@ -755,7 +789,8 @@ bool dexHasValidMagic(const DexHeader* pHeader)
 ```
 
 `getModTimeAndSize()`方法获取修改的时间以及文件大小，用到的`stat`结构体和`fstat()`有兴趣的同学可以深入分析一下，可以结合`ls -l`这个命令来理解
-```
+
+```c++
 static int getModTimeAndSize(int fd, u4* modTime, size_t* size)
 {
     struct stat buf;
@@ -775,7 +810,8 @@ static int getModTimeAndSize(int fd, u4* modTime, size_t* size)
 ```
 
 `stat`结构体大概是这样，具体我就不是很清楚了，但是可以直接通过文件描述符获取这些数据，然后直接获取修改时间和文件大小两个成员
-```
+
+```c++
 struct stat {
     unsigned long long  st_dev;
     unsigned char       __pad0[4];
@@ -808,7 +844,8 @@ struct stat {
 ```
 
 当未指定ODex文件的存储路径时，会调用`dexOptGenerateCacheFileName()`生成一个存储路径，这应该是PathClassLoader的执行路径
-```
+
+```c++
 char* dexOptGenerateCacheFileName(const char* fileName, const char* subFileName)
 {
     char nameBuf[512];
@@ -871,6 +908,7 @@ char* dexOptGenerateCacheFileName(const char* fileName, const char* subFileName)
 那么到这里，前面的准备工作都已经完成，包括各种路径的有效性验证，输出路径的生成等
 
 下面的四个方法留着下一篇慢慢分析
+
 - dvmOpenCachedDexFile(fileName, cachedName, modTime, adler32, isBootstrap, &newFile, /*createIfMissing=*/true)
 - copyFileToFile(optFd, dexFd, fileSize)
 - dvmOptimizeDexFile(optFd, dexOffset, fileSize, fileName, modTime, adler32, isBootstrap)

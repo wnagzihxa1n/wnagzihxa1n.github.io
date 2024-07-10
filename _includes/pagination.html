@@ -1,8 +1,44 @@
-<div class="pagination clearfix">
-  {% if paginator.previous_page %}
-    <a href="..{{ paginator.previous_page_path }}" class="previous"><i class="fa fa-angle-left" aria-hidden="true"></i> Previous</a>
-  {% endif %}
-  {% if paginator.next_page %}
-    <a href="..{{ paginator.next_page_path }}" class="next">Next <i class="fa fa-angle-right" aria-hidden="true"></i></a>
-  {% endif %}
-</div>
+<nav class="pagination">
+  <div class="container">
+    <div class="pagination__list">
+
+      {% if paginator.previous_page %}
+      
+      {% if paginator.previous_page == 1 %}
+        <a class="previous-link" href="{{ site.baseurl }}/">Prev Posts</a>
+      {% else %}
+        <a class="previous-link" href="{{ site.baseurl }}/page/{{ paginator.previous_page }}/">Prev Posts</a>
+      {% endif %}
+      
+      {% else %}
+        <span class="disabled">Prev Posts</span>
+      {% endif %}
+
+      <div class="counter-box">
+        {% if paginator.page == 1 %}
+          <span class="active-link">1</span>
+        {% else %}
+          <a href="{{ site.baseurl }}/">1</a>
+        {% endif %}
+
+
+        {% for count in (2..paginator.total_pages) %}
+
+        {% if count == paginator.page %}
+          <span class="active-link">{{ count }}</span>
+        {% else %}
+          <a class="count-number" href="{{ site.baseurl }}/page/{{ count }}/">{{ count }}</a>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if paginator.next_page %}
+      <a class="next-link" href="{{ site.baseurl }}/page/{{ paginator.next_page }}/">Next Posts</a>
+      {% else %}
+        <span class="disabled">Next Posts</span>
+      {% endif %}
+
+
+    </div>
+  </div>
+</nav>

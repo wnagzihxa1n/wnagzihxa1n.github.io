@@ -1,63 +1,44 @@
 ---
 layout: default
 ---
-
-<div class="post">
-
-  <div class="post-info">
-    {% if page.date %}
-      <time datetime="{{ page.date }}">{{ page.date | date: "%B %d, %Y" }}</time>
-    {% endif %}
+{% include calculate_relative_base.html %}
+{% capture post_url %}{{ relativebase }}{{ page.url }}{% endcapture %}
+{% assign post_url = post_url | replace: "//", "/" %}
+<section class="hidden">
+  <div class="post">
+      <a  class="post-list-title" href="{{ post_url }}">{{ page.title }}</a>
+      {% include post_meta.html type="post-card-meta" %}
+        <div class="post-excerpt">
+            {{ page.content | markdownify | strip_newlines | truncatewords: 100 }}<a class="read-more" href="{{ post_url }}"> read more</a>
+        </div>
   </div>
-  <h1 class="post-title">
-    <div>{{ page.title }}</div>
-  </h1>
-
-  {{ content }}
-
-</div>
-
-<div class="relatedPosts">
-
-  {% if site.related_posts_section %}
-    {% assign maxRelated = site.related_posts_section.max_count %}
-    {% assign minCommonTags =  site.related_posts_section.min_common_tags %}
-    {% assign maxRelatedCounter = 0 %}
-    {% assign relatedPostsExist = false %}
-
-    {% for post in site.posts %}
-
-      {% assign sameTagCount = 0 %}
-      {% assign commonTags = '' %}
-
-      {% for tag in post.tags %}
-        {% if post.url != page.url %}
-          {% if page.tags contains tag %}
-            {% assign sameTagCount = sameTagCount | plus: 1 %}
-            {% capture tagmarkup %} <span class="label label-default">{{ tag }}</span> {% endcapture %}
-            {% assign commonTags = commonTags | append: tagmarkup %}
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-
-      {% if sameTagCount >= minCommonTags %}
-        {% if relatedPostsExist == false %}
-          <h3>Related posts:</h3>
-          <ul>
-        {% endif %}
-        {% assign relatedPostsExist = true %}
-        <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
-        {% assign maxRelatedCounter = maxRelatedCounter | plus: 1 %}
-        {% if maxRelatedCounter >= maxRelated %}
-          {% break %}
-        {% endif %}
-      {% endif %}
-
-    {% endfor %}
-
-    {% if relatedPostsExist == true %}
-      </ul>
-    {% endif %}
-  {% endif %}
-
+</section>
+<div class="flex-container transparent">
+  {% include header.html %}
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    {% include schema-meta.html %}
+    <div class="page-image">
+      <div class="cover-image" style="background: url('{{ relativebase }}assets/img/{{ page.img }}') center no-repeat; background-size: cover;"></div>
+    </div>
+    <div class="wrapper">
+      <div class="page-content">
+        <div class="header-page">
+          <h1 class="page-title">{{ page.title }}</h1>
+          {% include post_meta.html type="post-page-meta" %}
+        </div>
+        {% include sidebar.html context="post" class="side" id="sidebar" %}
+        {% if page.toc %}{% include sidebar-toc.html %}{% endif %}
+        {% include github-button.html %}
+        {{page.content | markdownify}}
+        {% include sidebar.html context="post" class="inline" id="post-end" %}
+        <div class="separator"></div>
+        {% include author-box.html %}
+        {% include recent-post.html %}
+        {% include newsletter.html %}
+        {% include comments.html %}
+      </div>
+    </div> <!-- End Wrapper -->
+  </article>
+  {% include search.html %}
+  {% include footer.html %}
 </div>

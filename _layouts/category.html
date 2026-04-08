@@ -1,0 +1,28 @@
+---
+layout: default
+---
+<div class="container">
+  <div class="page-title-box">
+    <div class="row">
+      <div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
+        <h1 class="page-title">{{ page.title | escape }}</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+  {% assign cat = page.category_filter %}
+  {% assign matched_posts = site.posts | where_exp: "post", "post.categories contains cat" %}
+  {% if matched_posts.size > 0 %}
+    {% for post in matched_posts %}
+      {% include article-content.html %}
+    {% endfor %}
+  {% else %}
+    <div class="col col-12">
+      <p>暂无文章</p>
+    </div>
+  {% endif %}
+  </div>
+</div>

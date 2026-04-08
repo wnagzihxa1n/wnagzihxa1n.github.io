@@ -131,106 +131,6 @@
   }
 }
 
-.post__navigation {
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 80px;
-  padding-bottom: 80px;
-  border-bottom: 1px solid $light-gray;
-
-  .prev,
-  .next {
-    flex: 1 0 50%;
-    &:last-child {
-      padding-right: 0;
-    }
-
-    .post__nav__image {
-      display: block;
-      margin-bottom: 40px;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-color: $light-gray;
-      border-radius: $global-radius * 2;
-      overflow: hidden;
-      transition: .35s ease-in-out;
-      &:hover {
-        opacity: 0.9;
-      }
-      &:after {
-        content: "";
-        display: table;
-        width: 100%;
-        padding-bottom: 65%;
-      }
-    }
-
-    .post__nav__title {
-      margin-bottom: 20px;
-      font-size: 27px;
-      line-height: 37px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-align: center;
-      
-      a {
-        display: inline-block;
-        max-width: 250px;
-        padding: 0 10px;
-        vertical-align: middle;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: $dark;
-        &:hover {
-          color: $black;
-        }
-      }
-    }
-  }
-
-  .prev {
-    padding-right: 10px;
-  }
-
-  .next {
-    padding-left: 10px;
-  }
-
-  .prev__excerpt,
-  .next__excerpt {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  @media only screen and (max-width: $tablet) {
-    flex-wrap: wrap;
-    
-    .prev,
-    .next {
-      flex: 1 0 100%;
-      padding: 0;
-    }
-
-    .next {
-      margin-top: 40px;
-    }
-  }
-
-  @media only screen and (max-width: $mobile) {
-    margin-bottom: 40px;
-    padding-bottom: 40px;
-    .prev,
-    .next {
-      .post__nav__image {
-        margin-bottom: 20px;
-      }
-    }
-  }
-}
 
 .comments {
   margin-bottom: 80px;
@@ -238,4 +138,129 @@
   @media only screen and (max-width: $mobile) {
     margin-bottom: 40px;
   }
+}
+
+// ─── TOC Sidebar ────────────────────────────────────────────────────────────
+
+.post-row {
+  align-items: stretch;
+}
+
+.toc-sidebar {
+  @media only screen and (max-width: $tablet) {
+    display: none !important;
+  }
+}
+
+.toc-sticky {
+  position: sticky;
+  top: 90px;
+  max-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0 20px 24px;
+  border-left: 2px solid $light-gray;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: $brand-color;
+  }
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  .toc-icon {
+    display: flex;
+    align-items: center;
+    color: $brand-color;
+    flex-shrink: 0;
+  }
+
+  .toc-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: $gray;
+  }
+}
+
+.toc-nav {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $light-gray;
+    border-radius: 2px;
+  }
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-item {
+  margin: 0;
+  padding: 0;
+  will-change: opacity, transform;
+
+  &.toc-level-1 { padding-left: 0; }
+  &.toc-level-2 { padding-left: 12px; }
+  &.toc-level-3 { padding-left: 24px; }
+  &.toc-level-4 { padding-left: 36px; }
+}
+
+.toc-link {
+  display: block;
+  padding: 5px 8px 5px 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: $gray;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: color 0.25s ease, padding-left 0.25s ease, background 0.25s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    color: $dark;
+    padding-left: 6px;
+  }
+}
+
+.toc-item.toc-active > .toc-link {
+  color: $brand-color;
+  font-weight: 600;
+  padding-left: 6px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: $brand-color;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 6px;
+    animation: toc-dot-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes toc-dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.6; }
 }

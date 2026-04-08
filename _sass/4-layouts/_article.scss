@@ -1,3 +1,5 @@
+@use '../0-settings/variables' as *;
+
 .article {
   margin-bottom: 40px;
 
@@ -30,7 +32,7 @@
     padding: 50px;
     margin-left: -10%;
     z-index: 1;
-    border-radius: 3px;
+    border-radius: $global-radius;
     background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
 

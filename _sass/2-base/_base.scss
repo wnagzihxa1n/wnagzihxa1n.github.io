@@ -1,8 +1,14 @@
+@use 'sass:color';
+@use '../0-settings/variables' as *;
+
 *, *::after, *::before {
   box-sizing: border-box;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-family: $base-font-family;
   font-size: $base-font-size;
   line-height: $base-line-height;
@@ -20,6 +26,10 @@ body {
 			border-color: #34a74e;
 		}
 	}
+}
+
+.content {
+  flex: 1 0 auto;
 }
 
 ::placeholder {
@@ -111,10 +121,10 @@ a {
     color: $link-color;
     transition: $global-transition;
     &:hover {
-      color: darken($link-color, 10%);
+      color: color.adjust($link-color, $lightness: -10%);
     }
     &:active {
-      color: darken($link-color, 20%);
+      color: color.adjust($link-color, $lightness: -20%);
     }
 }
 

@@ -1,10 +1,11 @@
+@use '../0-settings/variables' as *;
+
 .post-title-box {
   padding: 80px 0;
   border-top: 1px solid $light-gray;
 
   .post-title {
     margin-bottom: 10px;
-    width: 800px;
     max-width: 100%;
     font-size: 57px;
     line-height: 70px;
@@ -98,6 +99,10 @@
 
 .post__content {
   margin-bottom: 40px;
+
+  .highlighter-rouge {
+    margin-bottom: 24px;
+  }
 }
 
 .post__share {
@@ -147,6 +152,8 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-color: $light-gray;
+      border-radius: $global-radius * 2;
+      overflow: hidden;
       transition: .35s ease-in-out;
       &:hover {
         opacity: 0.9;

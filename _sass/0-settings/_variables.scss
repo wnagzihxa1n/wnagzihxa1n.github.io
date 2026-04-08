@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // *****************
 // Global Variables
 // *****************
@@ -6,7 +8,7 @@
 $base-spacing-unit: 20px;
 
 // Border radius
-$global-radius: 3px;
+$global-radius: 8px;
 
 // Transition
 $global-transition: all .35s;
@@ -33,7 +35,7 @@ $heading-font-color: $dark;
 
 // Links
 $link-color: $brand-color;
-$link-color-hover: darken($dark, 15%);
+$link-color-hover: color.adjust($dark, $lightness: -15%);
 
 // Button
 $button-color: $white;
@@ -65,3 +67,17 @@ $font-size-h5:  18px;
 $font-size-h6:  16px;
 
 $heading-line-height: 1.2;
+
+
+// *****************
+// Grid & Breakpoints
+// *****************
+$columns: 12;
+$container-base-width: 1200px;
+$container-offset: $base-spacing-unit;
+
+$desktop: 992px;
+$tablet:  768px;
+$mobile:  576px;
+
+$mq: ( $mobile:$columns, $tablet:$columns, $desktop:$columns );

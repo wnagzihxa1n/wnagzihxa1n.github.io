@@ -1,14 +1,8 @@
-$columns: 12;
-$container-base-width: 1200px;
-$container-offset: $base-spacing-unit;
-
-$desktop: 992px;
-$tablet:  768px;
-$mobile:  576px;
-
-$mq: ( $mobile:$columns, $tablet:$columns, $desktop:$columns );
+@use 'sass:math';
+@use '../0-settings/variables' as *;
 
 .container {
+  width: 100%;
   max-width: $container-base-width;
   padding-left: $container-offset;
   padding-right: $container-offset;
@@ -44,19 +38,19 @@ $mq: ( $mobile:$columns, $tablet:$columns, $desktop:$columns );
 
 @for $i from 0 through $columns {
   .col-#{$i} {
-    width: percentage( $i / $columns );
+    width: math.percentage( math.div($i, $columns) );
   }
 }
 
 @for $i from 0 through $columns {
   .push-#{$i} {
-    margin-left: percentage( $i / $columns );
+    margin-left: math.percentage( math.div($i, $columns) );
   }
 }
 
 @for $i from 0 through $columns {
   .pull-#{$i} {
-    margin-right: percentage( $i / $columns );
+    margin-right: math.percentage( math.div($i, $columns) );
   }
 }
 
@@ -68,19 +62,19 @@ $mq: ( $mobile:$columns, $tablet:$columns, $desktop:$columns );
 
     @for $i from 0 through $columns {
       .col-d-#{$i} {
-        width: percentage( $i / $columns );
+        width: math.percentage( math.div($i, $columns) );
       }
     }
 
     @for $i from 0 through $columns {
       .push-d-#{$i} {
-        margin-left: percentage( $i / $columns );
+        margin-left: math.percentage( math.div($i, $columns) );
       }
     }
 
     @for $i from 0 through $columns {
       .pull-d-#{$i} {
-        margin-right: percentage( $i / $columns );
+        margin-right: math.percentage( math.div($i, $columns) );
       }
     }
   }
@@ -91,19 +85,19 @@ $mq: ( $mobile:$columns, $tablet:$columns, $desktop:$columns );
 
     @for $i from 0 through $columns {
       .col-t-#{$i} {
-        width: percentage( $i / $columns );
+        width: math.percentage( math.div($i, $columns) );
       }
     }
 
     @for $i from 0 through $columns {
       .push-t-#{$i} {
-        margin-left: percentage( $i / $columns );
+        margin-left: math.percentage( math.div($i, $columns) );
       }
     }
 
     @for $i from 0 through $columns {
       .pull-t-#{$i} {
-        margin-right: percentage( $i / $columns );
+        margin-right: math.percentage( math.div($i, $columns) );
       }
     }
   }
@@ -113,19 +107,19 @@ $mq: ( $mobile:$columns, $tablet:$columns, $desktop:$columns );
 
     @for $i from 0 through $columns {
       .col-m-#{$i} {
-        width: percentage( $i / $columns );
+        width: math.percentage( math.div($i, $columns) );
       }
-    }  
+    }
 
     @for $i from 0 through $columns {
       .push-m-#{$i} {
-        margin-left: percentage( $i / $columns );
+        margin-left: math.percentage( math.div($i, $columns) );
       }
     }
 
     @for $i from 0 through $columns {
       .pull-m-#{$i} {
-        margin-right: percentage( $i / $columns );
+        margin-right: math.percentage( math.div($i, $columns) );
       }
     }
   }

@@ -1,6 +1,6 @@
 ---
 layout: category
-title: iOS
-permalink: /ios/
+title: macOS
+permalink: /macos/
 category_filter: macOS_Security
 ---

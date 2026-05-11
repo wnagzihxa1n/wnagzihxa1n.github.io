@@ -1,11 +1,11 @@
 {% assign without-image = nil %}
 <!-- begin article -->
-<div class="article">
+<div class="article{% if page.category_filter %} article--category{% endif %}">
   <div class="container">
 
     <div class="article__wrapper">
 
-        {% if post.image %}
+        {% if post.image and page.category_filter == nil %}
           <a href="{{post.url | prepend: site.baseurl}}" class="article__image" style="background-image: url({{site.baseurl}}/images/{{post.image}})">
           </a>
         {% else %}
@@ -27,8 +27,10 @@
           <h2 class="article__title">
             <a href="{{ post.url | prepend: site.baseurl }}">{{post.title}}</a>
           </h2>
-      
+
+          {% unless page.category_filter %}
           <p class="article__excerpt">{% if post.description %}{{ post.description }}{% else %}{{ post.content | strip_html | truncate: 185 }}{% endif %}</p>
+          {% endunless %}
           
           <div class="article__footer">
             <div class="article__meta">

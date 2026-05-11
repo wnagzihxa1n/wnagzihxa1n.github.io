@@ -20,6 +20,16 @@
   }
 }
 
+
+.category-page {
+  padding-top: 24px;
+  border-top: 1px solid $light-gray;
+
+  @media only screen and (max-width: $mobile) {
+    padding-top: 20px;
+  }
+}
+
 .page__head {
   
   .page-image {
